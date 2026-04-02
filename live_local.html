@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Live Like a Local — ExpatPortugal.guide</title>
+<meta name="description" content="Close the gap between expats and locals in Portugal. Language exchange, cultural guides, etiquette, volunteering, and real integration stories." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --ink:#1c1917;--ink2:#57534e;--ink3:#a8a29e;
+  --cream:#faf9f7;--warm:#f5f0e8;--card:#fff;
+  --border:rgba(28,25,23,0.08);--border2:rgba(28,25,23,0.15);
+  --red:#c0381a;--red-l:#fdf0ec;
+  --green:#15803d;--green-l:#f0fdf4;
+  --teal:#0f766e;--teal-l:#f0fdfa;
+  --amber:#b45309;--amber-l:#fffbeb;
+  --blue:#1d4ed8;--blue-l:#eff6ff;
+  --purple:#7c3aed;--purple-l:#f5f3ff;
+  --r:10px;--rl:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--ink);font-size:15px;line-height:1.6}
+
+/* NAV */
+nav{background:var(--card);border-bottom:0.5px solid var(--border);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{font-family:'Playfair Display',serif;font-size:18px;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px}
+.nav-links{display:flex;gap:4px}
+.nl{font-size:13px;padding:6px 12px;border-radius:var(--r);color:var(--ink2);background:none;border:none;cursor:pointer;font-family:'Outfit',sans-serif;text-decoration:none;display:flex;align-items:center}
+.nl:hover{background:var(--warm);color:var(--ink)}
+.nl.on{color:var(--ink);font-weight:500}
+.nav-cta{font-size:13px;padding:7px 16px;background:var(--red);color:white;border:none;border-radius:var(--r);cursor:pointer;font-family:'Outfit',sans-serif;font-weight:500;text-decoration:none}
+
+/* HERO */
+.hero{position:relative;overflow:hidden;padding:5rem 1.5rem 4rem;text-align:center;background:var(--ink)}
+.hero-pattern{position:absolute;inset:0;opacity:0.04;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.hero-eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:rgba(255,255,255,0.5);margin-bottom:16px;position:relative}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(32px,6vw,58px);font-weight:400;line-height:1.15;margin-bottom:16px;color:white;position:relative}
+.hero h1 em{font-style:italic;color:#f5c4a1}
+.hero-sub{font-size:16px;color:rgba(255,255,255,0.65);max-width:560px;margin:0 auto 2.5rem;line-height:1.8;position:relative}
+.hero-flags{display:flex;justify-content:center;gap:8px;position:relative}
+.hf{font-size:28px;animation:float 3s ease-in-out infinite}
+.hf:nth-child(2){animation-delay:0.5s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* SECTION STRUCTURE */
+.page{max-width:980px;margin:0 auto;padding:0 1.5rem}
+.section{padding:3.5rem 0;border-bottom:0.5px solid var(--border)}
+.section:last-child{border-bottom:none}
+.sec-eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:500;margin-bottom:10px}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,32px);font-weight:400;margin-bottom:10px;line-height:1.25}
+.sec-desc{font-size:14px;color:var(--ink2);max-width:560px;line-height:1.8;margin-bottom:2rem}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start}
+.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.four-col{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+
+/* CARDS */
+.card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem}
+.card-icon{font-size:24px;margin-bottom:10px;display:block}
+.card-title{font-size:14px;font-weight:500;margin-bottom:6px}
+.card-desc{font-size:12px;color:var(--ink2);line-height:1.7}
+.card-link{display:inline-block;margin-top:10px;font-size:12px;color:var(--red);text-decoration:none;font-weight:500}
+.card-link:hover{text-decoration:underline}
+.card.featured{border:1.5px solid var(--red)}
+.tag-pill{display:inline-block;font-size:10px;padding:3px 9px;border-radius:20px;margin:2px;font-weight:500}
+
+/* PHRASES TABLE */
+.phrase-section{margin-bottom:1.5rem}
+.phrase-cat{font-size:11px;text-transform:uppercase;letter-spacing:0.08em;font-weight:500;color:var(--ink3);margin-bottom:10px;padding-bottom:6px;border-bottom:0.5px solid var(--border)}
+.phrase-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-bottom:0.5px solid var(--border)}
+.phrase-row:last-child{border-bottom:none}
+.phrase-cell{padding:10px 12px;font-size:13px}
+.phrase-cell.pt{font-weight:500;color:var(--ink);background:var(--warm)}
+.phrase-cell.pr{color:var(--ink2);font-style:italic;background:var(--cream)}
+.phrase-cell.en{color:var(--ink3)}
+.phrase-header{display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--ink);border-radius:var(--r) var(--r) 0 0;overflow:hidden}
+.ph-cell{padding:8px 12px;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:rgba(255,255,255,0.6)}
+
+/* ETIQUETTE */
+.etiq-item{display:flex;gap:14px;padding:1rem 0;border-bottom:0.5px solid var(--border)}
+.etiq-item:last-child{border-bottom:none}
+.etiq-icon{font-size:22px;flex-shrink:0;width:32px;text-align:center;margin-top:2px}
+.etiq-title{font-size:14px;font-weight:500;margin-bottom:3px}
+.etiq-desc{font-size:13px;color:var(--ink2);line-height:1.7}
+.etiq-do{font-size:11px;margin-top:6px;display:flex;gap:12px;flex-wrap:wrap}
+.do-tag{padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500}
+.do{background:var(--green-l);color:var(--green)}
+.dont{background:var(--red-l);color:var(--red)}
+
+/* MISTAKES */
+.mistake-card{background:var(--warm);border-radius:var(--rl);padding:1.25rem;border-left:3px solid var(--amber);border-radius:0 var(--rl) var(--rl) 0}
+.mistake-num{font-family:'Playfair Display',serif;font-size:32px;color:rgba(180,83,9,0.2);line-height:1;margin-bottom:4px}
+.mistake-title{font-size:14px;font-weight:500;margin-bottom:6px}
+.mistake-desc{font-size:12px;color:var(--ink2);line-height:1.7}
+.mistake-fix{font-size:12px;color:var(--green);margin-top:8px;padding-top:8px;border-top:0.5px solid var(--border);font-weight:500}
+
+/* LANGUAGE EXCHANGE */
+.exchange-box{background:var(--ink);border-radius:var(--rl);padding:2rem;color:white}
+.exchange-box h3{font-family:'Playfair Display',serif;font-size:22px;font-weight:400;margin-bottom:8px}
+.exchange-box p{font-size:13px;opacity:.7;margin-bottom:1.5rem;line-height:1.8}
+.exchange-form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ef-field{display:flex;flex-direction:column;gap:4px}
+.ef-label{font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:.06em}
+.ef-input{padding:9px 12px;border:0.5px solid rgba(255,255,255,0.15);border-radius:var(--r);background:rgba(255,255,255,0.08);color:white;font-size:13px;font-family:'Outfit',sans-serif;outline:none}
+.ef-input:focus{border-color:rgba(255,255,255,0.4)}
+.ef-input::placeholder{color:rgba(255,255,255,0.3)}
+.ef-select{padding:9px 12px;border:0.5px solid rgba(255,255,255,0.15);border-radius:var(--r);background:rgba(255,255,255,0.08);color:white;font-size:13px;font-family:'Outfit',sans-serif;outline:none}
+.ef-select option{color:var(--ink);background:white}
+.ef-btn{grid-column:1/-1;padding:11px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:14px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif;margin-top:4px}
+.ef-btn:hover{background:#a83015}
+
+/* VOLUNTEER */
+.vol-card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;display:flex;gap:14px}
+.vol-icon{font-size:28px;flex-shrink:0}
+.vol-title{font-size:14px;font-weight:500;margin-bottom:4px}
+.vol-org{font-size:11px;color:var(--ink3);margin-bottom:6px}
+.vol-desc{font-size:12px;color:var(--ink2);line-height:1.7}
+.vol-tags{margin-top:8px;display:flex;flex-wrap:wrap;gap:4px}
+
+/* STORIES */
+.story-card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.5rem;position:relative;overflow:hidden}
+.story-card::before{content:'"';font-family:'Playfair Display',serif;font-size:80px;color:var(--border2);position:absolute;top:-10px;left:14px;line-height:1}
+.story-quote{font-size:14px;color:var(--ink2);line-height:1.8;margin-bottom:1rem;padding-top:30px;font-style:italic}
+.story-person{display:flex;align-items:center;gap:10px}
+.story-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;flex-shrink:0}
+.story-name{font-size:13px;font-weight:500}
+.story-from{font-size:11px;color:var(--ink3)}
+
+/* RESOURCES */
+.res-row{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:0.5px solid var(--border)}
+.res-row:last-child{border-bottom:none}
+.res-icon{font-size:20px;width:36px;text-align:center;flex-shrink:0}
+.res-name{font-size:14px;font-weight:500;margin-bottom:2px}
+.res-desc{font-size:12px;color:var(--ink2)}
+.res-link{margin-left:auto;font-size:12px;padding:5px 12px;border:0.5px solid var(--border2);border-radius:var(--r);color:var(--ink);text-decoration:none;white-space:nowrap;flex-shrink:0}
+.res-link:hover{background:var(--warm)}
+.res-tag{font-size:10px;padding:2px 7px;border-radius:20px;margin-left:6px}
+
+/* NEWSLETTER */
+.newsletter{background:var(--warm);border-radius:var(--rl);padding:2.5rem;text-align:center;margin:3rem 0}
+.nl-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:400;margin-bottom:8px}
+.nl-sub{font-size:14px;color:var(--ink2);margin-bottom:1.5rem}
+.nl-form{display:flex;gap:8px;justify-content:center;max-width:420px;margin:0 auto}
+.nl-input{flex:1;padding:10px 14px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;background:var(--card);color:var(--ink);outline:none;font-family:'Outfit',sans-serif}
+.nl-btn{padding:10px 20px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;font-family:'Outfit',sans-serif}
+
+/* FOOTER */
+footer{border-top:0.5px solid var(--border);padding:2rem 1.5rem;background:var(--card);text-align:center;font-size:12px;color:var(--ink3)}
+footer a{color:var(--ink3);text-decoration:none}
+
+/* RESPONSIVE */
+@media(max-width:700px){
+  nav{padding:0 1rem}
+  .nav-links{display:none}
+  .two-col,.three-col,.four-col{grid-template-columns:1fr}
+  .exchange-form{grid-template-columns:1fr}
+  .nl-form{flex-direction:column}
+  .phrase-row,.phrase-header{grid-template-columns:1fr 1fr}
+  .phrase-cell.pr{display:none}
+  .ph-cell:nth-child(2){display:none}
+  .page{padding:0 1rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">🇵🇹 ExpatPortugal.guide</a>
+  <div class="nav-links">
+    <a class="nl" href="index.html">Home</a>
+    <a class="nl" href="expat_tools_v4_fixed.html">Tools</a>
+    <a class="nl" href="lifestyle_services.html">Services</a>
+    <a class="nl on" href="#">Live local</a>
+  </div>
+  <a class="nav-cta" href="#language-exchange">Join language exchange</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-pattern"></div>
+  <div class="hero-eyebrow">Integration guide</div>
+  <h1>We live in Portugal.<br><em>Let's actually belong here.</em></h1>
+  <p class="hero-sub">The gap between expats and locals doesn't have to grow. Language, culture, and community — here's how to genuinely connect with Portugal.</p>
+  <div class="hero-flags">
+    <span class="hf">🇵🇹</span>
+    <span class="hf" style="animation-delay:.3s">🤝</span>
+    <span class="hf" style="animation-delay:.6s">🌍</span>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- ══ 1. THE HONEST CONVERSATION ══ -->
+  <div class="section">
+    <div class="two-col" style="align-items:center">
+      <div>
+        <div class="sec-eyebrow" style="color:var(--red)">Why this page exists</div>
+        <div class="sec-title">The gap is real.<br>And we can close it.</div>
+        <div class="sec-desc" style="max-width:100%">Portugal's expat population has grown enormously in the past decade. With it has come a real tension — rising rents, language barriers, cultural misunderstandings, and two communities that increasingly live parallel lives in the same streets.<br><br>This page isn't about blame. It's about recognising that if you choose to make Portugal your home, you have a responsibility — and an incredible opportunity — to actually become part of it.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="card" style="border-left:3px solid var(--red);border-radius:0 var(--rl) var(--rl) 0">
+          <div class="card-title">The language barrier</div>
+          <div class="card-desc">Only 1 in 3 expats in Portugal make a serious effort to learn Portuguese. Yet locals consistently say that even basic Portuguese — "bom dia", "obrigado", "pode repetir?" — completely transforms how they see you.</div>
+        </div>
+        <div class="card" style="border-left:3px solid var(--amber);border-radius:0 var(--rl) var(--rl) 0">
+          <div class="card-title">The income gap</div>
+          <div class="card-desc">Many expats earn foreign salaries in a local economy. Being conscious of where you spend your money — choosing local businesses over international chains — makes a meaningful difference to the community around you.</div>
+        </div>
+        <div class="card" style="border-left:3px solid var(--teal);border-radius:0 var(--rl) var(--rl) 0">
+          <div class="card-title">The cultural opportunity</div>
+          <div class="card-desc">Portugal has one of the richest cultures in Europe. Fado, football, food, family — there is so much to fall in love with here, if you step outside the expat bubble and let it in.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 2. PORTUGUESE PHRASES ══ -->
+  <div class="section">
+    <div class="sec-eyebrow" style="color:var(--teal)">Learn the language</div>
+    <div class="sec-title">Portuguese for daily life</div>
+    <div class="sec-desc">You don't need to be fluent. But even 20 phrases used consistently will change your relationship with Portugal — and with every Portuguese person you meet. Here are the ones that actually matter.</div>
+
+    <div style="border:0.5px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:2rem">
+      <div class="phrase-header">
+        <div class="ph-cell">Portuguese</div>
+        <div class="ph-cell">Pronunciation</div>
+        <div class="ph-cell">English</div>
+      </div>
+
+      <div class="phrase-section" style="margin:0;padding:12px 12px 0">
+        <div class="phrase-cat">Everyday greetings & courtesy</div>
+      </div>
+      <div class="phrase-row"><div class="phrase-cell pt">Bom dia</div><div class="phrase-cell pr">bom DEE-ah</div><div class="phrase-cell en">Good morning</div></div>
+      <div class="phrase-row"><div class="phrase-cell pt">Boa tarde / boa noite</div><div class="phrase-cell pr">BOH-ah TAR-de / NOY-te</div><div class="phrase-cell en">Good afternoon / evening</div></div>
+      <div class="phrase-row"><div class="phrase-cell pt">Olá / Olé</div><div class="phrase-cell pr">oh-LAH</div><div class="phrase-cell en">Hello (informal)</div></div>
+      <div class="phrase-row"><div class="phrase-cell pt">Obrigado / Obrigada</div><div class="phrase-cell pr">oh-bree-GAH-doo / dah</div><div class="phrase-cell en">Thank you (man / woman speaking)</div></div>
+      <div class="phrase-row"><div class="phrase-cell pt">De nada</div><div class="phrase-cell pr">de NAH-dah</div><div class="phrase-cell en">You're welcome</div></div>
+      <div class="phrase-row"><div class="phrase-cell pt">Com licença</div><div class="phrase-cell pr">kom lee-SEN-sah</div><div class="phrase-cell en">Excuse me / pardon</div></div>
+      <div class="phrase-row"><div class="phrase-cell pt">Desculpe</div><div class="phrase-cell pr">desh-KOOL-pe</div><div class="phrase-cell en">Sorry</div></div>
+      <div class="phrase-row"><div class="phrase-cell pt">Até logo / Tchau</div><div class="phrase-cell pr">ah-TEH LOH-goo / chow</div><div class="phrase-cell en">See you later / Bye</div></div>
+
+      <div class="phrase-section" style="margin:0;padding:12px 12px 0">
+        <div class="phrase-cat">Shopping & eating out</div>
+      </div>
+      <div class="phrase-row"><div class="phrase-cell pt">Queria um café, por favor</div><div class="phrase-cell pr">keh-REE-ah oom kah-FEH</div><div class="phrase-cell en">I'd like a coffee, please</div></div>
+      <div class="phrase-row"><div class="phrase-cell pt">A conta, por favor</div><div class="phrase-cell pr">ah KON-tah poor fah-VOR</div><div class="phrase-cell en">The bill, please</div></div>
+      <div class="phrase-row"><div class="phrase-cell pt">Está bom / Estava delicioso</div><div class="phrase-cell pr">esh-TAH bom / de-lee-SYOH-zoo</div><div class="phrase-cell en">It's good / It was delicious</div></div>
+      <div class="phrase-row"><div class="phrase-cell pt">Quanto custa?</div><div class="phrase-cell pr">KWAN-too KOOSH-tah</div><div class="phrase-cell en">How much does it cost?</div></div>
+
+      <div class="phrase-section" style="margin:0;padding:12px 12px 0">
+        <div class="phrase-cat">Getting help & bureaucracy</div>
+      </div>
+      <div class="phrase-row"><div class="phrase-cell pt">Fala inglês?</div><div class="phrase-cell pr">FAH-lah een-GLESH</div><div class="phrase-cell en">Do you speak English?</div></div>
+      <div class="phrase-row"><div class="phrase-cell pt">Não percebo / Não entendo</div><div class="phrase-cell pr">now per-SEH-boo</div><div class="phrase-cell en">I don't understand</div></div>
+      <div class="phrase-row"><div class="phrase-cell pt">Pode repetir, por favor?</div><div class="phrase-cell pr">PO-de reh-peh-TEER</div><div class="phrase-cell en">Can you repeat that, please?</div></div>
+      <div class="phrase-row"><div class="phrase-cell pt">Estou a aprender português</div><div class="phrase-cell pr">esh-TOH ah ah-pren-DAIR</div><div class="phrase-cell en">I'm learning Portuguese</div></div>
+      <div class="phrase-row"><div class="phrase-cell pt">Onde fica...?</div><div class="phrase-cell pr">ON-de FEE-kah</div><div class="phrase-cell en">Where is...?</div></div>
+
+      <div class="phrase-section" style="margin:0;padding:12px 12px 0">
+        <div class="phrase-cat">Being a good neighbour</div>
+      </div>
+      <div class="phrase-row"><div class="phrase-cell pt">Bom dia, como está?</div><div class="phrase-cell pr">KOH-moo esh-TAH</div><div class="phrase-cell en">Good morning, how are you?</div></div>
+      <div class="phrase-row"><div class="phrase-cell pt">Tudo bem, obrigado</div><div class="phrase-cell pr">TOO-doo baym</div><div class="phrase-cell en">All good, thank you</div></div>
+      <div class="phrase-row"><div class="phrase-cell pt">Precisas de ajuda?</div><div class="phrase-cell pr">preh-SEE-zash de ah-ZHOO-dah</div><div class="phrase-cell en">Do you need help? (informal)</div></div>
+      <div class="phrase-row" style="border-bottom:none"><div class="phrase-cell pt">Feliz Natal / Boa Páscoa</div><div class="phrase-cell pr">fe-LEEZ nah-TAL</div><div class="phrase-cell en">Merry Christmas / Happy Easter</div></div>
+    </div>
+
+    <div class="three-col">
+      <div class="card">
+        <span class="card-icon">📱</span>
+        <div class="card-title">Duolingo Portuguese</div>
+        <div class="card-desc">Best free daily habit. Inconsistent with European vs Brazilian Portuguese but good for vocabulary and structure.</div>
+        <a class="card-link" href="https://duolingo.com" target="_blank">duolingo.com →</a>
+      </div>
+      <div class="card featured">
+        <span class="card-icon">🎧</span>
+        <div class="card-title">Practice Portuguese</div>
+        <div class="card-desc">The best resource specifically for European Portuguese. Real conversations, grammar, and a passionate community. Worth the subscription.</div>
+        <a class="card-link" href="https://www.practiceportuguese.com" target="_blank">practiceportuguese.com →</a>
+      </div>
+      <div class="card">
+        <span class="card-icon">👥</span>
+        <div class="card-title">italki tutors</div>
+        <div class="card-desc">One-to-one lessons with native Portuguese speakers. Community tutors from €8/hour. Best for fast conversational progress.</div>
+        <a class="card-link" href="https://italki.com" target="_blank">italki.com →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 3. LANGUAGE EXCHANGE ══ -->
+  <div class="section" id="language-exchange">
+    <div class="two-col">
+      <div>
+        <div class="sec-eyebrow" style="color:var(--purple)">Language exchange</div>
+        <div class="sec-title">You speak English.<br>They speak Portuguese.<br>Everyone wins.</div>
+        <div class="sec-desc" style="max-width:100%">The fastest way to learn Portuguese and make genuine local friends — language exchange. You help a Portuguese person practice their English, they help you with your Portuguese. One hour, split in half. No teacher, no textbook, just two people helping each other.<br><br>Sign up below and we'll match you with someone in your city within 2 weeks.</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:1rem">
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink2)"><span style="font-size:18px">📍</span> Matched by city and availability</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink2)"><span style="font-size:18px">✉️</span> We introduce you over email — no app needed</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink2)"><span style="font-size:18px">☕</span> Meet at a café, park, or online</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink2)"><span style="font-size:18px">🆓</span> Completely free — always</div>
+        </div>
+      </div>
+      <div class="exchange-box">
+        <h3>Join the language exchange</h3>
+        <p>Tell us about yourself and we'll find you a match. Takes 2 minutes.</p>
+        <div class="exchange-form">
+          <div class="ef-field">
+            <label class="ef-label">Your name</label>
+            <input class="ef-input" type="text" placeholder="First name" id="ex-name" />
+          </div>
+          <div class="ef-field">
+            <label class="ef-label">Email</label>
+            <input class="ef-input" type="email" placeholder="your@email.com" id="ex-email" />
+          </div>
+          <div class="ef-field">
+            <label class="ef-label">I am a...</label>
+            <select class="ef-select" id="ex-type">
+              <option value="expat">Expat (I want to learn Portuguese)</option>
+              <option value="local">Portuguese local (quero praticar inglês)</option>
+            </select>
+          </div>
+          <div class="ef-field">
+            <label class="ef-label">City / region</label>
+            <select class="ef-select" id="ex-city">
+              <option>Lisbon</option>
+              <option>Porto</option>
+              <option>Algarve</option>
+              <option>Cascais / Sintra</option>
+              <option>Braga</option>
+              <option>Coimbra</option>
+              <option>Alentejo</option>
+              <option>Madeira</option>
+              <option>Online only</option>
+            </select>
+          </div>
+          <div class="ef-field" style="grid-column:1/-1">
+            <label class="ef-label">My Portuguese level</label>
+            <select class="ef-select" id="ex-level">
+              <option>Complete beginner</option>
+              <option>A1 — I know a few words</option>
+              <option>A2 — Basic conversations</option>
+              <option>B1 — Getting there</option>
+              <option>B2+ — Fairly comfortable</option>
+            </select>
+          </div>
+          <button class="ef-btn" onclick="submitExchange()">Sign me up for language exchange →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 4. ETIQUETTE & SOCIAL NORMS ══ -->
+  <div class="section">
+    <div class="sec-eyebrow" style="color:var(--amber)">Cultural guide</div>
+    <div class="sec-title">How Portugal actually works</div>
+    <div class="sec-desc">The unwritten rules that no guidebook tells you — but that locals notice immediately.</div>
+    <div class="two-col">
+      <div>
+        <div class="etiq-item">
+          <div class="etiq-icon">💋</div>
+          <div>
+            <div class="etiq-title">Greetings: the two-kiss rule</div>
+            <div class="etiq-desc">Women greet everyone (men and women) with two kisses on the cheek — right cheek first. Men greet women with kisses and men with a handshake, unless they're close friends. Always greet everyone individually when entering a room — walking in and giving a general wave is considered rude.</div>
+            <div class="etiq-do"><span class="do-tag do">Greet each person individually</span><span class="do-tag dont">Don't wave at a group</span></div>
+          </div>
+        </div>
+        <div class="etiq-item">
+          <div class="etiq-icon">🕐</div>
+          <div>
+            <div class="etiq-title">Time is... flexible</div>
+            <div class="etiq-desc">Being 15–20 minutes late to a social event is perfectly normal and expected in Portugal. Arriving exactly on time can actually make your host feel rushed. For business, be punctual. For dinner at someone's home, 20 minutes late is fine — and bring wine or flowers.</div>
+            <div class="etiq-do"><span class="do-tag do">Bring wine or flowers to dinner</span><span class="do-tag dont">Don't arrive exactly on time to social events</span></div>
+          </div>
+        </div>
+        <div class="etiq-item">
+          <div class="etiq-icon">🍽️</div>
+          <div>
+            <div class="etiq-title">Lunch is sacred</div>
+            <div class="etiq-desc">Lunch in Portugal is the main meal of the day — often 1–2 hours, especially in smaller towns. Scheduling business meetings over lunch unless explicitly invited is a faux pas. The <em>prato do dia</em> (daily special) at a local tasca is the authentic lunch experience. Don't rush it.</div>
+            <div class="etiq-do"><span class="do-tag do">Order the prato do dia</span><span class="do-tag dont">Don't eat a sandwich at your desk</span></div>
+          </div>
+        </div>
+        <div class="etiq-item">
+          <div class="etiq-icon">🎁</div>
+          <div>
+            <div class="etiq-title">Tipping</div>
+            <div class="etiq-desc">Tipping is appreciated but not expected the way it is in the US or UK. Rounding up the bill or leaving €1–2 for a coffee is generous. For restaurants, 5–10% is plenty. Never tip with a card — always cash. Don't over-tip ostentatiously; it can come across as patronising.</div>
+            <div class="etiq-do"><span class="do-tag do">Tip in cash</span><span class="do-tag do">Round up the bill</span><span class="do-tag dont">Don't tip 20%</span></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="etiq-item">
+          <div class="etiq-icon">🗣️</div>
+          <div>
+            <div class="etiq-title">Try Portuguese — always</div>
+            <div class="etiq-desc">Even broken, halting Portuguese is received with warmth and respect. Starting every interaction with at least a greeting in Portuguese — "Bom dia, fala inglês?" — signals respect. Jumping straight into English signals entitlement. Portuguese people will often switch to English to help you, but they remember who tried.</div>
+            <div class="etiq-do"><span class="do-tag do">Always start in Portuguese</span><span class="do-tag dont">Don't open with English</span></div>
+          </div>
+        </div>
+        <div class="etiq-item">
+          <div class="etiq-icon">🏘️</div>
+          <div>
+            <div class="etiq-title">Apartment building culture</div>
+            <div class="etiq-desc">Portuguese apartment culture is quiet and respectful. Keep noise down after 10pm, especially on weekdays. Greet neighbours in the lift or corridor. If you're having a gathering, warn neighbours in advance with a note. Shared stairwells and hallways are kept spotless — do your part.</div>
+            <div class="etiq-do"><span class="do-tag do">Warn neighbours before a party</span><span class="do-tag dont">Don't play music loud after 10pm</span></div>
+          </div>
+        </div>
+        <div class="etiq-item">
+          <div class="etiq-icon">🛒</div>
+          <div>
+            <div class="etiq-title">Shopping at the market</div>
+            <div class="etiq-desc">At local markets, don't touch produce before buying — point and ask. Bargaining is not part of Portuguese culture except at flea markets. Bring a bag. Pay in cash where possible. Take your time and chat — the vendor relationship is part of the experience, not an obstacle to it.</div>
+            <div class="etiq-do"><span class="do-tag do">Bring cash and a bag</span><span class="do-tag dont">Don't squeeze the fruit</span></div>
+          </div>
+        </div>
+        <div class="etiq-item">
+          <div class="etiq-icon">⚽</div>
+          <div>
+            <div class="etiq-title">Football is religion</div>
+            <div class="etiq-desc">Portugal takes football seriously. Knowing that Benfica, Porto, and Sporting are fierce rivals — and which one your neighbour supports — is essential social knowledge. You don't have to like football, but respecting its importance in Portuguese culture opens more doors than almost anything else.</div>
+            <div class="etiq-do"><span class="do-tag do">Learn your neighbour's team</span><span class="do-tag dont">Don't dismiss football as "just a game"</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 5. COMMON EXPAT MISTAKES ══ -->
+  <div class="section">
+    <div class="sec-eyebrow" style="color:var(--red)">Honest guide</div>
+    <div class="sec-title">Things expats do that<br>quietly annoy locals</div>
+    <div class="sec-desc">Written with kindness, not judgment. Most expats do these things without realising — awareness is the first step.</div>
+    <div class="three-col">
+      <div class="mistake-card">
+        <div class="mistake-num">01</div>
+        <div class="mistake-title">Complaining about Portugal publicly</div>
+        <div class="mistake-desc">Posting on social media or saying loudly in cafés that "things are so disorganised here" or "it's not like back home." Portuguese people are proud of their country — they can criticise it; guests shouldn't.</div>
+        <div class="mistake-fix">✓ Save comparisons for private conversations. Show gratitude for being welcomed.</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-num">02</div>
+        <div class="mistake-title">Speaking loudly in English in local spaces</div>
+        <div class="mistake-desc">A neighbourhood tasca or local pharmacy isn't an international lounge. Dominating a space with loud English — and not attempting a word of Portuguese — signals that you don't really see the locals around you.</div>
+        <div class="mistake-fix">✓ Lower your volume. Smile. Try "bom dia" even if everything else is in English.</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-num">03</div>
+        <div class="mistake-title">Only socialising with other expats</div>
+        <div class="mistake-desc">It's easy and comfortable to stick to the English-speaking bubble. But it means you're living in Portugal without really being in Portugal — and locals notice when entire neighbourhoods feel taken over by people who don't interact with them.</div>
+        <div class="mistake-fix">✓ One local friendship changes everything. Start with a language exchange.</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-num">04</div>
+        <div class="mistake-title">Driving up rents without awareness</div>
+        <div class="mistake-desc">Many expats earn foreign salaries and can afford rents locals cannot. This is a structural problem, not personal fault — but being aware of it, and being a good tenant and community member, matters more than ever.</div>
+        <div class="mistake-fix">✓ Spend locally. Support independent Portuguese businesses over international chains.</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-num">05</div>
+        <div class="mistake-title">Treating Portugal as a lifestyle accessory</div>
+        <div class="mistake-desc">"The weather is amazing, the food is great, the people are so friendly!" All true. But Portugal is a real country with real challenges — not a backdrop for a dream life. Locals can feel when they're being aestheticised rather than respected.</div>
+        <div class="mistake-fix">✓ Engage with Portugal's actual life — politics, language, community — not just its aesthetics.</div>
+      </div>
+      <div class="mistake-card">
+        <div class="mistake-num">06</div>
+        <div class="mistake-title">Not learning any Portuguese after years of living here</div>
+        <div class="mistake-desc">This is the one locals mention most. After 2–3 years in Portugal, not knowing basic Portuguese signals that you don't feel the need to adapt — that Portugal should adapt to you. It's felt.</div>
+        <div class="mistake-fix">✓ 10 minutes a day on Practice Portuguese for 6 months changes this completely.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 6. VOLUNTEER ══ -->
+  <div class="section">
+    <div class="sec-eyebrow" style="color:var(--green)">Give back</div>
+    <div class="sec-title">Volunteering in Portugal</div>
+    <div class="sec-desc">The fastest way to make genuine Portuguese friends and feel part of the community. No Portuguese required for most opportunities.</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:1.5rem">
+      <div class="vol-card">
+        <div class="vol-icon">🌊</div>
+        <div>
+          <div class="vol-title">Coastal clean-ups — Limpeza do Mar</div>
+          <div class="vol-org">Nationwide · Monthly events · All welcome</div>
+          <div class="vol-desc">Regular beach and coastal clean-up events across Portugal. A great way to contribute to the environment and meet both locals and expats who care about the same things.</div>
+          <div class="vol-tags"><span class="tag-pill" style="background:var(--teal-l);color:var(--teal)">Outdoor</span><span class="tag-pill" style="background:var(--green-l);color:var(--green)">No language needed</span><span class="tag-pill" style="background:var(--blue-l);color:var(--blue)">All regions</span></div>
+        </div>
+      </div>
+      <div class="vol-card">
+        <div class="vol-icon">📚</div>
+        <div>
+          <div class="vol-title">English tutoring for Portuguese children</div>
+          <div class="vol-org">Lisbon, Porto, Algarve · Schools & community centres</div>
+          <div class="vol-desc">Native English speakers are genuinely valuable to local schools and community centres. Even an hour a week helping children with conversational English is enormously appreciated and builds real community ties.</div>
+          <div class="vol-tags"><span class="tag-pill" style="background:var(--purple-l);color:var(--purple)">Education</span><span class="tag-pill" style="background:var(--amber-l);color:var(--amber)">High impact</span></div>
+        </div>
+      </div>
+      <div class="vol-card">
+        <div class="vol-icon">🐾</div>
+        <div>
+          <div class="vol-title">Animal shelter volunteering</div>
+          <div class="vol-org">Every city · Canil municipal · Walking, socialising</div>
+          <div class="vol-desc">Portugal's municipal animal shelters are always in need of volunteers to walk dogs and socialise cats. Contact your local câmara municipal or search "canil" + your city. No Portuguese needed — animals are universal.</div>
+          <div class="vol-tags"><span class="tag-pill" style="background:var(--green-l);color:var(--green)">Animals</span><span class="tag-pill" style="background:var(--green-l);color:var(--green)">No language needed</span></div>
+        </div>
+      </div>
+      <div class="vol-card">
+        <div class="vol-icon">🍱</div>
+        <div>
+          <div class="vol-title">Food banks — Banco Alimentar</div>
+          <div class="vol-org">Nationwide · Regular collection drives</div>
+          <div class="vol-desc">Portugal's food banks run regular collection campaigns at supermarkets and need volunteers to help sort and distribute. The twice-yearly national drives are particularly well-organised and welcoming to new volunteers.</div>
+          <div class="vol-tags"><span class="tag-pill" style="background:var(--red-l);color:var(--red)">Community</span><span class="tag-pill" style="background:var(--blue-l);color:var(--blue)">All regions</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 7. CULTURAL CALENDAR ══ -->
+  <div class="section">
+    <div class="sec-eyebrow" style="color:var(--purple)">Cultural calendar</div>
+    <div class="sec-title">Portugal's year —<br>beyond the tourist highlights</div>
+    <div class="sec-desc">The events, traditions, and rhythms that define Portuguese life. Participating — not just observing — is how you become part of it.</div>
+    <div class="four-col">
+      <div class="card"><span class="card-icon">🎭</span><div class="card-title">Carnaval (Feb)</div><div class="card-desc">Not as wild as Brazil but genuinely festive. Torres Vedras has the most celebrated Carnaval in Portugal — worth a trip from anywhere.</div></div>
+      <div class="card"><span class="card-icon">🌸</span><div class="card-title">Semana Santa (Apr)</div><div class="card-desc">Holy Week processions across Portugal. Braga has the most atmospheric — candles, music, centuries of tradition. Deeply meaningful to locals.</div></div>
+      <div class="card"><span class="card-icon">🎵</span><div class="card-title">Santos Populares (Jun)</div><div class="card-desc">The biggest party of the year. June saints' festivals fill Lisbon and Porto with sardines, sangria, music, and street dancing. Join in — this is Portugal at its most joyful.</div></div>
+      <div class="card"><span class="card-icon">🍇</span><div class="card-title">Wine harvest (Sep)</div><div class="card-desc">The Douro Valley grape harvest is one of the most beautiful sights in Europe. Many quintas welcome volunteers. Absolutely worth experiencing.</div></div>
+      <div class="card"><span class="card-icon">🎃</span><div class="card-title">Magusto (Nov)</div><div class="card-desc">St. Martin's Day — chestnuts roasted on every street corner, poncha and jeropiga to drink. A uniquely Portuguese autumn tradition most expats miss.</div></div>
+      <div class="card"><span class="card-icon">🐟</span><div class="card-title">Bacalhau season</div><div class="card-desc">Salt cod (bacalhau) has 365 recipes — one for every day of the year. Ask a local their grandmother's recipe. It opens more conversations than almost anything.</div></div>
+      <div class="card"><span class="card-icon">⚽</span><div class="card-title">Derby weekends</div><div class="card-desc">Benfica vs Porto or Sporting is a national event. You don't need to care about football — just know when it's happening and that everything stops.</div></div>
+      <div class="card"><span class="card-icon">🎶</span><div class="card-title">Fado — year round</div><div class="card-desc">Skip the tourist fado houses. Ask a local where the real fado happens in your city. It's raw, emotional, and unlike anything else. Give it time — it grows on you.</div></div>
+    </div>
+  </div>
+
+  <!-- ══ 8. INTEGRATION STORIES ══ -->
+  <div class="section">
+    <div class="sec-eyebrow" style="color:var(--teal)">Real stories</div>
+    <div class="sec-title">Expats who made it work</div>
+    <div class="sec-desc">No dream-life Instagram accounts. Just honest experiences from people who put in the work to actually belong here.</div>
+    <div class="three-col">
+      <div class="story-card">
+        <div class="story-quote">I moved to Porto three years ago and for the first year I barely spoke to a Portuguese person outside of a shop. Then I joined a football team — my Portuguese was terrible but I tried every training session. A year later I was invited to a Portuguese wedding. That would never have happened from inside an expat bubble.</div>
+        <div class="story-person">
+          <div class="story-av" style="background:#E1F5EE;color:#15803d">JM</div>
+          <div>
+            <div class="story-name">James M., British</div>
+            <div class="story-from">Porto · 3 years</div>
+          </div>
+        </div>
+      </div>
+      <div class="story-card">
+        <div class="story-quote">The language exchange changed everything for me. I was matched with a nurse from Setúbal who wanted to improve her English for work. We met every two weeks at a café. A year later we're close friends, I've been to her family's Natal dinner twice, and my Portuguese went from zero to conversational. It cost nothing.</div>
+        <div class="story-person">
+          <div class="story-av" style="background:#fdf0ec;color:#c0381a">SK</div>
+          <div>
+            <div class="story-name">Sandra K., German</div>
+            <div class="story-from">Lisbon · 4 years</div>
+          </div>
+        </div>
+      </div>
+      <div class="story-card">
+        <div class="story-quote">I started volunteering at the local canil on Saturday mornings. My Portuguese was non-existent and the other volunteers barely spoke English. But you don't need language to walk a dog together. Six months later I had a WhatsApp group with ten Portuguese friends. We communicate in a mix of Google Translate, gestures, and laughter.</div>
+        <div class="story-person">
+          <div class="story-av" style="background:#eff6ff;color:#1d4ed8">MC</div>
+          <div>
+            <div class="story-name">Marie C., French</div>
+            <div class="story-from">Algarve · 2 years</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:1.5rem">
+      <button onclick="alert('Share your integration story with us at hello@expatportugal.guide — we feature real stories from real expats every month.')" style="padding:10px 24px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;cursor:pointer;font-family:'Outfit',sans-serif;background:var(--card);color:var(--ink)">Share your story →</button>
+    </div>
+  </div>
+
+  <!-- ══ 9. LOCAL BUSINESS SPOTLIGHT ══ -->
+  <div class="section">
+    <div class="sec-eyebrow" style="color:var(--amber)">Spend local</div>
+    <div class="sec-title">Support Portuguese businesses</div>
+    <div class="sec-desc">Every euro spent at a locally-owned business stays in the community. Skip the chains — here are the kinds of places that make Portugal, Portugal.</div>
+    <div class="three-col">
+      <div class="card"><span class="card-icon">🍽️</span><div class="card-title">Find your local tasca</div><div class="card-desc">The neighbourhood tasca is the heartbeat of local Portugal. Handwritten menus, €8 lunch specials, the owner's mother in the kitchen. Walk until you find one that feels real. Then become a regular.</div></div>
+      <div class="card"><span class="card-icon">🛒</span><div class="card-title">Shop at the mercado</div><div class="card-desc">Every city has a municipal market. Mercado da Ribeira, Bolhão, Loulé — the prices are often lower than supermarkets and the quality is higher. And you'll practice your Portuguese every visit.</div></div>
+      <div class="card"><span class="card-icon">☕</span><div class="card-title">Café culture</div><div class="card-desc">A galão or café at a local café costs €0.80–1.20. Avoid the tourist café chains. Find the place where locals read the newspaper. Stand at the counter. Say "um café, por favor."</div></div>
+    </div>
+    <div style="background:var(--warm);border-radius:var(--rl);padding:1.25rem;margin-top:1rem;text-align:center">
+      <div style="font-size:14px;font-weight:500;margin-bottom:4px">Know a great local Portuguese business?</div>
+      <div style="font-size:13px;color:var(--ink2);margin-bottom:12px">We're building a directory of locally-owned businesses worth supporting — recommended by expats who've been going for years.</div>
+      <button onclick="alert('Submit a local business recommendation to hello@expatportugal.guide — name, city, and what makes it special. We list them free.')" style="padding:9px 20px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:500">Recommend a local business →</button>
+    </div>
+  </div>
+
+  <!-- NEWSLETTER -->
+  <div class="newsletter">
+    <div class="nl-title">Stay connected — to Portugal and to each other</div>
+    <div class="nl-sub">Weekly digest: local events, cultural moments, language tips, and integration stories. Free, every Monday.</div>
+    <div class="nl-form">
+      <input class="nl-input" type="email" id="nl-email" placeholder="your@email.com" />
+      <button class="nl-btn" onclick="subscribeNL()">Subscribe free</button>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2025 ExpatPortugal.guide &nbsp;·&nbsp; <a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Terms</a> &nbsp;·&nbsp; Made with respect for Portugal and its people</p>
+</footer>
+
+<script>
+function submitExchange() {
+  const name = document.getElementById('ex-name').value.trim();
+  const email = document.getElementById('ex-email').value.trim();
+  if (!name || !email || !email.includes('@')) {
+    alert('Please fill in your name and a valid email address.');
+    return;
+  }
+  const type = document.getElementById('ex-type').value;
+  const city = document.getElementById('ex-city').value;
+  const level = document.getElementById('ex-level').value;
+  // In production: POST to newsletter/matching backend
+  console.log('Language exchange signup:', { name, email, type, city, level });
+  const box = document.querySelector('.exchange-box');
+  box.innerHTML = `<div style="text-align:center;padding:2rem 0">
+    <div style="font-size:40px;margin-bottom:16px">🤝</div>
+    <div style="font-family:'Playfair Display',serif;font-size:22px;margin-bottom:10px;color:white">You're on the list, ${name}!</div>
+    <div style="font-size:13px;opacity:.75;color:white;line-height:1.8">We'll match you with a language partner in ${city} within 2 weeks and introduce you over email.<br>In the meantime — bom estudo!</div>
+  </div>`;
+}
+
+function subscribeNL() {
+  const email = document.getElementById('nl-email').value.trim();
+  if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+  console.log('Newsletter subscribe:', email);
+  document.querySelector('.newsletter').innerHTML = `<div style="padding:2rem;text-align:center">
+    <div style="font-size:36px;margin-bottom:12px">🇵🇹</div>
+    <div class="nl-title">You're subscribed!</div>
+    <div class="nl-sub">First edition arrives next Monday. Até logo!</div>
+  </div>`;
+}
+</script>
+</body>
+</html>

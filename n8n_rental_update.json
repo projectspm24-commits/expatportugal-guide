@@ -1,0 +1,133 @@
+{
+  "name": "ExpatPortugal — Monthly Rental Price Update",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": { "interval": [{ "field": "months", "monthsInterval": 1 }] },
+        "triggerAtDayOfMonth": 1,
+        "triggerAtHour": 6
+      },
+      "name": "1st of every month at 6am",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://www.idealista.pt/arrendar-casas/lisboa/",
+        "options": { "response": { "response": { "responseFormat": "text" } } }
+      },
+      "name": "Scrape Idealista Lisbon",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [460, 240]
+    },
+    {
+      "parameters": {
+        "url": "https://www.idealista.pt/arrendar-casas/porto/",
+        "options": { "response": { "response": { "responseFormat": "text" } } }
+      },
+      "name": "Scrape Idealista Porto",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [460, 360]
+    },
+    {
+      "parameters": {
+        "url": "https://www.idealista.pt/arrendar-casas/algarve/",
+        "options": { "response": { "response": { "responseFormat": "text" } } }
+      },
+      "name": "Scrape Idealista Algarve",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [460, 480]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "content-type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "=",
+              "value": "={{ JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 1000, messages: [{ role: 'user', content: `Based on current market knowledge for Portugal rental prices in ${new Date().toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}, provide updated average rental prices.\n\nReturn ONLY this JSON array (no markdown, no explanation):\n[\n  { \"city\": \"Lisbon\", \"area\": \"Chiado / Bairro Alto\", \"region\": \"lisbon\", \"studio_avg\": 1450, \"bed1_avg\": 1950, \"bed2_avg\": 2700, \"bed3_avg\": 3900, \"trend_pct\": \"+3%\", \"trend_dir\": \"up\" },\n  { \"city\": \"Lisbon\", \"area\": \"Alfama / Mouraria\", \"region\": \"lisbon\", \"studio_avg\": 1100, \"bed1_avg\": 1550, \"bed2_avg\": 2050, \"bed3_avg\": 2950, \"trend_pct\": \"+4%\", \"trend_dir\": \"up\" },\n  { \"city\": \"Lisbon\", \"area\": \"Principe Real\", \"region\": \"lisbon\", \"studio_avg\": 1600, \"bed1_avg\": 2150, \"bed2_avg\": 2950, \"bed3_avg\": 4300, \"trend_pct\": \"+2%\", \"trend_dir\": \"up\" },\n  { \"city\": \"Lisbon\", \"area\": \"Almada / Cacilhas\", \"region\": \"lisbon\", \"studio_avg\": 760, \"bed1_avg\": 960, \"bed2_avg\": 1280, \"bed3_avg\": 1750, \"trend_pct\": \"+2%\", \"trend_dir\": \"up\" },\n  { \"city\": \"Porto\", \"area\": \"Ribeira / Cedofeita\", \"region\": \"porto\", \"studio_avg\": 900, \"bed1_avg\": 1200, \"bed2_avg\": 1600, \"bed3_avg\": 2250, \"trend_pct\": \"0%\", \"trend_dir\": \"fl\" },\n  { \"city\": \"Porto\", \"area\": \"Foz do Douro\", \"region\": \"porto\", \"studio_avg\": 1100, \"bed1_avg\": 1500, \"bed2_avg\": 2000, \"bed3_avg\": 2850, \"trend_pct\": \"+2%\", \"trend_dir\": \"up\" },\n  { \"city\": \"Porto\", \"area\": \"Matosinhos\", \"region\": \"porto\", \"studio_avg\": 750, \"bed1_avg\": 980, \"bed2_avg\": 1280, \"bed3_avg\": 1750, \"trend_pct\": \"0%\", \"trend_dir\": \"fl\" },\n  { \"city\": \"Algarve\", \"area\": \"Lagos\", \"region\": \"algarve\", \"studio_avg\": 920, \"bed1_avg\": 1250, \"bed2_avg\": 1650, \"bed3_avg\": 2300, \"trend_pct\": \"+3%\", \"trend_dir\": \"up\" },\n  { \"city\": \"Algarve\", \"area\": \"Vilamoura / Albufeira\", \"region\": \"algarve\", \"studio_avg\": 1020, \"bed1_avg\": 1400, \"bed2_avg\": 1850, \"bed3_avg\": 2700, \"trend_pct\": \"+4%\", \"trend_dir\": \"up\" },\n  { \"city\": \"Braga\", \"area\": \"City centre\", \"region\": \"other\", \"studio_avg\": 560, \"bed1_avg\": 720, \"bed2_avg\": 980, \"bed3_avg\": 1350, \"trend_pct\": \"+2%\", \"trend_dir\": \"up\" }\n]\n\nAdjust numbers to reflect current ${new Date().toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })} market conditions. Keep values realistic.` }] }) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Claude — update rental estimates",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [680, 360]
+    },
+    {
+      "parameters": {
+        "functionCode": "const body = JSON.parse($input.first().json.body);\nconst text = body.content[0].text.trim();\nconst prices = JSON.parse(text);\nreturn prices.map(p => ({ json: p }));"
+      },
+      "name": "Parse rental prices",
+      "type": "n8n-nodes-base.code",
+      "position": [900, 360]
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "tableId": "rental_prices",
+        "fieldsUi": {
+          "fieldValues": [
+            { "fieldId": "city", "fieldValue": "={{ $json.city }}" },
+            { "fieldId": "area", "fieldValue": "={{ $json.area }}" },
+            { "fieldId": "region", "fieldValue": "={{ $json.region }}" },
+            { "fieldId": "studio_avg", "fieldValue": "={{ $json.studio_avg }}" },
+            { "fieldId": "bed1_avg", "fieldValue": "={{ $json.bed1_avg }}" },
+            { "fieldId": "bed2_avg", "fieldValue": "={{ $json.bed2_avg }}" },
+            { "fieldId": "bed3_avg", "fieldValue": "={{ $json.bed3_avg }}" },
+            { "fieldId": "trend_pct", "fieldValue": "={{ $json.trend_pct }}" },
+            { "fieldId": "trend_dir", "fieldValue": "={{ $json.trend_dir }}" },
+            { "fieldId": "updated_at", "fieldValue": "={{ new Date().toISOString() }}" }
+          ]
+        },
+        "filterByFormFields": {
+          "values": [
+            { "fieldId": "city", "fieldValue": "={{ $json.city }}" },
+            { "fieldId": "area", "fieldValue": "={{ $json.area }}" }
+          ]
+        }
+      },
+      "name": "Upsert rental prices",
+      "type": "n8n-nodes-base.supabase",
+      "position": [1120, 360]
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "tableId": "automation_logs",
+        "fieldsUi": {
+          "fieldValues": [
+            { "fieldId": "workflow", "fieldValue": "rental_update" },
+            { "fieldId": "status", "fieldValue": "success" },
+            { "fieldId": "items_created", "fieldValue": "10" }
+          ]
+        }
+      },
+      "name": "Log rental update",
+      "type": "n8n-nodes-base.supabase",
+      "position": [1340, 360]
+    }
+  ],
+  "connections": {
+    "1st of every month at 6am": { "main": [[{ "node": "Scrape Idealista Lisbon", "type": "main", "index": 0 }, { "node": "Scrape Idealista Porto", "type": "main", "index": 0 }, { "node": "Scrape Idealista Algarve", "type": "main", "index": 0 }]] },
+    "Scrape Idealista Lisbon": { "main": [[{ "node": "Claude — update rental estimates", "type": "main", "index": 0 }]] },
+    "Scrape Idealista Porto": { "main": [[{ "node": "Claude — update rental estimates", "type": "main", "index": 0 }]] },
+    "Scrape Idealista Algarve": { "main": [[{ "node": "Claude — update rental estimates", "type": "main", "index": 0 }]] },
+    "Claude — update rental estimates": { "main": [[{ "node": "Parse rental prices", "type": "main", "index": 0 }]] },
+    "Parse rental prices": { "main": [[{ "node": "Upsert rental prices", "type": "main", "index": 0 }]] },
+    "Upsert rental prices": { "main": [[{ "node": "Log rental update", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" }
+}

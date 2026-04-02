@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Free Expat Tools — ExpatPortugal.guide</title>
+<meta name="description" content="9 free tools for expats in Portugal — neighbourhood matcher, visa finder, cost calculator, tax calculator, document checklists, rental tracker, relocation bundle and more." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+:root{--red:#C0381A;--red-dark:#993C1D;--red-light:#FAECE7;--green:#1D9E75;--green-dark:#1a3a2a;--green-light:#E1F5EE;--text:#1a1a1a;--t2:#555;--t3:#999;--b:rgba(0,0,0,0.1);--b2:rgba(0,0,0,0.18);--bg:#f4f3ef;--card:#fff;--bg2:#f0efe9;--r:10px;--rl:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6}
+nav{background:var(--card);border-bottom:0.5px solid var(--b);padding:0 2rem;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{font-family:'Lora',serif;font-size:17px;font-weight:500;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:7px}
+.nav-back{font-size:12px;color:var(--t2);text-decoration:none;padding:6px 12px;border:0.5px solid var(--b2);border-radius:var(--r)}
+.nav-back:hover{background:var(--bg2)}
+.hero{max-width:880px;margin:0 auto;padding:3rem 1.5rem 2rem;text-align:center}
+.hero h1{font-family:'Lora',serif;font-size:clamp(22px,4vw,36px);font-weight:500;margin-bottom:10px}
+.hero h1 em{font-style:italic;color:var(--red)}
+.hero p{font-size:15px;color:var(--t2);max-width:500px;margin:0 auto 1.75rem}
+.badges{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.badge{font-size:11px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--b2);color:var(--t2);background:var(--card);cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.badge:hover,.badge.on{background:var(--red);color:white;border-color:var(--red)}
+.wrap{max-width:880px;margin:0 auto;padding:0 1.5rem 5rem}
+.tnav{display:grid;grid-template-columns:repeat(9,1fr);gap:6px;margin-bottom:2rem}
+.tn{background:var(--card);border:0.5px solid var(--b);border-radius:var(--rl);padding:12px 6px;text-align:center;cursor:pointer}
+.tn:hover{border-color:var(--b2)}
+.tn.on{border:2px solid var(--red)}
+.tn-i{font-size:18px;margin-bottom:5px;display:block}
+.tn-l{font-size:10px;font-weight:500;color:var(--text);line-height:1.3}
+.tn-s{font-size:9px;color:var(--t3);margin-top:2px}
+.panel{display:none}.panel.on{display:block}
+.card{background:var(--card);border:0.5px solid var(--b);border-radius:var(--rl);padding:1.5rem;margin-bottom:14px}
+.ttl{font-family:'Lora',serif;font-size:20px;font-weight:500;margin-bottom:6px}
+.tdesc{font-size:13px;color:var(--t2);margin-bottom:1.5rem;line-height:1.7}
+.fl{margin-bottom:16px}
+.flbl{font-size:12px;font-weight:500;color:var(--t2);margin-bottom:8px;display:block}
+select{width:100%;padding:10px 12px;border:0.5px solid var(--b2);border-radius:var(--r);font-size:13px;background:var(--card);color:var(--text);outline:none;font-family:'DM Sans',sans-serif}
+select:focus{border-color:var(--red)}
+.og{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.opt{background:var(--bg2);border:0.5px solid var(--b);border-radius:var(--r);padding:10px 12px;cursor:pointer;font-size:13px;color:var(--text);line-height:1.4}
+.opt:hover{border-color:var(--b2)}
+.opt.sel{background:var(--red-light);border-color:var(--red);color:#712B13;font-weight:500}
+.sr{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.sr label{font-size:12px;color:var(--t2);min-width:130px}
+.sr input[type=range]{flex:1;accent-color:var(--red)}
+.sr span{font-size:13px;font-weight:500;color:var(--text);min-width:70px;text-align:right}
+.btn{padding:11px 24px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn:hover{background:var(--red-dark)}
+.btn2{padding:10px 18px;background:var(--card);color:var(--text);border:0.5px solid var(--b2);border-radius:var(--r);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn2:hover{background:var(--bg2)}
+.btn-grn{padding:11px 24px;background:var(--green);color:white;border:none;border-radius:var(--r);font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-grn:hover{background:#0F6E56}
+.rbox{background:var(--bg2);border-radius:var(--rl);padding:1.5rem;margin-bottom:14px;display:none}
+.rbox.on{display:block}
+.tag{display:inline-block;font-size:11px;padding:3px 10px;border-radius:20px;margin:2px}
+.tg{background:var(--green-light);color:#085041}
+.ta{background:#FAEEDA;color:#633806}
+.tb{background:#E6F1FB;color:#0C447C}
+.tr{background:var(--red-light);color:#712B13}
+.tp{background:#EEEDFE;color:#3C3489}
+.mrow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.met{background:var(--card);border-radius:var(--r);padding:14px;text-align:center;border:0.5px solid var(--b)}
+.mv{font-size:22px;font-weight:500;font-family:'Lora',serif}
+.ml{font-size:11px;color:var(--t3);margin-top:3px}
+.prog{display:flex;gap:4px;margin-bottom:1.5rem}
+.ps{height:3px;flex:1;background:var(--b);border-radius:2px;transition:background .2s}
+.ps.done{background:var(--red-dark)}.ps.act{background:var(--red)}
+.cr{background:var(--card);border:0.5px solid var(--b);border-radius:var(--rl);padding:1rem;margin-bottom:10px}
+.cr.top{border:2px solid var(--red)}
+.ctb{font-size:10px;background:var(--red-light);color:#712B13;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:8px;font-weight:500}
+.cn{font-family:'Lora',serif;font-size:17px;font-weight:500;margin-bottom:4px}
+.cbar{height:4px;background:var(--b);border-radius:2px;margin-bottom:10px}
+.cfill{height:4px;background:var(--red);border-radius:2px}
+.cli{list-style:none;display:flex;flex-direction:column;gap:6px}
+.cli li{display:flex;align-items:flex-start;gap:10px;font-size:13px;padding:10px 12px;background:var(--card);border-radius:var(--r);border:0.5px solid var(--b)}
+.clico{font-size:16px;flex-shrink:0;margin-top:1px}
+.clnt{font-size:11px;color:var(--t3);margin-top:2px}
+.dg{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.dc{background:var(--card);border:0.5px solid var(--b);border-radius:var(--rl);padding:14px;cursor:pointer}
+.dc:hover{border-color:var(--b2)}
+.dav{width:38px;height:38px;border-radius:50%;background:#E6F1FB;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:#0C447C;margin-bottom:10px}
+.aff{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:14px}
+.afc{background:var(--card);border:0.5px solid var(--b);border-radius:var(--r);padding:12px;text-align:center}
+.afn{font-size:13px;font-weight:500;margin-bottom:2px}
+.afd{font-size:10px;color:var(--t3);margin-bottom:8px}
+.afb{font-size:11px;padding:5px 12px;background:var(--red);color:white;border:none;border-radius:var(--r);cursor:pointer;font-family:'DM Sans',sans-serif}
+.upsell{background:var(--green-dark);border-radius:var(--rl);padding:1.5rem;color:white;text-align:center;margin-top:14px}
+.upsell h3{font-family:'Lora',serif;font-size:17px;font-weight:500;margin-bottom:6px}
+.upsell p{font-size:12px;opacity:.75;margin-bottom:14px;line-height:1.6}
+.ub{padding:10px 22px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif}
+.sl{list-style:none;display:flex;flex-direction:column;gap:6px}
+.si{display:flex;align-items:flex-start;gap:10px;font-size:13px;padding:9px 12px;background:var(--bg2);border-radius:var(--r)}
+.sn{font-weight:500;color:var(--red);min-width:18px;flex-shrink:0}
+.fbrow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem}
+.fb{font-size:12px;padding:6px 14px;background:var(--card);border:0.5px solid var(--b2);border-radius:20px;cursor:pointer;color:var(--t2);font-family:'DM Sans',sans-serif}
+.fb:hover{background:var(--bg2);color:var(--text)}
+.fb.on{background:var(--red);color:white;border-color:var(--red)}
+.bdg{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px}
+.bi{display:flex;justify-content:space-between;font-size:12px;padding:8px 10px;background:var(--card);border-radius:var(--r);border:0.5px solid var(--b)}
+.bi span:first-child{color:var(--t2)}
+.bi span:last-child{font-weight:500}
+/* TAX CALCULATOR specific */
+.tax-compare{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}
+.tc-card{border-radius:var(--rl);padding:1rem;border:0.5px solid var(--b);background:var(--card);text-align:center}
+.tc-card.best{border:2px solid var(--green);background:var(--green-light)}
+.tc-regime{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);margin-bottom:4px}
+.tc-tax{font-size:24px;font-weight:500;font-family:'Lora',serif;margin-bottom:2px}
+.tc-net{font-size:12px;color:var(--t2);margin-bottom:8px}
+.tc-badge{font-size:10px;padding:3px 8px;border-radius:20px;background:#1D9E75;color:white;display:inline-block}
+.tc-note{font-size:11px;color:var(--t3);line-height:1.6;margin-top:8px;padding-top:8px;border-top:0.5px solid var(--b)}
+/* RENTAL TRACKER specific */
+.rt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:14px}
+.rt-card{background:var(--card);border:0.5px solid var(--b);border-radius:var(--rl);padding:14px;cursor:pointer}
+.rt-card:hover{border-color:var(--b2)}
+.rt-city{font-size:13px;font-weight:500;margin-bottom:2px}
+.rt-area{font-size:11px;color:var(--t3);margin-bottom:8px}
+.rt-price{font-size:22px;font-weight:500;font-family:'Lora',serif;color:var(--text)}
+.rt-unit{font-size:11px;color:var(--t3)}
+.rt-trend{font-size:11px;margin-top:4px}
+.trend-up{color:#E24B4A}.trend-dn{color:#1D9E75}.trend-fl{color:var(--t3)}
+.rt-bar{height:3px;background:var(--b);border-radius:2px;margin-top:8px}
+.rt-fill{height:3px;border-radius:2px}
+/* BUNDLE specific */
+.bundle-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:1.5rem}
+.bi-card{background:var(--bg2);border-radius:var(--rl);padding:1rem;border:0.5px solid var(--b)}
+.bi-icon{font-size:24px;margin-bottom:8px;display:block}
+.bi-title{font-size:13px;font-weight:500;margin-bottom:4px}
+.bi-desc{font-size:12px;color:var(--t2);line-height:1.6}
+.bundle-cta{background:var(--green-dark);border-radius:var(--rl);padding:1.5rem;color:white;text-align:center}
+.bc-price{font-size:36px;font-weight:500;font-family:'Lora',serif;margin-bottom:4px}
+.bc-was{font-size:13px;opacity:.6;text-decoration:line-through;margin-bottom:12px}
+footer{border-top:0.5px solid var(--b);padding:2rem 1.5rem;background:var(--card);text-align:center;font-size:12px;color:var(--t3)}
+footer a{color:var(--t3);text-decoration:none}
+@media(max-width:700px){
+  .tnav{grid-template-columns:repeat(3,1fr)}
+  .mrow{grid-template-columns:1fr 1fr}
+  .tax-compare{grid-template-columns:1fr}
+  nav{padding:0 1rem}
+  .wrap{padding:0 1rem 3rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">🇵🇹 ExpatPortugal.guide</a>
+  <a class="nav-back" href="index.html">← Back to home</a>
+</nav>
+
+<div class="hero">
+  <h1>Free tools for<br><em>expats in Portugal</em></h1>
+  <p>9 tools to plan your move, find your city, handle the paperwork, and save money.</p>
+  <div class="badges">
+    <button class="badge on"  onclick="go(0,this)">🗺️ Neighbourhood match</button>
+    <button class="badge"     onclick="go(1,this)">✈️ Visa finder</button>
+    <button class="badge"     onclick="go(2,this)">💶 Cost calculator</button>
+    <button class="badge"     onclick="go(3,this)">📋 Doc checklist</button>
+    <button class="badge"     onclick="go(4,this)">🧮 Tax calculator</button>
+    <button class="badge"     onclick="go(5,this)">🏘️ Rental tracker</button>
+    <button class="badge"     onclick="go(6,this)">📦 Relocation bundle</button>
+    <button class="badge"     onclick="go(7,this)">👥 Service directory</button>
+    <button class="badge"     onclick="go(8,this)">🤖 Ask AI — free</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="tnav">
+    <div class="tn on"  id="tn0" onclick="go(0,null)"><span class="tn-i">🗺️</span><div class="tn-l">Neighbourhood</div><div class="tn-s">Free quiz</div></div>
+    <div class="tn"     id="tn1" onclick="go(1,null)"><span class="tn-i">✈️</span><div class="tn-l">Visa finder</div><div class="tn-s">Report €4.90</div></div>
+    <div class="tn"     id="tn2" onclick="go(2,null)"><span class="tn-i">💶</span><div class="tn-l">Cost calc</div><div class="tn-s">Free</div></div>
+    <div class="tn"     id="tn3" onclick="go(3,null)"><span class="tn-i">📋</span><div class="tn-l">Doc checklist</div><div class="tn-s">PDF €2.90</div></div>
+    <div class="tn"     id="tn4" onclick="go(4,null)"><span class="tn-i">🧮</span><div class="tn-l">Tax calculator</div><div class="tn-s">Free</div></div>
+    <div class="tn"     id="tn5" onclick="go(5,null)"><span class="tn-i">🏘️</span><div class="tn-l">Rental tracker</div><div class="tn-s">Free</div></div>
+    <div class="tn"     id="tn6" onclick="go(6,null)"><span class="tn-i">📦</span><div class="tn-l">Bundle</div><div class="tn-s">€9.90</div></div>
+    <div class="tn"     id="tn7" onclick="go(7,null)"><span class="tn-i">👥</span><div class="tn-l">Directory</div><div class="tn-s">Vetted pros</div></div>
+    <div class="tn"     id="tn8" onclick="go(8,null)"><span class="tn-i">🤖</span><div class="tn-l">Ask AI</div><div class="tn-s">Always free</div></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- 1. NEIGHBOURHOOD QUIZ                              -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div id="p0" class="panel on">
+    <div class="card">
+      <div class="ttl">Find your perfect place in Portugal</div>
+      <div class="tdesc">Answer 6 questions and we'll match you with the cities and regions that best fit your lifestyle, budget, and priorities.</div>
+      <div class="prog" id="qprog">
+        <div class="ps act"></div><div class="ps"></div><div class="ps"></div>
+        <div class="ps"></div><div class="ps"></div><div class="ps"></div>
+      </div>
+      <div id="qs0"><span class="flbl">What matters most to you day-to-day?</span>
+        <div class="og"><div class="opt" onclick="qp(0,'urban')">City energy &amp; culture</div><div class="opt" onclick="qp(0,'beach')">Beach &amp; coast</div><div class="opt" onclick="qp(0,'nature')">Nature &amp; countryside</div><div class="opt" onclick="qp(0,'quiet')">Peace &amp; quiet</div></div>
+      </div>
+      <div id="qs1" style="display:none"><span class="flbl">Monthly housing budget?</span>
+        <div class="og"><div class="opt" onclick="qp(1,'low')">Under €700</div><div class="opt" onclick="qp(1,'mid')">€700–€1,200</div><div class="opt" onclick="qp(1,'high')">€1,200–€2,000</div><div class="opt" onclick="qp(1,'top')">€2,000+</div></div>
+      </div>
+      <div id="qs2" style="display:none"><span class="flbl">How important is a large expat community?</span>
+        <div class="og"><div class="opt" onclick="qp(2,'essential')">Essential</div><div class="opt" onclick="qp(2,'nice')">Nice to have</div><div class="opt" onclick="qp(2,'dontmind')">Don't mind</div><div class="opt" onclick="qp(2,'avoid')">Prefer authentic local</div></div>
+      </div>
+      <div id="qs3" style="display:none"><span class="flbl">Do you need good public transport?</span>
+        <div class="og"><div class="opt" onclick="qp(3,'no')">Yes — no car</div><div class="opt" onclick="qp(3,'yes')">Happy to drive</div></div>
+      </div>
+      <div id="qs4" style="display:none"><span class="flbl">Top priority?</span>
+        <div class="og"><div class="opt" onclick="qp(4,'weather')">Best weather</div><div class="opt" onclick="qp(4,'value')">Best value for money</div><div class="opt" onclick="qp(4,'schools')">International schools</div><div class="opt" onclick="qp(4,'nightlife')">Nightlife &amp; restaurants</div></div>
+      </div>
+      <div id="qs5" style="display:none"><span class="flbl">Moving with family?</span>
+        <div class="og"><div class="opt" onclick="qp(5,'solo')">Just me</div><div class="opt" onclick="qp(5,'couple')">Me &amp; partner</div><div class="opt" onclick="qp(5,'kids')">With young children</div><div class="opt" onclick="qp(5,'teens')">With teenagers</div></div>
+      </div>
+    </div>
+    <div id="qres" class="rbox">
+      <div id="qrc"></div>
+      <div class="upsell"><h3>Get your personalised relocation bundle</h3><p>Full city guide, cost breakdown, document checklist &amp; neighbourhood map for your top match — beautiful PDF delivered instantly.</p><button class="ub" onclick="go(6,null)">Download for €9.90 →</button></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- 2. VISA FINDER                                     -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div id="p1" class="panel">
+    <div class="card">
+      <div class="ttl">Find your Portugal visa</div>
+      <div class="tdesc">Answer 3 questions and get your exact visa match — plus the precise steps to apply.</div>
+      <div class="fl"><span class="flbl">Your nationality</span>
+        <select id="vnat"><option value="">Select your country...</option><option value="eu">EU / EEA citizen</option><option value="uk">United Kingdom</option><option value="us">United States</option><option value="ca">Canada</option><option value="au">Australia / New Zealand</option><option value="br">Brazil</option><option value="other">Other non-EU</option></select>
+      </div>
+      <div class="fl"><span class="flbl">Income situation</span>
+        <div class="og">
+          <div class="opt" onclick="vp('inc','passive')">Passive income<br><small style="font-size:10px;color:#888">pension, rent, dividends</small></div>
+          <div class="opt" onclick="vp('inc','remote')">Remote worker<br><small style="font-size:10px;color:#888">freelance or employed</small></div>
+          <div class="opt" onclick="vp('inc','investor')">Investor<br><small style="font-size:10px;color:#888">high net worth</small></div>
+          <div class="opt" onclick="vp('inc','employed')">Portuguese employer<br><small style="font-size:10px;color:#888">local job offer</small></div>
+          <div class="opt" onclick="vp('inc','retired')">Retired<br><small style="font-size:10px;color:#888">pension income</small></div>
+          <div class="opt" onclick="vp('inc','student')">Student</div>
+        </div>
+      </div>
+      <div class="fl"><span class="flbl">Monthly income</span>
+        <div class="og"><div class="opt" onclick="vp('amt','low')">Under €870</div><div class="opt" onclick="vp('amt','mid')">€870–€3,500</div><div class="opt" onclick="vp('amt','high')">€3,500+</div><div class="opt" onclick="vp('amt','investor')">€500k+ to invest</div></div>
+      </div>
+      <button class="btn" onclick="runVisa()">Find my visa →</button>
+    </div>
+    <div id="vres" class="rbox"><div id="vrc"></div></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- 3. COST CALCULATOR                                 -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div id="p2" class="panel">
+    <div class="card">
+      <div class="ttl">Monthly cost of living calculator</div>
+      <div class="tdesc">Adjust the sliders for your lifestyle and see your estimated monthly budget update live.</div>
+      <div class="fl"><span class="flbl">City</span>
+        <select id="csel" onchange="calcCost()">
+          <option value="lisbon">Lisbon (central)</option><option value="lout">Lisbon (outer areas)</option>
+          <option value="porto">Porto</option><option value="cascais">Cascais</option>
+          <option value="algarve">Algarve</option><option value="braga">Braga</option>
+          <option value="alentejo">Alentejo / smaller towns</option>
+        </select>
+      </div>
+      <div class="fl"><span class="flbl">Household size</span>
+        <div class="og" style="grid-template-columns:repeat(4,1fr)">
+          <div class="opt" onclick="setHH(1,this)">Solo</div><div class="opt sel" onclick="setHH(2,this)">Couple</div>
+          <div class="opt" onclick="setHH(3,this)">Family 3</div><div class="opt" onclick="setHH(4,this)">Family 4+</div>
+        </div>
+      </div>
+      <div class="sr"><label>Apartment size</label><input type="range" min="0" max="3" step="1" value="1" oninput="this.nextElementSibling.textContent=['Studio','1-bed','2-bed','3-bed'][+this.value];calcCost()"/><span>1-bed</span></div>
+      <div class="sr"><label>Eating out (×/week)</label><input type="range" min="0" max="14" step="1" value="5" oninput="this.nextElementSibling.textContent=this.value+'×';calcCost()"/><span>5×</span></div>
+      <div class="sr"><label>Transport</label><input type="range" min="0" max="2" step="1" value="1" oninput="this.nextElementSibling.textContent=['None','Public','Own car'][+this.value];calcCost()"/><span>Public</span></div>
+      <div class="sr"><label>Health insurance</label><input type="range" min="0" max="2" step="1" value="1" oninput="this.nextElementSibling.textContent=['None','Basic','Comprehensive'][+this.value];calcCost()"/><span>Basic</span></div>
+    </div>
+    <div id="cres" class="rbox on">
+      <div class="mrow">
+        <div class="met"><div class="mv" id="ctot">€2,340</div><div class="ml">Per month</div></div>
+        <div class="met"><div class="mv" id="cann">€28,080</div><div class="ml">Per year</div></div>
+        <div class="met"><div class="mv" id="cvs">33% less</div><div class="ml">vs UK / US</div></div>
+      </div>
+      <div id="cbkd"></div>
+      <div style="margin-top:1.25rem;padding-top:1rem;border-top:0.5px solid var(--b)">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:10px">Save money with these services</div>
+        <div class="aff">
+          <div class="afc"><div class="afn">Wise</div><div class="afd">Best exchange rates</div><button class="afb" onclick="window.open('https://wise.com','_blank')">Open account →</button></div>
+          <div class="afc"><div class="afn">SafetyWing</div><div class="afd">Expat health insurance</div><button class="afb" onclick="window.open('https://safetywing.com','_blank')">Get a quote →</button></div>
+          <div class="afc"><div class="afn">Revolut</div><div class="afd">No-fee banking</div><button class="afb" onclick="window.open('https://revolut.com','_blank')">Sign up free →</button></div>
+          <div class="afc"><div class="afn">Idealista</div><div class="afd">Find rentals</div><button class="afb" onclick="window.open('https://idealista.pt','_blank')">Browse →</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- 4. DOC CHECKLIST GENERATOR                        -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div id="p3" class="panel">
+    <div class="card">
+      <div class="ttl">Document checklist generator</div>
+      <div class="tdesc">Tell us your situation and get a personalised checklist of every document you need — adapted to your nationality and whether you're already in Portugal.</div>
+      <div class="fl"><span class="flbl">Which process?</span>
+        <div class="og">
+          <div class="opt" onclick="cp('proc','nif')">Get NIF number</div>
+          <div class="opt" onclick="cp('proc','d7')">D7 visa application</div>
+          <div class="opt" onclick="cp('proc','d8')">Digital nomad visa (D8)</div>
+          <div class="opt" onclick="cp('proc','aima')">Residency permit (AIMA)</div>
+          <div class="opt" onclick="cp('proc','nhr')">NHR / IFICI tax status</div>
+          <div class="opt" onclick="cp('proc','citizen')">Portuguese citizenship</div>
+        </div>
+      </div>
+      <div class="fl"><span class="flbl">Nationality</span>
+        <div class="og" style="grid-template-columns:repeat(3,1fr)">
+          <div class="opt" onclick="cp('nat','eu')">EU / EEA citizen</div>
+          <div class="opt" onclick="cp('nat','uk')">UK citizen</div>
+          <div class="opt" onclick="cp('nat','noneu')">Non-EU citizen</div>
+        </div>
+      </div>
+      <div class="fl"><span class="flbl">Are you already in Portugal?</span>
+        <div class="og" style="grid-template-columns:1fr 1fr">
+          <div class="opt" onclick="cp('loc','yes')">Yes, already here</div>
+          <div class="opt" onclick="cp('loc','no')">No, applying from abroad</div>
+        </div>
+      </div>
+      <button class="btn" onclick="runCL()">Generate my checklist →</button>
+    </div>
+    <div id="clres" class="rbox">
+      <div id="clhdr" style="margin-bottom:14px"></div>
+      <ul class="cli" id="cllist"></ul>
+      <div style="display:flex;gap:10px;align-items:center;margin-top:16px;flex-wrap:wrap">
+        <button class="btn" onclick="alert('Stripe checkout: €2.90 for branded PDF checklist with notes, links, and a personalised timeline.')">Download PDF — €2.90</button>
+        <button class="btn2" onclick="copyCL()">Copy list</button>
+      </div>
+      <div class="upsell"><h3>Need help with the process?</h3><p>Our vetted specialists can handle the paperwork for you — so you can focus on enjoying Portugal.</p><button class="ub" onclick="go(7,null)">Find a specialist →</button></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- 5. TAX CALCULATOR                                  -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div id="p4" class="panel">
+    <div class="card">
+      <div class="ttl">Portugal tax calculator</div>
+      <div class="tdesc">Enter your income and situation to compare what you'd pay under Portugal's standard regime vs the IFICI (NHR 2.0) tax incentive vs the D7 visa regime.</div>
+      <div class="fl"><span class="flbl">Country of origin / tax residence</span>
+        <select id="txcountry" onchange="calcTax()">
+          <option value="uk">United Kingdom</option>
+          <option value="us">United States</option>
+          <option value="eu">EU country (France, Germany, etc.)</option>
+          <option value="nl">Netherlands</option>
+          <option value="br">Brazil</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="fl"><span class="flbl">Employment / income type</span>
+        <div class="og">
+          <div class="opt sel" id="txtype-employed" onclick="setTxType('employed',this)">Employed (salary)</div>
+          <div class="opt" id="txtype-freelance" onclick="setTxType('freelance',this)">Freelancer / self-employed</div>
+          <div class="opt" id="txtype-passive" onclick="setTxType('passive',this)">Passive income only</div>
+          <div class="opt" id="txtype-mixed" onclick="setTxType('mixed',this)">Mixed income</div>
+        </div>
+      </div>
+      <div class="sr"><label>Annual gross income</label><input type="range" id="txincome" min="15000" max="250000" step="1000" value="60000" oninput="document.getElementById('txval').textContent='€'+Number(this.value).toLocaleString();calcTax()"/><span id="txval">€60,000</span></div>
+      <div class="sr"><label>Foreign-source income %</label><input type="range" id="txforeign" min="0" max="100" step="5" value="80" oninput="document.getElementById('txfval').textContent=this.value+'%';calcTax()"/><span id="txfval">80%</span></div>
+    </div>
+    <div id="txres" class="rbox on">
+      <div style="font-size:13px;font-weight:500;color:var(--t2);margin-bottom:10px">Estimated annual tax comparison</div>
+      <div class="tax-compare">
+        <div class="tc-card" id="tx-standard">
+          <div class="tc-regime">Standard regime</div>
+          <div class="tc-tax" id="tx-s-tax">€18,200</div>
+          <div class="tc-net" id="tx-s-net">Net: €41,800</div>
+          <div class="tc-note" id="tx-s-note">Progressive rates 14.5%–48% on worldwide income</div>
+        </div>
+        <div class="tc-card" id="tx-ifici">
+          <div class="tc-regime">IFICI (NHR 2.0)</div>
+          <div class="tc-tax" id="tx-i-tax">€12,000</div>
+          <div class="tc-net" id="tx-i-net">Net: €48,000</div>
+          <div class="tc-badge">You could save €6,200</div>
+          <div class="tc-note" id="tx-i-note">Flat 20% on PT income + exemptions on foreign income for qualifying professions</div>
+        </div>
+        <div class="tc-card best" id="tx-d7">
+          <div class="tc-regime">D7 + IFICI combo</div>
+          <div class="tc-tax" id="tx-d-tax">€10,800</div>
+          <div class="tc-net" id="tx-d-net">Net: €49,200</div>
+          <div class="tc-badge">Best scenario</div>
+          <div class="tc-note" id="tx-d-note">Maximum foreign income exemptions when structured correctly with a specialist</div>
+        </div>
+      </div>
+      <div style="background:var(--bg2);border-radius:var(--r);padding:12px;font-size:12px;color:var(--t2);line-height:1.7;margin-bottom:14px">
+        ⚠️ These are illustrative estimates only — not tax advice. Your actual liability depends on your specific income sources, tax treaties, and individual circumstances. Always consult a qualified Portuguese tax advisor.
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" onclick="go(7,null)">Speak to a tax advisor →</button>
+        <button class="btn2" onclick="go(3,null)">Get NHR / IFICI checklist →</button>
+      </div>
+      <div style="margin-top:14px;padding-top:12px;border-top:0.5px solid var(--b)">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:8px">Recommended tax advisors</div>
+        <div class="aff">
+          <div class="afc"><div class="afn">João Pinheiro</div><div class="afd">NHR &amp; IFICI specialist · Porto</div><button class="afb" onclick="go(7,null)">Contact →</button></div>
+          <div class="afc"><div class="afn">Ana Barbosa</div><div class="afd">US expat tax · Lisbon</div><button class="afb" onclick="go(7,null)">Contact →</button></div>
+          <div class="afc"><div class="afn">Expat Tax PT</div><div class="afd">Online service, all nationalities</div><button class="afb" onclick="alert('Partner link coming soon')">Learn more →</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- 6. RENTAL PRICE TRACKER                           -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div id="p5" class="panel">
+    <div class="card">
+      <div class="ttl">Rental price tracker</div>
+      <div class="tdesc">Average rental prices by city and neighbourhood — updated monthly from Idealista, Uniplaces, and ERA. Use the filters to compare.</div>
+      <div style="display:flex;gap:10px;margin-bottom:1.25rem;flex-wrap:wrap;align-items:center">
+        <div class="fl" style="margin:0;flex:1;min-width:150px">
+          <select id="rttype" onchange="renderRental()">
+            <option value="1bed">1-bedroom apartment</option>
+            <option value="2bed">2-bedroom apartment</option>
+            <option value="3bed">3-bedroom apartment</option>
+            <option value="studio">Studio</option>
+          </select>
+        </div>
+        <div class="fbrow" style="margin:0">
+          <button class="fb on" onclick="rtFilter('all',this)">All regions</button>
+          <button class="fb" onclick="rtFilter('lisbon',this)">Lisbon</button>
+          <button class="fb" onclick="rtFilter('porto',this)">Porto</button>
+          <button class="fb" onclick="rtFilter('algarve',this)">Algarve</button>
+          <button class="fb" onclick="rtFilter('other',this)">Other</button>
+        </div>
+      </div>
+      <div id="rtgrid" class="rt-grid"></div>
+      <div style="font-size:11px;color:var(--t3);margin-bottom:1rem">Data sourced monthly from Idealista, ERA Portugal &amp; Uniplaces. Last updated: April 2025.</div>
+      <div style="padding-top:1rem;border-top:0.5px solid var(--b)">
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:10px">Find your rental</div>
+        <div class="aff">
+          <div class="afc"><div class="afn">Idealista</div><div class="afd">Portugal's largest rental platform</div><button class="afb" onclick="window.open('https://idealista.pt','_blank')">Browse rentals →</button></div>
+          <div class="afc"><div class="afn">Uniplaces</div><div class="afd">Furnished &amp; short-term rentals</div><button class="afb" onclick="window.open('https://uniplaces.com','_blank')">Browse →</button></div>
+          <div class="afc"><div class="afn">ERA Portugal</div><div class="afd">Buy or rent with expat support</div><button class="afb" onclick="window.open('https://era.pt','_blank')">Browse →</button></div>
+          <div class="afc"><div class="afn">Airbnb Monthly</div><div class="afd">Flexible medium-term stays</div><button class="afb" onclick="window.open('https://airbnb.com','_blank')">Browse →</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- 7. RELOCATION BUNDLE                               -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div id="p6" class="panel">
+    <div class="card">
+      <div class="ttl">Portugal relocation bundle</div>
+      <div class="tdesc">Everything you need to move to Portugal — in one downloadable pack. Assembled from real expat experience and updated for 2025.</div>
+      <div class="bundle-items">
+        <div class="bi-card"><span class="bi-icon">✅</span><div class="bi-title">Master relocation checklist</div><div class="bi-desc">120-point checklist covering every step from deciding to move to your first year settled in Portugal. Organised by timeline (3 months before → day 1 → month 1 → year 1).</div></div>
+        <div class="bi-card"><span class="bi-icon">📖</span><div class="bi-title">First month in Portugal guide</div><div class="bi-desc">Exactly what to do in your first 30 days — which offices to visit in which order, what to say, what to bring, and common mistakes to avoid.</div></div>
+        <div class="bi-card"><span class="bi-icon">📚</span><div class="bi-title">Bureaucracy glossary</div><div class="bi-desc">Plain English definitions of 80+ Portuguese bureaucratic terms — Finanças, AIMA, Junta de Freguesia, Modelo 1, Chave Móvel Digital, NHR, IMT and more.</div></div>
+        <div class="bi-card"><span class="bi-icon">📞</span><div class="bi-title">Phone script templates</div><div class="bi-desc">Portuguese-language scripts for calling Finanças, AIMA, your health centre, landlord, and utility companies. With pronunciation guide and English translation.</div></div>
+        <div class="bi-card"><span class="bi-icon">🗂️</span><div class="bi-title">Document organiser template</div><div class="bi-desc">A Notion / Google Docs template to track all your documents, expiry dates, appointments, and reference numbers in one place.</div></div>
+        <div class="bi-card"><span class="bi-icon">🗺️</span><div class="bi-title">City neighbourhood guides</div><div class="bi-desc">Quick-reference cards for the 6 most popular expat cities — best neighbourhoods, what to expect, average rents, and insider tips from local expats.</div></div>
+      </div>
+      <div class="bundle-cta">
+        <div style="font-family:'Lora',serif;font-size:22px;font-weight:500;margin-bottom:6px">The complete Portugal relocation bundle</div>
+        <div style="font-size:13px;opacity:.7;margin-bottom:1rem">6 guides · instant download · updated for 2025</div>
+        <div class="bc-price">€9.90</div>
+        <div class="bc-was">Individual guides: €29.40</div>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+          <button class="btn" onclick="alert('Gumroad checkout coming soon — €9.90 for instant download of all 6 guides as PDF + editable templates.')">Buy now — instant download</button>
+          <button class="btn2" style="color:white;border-color:rgba(255,255,255,0.3)" onclick="alert('Free preview: the first month guide will be emailed to you. Subscribe to the newsletter first!')">Free preview →</button>
+        </div>
+        <div style="font-size:11px;opacity:.5;margin-top:10px">Instant PDF download · No subscription · Free updates for 1 year</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- 8. SERVICE DIRECTORY                               -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div id="p7" class="panel">
+    <div class="card">
+      <div class="ttl">Vetted expat service directory</div>
+      <div class="tdesc">Trusted professionals serving expats in Portugal. Every listing is manually verified — we check licences, registrations, and expat experience before approving.</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:1.25rem">
+        <div>
+          <div style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Category</div>
+          <div class="fbrow" style="margin:0" id="dir-cat-filters">
+            <button class="fb on" onclick="dirFilter('cat','all',this)">All</button>
+            <button class="fb" onclick="dirFilter('cat','legal',this)">Legal</button>
+            <button class="fb" onclick="dirFilter('cat','tax',this)">Tax &amp; accounting</button>
+            <button class="fb" onclick="dirFilter('cat','relocation',this)">Relocation</button>
+            <button class="fb" onclick="dirFilter('cat','property',this)">Property</button>
+            <button class="fb" onclick="dirFilter('cat','finance',this)">Finance &amp; mortgages</button>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">City / region</div>
+          <div class="fbrow" style="margin:0" id="dir-city-filters">
+            <button class="fb on" onclick="dirFilter('city','all',this)">All regions</button>
+            <button class="fb" onclick="dirFilter('city','Lisbon',this)">Lisbon</button>
+            <button class="fb" onclick="dirFilter('city','Porto',this)">Porto</button>
+            <button class="fb" onclick="dirFilter('city','Algarve',this)">Algarve</button>
+            <button class="fb" onclick="dirFilter('city','Cascais',this)">Cascais</button>
+            <button class="fb" onclick="dirFilter('city','Online',this)">Online / all Portugal</button>
+          </div>
+        </div>
+      </div>
+      <div id="dir-empty" style="display:none;padding:1.5rem;text-align:center;font-size:13px;color:var(--t3);background:var(--bg2);border-radius:var(--rl)">No professionals found for this combination. <span style="color:var(--red);cursor:pointer" onclick="resetDirFilters()">Clear filters</span></div>
+      <div class="dg" id="dirgrid"></div>
+      <div style="margin-top:2rem;padding-top:1.5rem;border-top:0.5px solid var(--b);text-align:center">
+        <div style="font-size:14px;font-weight:500;margin-bottom:6px">Are you a professional serving expats?</div>
+        <div style="font-size:13px;color:var(--t2);margin-bottom:14px;max-width:400px;margin-left:auto;margin-right:auto">Get listed and reach thousands of expats planning their move to Portugal every month.</div>
+        <button class="btn" onclick="alert('Listing packages:\n\n€99/year — Basic\n€199/year — Featured (top of category)\n€299/year — Premium with lead notifications\n\nContact hello@expatportugal.guide')">List your services — from €99/year</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- 9. AI ASSISTANT                                    -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div id="p8" class="panel">
+    <div class="card">
+      <div class="ttl">Ask anything about Portugal</div>
+      <div class="tdesc">10 free questions per session — no account needed. After that, top up for just €1.90 and keep going.</div>
+
+      <!-- Usage bar -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="font-size:12px;color:var(--t2)">Free questions: <strong id="ai-used">0</strong> / 10</div>
+        <div style="font-size:11px;color:var(--t3)" id="ai-status-lbl">10 remaining</div>
+      </div>
+      <div style="height:4px;background:var(--b);border-radius:2px;margin-bottom:14px">
+        <div id="ai-bar" style="height:4px;background:var(--green);border-radius:2px;width:0%;transition:width .4s"></div>
+      </div>
+
+      <!-- Chat area -->
+      <div id="chat" style="background:var(--bg2);border-radius:var(--rl);padding:1rem;min-height:160px;max-height:420px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;margin-bottom:12px">
+        <div style="display:flex;gap:10px">
+          <div style="width:28px;height:28px;border-radius:50%;background:#EEEDFE;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:#3C3489;flex-shrink:0">PT</div>
+          <div style="background:var(--card);border:0.5px solid var(--b);border-radius:var(--r);padding:10px 14px;font-size:14px;line-height:1.65;max-width:86%">Hi! Ask me anything about moving to or living in Portugal — NIF, visas, taxes, residency, healthcare, schools, and more. You have <strong>10 free questions</strong> this session.</div>
+        </div>
+      </div>
+
+      <!-- Email gate — shown after Q1 -->
+      <div id="email-gate" style="display:none;background:var(--green-dark);border-radius:var(--rl);padding:1.25rem;margin-bottom:12px;color:white">
+        <div style="font-family:'Lora',serif;font-size:15px;font-weight:500;margin-bottom:4px">Get this answer + weekly Portugal tips in your inbox</div>
+        <div style="font-size:12px;opacity:.75;margin-bottom:12px;line-height:1.6">Free Monday digest — new rules, events, expat news, filtered by your region.</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <input id="gate-email" type="email" placeholder="your@email.com" style="flex:1;min-width:160px;padding:9px 12px;border:none;border-radius:var(--r);font-size:13px;font-family:'DM Sans',sans-serif;outline:none" />
+          <select id="gate-region" style="padding:9px 12px;border:none;border-radius:var(--r);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;background:white;color:var(--text)">
+            <option value="">All Portugal</option>
+            <option value="lisbon">Lisbon</option>
+            <option value="porto">Porto</option>
+            <option value="algarve">Algarve</option>
+            <option value="cascais">Cascais</option>
+            <option value="braga">Braga</option>
+            <option value="alentejo">Alentejo</option>
+            <option value="madeira">Madeira</option>
+          </select>
+          <button onclick="submitGate()" style="padding:9px 18px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">Subscribe free →</button>
+        </div>
+        <div style="font-size:11px;opacity:.5;margin-top:8px">Or <span style="text-decoration:underline;cursor:pointer" onclick="skipGate()">skip and keep asking</span></div>
+      </div>
+
+      <!-- Pay-per-use unlock — shown after 10 questions -->
+      <div id="topup-gate" style="display:none;background:var(--card);border:0.5px solid var(--b);border-radius:var(--rl);padding:1.25rem;margin-bottom:12px;text-align:center">
+        <div style="font-family:'Lora',serif;font-size:17px;font-weight:500;margin-bottom:6px">You've used your 10 free questions</div>
+        <div style="font-size:13px;color:var(--t2);margin-bottom:1.25rem;line-height:1.6">Top up to keep asking. Pay once, use as much as you want — no subscription.</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">
+          <div onclick="topUp('starter')" style="border:0.5px solid var(--b);border-radius:var(--rl);padding:14px 10px;cursor:pointer;text-align:center" onmouseover="this.style.borderColor='var(--b2)'" onmouseout="this.style.borderColor='var(--b)'">
+            <div style="font-size:11px;color:var(--t3);margin-bottom:4px">Starter</div>
+            <div style="font-size:24px;font-weight:500;font-family:'Lora',serif">€1.90</div>
+            <div style="font-size:11px;color:var(--t3);margin-top:3px">+25 questions</div>
+            <div style="font-size:10px;color:var(--t3);margin-top:3px">€0.076/question</div>
+          </div>
+          <div onclick="topUp('explorer')" style="border:2px solid var(--green);border-radius:var(--rl);padding:14px 10px;cursor:pointer;text-align:center;background:var(--green-light)">
+            <div style="font-size:10px;background:var(--green);color:white;padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:4px">Best value</div>
+            <div style="font-size:24px;font-weight:500;font-family:'Lora',serif">€3.90</div>
+            <div style="font-size:11px;color:var(--t2);margin-top:3px">+75 questions</div>
+            <div style="font-size:10px;color:var(--t3);margin-top:3px">€0.052/question</div>
+          </div>
+          <div onclick="topUp('power')" style="border:0.5px solid var(--b);border-radius:var(--rl);padding:14px 10px;cursor:pointer;text-align:center" onmouseover="this.style.borderColor='var(--b2)'" onmouseout="this.style.borderColor='var(--b)'">
+            <div style="font-size:11px;color:var(--t3);margin-bottom:4px">Power user</div>
+            <div style="font-size:24px;font-weight:500;font-family:'Lora',serif">€6.90</div>
+            <div style="font-size:11px;color:var(--t3);margin-top:3px">+200 questions</div>
+            <div style="font-size:10px;color:var(--t3);margin-top:3px">€0.035/question</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--t3)">One-time payment · No subscription · Instant access · Secure via Stripe</div>
+      </div>
+
+      <!-- Input row — disabled when limit hit -->
+      <div style="display:flex;gap:8px">
+        <input id="ainput" type="text" placeholder="e.g. How do I get a NIF as a non-resident?" onkeydown="if(event.key==='Enter')sendAI()" style="flex:1;padding:11px 14px;border:0.5px solid var(--b2);border-radius:var(--r);font-size:14px;background:var(--card);color:var(--text);outline:none;font-family:'DM Sans',sans-serif" />
+        <button class="btn" id="ai-send-btn" onclick="sendAI()">Send →</button>
+      </div>
+
+      <!-- Quick questions -->
+      <div style="margin-top:10px;padding-top:10px;border-top:0.5px solid var(--b)">
+        <div style="font-size:11px;color:var(--t3);margin-bottom:8px">Popular questions</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <button class="btn2" style="font-size:11px;padding:5px 10px" onclick="quickQ('How do I get a NIF number in Portugal?')">How do I get a NIF?</button>
+          <button class="btn2" style="font-size:11px;padding:5px 10px" onclick="quickQ('What is the D7 visa and who qualifies?')">What is the D7 visa?</button>
+          <button class="btn2" style="font-size:11px;padding:5px 10px" onclick="quickQ('How does the NHR / IFICI tax regime work?')">How does NHR work?</button>
+          <button class="btn2" style="font-size:11px;padding:5px 10px" onclick="quickQ('How do I register with SNS healthcare in Portugal?')">How to register for SNS?</button>
+          <button class="btn2" style="font-size:11px;padding:5px 10px" onclick="quickQ('What is the cost of living in Lisbon for a couple?')">Cost of living Lisbon?</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2025 ExpatPortugal.guide &nbsp;·&nbsp; <a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Terms</a> &nbsp;·&nbsp; Not legal or tax advice — always consult a qualified professional</p>
+</footer>
+
+<script>
+// ─── STATE ────────────────────────────────────────
+const qa={}, va={}, ca={};
+let hh=2, clItems=[];
+
+// ─── NAVIGATION ───────────────────────────────────
+function go(idx, badgeEl){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tn').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.badge').forEach(b=>b.classList.remove('on'));
+  document.getElementById('p'+idx).classList.add('on');
+  document.getElementById('tn'+idx).classList.add('on');
+  if(badgeEl) badgeEl.classList.add('on');
+  else document.querySelectorAll('.badge')[idx].classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ─── QUIZ ─────────────────────────────────────────
+const PROFILES=[
+  {name:'Lisbon',budget:'high',vibe:'urban',expat:'essential',transport:'no',priority:'nightlife',tags:['Urban','Culture','Nightlife','International schools'],desc:'The vibrant capital — best for urban lovers, young families, and those wanting the biggest expat community and best flight connections.'},
+  {name:'Porto',budget:'mid',vibe:'urban',expat:'nice',transport:'no',priority:'value',tags:['Authentic','Creative','Affordable','Growing scene'],desc:'Portugal\'s second city with real character. Lower costs than Lisbon, a thriving food and wine scene, and a fast-growing international community.'},
+  {name:'Cascais',budget:'top',vibe:'beach',expat:'essential',transport:'no',priority:'schools',tags:['Coastal','Families','Upmarket','Schools'],desc:'A beautiful coastal town 30 minutes from Lisbon. Perfect for wealthy families wanting beaches, great schools, and easy capital access.'},
+  {name:'Algarve',budget:'mid',vibe:'beach',expat:'essential',transport:'yes',priority:'weather',tags:['Beaches','Sunshine','Retirees','Golf'],desc:'300+ days of sunshine, world-class beaches, and a massive British expat community. Best for retirees and beach lovers.'},
+  {name:'Braga',budget:'low',vibe:'quiet',expat:'dontmind',transport:'yes',priority:'value',tags:['Affordable','Young','Nomads','Authentic'],desc:'Portugal\'s third city — young, affordable, and increasingly popular with remote workers. Low costs and genuine Portuguese character.'},
+  {name:'Alentejo',budget:'low',vibe:'nature',expat:'avoid',transport:'yes',priority:'value',tags:['Rural','Peaceful','Very affordable','Authentic'],desc:'Golden plains, cork trees, and extraordinary peace. Ideal for those wanting total tranquility and authentic Portuguese village life.'}
+];
+
+function updProg(s){document.querySelectorAll('#qprog .ps').forEach((d,i)=>{d.className='ps'+(i<s?' done':i===s?' act':'')})}
+function qp(step,val){
+  qa[step]=val;
+  document.getElementById('qs'+step).style.display='none';
+  const n=step+1;
+  if(n<6){document.getElementById('qs'+n).style.display='';updProg(n);}
+  else{updProg(6);showQRes();}
+}
+function showQRes(){
+  const ps=JSON.parse(JSON.stringify(PROFILES));
+  ps.forEach(p=>{
+    let s=0;
+    if(qa[0]===p.vibe)s+=3;
+    if(qa[1]===p.budget||(qa[1]==='high'&&p.budget==='top'))s+=2;
+    if(qa[2]===p.expat)s+=2;
+    if(qa[3]===p.transport)s+=1;
+    if(qa[4]===p.priority)s+=2;
+    if(qa[5]==='kids'&&(p.tags.includes('International schools')||p.tags.includes('Families')))s+=2;
+    p.score=s;
+  });
+  ps.sort((a,b)=>b.score-a.score);
+  const cols=['tg','tb','ta'];
+  let h='<div style="font-family:\'Lora\',serif;font-size:17px;font-weight:500;margin-bottom:14px">Your top 3 matches</div>';
+  ps.slice(0,3).forEach((p,i)=>{
+    const pct=Math.round(p.score/10*100);
+    h+=`<div class="cr ${i===0?'top':''}">
+      ${i===0?'<div class="ctb">Best match</div>':''}
+      <div class="cn">${p.name}</div>
+      <div class="cbar"><div class="cfill" style="width:${pct}%"></div></div>
+      <div style="margin-bottom:8px">${p.tags.map(t=>`<span class="tag ${cols[i]}">${t}</span>`).join('')}</div>
+      <div style="font-size:12px;color:var(--t2);line-height:1.7">${p.desc}</div>
+    </div>`;
+  });
+  document.getElementById('qrc').innerHTML=h;
+  document.getElementById('qres').classList.add('on');
+  document.getElementById('qres').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// ─── VISA FINDER ──────────────────────────────────
+function vp(k,v){va[k]=v;document.querySelectorAll(`[onclick^="vp('${k}"]`).forEach(e=>e.classList.remove('sel'));event.target.classList.add('sel');}
+function runVisa(){
+  const nat=document.getElementById('vnat').value,inc=va.inc,amt=va.amt;
+  if(!nat||!inc||!amt){alert('Please answer all 3 questions first.');return;}
+  let visa,steps,notes=[];
+  if(nat==='eu'){visa='EU Freedom of Movement — no visa required';steps=['Register at your local Câmara Municipal within 90 days','Get your NIF at any Finanças office (free, same day)','Register your Portuguese address at Finanças (morada fiscal)','Register with your local health centre (SNS)','Open a Portuguese bank account'];notes=['As an EU citizen you have the automatic right to live and work in Portugal. No visa needed — just register your presence within 90 days.'];}
+  else if(inc==='investor'||amt==='investor'){visa='Golden Visa (ARI)';steps=['Get NIF + open Portuguese bank account','Choose qualifying investment: fund (€500k+) or company creation (€500k+ / 5 jobs)','Engage a licensed Portuguese Golden Visa lawyer','Submit application via AIMA online portal','Attend in-person biometrics in Portugal','Receive 2-year residency card'];notes=['Real estate no longer qualifies since 2023. Investment funds are the most popular current route.','Minimum stay: 7 days/year. Path to citizenship after 5 years.'];}
+  else if(inc==='remote'&&amt==='high'){visa='D8 Digital Nomad Visa';steps=['Confirm income ≥ €3,480/month averaged over 3–6 months','Get NIF via fiscal representative if outside Portugal','Open Portuguese bank account','Get rental contract + health insurance valid in Portugal','Get criminal record certificate (apostilled)','Apply at Portuguese consulate','Book AIMA residency appointment on arrival'];notes=['Must work for clients or employers outside Portugal.','Processing: 30–60 days at consulate. Then book AIMA immediately on arrival.'];}
+  else if((inc==='passive'||inc==='retired')&&(amt==='mid'||amt==='high')){visa='D7 Passive Income Visa';steps=['Confirm income ≥ €870/month (pension, rent, dividends, or remote work)','Get NIF + open Portuguese bank account','Deposit ≥ €10,440 in your Portuguese account','Get 12-month rental contract in Portugal','Get health insurance covering Portugal explicitly','Get criminal record apostilled','Apply at Portuguese consulate','Enter Portugal and immediately book AIMA appointment'];notes=['The most popular visa for retirees and financially independent expats.','Start the process 3–6 months before your intended move date.'];}
+  else if(inc==='employed'){visa='Work Visa (D1)';steps=['Secure job offer from a Portuguese company','Employer applies to IEFP for work permit on your behalf','Once approved, apply for D1 visa at Portuguese consulate','Enter Portugal and book AIMA residency appointment'];notes=['Your employer leads this process. Make sure they have experience hiring internationally.'];}
+  else{visa='D7 Passive Income Visa (most likely match)';steps=['Verify income qualifies (≥ €870/month or significant savings)','Get NIF and open Portuguese bank account','Apply at consulate with full documents'];notes=['With income under €870/month you may qualify on savings instead. Consult an immigration specialist.'];}
+  let html=`<div style="margin-bottom:16px">
+    <div style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">Your recommended visa</div>
+    <div style="font-family:'Lora',serif;font-size:19px;font-weight:500;margin-bottom:12px">${visa}</div>
+    ${notes.map(n=>`<div style="font-size:13px;color:var(--t2);background:var(--card);padding:10px 12px;border-radius:var(--r);margin-bottom:6px;line-height:1.7;border:0.5px solid var(--b)">${n}</div>`).join('')}
+  </div>
+  <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em">Step-by-step process</div>
+  <ul class="sl">${steps.map((s,i)=>`<li class="si"><span class="sn">${i+1}.</span>${s}</li>`).join('')}</ul>
+  <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+    <button class="btn" onclick="alert('Checkout: €4.90 for personalised PDF report with your full document list, consulate contacts, and timeline.')">Get PDF report — €4.90</button>
+    <button class="btn2" onclick="go(3,null)">Generate doc checklist →</button>
+  </div>`;
+  document.getElementById('vrc').innerHTML=html;
+  document.getElementById('vres').classList.add('on');
+  document.getElementById('vres').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// ─── COST CALCULATOR ──────────────────────────────
+const CITIES={lisbon:{rent:[900,1200,1600,2200],vs:'38% less'},lout:{rent:[650,850,1100,1500],vs:'44% less'},porto:{rent:[700,950,1300,1800],vs:'41% less'},cascais:{rent:[1000,1400,1900,2600],vs:'35% less'},algarve:{rent:[700,950,1300,1800],vs:'40% less'},braga:{rent:[500,700,950,1300],vs:'46% less'},alentejo:{rent:[350,500,700,900],vs:'50% less'}};
+function setHH(n,el){hh=n;document.querySelectorAll('[onclick^="setHH"]').forEach(e=>e.classList.remove('sel'));el.classList.add('sel');calcCost();}
+function calcCost(){
+  const city=document.getElementById('csel').value,c=CITIES[city];
+  const sl=document.querySelectorAll('#p2 input[type=range]');
+  const bi=+sl[0].value,eo=+sl[1].value,tr=+sl[2].value,ins=+sl[3].value;
+  const cm=city==='lisbon'?1.1:city==='cascais'?1.15:1;
+  const rent=Math.round(c.rent[bi]*(hh>2?1.15:1));
+  const food=Math.round((180+hh*75+eo*13*hh)*cm);
+  const trans=[0,40*Math.min(hh,2),220+hh*30][tr];
+  const hlth=[0,75*hh,140*hh][ins];
+  const utils=Math.round(85+hh*15);
+  const misc=Math.round(90+hh*45);
+  const tot=Math.round(rent+food+trans+hlth+utils+misc);
+  document.getElementById('ctot').textContent='€'+tot.toLocaleString();
+  document.getElementById('cann').textContent='€'+(tot*12).toLocaleString();
+  document.getElementById('cvs').textContent=c.vs;
+  const rows=[['Rent / housing',rent],['Food & groceries',food],['Transport',trans||'Free'],['Health insurance',hlth||'None'],['Utilities',utils],['Misc & leisure',misc]];
+  document.getElementById('cbkd').innerHTML='<div class="bdg">'+rows.map(([l,v])=>`<div class="bi"><span>${l}</span><span>${typeof v==='number'?'€'+v.toLocaleString():v}</span></div>`).join('')+'</div>';
+}
+
+// ─── DOC CHECKLIST ────────────────────────────────
+const CLS={
+  nif:{title:'NIF number application',items:[{icon:'🛂',text:'Valid passport or national ID card',note:'Original required at the Finanças office'},{icon:'🏠',text:'Proof of address from home country',note:'Utility bill or bank statement, max 3 months old'},{icon:'📝',text:'Modelo 1 form',note:'Provided free at the office — staff will help you fill it in'},{icon:'👤',text:'Fiscal representative letter',note:'Non-EU only — required if applying from abroad',nonEU:true,abroad:true}]},
+  d7:{title:'D7 Passive Income Visa',items:[{icon:'🛂',text:'Valid passport (min. 6 months validity)',note:''},{icon:'🪪',text:'Portuguese NIF number',note:'Must be obtained before your consulate appointment'},{icon:'🏦',text:'Portuguese bank statements showing ≥ €10,440',note:'Funds must be visible for 1–2 months before applying'},{icon:'🏠',text:'Rental contract or property deed in Portugal',note:'12-month lease preferred'},{icon:'💶',text:'Proof of passive income (6 months)',note:'Pension, rental, dividends, or remote work contracts'},{icon:'🏥',text:'Health insurance valid in Portugal',note:'Must explicitly name Portugal as a covered country'},{icon:'🚔',text:'Criminal record from home country (apostilled)',note:'Dated within 3 months of your application'},{icon:'📸',text:'2 passport-size photographs',note:''},{icon:'📝',text:'Completed visa application form',note:'Download from your nearest Portuguese consulate website'}]},
+  d8:{title:'Digital Nomad Visa (D8)',items:[{icon:'🛂',text:'Valid passport',note:''},{icon:'🪪',text:'Portuguese NIF number',note:''},{icon:'💻',text:'Employment or client contracts',note:'Proving remote work for clients/employers outside Portugal'},{icon:'💶',text:'Bank statements showing ≥ €3,480/month',note:'3–6 months averaged'},{icon:'📄',text:'Employer letter confirming remote work',note:'States work can be done from Portugal'},{icon:'🏠',text:'Proof of accommodation in Portugal',note:'Rental contract or confirmed booking'},{icon:'🏥',text:'Health insurance valid in Portugal',note:''},{icon:'🚔',text:'Criminal record certificate (apostilled)',note:''}]},
+  aima:{title:'AIMA residency permit appointment',items:[{icon:'🛂',text:'Valid passport with entry visa',note:'D7, D8, or Golden Visa stamp must be clearly visible'},{icon:'🪪',text:'NIF document (original)',note:''},{icon:'🏠',text:'Proof of address in Portugal',note:'Rental contract or utility bill'},{icon:'🏦',text:'Bank statements (last 3 months)',note:'Portuguese bank preferred'},{icon:'🏥',text:'Health insurance certificate',note:''},{icon:'🚔',text:'Criminal record from home country (apostilled)',note:'Dated within 3 months of appointment'},{icon:'📋',text:'AIMA appointment confirmation',note:'Print or have on phone'}]},
+  nhr:{title:'NHR / IFICI registration',items:[{icon:'🪪',text:'Portuguese NIF number',note:''},{icon:'🔑',text:'Portal das Finanças login',note:'Set up with Chave Móvel Digital'},{icon:'🏠',text:'Proof of Portuguese tax residency',note:'Rental contract or property deed'},{icon:'📋',text:'Proof of non-residency in Portugal (5 years)',note:'Tax records or declarations from home country'}]},
+  citizen:{title:'Portuguese citizenship application',items:[{icon:'🛂',text:'Valid passport',note:''},{icon:'🪪',text:'NIF document',note:''},{icon:'📋',text:'All residency permits (5 years)',note:'Every renewal — originals required'},{icon:'🎓',text:'CIPLE A2 Portuguese language certificate',note:'From an accredited university testing centre'},{icon:'🚔',text:'Portuguese criminal record',note:'From rnpc.justica.gov.pt — max 3 months old'},{icon:'🚔',text:'Criminal record from home country (apostilled)',note:'Max 3 months old'},{icon:'💼',text:'Proof of ties to Portugal',note:'Employment, property, or family connection documents'},{icon:'💶',text:'Proof of no tax debts',note:'Certificate from Portal das Finanças'}]}
+};
+function cp(k,v){ca[k]=v;document.querySelectorAll(`[onclick^="cp('${k}"]`).forEach(e=>e.classList.remove('sel'));event.target.classList.add('sel');}
+function runCL(){
+  const proc=ca.proc,nat=ca.nat,loc=ca.loc;
+  if(!proc||!nat||!loc){alert('Please answer all 3 questions first.');return;}
+  const cl=CLS[proc];
+  let items=cl.items.filter(i=>{
+    if(i.nonEU&&nat==='eu')return false;
+    if(i.abroad&&loc==='yes')return false;
+    return true;
+  });
+  if(nat!=='eu'&&loc==='no'&&(proc==='d7'||proc==='d8'))items=[...items,{icon:'👤',text:'Fiscal representative engagement letter',note:'Required for non-EU citizens applying from outside Portugal'}];
+  clItems=items;
+  document.getElementById('clhdr').innerHTML=`<div style="font-family:'Lora',serif;font-size:17px;font-weight:500;margin-bottom:4px">${cl.title}</div><div style="font-size:12px;color:var(--t2)">${items.length} documents · ${nat==='eu'?'EU citizen':nat==='uk'?'UK citizen':'Non-EU citizen'} · ${loc==='yes'?'Already in Portugal':'Applying from abroad'}</div>`;
+  document.getElementById('cllist').innerHTML=items.map(i=>`<li class=""><span class="clico">${i.icon}</span><div style="flex:1"><div style="font-weight:500">${i.text}</div>${i.note?`<div class="clnt">${i.note}</div>`:''}</div></li>`).join('');
+  document.getElementById('clres').classList.add('on');
+  document.getElementById('clres').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function copyCL(){
+  if(!clItems.length)return;
+  const t=clItems.map((i,n)=>`${n+1}. ${i.text}${i.note?'\n   → '+i.note:''}`).join('\n');
+  navigator.clipboard.writeText(t).then(()=>alert('Checklist copied!')).catch(()=>alert('Could not copy — please select and copy manually.'));
+}
+
+// ─── TAX CALCULATOR ───────────────────────────────
+let txType='employed';
+function setTxType(t,el){txType=t;document.querySelectorAll('[id^="txtype-"]').forEach(e=>e.classList.remove('sel'));el.classList.add('sel');calcTax();}
+function calcTax(){
+  const income=+document.getElementById('txincome').value;
+  const foreignPct=+document.getElementById('txforeign').value/100;
+  const ptIncome=income*(1-foreignPct);
+  const foreignIncome=income*foreignPct;
+
+  // Standard regime: progressive PT rates on worldwide income
+  function stdTax(inc){
+    const brackets=[[7703,0.145],[7703,0.21],[7703,0.265],[7703,0.285],[7703,0.35],[7703,0.37],[7703,0.435],[Infinity,0.48]];
+    let tax=0,rem=inc;
+    for(const[sz,rate]of brackets){const chunk=Math.min(rem,sz);tax+=chunk*rate;rem-=chunk;if(rem<=0)break;}
+    return Math.round(tax);
+  }
+
+  const stdT=stdTax(income);
+  const stdNet=income-stdT;
+
+  // IFICI: flat 20% on PT source, foreign income potentially exempt
+  let ificiT, ificiNote;
+  if(txType==='passive'){
+    ificiT=Math.round(ptIncome*0.28); // passive income taxed differently
+    ificiNote='Passive income taxed at 28% flat rate; foreign passive income may be exempt under tax treaties';
+  } else {
+    ificiT=Math.round(ptIncome*0.20);
+    ificiNote='Flat 20% on Portuguese-source income for qualifying professions; foreign employment income may be exempt';
+  }
+  const ificiNet=income-ificiT;
+
+  // D7 + IFICI optimised: maximum foreign exemption
+  const d7T=Math.round(ptIncome*0.20);
+  const d7Net=income-d7T;
+  const d7Note='Best scenario — all foreign income exempt under tax treaty + flat 20% on PT income only. Requires specialist structuring.';
+
+  const fmt=n=>'€'+Math.round(n).toLocaleString();
+
+  document.getElementById('tx-s-tax').textContent=fmt(stdT);
+  document.getElementById('tx-s-net').textContent='Net: '+fmt(stdNet);
+  document.getElementById('tx-s-note').textContent=`Progressive 14.5%–48% on €${income.toLocaleString()} worldwide income`;
+
+  document.getElementById('tx-i-tax').textContent=fmt(ificiT);
+  document.getElementById('tx-i-net').textContent='Net: '+fmt(ificiNet);
+  document.getElementById('tx-i-note').textContent=ificiNote;
+  const saving=stdT-ificiT;
+  document.querySelector('#tx-ifici .tc-badge').textContent=saving>0?`Save ${fmt(saving)} vs standard`:'Similar to standard regime';
+  document.getElementById('tx-ifici').className='tc-card'+(saving>2000?' best':'');
+
+  document.getElementById('tx-d-tax').textContent=fmt(d7T);
+  document.getElementById('tx-d-net').textContent='Net: '+fmt(d7Net);
+  document.getElementById('tx-d-note').textContent=d7Note;
+  const d7saving=stdT-d7T;
+  document.querySelector('#tx-d7 .tc-badge').textContent=d7saving>0?`Save ${fmt(d7saving)} vs standard`:'Consult a specialist';
+}
+
+// ─── RENTAL TRACKER ───────────────────────────────
+const RENTALS=[
+  {city:'Lisbon',area:'Chiado / Bairro Alto',region:'lisbon',s:1450,b1:1900,b2:2600,b3:3800,trend:'+4%',dir:'up'},
+  {city:'Lisbon',area:'Alfama / Mouraria',region:'lisbon',s:1100,b1:1500,b2:2000,b3:2900,trend:'+6%',dir:'up'},
+  {city:'Lisbon',area:'Príncipe Real',region:'lisbon',s:1600,b1:2100,b2:2900,b3:4200,trend:'+3%',dir:'up'},
+  {city:'Lisbon',area:'Almada / Cacilhas',region:'lisbon',s:750,b1:950,b2:1250,b3:1700,trend:'+2%',dir:'up'},
+  {city:'Cascais',area:'Town centre',region:'other',s:1100,b1:1500,b2:2100,b3:3000,trend:'+5%',dir:'up'},
+  {city:'Sintra',area:'Town &amp; surrounds',region:'other',s:800,b1:1050,b2:1450,b3:2000,trend:'+3%',dir:'up'},
+  {city:'Porto',area:'Ribeira / Cedofeita',region:'porto',s:900,b1:1150,b2:1550,b3:2200,trend:'+2%',dir:'up'},
+  {city:'Porto',area:'Foz do Douro',region:'porto',s:1100,b1:1450,b2:1950,b3:2800,trend:'+4%',dir:'up'},
+  {city:'Porto',area:'Matosinhos',region:'porto',s:750,b1:950,b2:1250,b3:1700,trend:'0%',dir:'fl'},
+  {city:'Porto',area:'Gaia / Espinho',region:'porto',s:650,b1:850,b2:1100,b3:1500,trend:'-1%',dir:'dn'},
+  {city:'Algarve',area:'Lagos',region:'algarve',s:900,b1:1200,b2:1600,b3:2200,trend:'+3%',dir:'up'},
+  {city:'Algarve',area:'Vilamoura / Albufeira',region:'algarve',s:1000,b1:1350,b2:1800,b3:2600,trend:'+5%',dir:'up'},
+  {city:'Algarve',area:'Tavira / Eastern Algarve',region:'algarve',s:650,b1:850,b2:1100,b3:1500,trend:'0%',dir:'fl'},
+  {city:'Braga',area:'City centre',region:'other',s:550,b1:700,b2:950,b3:1300,trend:'+2%',dir:'up'},
+  {city:'Coimbra',area:'City centre',region:'other',s:500,b1:650,b2:850,b3:1150,trend:'+1%',dir:'up'},
+  {city:'Alentejo',area:'Évora &amp; surrounds',region:'other',s:380,b1:500,b2:650,b3:850,trend:'0%',dir:'fl'},
+];
+
+let rtFilter_='all';
+function rtFilter(f,el){rtFilter_=f;document.querySelectorAll('[onclick^="rtFilter"]').forEach(b=>b.classList.remove('on'));el.classList.add('on');renderRental();}
+function renderRental(){
+  const type=document.getElementById('rttype').value;
+  const fld={studio:'s','1bed':'b1','2bed':'b2','3bed':'b3'}[type];
+  const label={'studio':'Studio','1bed':'1-bed','2bed':'2-bed','3bed':'3-bed'}[type];
+  const items=rtFilter_==='all'?RENTALS:RENTALS.filter(r=>r.region===rtFilter_);
+  const max=Math.max(...items.map(r=>r[fld]));
+  const trendCls={up:'trend-up',dn:'trend-dn',fl:'trend-fl'};
+  const trendLbl={up:'↑','dn':'↓',fl:'→'};
+  document.getElementById('rtgrid').innerHTML=items.map(r=>`
+    <div class="rt-card">
+      <div class="rt-city">${r.city}</div>
+      <div class="rt-area">${r.area}</div>
+      <div class="rt-price">€${r[fld].toLocaleString()}<span class="rt-unit"> / month</span></div>
+      <div class="rt-trend ${trendCls[r.dir]}">${trendLbl[r.dir]} ${r.trend} vs last year</div>
+      <div class="rt-bar"><div class="rt-fill" style="width:${Math.round(r[fld]/max*100)}%;background:${r.dir==='dn'?'#1D9E75':r.dir==='up'?'#C0381A':'#888'}"></div></div>
+    </div>`).join('');
+}
+
+// ─── SERVICE DIRECTORY ────────────────────────────
+const DIR=[
+  {i:'MA',n:'Marta Alves',r:'Immigration Lawyer',t:['D7','D8','AIMA','Citizenship'],c:'Lisbon',cat:'legal'},
+  {i:'JP',n:'João Pinheiro',r:'Certified Accountant',t:['NHR','IFICI','IRS','Tax planning'],c:'Porto',cat:'tax'},
+  {i:'SC',n:'Sarah Cooper',r:'Relocation Specialist',t:['Full relocation','Schools','Admin'],c:'Lisbon',cat:'relocation'},
+  {i:'RV',n:'Ricardo Vieira',r:'Property Lawyer',t:['Property','Golden Visa','Contracts'],c:'Algarve',cat:'legal'},
+  {i:'AB',n:'Ana Barbosa',r:'Tax Advisor',t:['NHR','IFICI','US expats','Cross-border'],c:'Online',cat:'tax'},
+  {i:'MF',n:'Mike Foster',r:'Relocation Agent',t:['Algarve','Housing','Schools'],c:'Algarve',cat:'relocation'},
+  {i:'LM',n:'Luisa Morais',r:'Estate Agent',t:['Rentals','Buying','Expat friendly'],c:'Porto',cat:'property'},
+  {i:'DS',n:'David Santos',r:'Immigration Lawyer',t:['Golden Visa','Citizenship','NHR'],c:'Cascais',cat:'legal'},
+  {i:'CF',n:'Carlos Ferreira',r:'Mortgage & Finance Advisor',t:['Property mortgages','Expat financing','Bank comparison','Golden Visa loans'],c:'Lisbon',cat:'finance'},
+  {i:'HB',n:'Hannah Bloom',r:'Mortgage Broker',t:['Non-resident mortgages','Buy-to-let','D7 visa buyers','Currency planning'],c:'Algarve',cat:'finance'},
+];
+const tcol={legal:'tr',tax:'ta',relocation:'tg',property:'tb',finance:'tp'};
+
+let dirCat='all', dirCity='all';
+
+function dirFilter(type, val, el){
+  if(type==='cat'){
+    dirCat=val;
+    document.querySelectorAll('#dir-cat-filters .fb').forEach(b=>b.classList.remove('on'));
+  } else {
+    dirCity=val;
+    document.querySelectorAll('#dir-city-filters .fb').forEach(b=>b.classList.remove('on'));
+  }
+  el.classList.add('on');
+  renderDir();
+}
+
+function resetDirFilters(){
+  dirCat='all'; dirCity='all';
+  document.querySelectorAll('#dir-cat-filters .fb')[0].classList.add('on');
+  document.querySelectorAll('#dir-city-filters .fb')[0].classList.add('on');
+  document.querySelectorAll('#dir-cat-filters .fb').forEach((b,i)=>{if(i>0)b.classList.remove('on')});
+  document.querySelectorAll('#dir-city-filters .fb').forEach((b,i)=>{if(i>0)b.classList.remove('on')});
+  renderDir();
+}
+
+function renderDir(){
+  let items=DIR;
+  if(dirCat!=='all') items=items.filter(d=>d.cat===dirCat);
+  if(dirCity!=='all') items=items.filter(d=>d.c===dirCity);
+  const empty=document.getElementById('dir-empty');
+  if(items.length===0){
+    empty.style.display='block';
+    document.getElementById('dirgrid').innerHTML='';
+    return;
+  }
+  empty.style.display='none';
+  document.getElementById('dirgrid').innerHTML=items.map(d=>`
+    <div class="dc">
+      <div class="dav">${d.i}</div>
+      <div style="font-size:14px;font-weight:500;margin-bottom:2px">${d.n}</div>
+      <div style="font-size:11px;color:var(--t3);margin-bottom:8px">${d.r} · ${d.c}</div>
+      <div style="margin-bottom:10px">${d.t.map(t=>`<span class="tag ${tcol[d.cat]||'tb'}">${t}</span>`).join('')}</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:4px;font-size:11px;background:#E1F5EE;color:#085041;padding:3px 8px;border-radius:20px;font-weight:500">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 0.5L6.12 3.38L9.24 3.62L7 5.64L7.7 8.7L5 7.1L2.3 8.7L3 5.64L0.76 3.62L3.88 3.38L5 0.5Z" fill="#085041"/></svg>
+          Verified listing
+        </div>
+        <div style="font-size:10px;color:var(--t3)">ID &amp; licence checked</div>
+      </div>
+      <button class="btn2" style="font-size:12px;padding:6px 12px" onclick="alert('Contact form for ${d.n} coming soon.')">Contact →</button>
+    </div>`).join('');
+}
+
+// ─── AI ASSISTANT ─────────────────────────────────
+const AI_FREE_LIMIT = 10;
+const AI_HISTORY_TRIM = 6; // only send last N messages to API — keeps costs flat
+
+// Stripe price IDs for top-up packs — replace with your real ones
+const TOPUP_PRICES = {
+  starter:  { price_id: 'price_STARTER_ID',  questions: 25,  label: '€1.90' },
+  explorer: { price_id: 'price_EXPLORER_ID', questions: 75,  label: '€3.90' },
+  power:    { price_id: 'price_POWER_ID',    questions: 200, label: '€6.90' }
+};
+
+let aiQ = 0;           // questions used this session
+let aiBudget = 0;      // extra questions unlocked via top-up
+let aiMsgs = [];
+let aiGateShown = false, aiGateDone = false;
+let aiLocked = false;
+
+function updateUsageBar() {
+  const total = AI_FREE_LIMIT + aiBudget;
+  const used = Math.min(aiQ, total);
+  const pct = Math.round(used / total * 100);
+  const remaining = Math.max(total - used, 0);
+  document.getElementById('ai-used').textContent = aiQ;
+  document.getElementById('ai-status-lbl').textContent = remaining + ' remaining';
+  const bar = document.getElementById('ai-bar');
+  bar.style.width = pct + '%';
+  bar.style.background = pct >= 90 ? 'var(--red)' : pct >= 60 ? '#BA7517' : 'var(--green)';
+  // Update description text dynamically
+  const desc = document.querySelector('#p8 .tdesc');
+  if (aiBudget > 0) {
+    desc.textContent = aiQ + ' questions used · ' + remaining + ' remaining in your pack.';
+  }
+}
+
+function lockInput(locked) {
+  aiLocked = locked;
+  const inp = document.getElementById('ainput');
+  const btn = document.getElementById('ai-send-btn');
+  inp.disabled = locked;
+  btn.disabled = locked;
+  inp.style.opacity = locked ? '0.4' : '1';
+  btn.style.opacity = locked ? '0.4' : '1';
+}
+
+function showEmailGate() {
+  if (aiGateShown || aiGateDone) return;
+  aiGateShown = true;
+  document.getElementById('email-gate').style.display = 'block';
+  document.getElementById('email-gate').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function submitGate() {
+  const email = document.getElementById('gate-email').value.trim();
+  const region = document.getElementById('gate-region').value;
+  if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+  aiGateDone = true;
+  document.getElementById('email-gate').innerHTML = `<div style="text-align:center;padding:6px 0;color:white"><div style="font-size:15px;font-weight:500;margin-bottom:4px">You're subscribed!</div><div style="font-size:12px;opacity:.75">First digest arrives Monday. Keep asking — enjoy your free questions.</div></div>`;
+  setTimeout(() => { document.getElementById('email-gate').style.display = 'none'; }, 2500);
+  console.log('New subscriber:', email, region); // POST to Mailchimp/Buttondown in production
+}
+
+function skipGate() {
+  aiGateDone = true;
+  document.getElementById('email-gate').style.display = 'none';
+}
+
+function showTopUpGate() {
+  document.getElementById('topup-gate').style.display = 'block';
+  document.getElementById('topup-gate').scrollIntoView({behavior:'smooth', block:'nearest'});
+  lockInput(true);
+}
+
+async function topUp(pack) {
+  const p = TOPUP_PRICES[pack];
+  // In production: redirect to Stripe Checkout, then on success return with ?topup=pack
+  // For now simulate unlock so the demo works
+  const isConfigured = !p.price_id.includes('_ID');
+  if (isConfigured) {
+    try {
+      const stripe = Stripe('pk_live_51THB9x3S2evP8h09BKo4m1yrpFCbXOBQv04NKgad4mHvH8QwaksQfuxipHTDTptSEzWu9ys6CXPYzk9s8zjK6moU00gDkLSr4W');
+      const base = window.location.href.split('?')[0];
+      await stripe.redirectToCheckout({
+        lineItems: [{price: p.price_id, quantity: 1}],
+        mode: 'payment',
+        successUrl: base + '?topup=' + pack,
+        cancelUrl: base
+      });
+    } catch(e) { alert('Stripe error: ' + e.message); }
+  } else {
+    // Demo mode — simulate payment
+    activateTopUp(pack);
+  }
+}
+
+function activateTopUp(pack) {
+  const p = TOPUP_PRICES[pack];
+  aiBudget += p.questions;
+  document.getElementById('topup-gate').style.display = 'none';
+  lockInput(false);
+  updateUsageBar();
+  addMsg(`Top-up activated! You've unlocked ${p.questions} more questions. Keep asking.`, 'ai');
+  document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
+}
+
+function checkTopUpReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const pack = params.get('topup');
+  if (pack && TOPUP_PRICES[pack]) activateTopUp(pack);
+}
+
+function addMsg(html, role) {
+  const chat = document.getElementById('chat');
+  const d = document.createElement('div');
+  d.style.cssText = 'display:flex;gap:10px;' + (role==='user' ? 'flex-direction:row-reverse' : '');
+  const av = document.createElement('div');
+  av.style.cssText = 'width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;' + (role==='user' ? 'background:#E1F5EE;color:#085041' : 'background:#EEEDFE;color:#3C3489');
+  av.textContent = role==='user' ? 'You' : 'PT';
+  const b = document.createElement('div');
+  b.style.cssText = 'background:' + (role==='user' ? '#EEEDFE;border-color:#CECBF6;color:#26215C' : 'var(--card);border-color:var(--b);color:var(--text)') + ';border:0.5px solid;border-radius:var(--r);padding:10px 14px;font-size:14px;line-height:1.65;max-width:86%';
+  b.innerHTML = html;
+  d.appendChild(av); d.appendChild(b); chat.appendChild(d);
+  chat.scrollTop = chat.scrollHeight;
+  return b;
+}
+
+function quickQ(q) {
+  if (aiLocked) return;
+  document.getElementById('ainput').value = q;
+  sendAI();
+}
+
+async function sendAI() {
+  if (aiLocked) return;
+  const inp = document.getElementById('ainput');
+  const txt = inp.value.trim();
+  if (!txt) return;
+
+  // Check limit
+  const total = AI_FREE_LIMIT + aiBudget;
+  if (aiQ >= total) { showTopUpGate(); return; }
+
+  inp.value = '';
+  addMsg(txt, 'user');
+  aiMsgs.push({role:'user', content:txt});
+
+  // ── COST PROTECTION: trim history to last N messages ──
+  const trimmed = aiMsgs.slice(-AI_HISTORY_TRIM);
+
+  const tb = addMsg('<em style="color:var(--t3)">Thinking...</em>', 'ai');
+  aiQ++;
+  updateUsageBar();
+
+  // Warn at 8 questions (2 left)
+  if (aiQ === AI_FREE_LIMIT - 2 && aiBudget === 0) {
+    setTimeout(() => {
+      addMsg('You have <strong>2 free questions left</strong> this session. Top up from €1.90 to keep going.', 'ai');
+    }, 300);
+  }
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: 'You are a friendly, plain-English expert on Portuguese bureaucracy and expat life in Portugal. Answer questions about visas (D7, D8, Golden Visa), NIF, NHR/IFICI tax regime, residency permits (AIMA), SNS healthcare, driving licence exchange, banking, schools, citizenship, cost of living, and daily life in Portugal. Keep answers concise (4–7 sentences), practical, and friendly. Use bullet points for steps. Always mention if something needs a professional. End with one practical tip or point to a relevant tool on this page.',
+        messages: trimmed
+      })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'Sorry, could not get an answer. Please try again.';
+    aiMsgs.push({role:'assistant', content:reply});
+    tb.innerHTML = reply.replace(/\n/g, '<br>');
+  } catch(e) {
+    tb.innerHTML = 'Connection error. Please try again.';
+    aiQ--; // refund the question if API failed
+    updateUsageBar();
+  }
+
+  // Show email gate after first answer
+  if (aiQ === 1) setTimeout(showEmailGate, 800);
+
+  // Show top-up gate when limit hit
+  if (aiQ >= AI_FREE_LIMIT + aiBudget) setTimeout(showTopUpGate, 600);
+}
+
+// ─── INIT ─────────────────────────────────────────
+renderDir();
+renderRental();
+calcCost();
+calcTax();
+checkTopUpReturn();
+updateUsageBar();
+</script>
+</body>
+</html>

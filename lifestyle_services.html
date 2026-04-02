@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Expat Lifestyle Services — ExpatPortugal.guide</title>
+<meta name="description" content="Find English-speaking local services in Portugal — personal trainers, dentists, vets, tutors, hairdressers, handymen and more. Recommended by expats." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --ink: #1c1917;
+  --ink2: #57534e;
+  --ink3: #a8a29e;
+  --cream: #faf9f7;
+  --warm: #f5f0e8;
+  --card: #ffffff;
+  --border: rgba(28,25,23,0.08);
+  --border2: rgba(28,25,23,0.15);
+  --red: #c0381a;
+  --red-light: #fdf0ec;
+  --teal: #0f766e;
+  --teal-light: #f0fdfa;
+  --amber: #b45309;
+  --amber-light: #fffbeb;
+  --blue: #1d4ed8;
+  --blue-light: #eff6ff;
+  --purple: #7c3aed;
+  --purple-light: #f5f3ff;
+  --rose: #be185d;
+  --rose-light: #fdf2f8;
+  --green: #15803d;
+  --green-light: #f0fdf4;
+  --r: 10px;
+  --rl: 16px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Outfit', sans-serif; background: var(--cream); color: var(--ink); font-size: 15px; line-height: 1.6; }
+
+/* ── NAV ─────────────────────────────────────────── */
+nav {
+  background: var(--card);
+  border-bottom: 0.5px solid var(--border);
+  padding: 0 2rem;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 400; color: var(--ink); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+.nav-links { display: flex; gap: 4px; }
+.nl { font-size: 13px; padding: 6px 12px; border-radius: var(--r); color: var(--ink2); background: none; border: none; cursor: pointer; font-family: 'Outfit', sans-serif; text-decoration: none; display: flex; align-items: center; }
+.nl:hover { background: var(--warm); color: var(--ink); }
+.nl.active { color: var(--ink); font-weight: 500; }
+.nav-cta { font-size: 13px; padding: 7px 16px; background: var(--red); color: white; border: none; border-radius: var(--r); cursor: pointer; font-family: 'Outfit', sans-serif; font-weight: 500; text-decoration: none; }
+.nav-cta:hover { background: #a83015; }
+
+/* ── HERO ────────────────────────────────────────── */
+.hero {
+  background: var(--warm);
+  border-bottom: 0.5px solid var(--border);
+  padding: 4rem 1.5rem 3rem;
+  text-align: center;
+}
+.hero-eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--red);
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 14px;
+  color: var(--ink);
+}
+.hero h1 em { font-style: italic; color: var(--red); }
+.hero p { font-size: 16px; color: var(--ink2); max-width: 520px; margin: 0 auto 2rem; line-height: 1.7; }
+.hero-stats { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; }
+.stat { text-align: center; }
+.stat-n { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 600; color: var(--ink); }
+.stat-l { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+
+/* ── SEARCH + FILTERS ────────────────────────────── */
+.controls { max-width: 960px; margin: 0 auto; padding: 1.5rem 1.5rem 0; }
+.search-row { display: flex; gap: 10px; margin-bottom: 1.25rem; }
+.search-wrap { flex: 1; position: relative; }
+.search-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--ink3); }
+.search-wrap input { width: 100%; padding: 11px 14px 11px 40px; border: 0.5px solid var(--border2); border-radius: var(--r); font-size: 14px; background: var(--card); color: var(--ink); outline: none; font-family: 'Outfit', sans-serif; }
+.search-wrap input:focus { border-color: var(--red); }
+.search-wrap input::placeholder { color: var(--ink3); }
+.city-select { padding: 11px 14px; border: 0.5px solid var(--border2); border-radius: var(--r); font-size: 13px; background: var(--card); color: var(--ink); outline: none; font-family: 'Outfit', sans-serif; min-width: 160px; cursor: pointer; }
+.city-select:focus { border-color: var(--red); }
+
+.cat-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 1.5rem; scrollbar-width: none; }
+.cat-scroll::-webkit-scrollbar { display: none; }
+.cat-pill {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 14px;
+  border-radius: 30px;
+  border: 0.5px solid var(--border2);
+  background: var(--card);
+  font-size: 12px; font-weight: 500; color: var(--ink2);
+  cursor: pointer; white-space: nowrap;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.15s;
+}
+.cat-pill:hover { border-color: var(--ink); color: var(--ink); }
+.cat-pill.on { color: white; border-color: transparent; }
+.cat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── RESULTS ─────────────────────────────────────── */
+.main { max-width: 960px; margin: 0 auto; padding: 0 1.5rem 5rem; }
+.results-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.results-count { font-size: 13px; color: var(--ink3); }
+.list-btn { font-size: 12px; color: var(--red); background: none; border: none; cursor: pointer; font-family: 'Outfit', sans-serif; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+
+.listing-card {
+  background: var(--card);
+  border: 0.5px solid var(--border);
+  border-radius: var(--rl);
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.1s;
+  display: flex;
+  flex-direction: column;
+}
+.listing-card:hover { border-color: var(--border2); transform: translateY(-1px); }
+
+.lc-top { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+.lc-avatar {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.lc-name { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 2px; line-height: 1.3; }
+.lc-role { font-size: 12px; color: var(--ink2); }
+.lc-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+.lc-tag { font-size: 10px; padding: 3px 8px; border-radius: 20px; font-weight: 500; }
+.lc-meta { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 10px; border-top: 0.5px solid var(--border); }
+.lc-city { font-size: 11px; color: var(--ink3); display: flex; align-items: center; gap: 4px; }
+.lc-badge { font-size: 10px; background: var(--green-light); color: var(--green); padding: 3px 8px; border-radius: 20px; font-weight: 500; display: flex; align-items: center; gap: 3px; }
+.lc-contact { font-size: 12px; padding: 7px 14px; border: 0.5px solid var(--border2); border-radius: var(--r); cursor: pointer; font-family: 'Outfit', sans-serif; color: var(--ink); background: var(--card); margin-top: 10px; width: 100%; }
+.lc-contact:hover { background: var(--warm); }
+
+.empty-state { text-align: center; padding: 3rem 1rem; }
+.empty-state p { font-size: 14px; color: var(--ink3); margin-bottom: 10px; }
+.empty-state button { font-size: 13px; color: var(--red); background: none; border: none; cursor: pointer; text-decoration: underline; font-family: 'Outfit', sans-serif; }
+
+/* ── LIST YOUR SERVICE CTA ───────────────────────── */
+.list-cta {
+  background: var(--ink);
+  border-radius: var(--rl);
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+.list-cta-text h3 { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 400; color: white; margin-bottom: 4px; }
+.list-cta-text p { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; }
+.list-cta-btn { padding: 11px 24px; background: var(--red); color: white; border: none; border-radius: var(--r); font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Outfit', sans-serif; white-space: nowrap; }
+.list-cta-btn:hover { background: #a83015; }
+.list-cta-prices { display: flex; gap: 12px; flex-wrap: wrap; }
+.lcp { text-align: center; background: rgba(255,255,255,0.08); border-radius: var(--r); padding: 10px 16px; min-width: 90px; }
+.lcp-price { font-family: 'Playfair Display', serif; font-size: 20px; color: white; }
+.lcp-label { font-size: 10px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+/* ── FOOTER ──────────────────────────────────────── */
+footer { border-top: 0.5px solid var(--border); padding: 2rem 1.5rem; background: var(--card); text-align: center; font-size: 12px; color: var(--ink3); }
+footer a { color: var(--ink3); text-decoration: none; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 1rem; }
+  .nav-links { display: none; }
+  .hero { padding: 2.5rem 1rem 2rem; }
+  .controls { padding: 1rem 1rem 0; }
+  .main { padding: 0 1rem 3rem; }
+  .search-row { flex-direction: column; }
+  .city-select { width: 100%; }
+  .list-cta { flex-direction: column; align-items: flex-start; }
+  .grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">🇵🇹 ExpatPortugal.guide</a>
+  <div class="nav-links">
+    <a class="nl" href="index.html">Home</a>
+    <a class="nl" href="expat_tools_v4_fixed.html">Tools</a>
+    <a class="nl active" href="#">Lifestyle services</a>
+    <a class="nl" href="index.html#news">News</a>
+  </div>
+  <a class="nav-cta" href="#list-your-service">List your service</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">Local services directory</div>
+  <h1>Find <em>English-speaking</em><br>services near you</h1>
+  <p>Personal trainers, dentists, vets, tutors, hairdressers — recommended by expats, for expats across Portugal.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-n">40+</div><div class="stat-l">Service providers</div></div>
+    <div class="stat"><div class="stat-n">8</div><div class="stat-l">Categories</div></div>
+    <div class="stat"><div class="stat-n">7</div><div class="stat-l">Cities & regions</div></div>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="search-row">
+    <div class="search-wrap">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="search-input" placeholder="Search by name or service..." oninput="renderListings()" />
+    </div>
+    <select class="city-select" id="city-filter" onchange="renderListings()">
+      <option value="all">All regions</option>
+      <option value="Lisbon">Lisbon</option>
+      <option value="Porto">Porto</option>
+      <option value="Algarve">Algarve</option>
+      <option value="Cascais">Cascais</option>
+      <option value="Braga">Braga</option>
+      <option value="Madeira">Madeira</option>
+      <option value="Online">Online / all Portugal</option>
+    </select>
+  </div>
+  <div class="cat-scroll" id="cat-pills"></div>
+</div>
+
+<div class="main">
+  <div class="results-meta">
+    <span class="results-count" id="res-count">Showing all services</span>
+    <button class="list-btn" onclick="resetFilters()">Clear filters</button>
+  </div>
+  <div class="grid" id="listing-grid"></div>
+  <div class="empty-state" id="empty-state" style="display:none">
+    <p>No services found for this combination.</p>
+    <button onclick="resetFilters()">Clear all filters</button>
+  </div>
+
+  <div class="list-cta" id="list-your-service">
+    <div class="list-cta-text">
+      <h3>List your service here</h3>
+      <p>Reach thousands of expats in Portugal every month.<br>English-speaking providers only. Manually reviewed before listing.</p>
+    </div>
+    <div class="list-cta-prices">
+      <div class="lcp"><div class="lcp-price">€49</div><div class="lcp-label">/ year · Basic</div></div>
+      <div class="lcp"><div class="lcp-price">€99</div><div class="lcp-label">/ year · Featured</div></div>
+    </div>
+    <button class="list-cta-btn" onclick="alert('Send your details to hello@expatportugal.guide\n\nInclude:\n- Your name & service\n- City / region\n- Website or social link\n- Brief description\n\nWe\'ll review and get back within 48 hours.')">Get listed →</button>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 ExpatPortugal.guide &nbsp;·&nbsp; <a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Terms</a> &nbsp;·&nbsp; Listings are manually reviewed but not independently verified. Always do your own due diligence.</p>
+</footer>
+
+<script>
+const CATS = [
+  { id: 'all',      label: 'All services',     color: '#1c1917', bg: '#f5f0e8',  dot: '#1c1917' },
+  { id: 'fitness',  label: 'Fitness & sport',  color: '#b45309', bg: '#fffbeb',  dot: '#d97706' },
+  { id: 'health',   label: 'Health & dental',  color: '#0f766e', bg: '#f0fdfa',  dot: '#14b8a6' },
+  { id: 'pets',     label: 'Pets & vets',       color: '#15803d', bg: '#f0fdf4',  dot: '#22c55e' },
+  { id: 'beauty',   label: 'Beauty & hair',     color: '#be185d', bg: '#fdf2f8',  dot: '#ec4899' },
+  { id: 'home',     label: 'Home & repairs',    color: '#1d4ed8', bg: '#eff6ff',  dot: '#3b82f6' },
+  { id: 'tutoring', label: 'Tutoring & lessons',color: '#7c3aed', bg: '#f5f3ff',  dot: '#8b5cf6' },
+  { id: 'childcare',label: 'Childcare & family',color: '#c0381a', bg: '#fdf0ec',  dot: '#f97316' },
+  { id: 'other',    label: 'Other services',    color: '#57534e', bg: '#f5f5f4',  dot: '#a8a29e' },
+];
+
+const LISTINGS = [
+  // FITNESS
+  { id:1, name:'James O\'Brien', role:'Personal Trainer', cat:'fitness', city:'Lisbon', tags:['Weight training','Running plans','Nutrition advice'], icon:'🏋️', desc:'NASM-certified PT with 8 years experience. Specialises in expats adjusting to life in Portugal — outdoor training near the Tagus.' },
+  { id:2, name:'Sofia Wellness', role:'Yoga & Pilates Studio', cat:'fitness', city:'Cascais', tags:['Yoga','Pilates','English classes'], icon:'🧘', desc:'Boutique studio in central Cascais. All classes taught in English. Beginners welcome.' },
+  { id:3, name:'Surf Portugal Academy', role:'Surf School', cat:'fitness', city:'Algarve', tags:['Surfing','Paddleboard','Beginner & advanced'], icon:'🏄', desc:'English-speaking surf instructors on the Algarve coast. Group and private lessons. Equipment included.' },
+  { id:4, name:'Marco Cycling', role:'Cycling Coach & Guide', cat:'fitness', city:'Porto', tags:['Road cycling','MTB','Guided tours'], icon:'🚴', desc:'Former pro cyclist offering training plans and guided rides around Porto and the Douro Valley.' },
+  { id:5, name:'Emma Fit Lisbon', role:'Personal Trainer', cat:'fitness', city:'Lisbon', tags:['HIIT','Post-natal fitness','Home visits'], icon:'🏃', desc:'Certified personal trainer specialising in women\'s fitness. Home visits or park sessions across Lisbon.' },
+
+  // HEALTH
+  { id:6, name:'Dr. Claire Hendricks', role:'English-speaking Dentist', cat:'health', city:'Lisbon', tags:['General dentistry','Cosmetic','Implants'], icon:'🦷', desc:'British-trained dentist with 15 years experience. Full range of dental services. Insurance accepted.' },
+  { id:7, name:'Clinica International Algarve', role:'Private Medical Clinic', cat:'health', city:'Algarve', tags:['GP consultations','Blood tests','Prescriptions'], icon:'🏥', desc:'English-speaking GPs and specialists. Walk-in and appointment. Accepts international health insurance.' },
+  { id:8, name:'PhysioPorto', role:'Physiotherapist', cat:'health', city:'Porto', tags:['Sports injuries','Back pain','Post-surgery'], icon:'💪', desc:'Chartered physiotherapist trained in the UK. Home visits and clinic appointments available.' },
+  { id:9, name:'Dr. Ana Lima Psicologia', role:'Psychologist / Therapist', cat:'health', city:'Online', tags:['Therapy in English','Anxiety','Expat challenges'], icon:'🧠', desc:'Licensed Portuguese psychologist offering therapy in English. Specialises in expat adjustment, anxiety, and life transitions.' },
+  { id:10, name:'Cascais Dental Centre', role:'Dental Clinic', cat:'health', city:'Cascais', tags:['Family dentistry','Orthodontics','Emergency'], icon:'😁', desc:'Full-service dental clinic with English-speaking staff. Family-friendly. Emergency appointments available.' },
+
+  // PETS
+  { id:11, name:'Dr. Pedro Vets', role:'Veterinary Clinic', cat:'pets', city:'Lisbon', tags:['Small animals','Emergency','Vaccines'], icon:'🐾', desc:'English-speaking vet in Lisbon. Full veterinary services including vaccinations, neutering, and emergency care.' },
+  { id:12, name:'Algarve Pet Care', role:'Dog Walker & Pet Sitter', cat:'pets', city:'Algarve', tags:['Dog walking','Pet sitting','Home stays'], icon:'🐕', desc:'Experienced British expat offering dog walking and pet sitting across the Algarve. Fully insured.' },
+  { id:13, name:'Paws Porto', role:'Grooming & Boarding', cat:'pets', city:'Porto', tags:['Dog grooming','Cat boarding','Home visits'], icon:'✂️', desc:'Professional pet grooming salon with English-speaking staff. Boarding available for holidays.' },
+  { id:14, name:'Clínica Veterinária Cascais', role:'Veterinary Clinic', cat:'pets', city:'Cascais', tags:['All animals','24h emergency','English staff'], icon:'🐈', desc:'24-hour veterinary clinic in Cascais with English-speaking vets. All pets welcome.' },
+
+  // BEAUTY
+  { id:15, name:'Salon Inglês', role:'Hairdresser', cat:'beauty', city:'Lisbon', tags:['Cuts & colour','Balayage','English spoken'], icon:'💇', desc:'British-run hair salon in the heart of Lisbon. Specialises in cuts and colour for expats. Walk-ins welcome.' },
+  { id:16, name:'Beauty by Rachel', role:'Beauty Therapist', cat:'beauty', city:'Algarve', tags:['Nails','Waxing','Lashes & brows'], icon:'💅', desc:'UK-trained beauty therapist offering mobile services across the Algarve. Gel nails, waxing, lash extensions.' },
+  { id:17, name:'The Barber Co. Porto', role:'Barber Shop', cat:'beauty', city:'Porto', tags:['Mens cuts','Beard grooming','English spoken'], icon:'💈', desc:'Classic barbershop with English-speaking barbers. Traditional shaves and modern cuts.' },
+
+  // HOME
+  { id:18, name:'Fix It Portugal', role:'Handyman Services', cat:'home', city:'Lisbon', tags:['Plumbing','Electrics','Painting'], icon:'🔧', desc:'Reliable English-speaking handyman team. No job too small. Transparent pricing, same-week availability.' },
+  { id:19, name:'Algarve Home Help', role:'Cleaning & Maintenance', cat:'home', city:'Algarve', tags:['Weekly cleaning','Holiday lets','Garden maintenance'], icon:'🏡', desc:'Professional cleaning and property maintenance for expats and holiday let owners across the Algarve.' },
+  { id:20, name:'TechHelp PT', role:'IT & Tech Support', cat:'home', city:'Online', tags:['Home setup','WiFi','Computer repair'], icon:'💻', desc:'Remote and in-person tech support across Portugal. English-speaking technicians. Router setup, computer repair, smart home.' },
+  { id:21, name:'MovePT Removals', role:'Removal Company', cat:'home', city:'Online', tags:['International moves','Portugal removals','Storage'], icon:'🚚', desc:'Specialist expat removal company operating across Portugal and between Portugal and the UK, Ireland, and Netherlands.' },
+  { id:22, name:'Quinta Garden Design', role:'Landscape Gardener', cat:'home', city:'Algarve', tags:['Garden design','Pool maintenance','Irrigation'], icon:'🌿', desc:'English-speaking landscape gardener specialising in Portuguese gardens, pool areas, and irrigation systems.' },
+
+  // TUTORING
+  { id:23, name:'Portuguese Fast', role:'Portuguese Language Tutor', cat:'tutoring', city:'Online', tags:['A2 exam prep','Conversational','All levels'], icon:'🗣️', desc:'Native Portuguese teacher specialising in expats. Focuses on practical daily Portuguese and A2 exam preparation for citizenship.' },
+  { id:24, name:'The English Tutor PT', role:'English Tutor for Portuguese Kids', cat:'tutoring', city:'Lisbon', tags:['School support','Exam prep','Native speaker'], icon:'📚', desc:'Native British teacher helping Portuguese children improve their English. Primary through secondary.' },
+  { id:25, name:'Maths & Science Lisbon', role:'Academic Tutor', cat:'tutoring', city:'Lisbon', tags:['Maths','Science','IB & A-level'], icon:'📐', desc:'Cambridge-educated tutor offering maths and science support to expat children in Lisbon. IB and A-level experience.' },
+  { id:26, name:'Music School Cascais', role:'Music Teacher', cat:'tutoring', city:'Cascais', tags:['Piano','Guitar','All ages'], icon:'🎵', desc:'Qualified music teacher offering piano and guitar lessons in English. Children and adults. First lesson free.' },
+  { id:27, name:'Art Classes Algarve', role:'Art Teacher', cat:'tutoring', city:'Algarve', tags:['Painting','Drawing','Adults & kids'], icon:'🎨', desc:'Professional artist and teacher offering classes for adults and children across the Algarve. All materials provided.' },
+
+  // CHILDCARE
+  { id:28, name:'Nanny Network PT', role:'Au Pair & Nanny Agency', cat:'childcare', city:'Online', tags:['Vetted nannies','Au pairs','English-speaking'], icon:'👶', desc:'Specialist agency matching expat families with English-speaking nannies and au pairs across Portugal. Background-checked.' },
+  { id:29, name:'Little Stars Childcare', role:'Babysitter', cat:'childcare', city:'Lisbon', tags:['Babysitting','Evening & weekend','First aid trained'], icon:'⭐', desc:'Network of vetted babysitters in Lisbon. All first-aid trained, English-speaking. Book online or via WhatsApp.' },
+  { id:30, name:'Kids Club Algarve', role:'Holiday & After-School Care', cat:'childcare', city:'Algarve', tags:['After school','Holiday camps','Swimming'], icon:'🏊', desc:'English-medium after-school and holiday care for expat children in the Algarve. Ages 4–14.' },
+
+  // OTHER
+  { id:31, name:'Expat Accountancy Online', role:'Personal Tax Filing', cat:'other', city:'Online', tags:['IRS filing','Self-assessment','NHR returns'], icon:'📊', desc:'Affordable tax filing service for expats in Portugal. Specialises in IRS returns, NHR, and double taxation.' },
+  { id:32, name:'Translation Services PT', role:'Certified Translator', cat:'other', city:'Online', tags:['Certified translation','Apostille','Notarisation'], icon:'📄', desc:'Certified Portuguese-English translator. Apostilles, notarisation, legal documents. Fast turnaround.' },
+  { id:33, name:'Drive PT', role:'Driving Instructor', cat:'other', city:'Porto', tags:['English lessons','Theory test prep','Licence exchange'], icon:'🚗', desc:'English-speaking driving instructor in Porto. Theory test prep and practical lessons. Licence exchange advice.' },
+];
+
+let activeCat = 'all';
+
+function buildCatPills() {
+  const container = document.getElementById('cat-pills');
+  container.innerHTML = CATS.map(c => `
+    <button class="cat-pill ${c.id === 'all' ? 'on' : ''}"
+      style="${c.id === 'all' ? `background:${c.bg};color:${c.color};border-color:transparent` : ''}"
+      data-cat="${c.id}"
+      onclick="setCat('${c.id}', this, '${c.color}', '${c.bg}')">
+      <span class="cat-dot" style="background:${c.dot}"></span>
+      ${c.label}
+    </button>`).join('');
+}
+
+function setCat(id, el, color, bg) {
+  activeCat = id;
+  document.querySelectorAll('.cat-pill').forEach(p => {
+    p.classList.remove('on');
+    p.style.background = '';
+    p.style.color = '';
+    p.style.borderColor = '';
+  });
+  el.classList.add('on');
+  el.style.background = bg;
+  el.style.color = color;
+  el.style.borderColor = 'transparent';
+  renderListings();
+}
+
+function resetFilters() {
+  activeCat = 'all';
+  document.getElementById('search-input').value = '';
+  document.getElementById('city-filter').value = 'all';
+  buildCatPills();
+  renderListings();
+}
+
+function renderListings() {
+  const q = document.getElementById('search-input').value.toLowerCase().trim();
+  const city = document.getElementById('city-filter').value;
+
+  let items = LISTINGS;
+  if (activeCat !== 'all') items = items.filter(l => l.cat === activeCat);
+  if (city !== 'all') items = items.filter(l => l.city === city);
+  if (q) items = items.filter(l =>
+    l.name.toLowerCase().includes(q) ||
+    l.role.toLowerCase().includes(q) ||
+    l.tags.some(t => t.toLowerCase().includes(q)) ||
+    l.desc.toLowerCase().includes(q)
+  );
+
+  const grid = document.getElementById('listing-grid');
+  const empty = document.getElementById('empty-state');
+  const count = document.getElementById('res-count');
+
+  if (items.length === 0) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    count.textContent = 'No results';
+    return;
+  }
+
+  empty.style.display = 'none';
+  count.textContent = `Showing ${items.length} service${items.length === 1 ? '' : 's'}`;
+
+  const cat = (id) => CATS.find(c => c.id === id) || CATS[CATS.length - 1];
+
+  grid.innerHTML = items.map(l => {
+    const c = cat(l.cat);
+    return `<div class="listing-card">
+      <div class="lc-top">
+        <div class="lc-avatar" style="background:${c.bg}">${l.icon}</div>
+        <div>
+          <div class="lc-name">${l.name}</div>
+          <div class="lc-role">${l.role}</div>
+        </div>
+      </div>
+      <div class="lc-tags">
+        ${l.tags.map(t => `<span class="lc-tag" style="background:${c.bg};color:${c.color}">${t}</span>`).join('')}
+      </div>
+      <div style="font-size:12px;color:var(--ink2);line-height:1.65;margin-bottom:10px;flex:1">${l.desc}</div>
+      <div class="lc-meta">
+        <span class="lc-city">
+          <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          ${l.city}
+        </span>
+        <span class="lc-badge">
+          <svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><path d="M5 0.5L6.12 3.38L9.24 3.62L7 5.64L7.7 8.7L5 7.1L2.3 8.7L3 5.64L0.76 3.62L3.88 3.38L5 0.5Z"/></svg>
+          Listed
+        </span>
+      </div>
+      <button class="lc-contact" onclick="alert('Contact form for ${l.name} coming soon!\\n\\nIn the live version this opens an enquiry form or links to their website/WhatsApp.')">Contact →</button>
+    </div>`;
+  }).join('');
+}
+
+buildCatPills();
+renderListings();
+</script>
+</body>
+</html>

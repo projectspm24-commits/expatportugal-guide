@@ -1,0 +1,109 @@
+{
+  "name": "ExpatPortugal — Daily News (links only, no AI)",
+  "nodes": [
+    {
+      "parameters": { "rule": { "interval": [{ "field": "hours", "hoursInterval": 24 }] }, "triggerAtHour": 7 },
+      "name": "Every day at 7am",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [240, 360]
+    },
+    {
+      "parameters": { "url": "https://news.google.com/rss/search?q=Portugal+expats+living&hl=en-PT&gl=PT&ceid=PT:en", "options": {} },
+      "name": "RSS: expat life",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "position": [460, 160]
+    },
+    {
+      "parameters": { "url": "https://news.google.com/rss/search?q=Portugal+visa+NIF+AIMA+residency&hl=en-PT&gl=PT&ceid=PT:en", "options": {} },
+      "name": "RSS: bureaucracy",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "position": [460, 280]
+    },
+    {
+      "parameters": { "url": "https://news.google.com/rss/search?q=Portugal+housing+rent+property+2025&hl=en-PT&gl=PT&ceid=PT:en", "options": {} },
+      "name": "RSS: housing",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "position": [460, 400]
+    },
+    {
+      "parameters": { "url": "https://news.google.com/rss/search?q=Portugal+digital+nomad+remote+work+tax&hl=en-PT&gl=PT&ceid=PT:en", "options": {} },
+      "name": "RSS: nomad and tax",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "position": [460, 520]
+    },
+    {
+      "parameters": { "url": "https://news.google.com/rss/search?q=Lisbon+Porto+Algarve+news+expat&hl=en-PT&gl=PT&ceid=PT:en", "options": {} },
+      "name": "RSS: local news",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "position": [460, 640]
+    },
+    {
+      "parameters": { "mode": "passThrough", "output": "input1" },
+      "name": "Merge all feeds",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [700, 400]
+    },
+    {
+      "parameters": {
+        "functionCode": "const seen = new Set();\nconst items = [];\nconst catMap = [\n  { cat: 'bureaucracy', emoji: '🏛️', words: ['nif','aima','visa','residency','passport','citizenship','tax regime','nhr','ifici','finanças'] },\n  { cat: 'housing',     emoji: '🏠', words: ['rent','rental','housing','property','apartment','lease','mortgage'] },\n  { cat: 'lifestyle',   emoji: '☀️', words: ['digital nomad','remote work','expat life','retire','retirement'] },\n  { cat: 'transport',   emoji: '🚇', words: ['metro','transport','flight','airport','train'] },\n  { cat: 'community',   emoji: '👥', words: ['expat','community','foreigner','immigrant','integration'] },\n  { cat: 'food',        emoji: '🍽️', words: ['restaurant','food','wine','cuisine','gastronomy'] }\n];\nfunction detectCat(t) { const l=t.toLowerCase(); for(const e of catMap){if(e.words.some(w=>l.includes(w)))return e;} return {cat:'news',emoji:'📰'}; }\nfunction detectRegion(t) { const l=t.toLowerCase(); if(l.includes('lisbon')||l.includes('lisboa'))return 'Lisbon'; if(l.includes('porto'))return 'Porto'; if(l.includes('algarve')||l.includes('faro'))return 'Algarve'; if(l.includes('cascais'))return 'Cascais'; if(l.includes('braga'))return 'Braga'; if(l.includes('alentejo'))return 'Alentejo'; if(l.includes('madeira'))return 'Madeira'; return 'all'; }\nfor (const item of $input.all()) {\n  const title = (item.json.title||'').trim();\n  const key = title.toLowerCase().slice(0,60);\n  if(seen.has(key)||!title||items.length>=15) continue;\n  seen.add(key);\n  const {cat,emoji} = detectCat(title);\n  items.push({ json: { title, source_url: item.json.link||'', source_name: item.json['source.title']||'Google News', category: cat, image_emoji: emoji, region: detectRegion(title), published_at: item.json.pubDate||new Date().toISOString(), status: 'approved' } });\n}\nreturn items;"
+      },
+      "name": "Deduplicate and categorise",
+      "type": "n8n-nodes-base.code",
+      "position": [920, 400]
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "tableId": "articles",
+        "fieldsUi": { "fieldValues": [
+          { "fieldId": "title",        "fieldValue": "={{ $json.title }}" },
+          { "fieldId": "source_url",   "fieldValue": "={{ $json.source_url }}" },
+          { "fieldId": "source_name",  "fieldValue": "={{ $json.source_name }}" },
+          { "fieldId": "category",     "fieldValue": "={{ $json.category }}" },
+          { "fieldId": "image_emoji",  "fieldValue": "={{ $json.image_emoji }}" },
+          { "fieldId": "region",       "fieldValue": "={{ $json.region }}" },
+          { "fieldId": "published_at", "fieldValue": "={{ $json.published_at }}" },
+          { "fieldId": "status",       "fieldValue": "approved" }
+        ]},
+        "filterByFormFields": { "values": [{ "fieldId": "title", "fieldValue": "={{ $json.title }}" }] }
+      },
+      "name": "Save to Supabase",
+      "type": "n8n-nodes-base.supabase",
+      "position": [1140, 400]
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "tableId": "automation_logs",
+        "fieldsUi": { "fieldValues": [
+          { "fieldId": "workflow",      "fieldValue": "daily_news" },
+          { "fieldId": "status",        "fieldValue": "success" },
+          { "fieldId": "items_created", "fieldValue": "={{ $input.all().length }}" }
+        ]}
+      },
+      "name": "Log run",
+      "type": "n8n-nodes-base.supabase",
+      "position": [1360, 400]
+    }
+  ],
+  "connections": {
+    "Every day at 7am": { "main": [[
+      { "node": "RSS: expat life",   "type": "main", "index": 0 },
+      { "node": "RSS: bureaucracy",  "type": "main", "index": 0 },
+      { "node": "RSS: housing",      "type": "main", "index": 0 },
+      { "node": "RSS: nomad and tax","type": "main", "index": 0 },
+      { "node": "RSS: local news",   "type": "main", "index": 0 }
+    ]]},
+    "RSS: expat life":    { "main": [[{ "node": "Merge all feeds", "type": "main", "index": 0 }]] },
+    "RSS: bureaucracy":   { "main": [[{ "node": "Merge all feeds", "type": "main", "index": 0 }]] },
+    "RSS: housing":       { "main": [[{ "node": "Merge all feeds", "type": "main", "index": 0 }]] },
+    "RSS: nomad and tax": { "main": [[{ "node": "Merge all feeds", "type": "main", "index": 0 }]] },
+    "RSS: local news":    { "main": [[{ "node": "Merge all feeds", "type": "main", "index": 0 }]] },
+    "Merge all feeds":              { "main": [[{ "node": "Deduplicate and categorise", "type": "main", "index": 0 }]] },
+    "Deduplicate and categorise":   { "main": [[{ "node": "Save to Supabase",           "type": "main", "index": 0 }]] },
+    "Save to Supabase":             { "main": [[{ "node": "Log run",                     "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "_comment": "NO AI USED — zero Anthropic cost. Articles auto-approved and published as link-only cards. Claude only used in weekly digest."
+}

@@ -1,0 +1,164 @@
+{
+  "name": "ExpatPortugal — Weekly Sunday Digest",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": { "interval": [{ "field": "weeks", "weeksInterval": 1 }] },
+        "triggerAtDay": [0],
+        "triggerAtHour": 7
+      },
+      "name": "Every Sunday at 7am",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "articles",
+        "limit": 12,
+        "filterByFormFields": { "values": [{ "fieldId": "status", "fieldValue": "approved" }] },
+        "sort": { "values": [{ "field": "published_at", "direction": "DESC" }] }
+      },
+      "name": "Get this week's articles",
+      "type": "n8n-nodes-base.supabase",
+      "position": [460, 200]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "events",
+        "limit": 10,
+        "filterByFormFields": { "values": [{ "fieldId": "status", "fieldValue": "approved" }] },
+        "sort": { "values": [{ "field": "event_date", "direction": "ASC" }] }
+      },
+      "name": "Get upcoming events",
+      "type": "n8n-nodes-base.supabase",
+      "position": [460, 360]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "events",
+        "limit": 5,
+        "sort": { "values": [{ "field": "event_date", "direction": "DESC" }] }
+      },
+      "name": "Get past week events",
+      "type": "n8n-nodes-base.supabase",
+      "position": [460, 500]
+    },
+    {
+      "parameters": {
+        "functionCode": "const articles  = $('Get this week\\'s articles').all().map(i => i.json);\nconst upcoming  = $('Get upcoming events').all().map(i => i.json);\nconst pastEvts  = $('Get past week events').all().map(i => i.json);\nconst weekStart = new Date(); weekStart.setDate(weekStart.getDate() - 7);\nconst recentArticles = articles.filter(a => new Date(a.published_at) >= weekStart);\n\n// Group articles by category for hot topics detection\nconst catCount = {};\nrecentArticles.forEach(a => { catCount[a.category] = (catCount[a.category]||0)+1; });\nconst hotTopics = Object.entries(catCount).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([cat,n])=>cat);\n\n// Format article list for Claude\nconst articleLines = recentArticles.slice(0,10).map((a,i) =>\n  `${i+1}. [${a.category.toUpperCase()}${a.region!=='all'?' · '+a.region:''}] ${a.title} — ${a.source_url}`\n).join('\\n');\n\n// Format upcoming events\nconst upcomingLines = upcoming.filter(e => new Date(e.event_date) >= new Date()).slice(0,6).map(e =>\n  `• ${e.event_date} — ${e.title}, ${e.city} (${e.category})`\n).join('\\n');\n\n// Format past events\nconst pastLines = pastEvts.filter(e => new Date(e.event_date) < new Date() && new Date(e.event_date) >= weekStart).slice(0,4).map(e =>\n  `• ${e.event_date} — ${e.title}, ${e.city}`\n).join('\\n');\n\nconst weekLabel = new Date().toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });\n\nreturn [{ json: { articleLines, upcomingLines, pastLines, hotTopics: hotTopics.join(', '), weekLabel, articleCount: recentArticles.length } }];"
+      },
+      "name": "Compile digest data",
+      "type": "n8n-nodes-base.code",
+      "position": [700, 360]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "content-type",      "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [{
+            "name": "=",
+            "value": "={{ JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 2500, messages: [{ role: 'user', content: `You write the Sunday morning weekly digest for ExpatPortugal.guide — a newsletter for English-speaking expats in Portugal.\n\nWeek ending: ${$json.weekLabel}\nHot topics this week: ${$json.hotTopics}\n\nThis week's news articles (with links — include these as clickable links in the email):\n${$json.articleLines}\n\nEvents that happened this past week:\n${$json.pastLines || 'No events logged this week'}\n\nUpcoming events:\n${$json.upcomingLines || 'No upcoming events yet'}\n\nWrite a complete HTML email newsletter. Rules:\n- Warm, friendly opening paragraph (2-3 sentences) — mention the season/weather, one cultural note about Portugal this time of year\n- Section: \"This week in Portugal\" — list the news articles as clickable links (use the URLs provided). Group by topic if there are 3+ from the same category. 1 sentence of context per article max — just enough to make people want to click. Format each as: Emoji Title (link opens in new tab) — Source Name\n- Section: \"What happened this week\" — brief mention of past events (if any)\n- Section: \"Coming up\" — upcoming events as a clean list with date, name, city\n- Section: \"Hot topic this week\" — 1 paragraph (4-5 sentences) about the most talked-about theme (${$json.hotTopics.split(',')[0]}) — what's happening, why expats should care, what to do about it\n- Short sign-off (1 sentence, warm)\n\nHTML rules:\n- Return ONLY the HTML body content, starting with a <div>\n- Use inline CSS only — no <style> tags\n- Main container: max-width 600px, margin auto, font-family Arial sans-serif, color #1c1917\n- Section headings: font-size 11px, text-transform uppercase, letter-spacing 0.1em, color #a8a29e, margin-bottom 8px\n- Article links: color #c0381a, text-decoration none, font-weight 500\n- Sections separated by a thin border (border-top: 1px solid #f0efe9) with padding 20px 0\n- Footer: font-size 11px, color #a8a29e, text-align center, margin-top 32px\n- All external links must have target=\"_blank\" rel=\"noopener\"` }] }) }}"
+          }]
+        },
+        "options": {}
+      },
+      "name": "Claude — write Sunday digest",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [920, 360]
+    },
+    {
+      "parameters": {
+        "functionCode": "const body    = JSON.parse($input.first().json.body);\nconst html    = body.content[0].text;\nconst weekLabel = $('Compile digest data').first().json.weekLabel;\nconst subject = `Your Portugal week: ${weekLabel}`;\nreturn [{ json: { html, subject } }];"
+      },
+      "name": "Extract HTML",
+      "type": "n8n-nodes-base.code",
+      "position": [1140, 360]
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "tableId": "newsletter_sends",
+        "fieldsUi": { "fieldValues": [
+          { "fieldId": "subject",   "fieldValue": "={{ $json.subject }}" },
+          { "fieldId": "body_html", "fieldValue": "={{ $json.html }}" },
+          { "fieldId": "status",    "fieldValue": "draft" }
+        ]}
+      },
+      "name": "Save draft to Supabase",
+      "type": "n8n-nodes-base.supabase",
+      "position": [1360, 360]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.buttondown.email/v1/emails",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Token YOUR_BUTTONDOWN_API_KEY" },
+            { "name": "content-type",  "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [{
+            "name": "=",
+            "value": "={{ JSON.stringify({ subject: $json.subject, body: $json.html, status: 'scheduled', publish_date: new Date(new Date().setHours(8,0,0,0)).toISOString() }) }}"
+          }]
+        },
+        "options": {}
+      },
+      "name": "Schedule in Buttondown for 8am",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [1580, 360],
+      "_comment": "Workflow runs at 7am, schedules the email to send at 8am. Change status from 'scheduled' to 'draft' if you want to review before sending."
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "tableId": "automation_logs",
+        "fieldsUi": { "fieldValues": [
+          { "fieldId": "workflow",      "fieldValue": "weekly_digest" },
+          { "fieldId": "status",        "fieldValue": "success" },
+          { "fieldId": "items_created", "fieldValue": "1" }
+        ]}
+      },
+      "name": "Log digest run",
+      "type": "n8n-nodes-base.supabase",
+      "position": [1800, 360]
+    }
+  ],
+  "connections": {
+    "Every Sunday at 7am": { "main": [[
+      { "node": "Get this week's articles", "type": "main", "index": 0 },
+      { "node": "Get upcoming events",      "type": "main", "index": 0 },
+      { "node": "Get past week events",     "type": "main", "index": 0 }
+    ]]},
+    "Get this week's articles": { "main": [[{ "node": "Compile digest data",         "type": "main", "index": 0 }]] },
+    "Get upcoming events":      { "main": [[{ "node": "Compile digest data",         "type": "main", "index": 0 }]] },
+    "Get past week events":     { "main": [[{ "node": "Compile digest data",         "type": "main", "index": 0 }]] },
+    "Compile digest data":      { "main": [[{ "node": "Claude — write Sunday digest","type": "main", "index": 0 }]] },
+    "Claude — write Sunday digest": { "main": [[{ "node": "Extract HTML",            "type": "main", "index": 0 }]] },
+    "Extract HTML":             { "main": [[{ "node": "Save draft to Supabase",      "type": "main", "index": 0 }]] },
+    "Save draft to Supabase":   { "main": [[{ "node": "Schedule in Buttondown for 8am","type": "main", "index": 0 }]] },
+    "Schedule in Buttondown for 8am": { "main": [[{ "node": "Log digest run",        "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "_comment": "DIGEST CONTENTS: this week's news (with links), events that happened, upcoming events, hot topic deep-dive, warm sign-off. Runs 7am Sunday, lands in inboxes at 8am. Claude Haiku is used ONCE per week — cost approx €0.05 per send."
+}
