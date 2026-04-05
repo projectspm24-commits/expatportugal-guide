@@ -82,7 +82,7 @@
     },
     {
       "parameters": {
-        "mode": "passThrough",
+        "mode": "append",
         "output": "input1"
       },
       "name": "Merge all feeds",
@@ -100,8 +100,8 @@
       "name": "Deduplicate and categorise",
       "type": "n8n-nodes-base.code",
       "position": [
-        920,
-        400
+        1560,
+        500
       ]
     },
     {
@@ -160,8 +160,8 @@
       "name": "Save to Supabase",
       "type": "n8n-nodes-base.supabase",
       "position": [
-        1140,
-        400
+        1780,
+        500
       ]
     },
     {
@@ -188,8 +188,115 @@
       "name": "Log run",
       "type": "n8n-nodes-base.supabase",
       "position": [
-        1360,
-        400
+        2000,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://feeds.publico.pt/publico/rss",
+        "options": {}
+      },
+      "name": "RSS: P\u00fablico (PT)",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "position": [
+        460,
+        760
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.observador.pt/feed/",
+        "options": {}
+      },
+      "name": "RSS: Observador (PT)",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "position": [
+        460,
+        860
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://feeds.jornaldenegocios.pt/JornalNegocios/HomePageFeed",
+        "options": {}
+      },
+      "name": "RSS: Jornal de Neg\u00f3cios (PT)",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "position": [
+        460,
+        960
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Mark all items from Portuguese feeds and split into batches for translation\nconst items = $input.all();\nreturn items.map(item => ({\n  json: {\n    ...item.json,\n    isPortuguese: true,\n    needsTranslation: true\n  }\n}));"
+      },
+      "name": "Mark as Portuguese",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        680,
+        860
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "=",
+              "value": "={{ (() => {\n  const ptItems = $input.all().filter(i => i.json.isPortuguese);\n  const titles = ptItems.slice(0, 15).map((i,n) => (n+1) + '. ' + i.json.title).join('\\n');\n  return JSON.stringify({\n    model: 'claude-haiku-4-5-20251001',\n    max_tokens: 800,\n    messages: [{\n      role: 'user',\n      content: 'Translate these Portuguese news headlines to natural English. Return ONLY a numbered list with the same numbers, one translation per line, nothing else.\\n\\n' + titles\n    }]\n  });\n})() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Translate PT titles (batch)",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        920,
+        860
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Parse translated titles and merge back with original PT items\nconst response = JSON.parse($input.first().json.body);\nconst text = response.content[0].text;\nconst lines = text.trim().split('\\n').filter(l => l.trim());\nconst translations = {};\nfor (const line of lines) {\n  const match = line.match(/^(\\d+)\\.\\s*(.+)$/);\n  if (match) translations[parseInt(match[1])] = match[2].trim();\n}\n\n// Get the PT items from previous context via workflow static data\n// We pass them through via the input items\nconst ptItems = $('Mark as Portuguese').all();\nreturn ptItems.slice(0,15).map((item, idx) => ({\n  json: {\n    ...item.json,\n    translatedTitle: translations[idx+1] || item.json.title\n  }\n}));"
+      },
+      "name": "Apply translations",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1140,
+        860
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "append"
+      },
+      "name": "Merge EN + PT articles",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        500
       ]
     }
   ],
@@ -219,6 +326,21 @@
           },
           {
             "node": "RSS: local news",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS: P\u00fablico (PT)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS: Observador (PT)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS: Jornal de Neg\u00f3cios (PT)",
             "type": "main",
             "index": 0
           }
@@ -284,7 +406,7 @@
       "main": [
         [
           {
-            "node": "Deduplicate and categorise",
+            "node": "Merge EN + PT articles",
             "type": "main",
             "index": 0
           }
@@ -307,6 +429,83 @@
         [
           {
             "node": "Log run",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS: P\u00fablico (PT)": {
+      "main": [
+        [
+          {
+            "node": "Mark as Portuguese",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS: Observador (PT)": {
+      "main": [
+        [
+          {
+            "node": "Mark as Portuguese",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS: Jornal de Neg\u00f3cios (PT)": {
+      "main": [
+        [
+          {
+            "node": "Mark as Portuguese",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark as Portuguese": {
+      "main": [
+        [
+          {
+            "node": "Translate PT titles (batch)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Translate PT titles (batch)": {
+      "main": [
+        [
+          {
+            "node": "Apply translations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apply translations": {
+      "main": [
+        [
+          {
+            "node": "Merge EN + PT articles",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge EN + PT articles": {
+      "main": [
+        [
+          {
+            "node": "Deduplicate and categorise",
             "type": "main",
             "index": 0
           }
