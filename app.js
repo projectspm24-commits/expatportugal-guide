@@ -134,7 +134,7 @@ async function loadHero() {
           overlay.style.cssText = 'position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.3) 60%,rgba(0,0,0,0.1) 100%);border-radius:inherit;z-index:0';
           hm.insertBefore(overlay, hm.firstChild);
         }
-        hm.querySelectorAll('.hero-cat-pill, .hero-title, .hero-meta-line, .hero-cta').forEach(function(el) {
+        hm.querySelectorAll('.hcat, .htitle, .hmeta, .hero-read').forEach(function(el) {
           el.style.position = 'relative';
           el.style.zIndex = '1';
         });
