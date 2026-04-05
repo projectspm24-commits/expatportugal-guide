@@ -53,16 +53,46 @@ async function loadHero() {
     document.getElementById('hero-cat').textContent = (main.category || 'news').toUpperCase() + ' - just now';
     document.getElementById('hero-title').textContent = main.title;
     document.getElementById('hero-meta').textContent = (main.source_name || '') + ' - ' + (main.region || 'All regions');
+    var hm = document.getElementById('hero-main');
     if (main.image_url) {
-      var hm = document.getElementById('hero-main');
-      hm.style.backgroundImage = 'url(' + main.image_url + ')';
-      hm.style.backgroundSize = 'cover';
-      hm.style.backgroundPosition = 'center';
-      hm.insertAdjacentHTML('afterbegin', '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.3) 60%,rgba(0,0,0,0.1) 100%);border-radius:inherit;z-index:0"></div>');
-      Array.from(hm.children).forEach(function(el) {
-        if (!el.style.position || el.style.position !== 'absolute') el.style.position = 'relative';
-        el.style.zIndex = '1';
-      });
+      // Preload image to confirm it's accessible
+      var testImg = new Image();
+      testImg.onload = function() {
+        hm.style.backgroundImage = 'url(' + main.image_url + ')';
+        hm.style.backgroundSize = 'cover';
+        hm.style.backgroundPosition = 'center';
+        // Add gradient overlay if not already present
+        if (!hm.querySelector('.hero-overlay')) {
+          var overlay = document.createElement('div');
+          overlay.className = 'hero-overlay';
+          overlay.style.cssText = 'position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.3) 60%,rgba(0,0,0,0.1) 100%);border-radius:inherit;z-index:0';
+          hm.insertBefore(overlay, hm.firstChild);
+        }
+      };
+      testImg.onerror = function() {
+        console.warn('Hero image failed to load:', main.image_url);
+        // Try next article's image as fallback
+        for (var fi = 1; fi < arts.length; fi++) {
+          if (arts[fi].image_url) {
+            var fallback = new Image();
+            fallback.onload = function() {
+              hm.style.backgroundImage = 'url(' + this._src + ')';
+              hm.style.backgroundSize = 'cover';
+              hm.style.backgroundPosition = 'center';
+              if (!hm.querySelector('.hero-overlay')) {
+                var ov = document.createElement('div');
+                ov.className = 'hero-overlay';
+                ov.style.cssText = 'position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.3) 60%,rgba(0,0,0,0.1) 100%);border-radius:inherit;z-index:0';
+                hm.insertBefore(ov, hm.firstChild);
+              }
+            };
+            fallback._src = arts[fi].image_url;
+            fallback.src = arts[fi].image_url;
+            break;
+          }
+        }
+      };
+      testImg.src = main.image_url;
     }
     var side = document.getElementById('hero-side');
     side.innerHTML = arts.slice(1).map(function(a, i) {
