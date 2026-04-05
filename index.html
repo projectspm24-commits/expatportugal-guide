@@ -261,7 +261,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
       <div class="w-t">Expat communities</div>
       <div style="font-size:12px;color:var(--ink2);line-height:1.7;margin-bottom:12px">Do you organise expat meetups, clubs, or local groups in Portugal?</div>
       <div style="background:var(--warm);border-radius:var(--r);padding:12px;font-size:12px;color:var(--ink2);line-height:1.6;margin-bottom:10px">&#128101; We list active expat communities here. Just send us a request below.</div>
-      <a href="mailto:hello@expatportugal.guide?subject=List our community&body=Community name: %0ACity / region: %0AType of group: %0AApprox. members: " style="display:block;padding:9px 14px;background:var(--ink);color:white;border-radius:var(--r);font-size:12px;font-weight:500;text-align:center;text-decoration:none">&#9993; Request to be listed &rarr;</a>
+      <a href="/cdn-cgi/l/email-protection#3b535e5757547b5e434b5a4f4b54494f4e5c5a57155c4e525f5e04484e59515e584f067752484f1b544e491b585456564e55524f421d59545f4206785456564e55524f421b555a565e011b1e0b7a78524f421b141b495e5c525455011b1e0b7a6f424b5e1b545d1b5c49544e4b011b1e0b7a7a4b4b495443151b565e56595e4948011b" style="display:block;padding:9px 14px;background:var(--ink);color:white;border-radius:var(--r);font-size:12px;font-weight:500;text-align:center;text-decoration:none">&#9993; Request to be listed &rarr;</a>
     </div>
   </div>
 </div>
@@ -333,7 +333,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
     <div class="fb"><span>&copy; 2026 ExpatPortugal.guide</span><span class="fbadge">Content auto-updated daily</span></div>
   </div>
 </footer>
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 var SB_URL = 'https://waywvckvyizqkuuaecrp.supabase.co';
 var SB_KEY = 'sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b';
 var activeRegion = 'all';
@@ -389,6 +389,14 @@ async function loadHero() {
     document.getElementById('hero-cat').textContent = (main.category || 'news').toUpperCase() + ' - just now';
     document.getElementById('hero-title').textContent = main.title;
     document.getElementById('hero-meta').textContent = (main.source_name || '') + ' - ' + (main.region || 'All regions');
+    if (main.image_url) {
+      var hm = document.getElementById('hero-main');
+      hm.style.backgroundImage = 'url(' + main.image_url + ')';
+      hm.style.backgroundSize = 'cover';
+      hm.style.backgroundPosition = 'center';
+      hm.insertAdjacentHTML('afterbegin', '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.3) 60%,rgba(0,0,0,0.1) 100%);border-radius:inherit"></div>');
+      hm.style.position = 'relative';
+    }
     var side = document.getElementById('hero-side');
     side.innerHTML = arts.slice(1).map(function(a, i) {
       var id = 'hsc' + i;
@@ -500,13 +508,4 @@ function subscribe() {
   var e = document.getElementById('sw-email').value.trim();
   if (!e || !e.includes('@')) { alert('Please enter a valid email address.'); return; }
   console.log('Subscribe:', e, document.getElementById('sw-reg').value);
-  document.getElementById('sub-widget').innerHTML = '<div style="text-align:center;padding:1.5rem;color:white"><div style="font-size:30px;margin-bottom:10px">&#127477;&#127481;</div><div style="font-family:Playfair Display,serif;font-size:18px;margin-bottom:6px">You are subscribed!</div><div style="font-size:12px;opacity:.65;line-height:1.7">First digest arrives next Sunday.</div></div>';
-}
-
-loadLiveNews();
-loadHero();
-loadWeather('all');
-loadHolidays();
-</script>
-</body>
-</html>
+  document.getElementById('sub-widget').innerHTML = '<div style="text-align:center;padding:1.5rem;color:white"><div style="font-size:30px;margin-bottom:10px">&#127477;&#127481;</div><div style="font-family:Playfair Display,
