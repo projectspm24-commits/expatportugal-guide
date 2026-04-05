@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
+<script data-cfasync="false" src="app.js" defer></script>
 <style>
 :root{--ink:#1c1917;--ink2:#57534e;--ink3:#a8a29e;--cream:#faf9f7;--warm:#f5f0e8;--card:#fff;--border:rgba(28,25,23,0.08);--border2:rgba(28,25,23,0.16);--red:#c0381a;--red-l:#fdf0ec;--red-d:#a83015;--green:#15803d;--green-l:#f0fdf4;--amber:#b45309;--amber-l:#fffbeb;--blue:#1d4ed8;--blue-l:#eff6ff;--r:10px;--rl:16px}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -29,10 +30,10 @@ nav{background:rgba(250,249,247,0.96);border-bottom:0.5px solid var(--border);pa
 .rp.on{background:var(--red);color:white;border-color:var(--red)}
 .hero{display:grid;grid-template-columns:1fr 340px;gap:0;max-width:1100px;margin:0 auto;padding:2rem 2rem 0}
 .hero-main{background:var(--ink);border-radius:var(--rl) 0 0 0;padding:2.5rem;display:flex;flex-direction:column;justify-content:flex-end;min-height:360px;position:relative;overflow:hidden;cursor:pointer}
-.hcat{font-size:10px;background:var(--red);color:white;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:12px;font-weight:500}
-.htitle{font-family:"Playfair Display",serif;font-size:clamp(18px,2.5vw,26px);font-weight:400;line-height:1.3;color:white;margin-bottom:10px}
-.hmeta{font-size:12px;color:rgba(255,255,255,0.4)}
-.hero-read{font-size:12px;color:rgba(255,255,255,0.65);margin-top:18px;padding-top:14px;border-top:0.5px solid rgba(255,255,255,0.1)}
+.hcat{font-size:10px;background:var(--red);color:white;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:12px;font-weight:500;position:relative;z-index:1}
+.htitle{font-family:"Playfair Display",serif;font-size:clamp(18px,2.5vw,26px);font-weight:400;line-height:1.3;color:white;margin-bottom:10px;position:relative;z-index:1}
+.hmeta{font-size:12px;color:rgba(255,255,255,0.4);position:relative;z-index:1}
+.hero-read{font-size:12px;color:rgba(255,255,255,0.65);margin-top:18px;padding-top:14px;border-top:0.5px solid rgba(255,255,255,0.1);position:relative;z-index:1}
 .hero-side{display:flex;flex-direction:column}
 .hsc{background:var(--card);border:0.5px solid var(--border);border-left:none;border-top:none;padding:1rem 1.25rem;cursor:pointer}
 .hsc:first-child{border-top:0.5px solid var(--border);border-radius:0 var(--rl) 0 0}
@@ -261,7 +262,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
       <div class="w-t">Expat communities</div>
       <div style="font-size:12px;color:var(--ink2);line-height:1.7;margin-bottom:12px">Do you organise expat meetups, clubs, or local groups in Portugal?</div>
       <div style="background:var(--warm);border-radius:var(--r);padding:12px;font-size:12px;color:var(--ink2);line-height:1.6;margin-bottom:10px">&#128101; We list active expat communities here. Just send us a request below.</div>
-      <a href="/cdn-cgi/l/email-protection#3b535e5757547b5e434b5a4f4b54494f4e5c5a57155c4e525f5e04484e59515e584f067752484f1b544e491b585456564e55524f421d59545f4206785456564e55524f421b555a565e011b1e0b7a78524f421b141b495e5c525455011b1e0b7a6f424b5e1b545d1b5c49544e4b011b1e0b7a7a4b4b495443151b565e56595e4948011b" style="display:block;padding:9px 14px;background:var(--ink);color:white;border-radius:var(--r);font-size:12px;font-weight:500;text-align:center;text-decoration:none">&#9993; Request to be listed &rarr;</a>
+      <a href="mailto:hello@expatportugal.guide?subject=List our community&body=Community name: %0ACity / region: %0AType of group: %0AApprox. members: " style="display:block;padding:9px 14px;background:var(--ink);color:white;border-radius:var(--r);font-size:12px;font-weight:500;text-align:center;text-decoration:none">&#9993; Request to be listed &rarr;</a>
     </div>
   </div>
 </div>
@@ -269,7 +270,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
   <div class="sh" style="margin-bottom:1.25rem"><span class="sh-t">Everything on this site</span></div>
   <div class="feats">
     <a class="feat" href="expat_tools_v4_fixed.html"><span class="feat-icon">&#128295;</span><div class="feat-title">Free expat tools</div><div class="feat-desc">Visa finder, cost calculator, tax comparison, rental tracker, document checklist and AI assistant.</div><span class="feat-lnk">9 free tools &rarr;</span></a>
-    <a class="feat" href="lifestyle_services.html"><span class="feat-icon">&#128205;</span><div class="feat-title">Lifestyle services</div><div class="feat-desc">English-speaking personal trainers, dentists, vets, tutors, hairdressers recommended by expats.</div><span class="feat-lnk">Browse services &rarr;</span></a>
+    <a class="feat" href="lifestyle_services.html"><span class="feat-icon">&#128205;</span><div class="feat-title">Lifestyle services</div><div class="feat-desc">English-speaking personal trainers, dentists, vets, tutors and hairdressers recommended by expats.</div><span class="feat-lnk">Browse services &rarr;</span></a>
     <a class="feat" href="live_local.html"><span class="feat-icon">&#129309;</span><div class="feat-title">Live like a local</div><div class="feat-desc">Language exchange, cultural guides, etiquette, volunteering &mdash; close the gap between expats and locals.</div><span class="feat-lnk">Start integrating &rarr;</span></a>
     <a class="feat" href="expat_tools_v4_fixed.html"><span class="feat-icon">&#128203;</span><div class="feat-title">Bureaucracy guide</div><div class="feat-desc">Step-by-step wizards for NIF, D7, D8, AIMA, NHR, citizenship and every major Portuguese process.</div><span class="feat-lnk">12 guides &rarr;</span></a>
   </div>
@@ -333,179 +334,5 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
     <div class="fb"><span>&copy; 2026 ExpatPortugal.guide</span><span class="fbadge">Content auto-updated daily</span></div>
   </div>
 </footer>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-var SB_URL = 'https://waywvckvyizqkuuaecrp.supabase.co';
-var SB_KEY = 'sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b';
-var activeRegion = 'all';
-var activeNewsCat = 'all';
-
-function isPT(src) {
-  src = src || '';
-  return src.indexOf('blico') >= 0 || src.indexOf('servador') >= 0 ||
-         src.indexOf('gocios') >= 0 || src.indexOf('Resident') >= 0 ||
-         src.indexOf('portuguese') >= 0 || src.indexOf('PT ') === 0;
-}
-
-async function loadLiveNews() {
-  try {
-    var q = SB_URL + '/rest/v1/articles?status=eq.approved&order=published_at.desc&limit=20';
-    if (activeRegion !== 'all') q += '&region=eq.' + encodeURIComponent(activeRegion);
-    if (activeNewsCat !== 'all') q += '&category=eq.' + encodeURIComponent(activeNewsCat);
-    var res = await fetch(q, { headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } });
-    var arts = await res.json();
-    var list = document.getElementById('news-list');
-    if (!arts || !arts.length) {
-      list.innerHTML = '<div class="ni" style="justify-content:center;padding:2rem;color:var(--ink3);font-size:13px">No articles yet.</div>';
-      return;
-    }
-    var ptArts = arts.filter(function(a) { return isPT(a.source_name); });
-    var enArts = arts.filter(function(a) { return !isPT(a.source_name); });
-    var sorted = ptArts.slice(0, 2).concat(enArts).slice(0, 5);
-    list.innerHTML = sorted.map(function(a) {
-      var date = a.published_at ? new Date(a.published_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : 'Today';
-      var src = a.source_name || 'Google News';
-      var thumb = a.image_url
-        ? '<div class="ni-img"><img src="' + a.image_url + '" alt="" /></div>'
-        : '<div class="ni-img" style="font-size:26px">' + (a.image_emoji || '&#128240;') + '</div>';
-      return '<a class="ni" href="' + (a.source_url || '#') + '" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">' +
-        thumb +
-        '<div style="flex:1"><div class="ni-cat">' + (a.category || 'news') + '</div>' +
-        '<div class="ni-title">' + a.title + '</div>' +
-        '<div class="ni-meta">' + date + '<span class="ni-reg">' + (a.region || 'all') + '</span>' +
-        '<span style="font-size:10px;color:var(--ink3);margin-left:5px">via ' + src + '</span></div></div></a>';
-    }).join('');
-  } catch (e) { console.error('News error:', e); }
-}
-
-async function loadHero() {
-  try {
-    var res = await fetch(SB_URL + '/rest/v1/articles?status=eq.approved&order=published_at.desc&limit=5', {
-      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
-    });
-    var arts = await res.json();
-    if (!arts || !arts.length) return;
-    var main = arts[0];
-    window._heroUrl = main.source_url || '#';
-    document.getElementById('hero-cat').textContent = (main.category || 'news').toUpperCase() + ' - just now';
-    document.getElementById('hero-title').textContent = main.title;
-    document.getElementById('hero-meta').textContent = (main.source_name || '') + ' - ' + (main.region || 'All regions');
-    if (main.image_url) {
-      var hm = document.getElementById('hero-main');
-      hm.style.backgroundImage = 'url(' + main.image_url + ')';
-      hm.style.backgroundSize = 'cover';
-      hm.style.backgroundPosition = 'center';
-      hm.insertAdjacentHTML('afterbegin', '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.3) 60%,rgba(0,0,0,0.1) 100%);border-radius:inherit"></div>');
-      hm.style.position = 'relative';
-    }
-    var side = document.getElementById('hero-side');
-    side.innerHTML = arts.slice(1).map(function(a, i) {
-      var id = 'hsc' + i;
-      setTimeout(function() {
-        var el = document.getElementById(id);
-        if (el) el.addEventListener('click', function() { window.open(a.source_url || '#', '_blank'); });
-      }, 100);
-      return '<div class="hsc" id="' + id + '" style="cursor:pointer">' +
-        '<div class="hsc-cat">' + (a.category || 'news') + '</div>' +
-        '<div class="hsc-title">' + a.title + '</div>' +
-        '<div class="hsc-meta">' + (a.source_name || '') + '</div></div>';
-    }).join('');
-  } catch (e) { console.error('Hero error:', e); }
-}
-
-var weatherCities = {
-  all:     { name: 'Lisbon',          lat: 38.72, lon: -9.14 },
-  Lisbon:  { name: 'Lisbon',          lat: 38.72, lon: -9.14 },
-  Porto:   { name: 'Porto',           lat: 41.15, lon: -8.61 },
-  Algarve: { name: 'Faro',            lat: 37.02, lon: -7.93 },
-  Cascais: { name: 'Cascais',         lat: 38.70, lon: -9.42 },
-  Braga:   { name: 'Braga',           lat: 41.55, lon: -8.43 },
-  Alentejo:{ name: 'Evora',           lat: 38.57, lon: -7.91 },
-  Madeira: { name: 'Funchal',         lat: 32.65, lon: -16.90 },
-  Azores:  { name: 'Ponta Delgada',   lat: 37.74, lon: -25.67 }
-};
-
-function wIcon(c) {
-  if (c === 0)  return '&#9728;';
-  if (c <= 2)   return '&#127780;';
-  if (c === 3)  return '&#9925;';
-  if (c <= 48)  return '&#127783;';
-  if (c <= 57)  return '&#127242;';
-  if (c <= 67)  return '&#127783;';
-  if (c <= 77)  return '&#10052;';
-  if (c <= 82)  return '&#127783;';
-  return '&#9928;';
-}
-
-async function loadWeather(region) {
-  try {
-    var city = weatherCities[region] || weatherCities.all;
-    document.getElementById('w-city').textContent = city.name;
-    var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + city.lat + '&longitude=' + city.lon +
-      '&daily=temperature_2m_max,weathercode&current_weather=true&timezone=Europe%2FLisbon&forecast_days=5';
-    var res = await fetch(url);
-    var data = await res.json();
-    var cur = data.current_weather;
-    document.getElementById('w-temp').innerHTML = Math.round(cur.temperature) + '&deg;';
-    document.getElementById('w-desc').textContent = cur.weathercode <= 2 ? 'Sunny' : cur.weathercode <= 3 ? 'Partly cloudy' : 'Cloudy intervals';
-    var days = data.daily;
-    var dn = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    document.getElementById('w-week').innerHTML = days.time.map(function(d, i) {
-      return '<div class="wd"><div class="wd-d">' + dn[new Date(d).getDay()] + '</div>' +
-        '<span class="wd-i">' + wIcon(days.weathercode[i]) + '</span>' +
-        '<div class="wd-t">' + Math.round(days.temperature_2m_max[i]) + '&deg;</div></div>';
-    }).join('');
-  } catch (e) { console.error('Weather error:', e); }
-}
-
-function loadHolidays() {
-  var today = new Date();
-  today.setHours(0, 0, 0, 0);
-  var hols = [
-    { n: '&#127941; Easter Sunday',      d: '2026-04-05', tip: 'Most important religious holiday. Families gather for lamb or bacalhau. Everything closed.',          closed: true },
-    { n: '&#127974; Liberty Day',         d: '2026-04-25', tip: 'Celebrates the 1974 Carnation Revolution ending 48 years of dictatorship. Very meaningful.',         closed: true },
-    { n: 'Labour Day',                    d: '2026-05-01', tip: 'International Workers Day. Parades in Lisbon and Porto. Most businesses closed.',                     closed: true },
-    { n: '&#127477;&#127481; Portugal Day', d: '2026-06-10', tip: 'National day. Military parades, flags everywhere. Big national pride day.',                        closed: true },
-    { n: 'Corpus Christi',                d: '2026-06-04', tip: 'Catholic feast day. Flower carpet processions. Most shops closed outside major cities.',              closed: true },
-    { n: '&#127749; Assumption Day',      d: '2026-08-15', tip: 'Major holiday - many Portuguese take the whole week off. Beach towns will be packed.',                closed: true },
-    { n: 'Republic Day',                  d: '2026-10-05', tip: 'Marks proclamation of the Portuguese Republic in 1910. Government closed, most shops open.',         closed: false },
-    { n: '&#129382; All Saints Day',      d: '2026-11-01', tip: 'Families visit cemeteries to honour the dead. Most businesses closed.',                              closed: true },
-    { n: 'Restoration Day',               d: '2026-12-01', tip: 'Celebrates Portugal regaining independence from Spain in 1640. Quiet national holiday.',             closed: true },
-    { n: 'Immaculate Conception',         d: '2026-12-08', tip: 'Catholic holiday marking the start of Christmas season. Most shops closed.',                         closed: true },
-    { n: '&#127876; Christmas Day',       d: '2026-12-25', tip: 'Very family-focused. Main meal is Christmas Eve (consoada) with bacalhau. Almost everything closed.',closed: true }
-  ];
-  var upcoming = hols.filter(function(h) { return new Date(h.d) >= today; }).slice(0, 5);
-  document.getElementById('hol-list').innerHTML = upcoming.map(function(h) {
-    var hdate = new Date(h.d);
-    var diff = Math.round((hdate - today) / 86400000);
-    var dateStr = hdate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
-    var badge = diff === 0 ? '<span class="hol-s">Today!</span>' :
-      diff <= 14 ? '<span class="hol-s">' + dateStr + ' soon</span>' :
-      '<span class="hol-d">' + dateStr + '</span>';
-    var icons = '&#128100; Most people off &nbsp; &#127978; ' + (h.closed ? 'Stores likely closed' : 'Stores mostly open');
-    return '<div class="hol"><span>' + h.n + '</span>' + badge +
-      '<div class="hol-tip">' + h.tip + '<div style="font-size:10px;margin-top:4px;opacity:.75">' + icons + '</div></div></div>';
-  }).join('');
-}
-
-function setReg(r, el) {
-  activeRegion = r;
-  document.querySelectorAll('.rp').forEach(function(b) { b.classList.remove('on'); });
-  el.classList.add('on');
-  var c = document.getElementById('w-city');
-  if (c) c.textContent = r === 'all' ? 'Lisbon' : r;
-  loadLiveNews();
-  loadWeather(r);
-}
-
-function setCat(c, el) {
-  activeNewsCat = c;
-  document.querySelectorAll('.cat-card').forEach(function(x) { x.classList.remove('on'); });
-  el.classList.add('on');
-  loadLiveNews();
-}
-
-function subscribe() {
-  var e = document.getElementById('sw-email').value.trim();
-  if (!e || !e.includes('@')) { alert('Please enter a valid email address.'); return; }
-  console.log('Subscribe:', e, document.getElementById('sw-reg').value);
-  document.getElementById('sub-widget').innerHTML = '<div style="text-align:center;padding:1.5rem;color:white"><div style="font-size:30px;margin-bottom:10px">&#127477;&#127481;</div><div style="font-family:Playfair Display,
+</body>
+</html>
