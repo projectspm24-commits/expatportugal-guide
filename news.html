@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Latest News — ExpatPortugal.guide</title>
+<meta name="description" content="Daily news for expats in Portugal — visas, housing, bureaucracy, lifestyle and more." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+:root{--ink:#1c1917;--ink2:#57534e;--ink3:#a8a29e;--cream:#faf9f7;--warm:#f5f0e8;--card:#fff;--border:rgba(28,25,23,0.08);--border2:rgba(28,25,23,0.16);--red:#c0381a;--red-l:#fdf0ec;--red-d:#a83015;--green:#15803d;--green-l:#f0fdf4;--amber:#b45309;--amber-l:#fffbeb;--blue:#1d4ed8;--blue-l:#eff6ff;--r:10px;--rl:16px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--ink);font-size:15px;line-height:1.6}
+a{text-decoration:none;color:inherit}
+nav{background:rgba(250,249,247,0.96);border-bottom:0.5px solid var(--border);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;backdrop-filter:blur(10px)}
+.logo{font-family:'Playfair Display',serif;font-size:19px;color:var(--ink);display:flex;align-items:center;gap:8px}
+.nav-links{display:flex;gap:2px}
+.nl{font-size:13px;padding:6px 11px;border-radius:var(--r);color:var(--ink2);background:none;border:none;cursor:pointer;font-family:'Outfit',sans-serif;text-decoration:none;display:inline-flex;align-items:center}
+.nl:hover{background:var(--warm);color:var(--ink)}
+.nl.on{color:var(--ink);font-weight:500}
+/* HEADER */
+.page-header{background:var(--ink);padding:3rem 2rem 2.5rem;text-align:center}
+.page-header h1{font-family:'Playfair Display',serif;font-size:clamp(24px,4vw,40px);font-weight:400;color:white;margin-bottom:8px}
+.page-header p{font-size:14px;color:rgba(255,255,255,0.55);margin-bottom:1.5rem}
+/* FILTERS */
+.filters{max-width:900px;margin:0 auto;padding:1.5rem 2rem}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.fp{font-size:12px;padding:6px 14px;border-radius:20px;border:0.5px solid var(--border2);background:var(--card);color:var(--ink2);cursor:pointer;font-family:'Outfit',sans-serif}
+.fp:hover{border-color:var(--ink);color:var(--ink)}
+.fp.on{background:var(--red);color:white;border-color:var(--red)}
+.search-bar{display:flex;gap:8px}
+.search-bar input{flex:1;padding:9px 14px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;background:var(--card);color:var(--ink);outline:none;font-family:'Outfit',sans-serif}
+.search-bar input:focus{border-color:var(--red)}
+/* NEWS LIST */
+.main{max-width:900px;margin:0 auto;padding:0 2rem 4rem}
+.results-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;font-size:13px;color:var(--ink3)}
+.news-grid{display:flex;flex-direction:column;gap:1px;border:0.5px solid var(--border);border-radius:var(--rl);overflow:hidden;background:var(--border)}
+.ni{background:var(--card);padding:1rem 1.25rem;display:flex;gap:14px;align-items:flex-start;cursor:pointer}
+.ni:hover{background:var(--warm)}
+.ni-img{width:60px;height:60px;border-radius:var(--r);background:var(--warm);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:24px}
+.ni-cat{font-size:10px;color:var(--red);font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.ni-title{font-size:14px;font-weight:500;line-height:1.4;margin-bottom:4px;color:var(--ink)}
+.ni-meta{font-size:11px;color:var(--ink3);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ni-reg{font-size:10px;padding:2px 7px;border-radius:20px;background:var(--warm);color:var(--ink2)}
+.ni-src{font-size:10px;color:var(--ink3)}
+/* LOAD MORE */
+.load-more{text-align:center;margin-top:1.5rem}
+.load-btn{padding:11px 28px;background:var(--card);border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif;color:var(--ink)}
+.load-btn:hover{background:var(--warm)}
+.empty{text-align:center;padding:3rem;color:var(--ink3);font-size:13px;background:var(--card);border-radius:var(--rl)}
+.loading-msg{text-align:center;padding:2rem;color:var(--ink3);font-size:13px}
+/* FOOTER */
+footer{border-top:0.5px solid var(--border);padding:1.5rem 2rem;background:var(--card);text-align:center;font-size:12px;color:var(--ink3)}
+@media(max-width:600px){nav{padding:0 1rem}.nav-links{display:none}.filters,.main{padding-left:1rem;padding-right:1rem}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">&#127477;&#127481; ExpatPortugal.guide</a>
+  <div class="nav-links">
+    <a class="nl" href="index.html">Home</a>
+    <a class="nl" href="expat_tools_v4_fixed.html">Free tools</a>
+    <a class="nl" href="lifestyle_services.html">Services</a>
+    <a class="nl" href="live_local.html">Live local</a>
+    <a class="nl on" href="news.html">News</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1>Latest news for expats in Portugal</h1>
+  <p>Updated daily · Links open original articles in a new tab</p>
+</div>
+
+<div class="filters">
+  <div class="filter-row" id="cat-filters">
+    <button class="fp on" onclick="setFilter('cat','all',this)">All categories</button>
+    <button class="fp" onclick="setFilter('cat','bureaucracy',this)">&#127963; Bureaucracy</button>
+    <button class="fp" onclick="setFilter('cat','housing',this)">&#127968; Housing</button>
+    <button class="fp" onclick="setFilter('cat','lifestyle',this)">&#9728; Lifestyle</button>
+    <button class="fp" onclick="setFilter('cat','transport',this)">&#128647; Transport</button>
+    <button class="fp" onclick="setFilter('cat','food',this)">&#127869; Food &amp; drink</button>
+    <button class="fp" onclick="setFilter('cat','community',this)">&#128101; Community</button>
+    <button class="fp" onclick="setFilter('cat','news',this)">&#128240; General</button>
+  </div>
+  <div class="filter-row" id="region-filters">
+    <button class="fp on" onclick="setFilter('region','all',this)">All regions</button>
+    <button class="fp" onclick="setFilter('region','Lisbon',this)">Lisbon</button>
+    <button class="fp" onclick="setFilter('region','Porto',this)">Porto</button>
+    <button class="fp" onclick="setFilter('region','Algarve',this)">Algarve</button>
+    <button class="fp" onclick="setFilter('region','Cascais',this)">Cascais</button>
+    <button class="fp" onclick="setFilter('region','Braga',this)">Braga</button>
+    <button class="fp" onclick="setFilter('region','Alentejo',this)">Alentejo</button>
+    <button class="fp" onclick="setFilter('region','Madeira',this)">Madeira</button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="results-bar">
+    <span id="results-count">Loading...</span>
+  </div>
+  <div id="news-grid" class="news-grid">
+    <div class="loading-msg">Loading latest news...</div>
+  </div>
+  <div class="load-more" id="load-more" style="display:none">
+    <button class="load-btn" onclick="loadMore()">Load more articles</button>
+  </div>
+</div>
+
+<footer>
+  &#127477;&#127481; ExpatPortugal.guide &nbsp;&middot;&nbsp; <a href="index.html">Home</a> &nbsp;&middot;&nbsp; <a href="expat_tools_v4_fixed.html">Free tools</a> &nbsp;&middot;&nbsp; Content updated daily
+</footer>
+
+<script>
+var SB_URL = 'https://waywvckvyizqkuuaecrp.supabase.co';
+var SB_KEY = 'sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b';
+var PAGE_SIZE = 20;
+var currentOffset = 0;
+var activeCat = 'all';
+var activeRegion = 'all';
+var allLoaded = false;
+
+function setFilter(type, val, el) {
+  if (type === 'cat') {
+    activeCat = val;
+    document.querySelectorAll('#cat-filters .fp').forEach(function(b){b.classList.remove('on');});
+  } else {
+    activeRegion = val;
+    document.querySelectorAll('#region-filters .fp').forEach(function(b){b.classList.remove('on');});
+  }
+  el.classList.add('on');
+  currentOffset = 0;
+  allLoaded = false;
+  loadNews(true);
+}
+
+async function loadNews(reset) {
+  if (reset) {
+    document.getElementById('news-grid').innerHTML = '<div class="loading-msg">Loading...</div>';
+    document.getElementById('load-more').style.display = 'none';
+  }
+  try {
+    var query = SB_URL + '/rest/v1/articles?status=eq.approved&order=published_at.desc&limit=' + PAGE_SIZE + '&offset=' + currentOffset;
+    if (activeCat !== 'all') query += '&category=eq.' + encodeURIComponent(activeCat);
+    if (activeRegion !== 'all') query += '&region=eq.' + encodeURIComponent(activeRegion);
+    var res = await fetch(query, {
+      headers: {
+        'apikey': SB_KEY,
+        'Authorization': 'Bearer ' + SB_KEY,
+        'Prefer': 'count=exact'
+      }
+    });
+    var total = parseInt(res.headers.get('Content-Range')?.split('/')[1] || '0');
+    var articles = await res.json();
+
+    document.getElementById('results-count').textContent = total + ' articles found';
+
+    if (!articles.length && currentOffset === 0) {
+      document.getElementById('news-grid').innerHTML = '<div class="empty">No articles found for this filter. Try a different category or region.</div>';
+      return;
+    }
+
+    var html = articles.map(function(a) {
+      var date = a.published_at ? new Date(a.published_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
+      return '<a class="ni" href="' + (a.source_url||'#') + '" target="_blank" rel="noopener">' +
+        '<div class="ni-img">' + (a.image_emoji||'&#128240;') + '</div>' +
+        '<div style="flex:1">' +
+          '<div class="ni-cat">' + (a.category||'news') + '</div>' +
+          '<div class="ni-title">' + a.title + '</div>' +
+          '<div class="ni-meta">' +
+            '<span>' + date + '</span>' +
+            '<span class="ni-reg">' + (a.region||'all') + '</span>' +
+            (a.source_name ? '<span class="ni-src">via ' + a.source_name + '</span>' : '') +
+          '</div>' +
+        '</div>' +
+        '<div style="font-size:18px;color:var(--ink3);flex-shrink:0;padding-left:8px">&#8599;</div>' +
+      '</a>';
+    }).join('');
+
+    if (reset) {
+      document.getElementById('news-grid').innerHTML = html;
+    } else {
+      document.getElementById('news-grid').insertAdjacentHTML('beforeend', html);
+    }
+
+    currentOffset += articles.length;
+    allLoaded = articles.length < PAGE_SIZE;
+    document.getElementById('load-more').style.display = allLoaded ? 'none' : 'block';
+
+  } catch(e) {
+    document.getElementById('news-grid').innerHTML = '<div class="empty">Could not load articles. Please try again.</div>';
+  }
+}
+
+function loadMore() {
+  loadNews(false);
+}
+
+loadNews(true);
+</script>
+</body>
+</html>

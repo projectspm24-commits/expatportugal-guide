@@ -53,7 +53,7 @@ nav{background:rgba(250,249,247,0.96);border-bottom:0.5px solid var(--border);pa
 .wrap{max-width:1100px;margin:2rem auto 0;padding:0 2rem;display:grid;grid-template-columns:1fr 310px;gap:2rem;align-items:start}
 .sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:10px;border-bottom:0.5px solid var(--border)}
 .sh-t{font-family:'Playfair Display',serif;font-size:18px;font-weight:400}
-.sh-m{font-size:12px;color:var(--red);cursor:pointer}
+.sh-m{font-size:12px;color:var(--red);cursor:pointer}.sh-btn{font-size:12px;padding:6px 14px;background:var(--red);color:white;border-radius:var(--r);text-decoration:none;font-weight:500;white-space:nowrap}.sh-btn:hover{background:var(--red-d)}
 .news-list{border:0.5px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:2rem}
 .ni{background:var(--card);padding:1rem 1.25rem;cursor:pointer;display:flex;gap:14px;align-items:flex-start;border-bottom:0.5px solid var(--border)}
 .ni:last-child{border-bottom:none}
@@ -100,10 +100,14 @@ nav{background:rgba(250,249,247,0.96);border-bottom:0.5px solid var(--border);pa
 .wd-i{font-size:13px;margin:3px 0;display:block}
 .wd-t{font-size:12px;font-weight:500}
 .hol-list{display:flex;flex-direction:column}
-.hol{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid var(--border);font-size:13px}
+.hol{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid var(--border);font-size:13px;position:relative;cursor:default}
 .hol:last-child{border-bottom:none}
 .hol-d{font-size:11px;color:var(--ink3)}
 .hol-s{font-size:10px;background:var(--red-l);color:var(--red);padding:2px 7px;border-radius:20px;font-weight:500}
+.hol-tooltip{display:none;position:absolute;bottom:calc(100% + 6px);left:0;right:0;background:var(--ink);color:white;font-size:11px;line-height:1.5;padding:8px 10px;border-radius:var(--r);z-index:50;box-shadow:0 4px 16px rgba(0,0,0,0.18);pointer-events:none}
+.hol-tooltip::after{content:'';position:absolute;top:100%;left:16px;border:5px solid transparent;border-top-color:var(--ink)}
+.hol:hover .hol-tooltip{display:block}
+.hol-icons{font-size:10px;margin-top:4px;display:flex;gap:8px;opacity:.75}
 .comm-list{display:flex;flex-direction:column;gap:7px}
 .comm{display:flex;align-items:center;gap:10px;padding:8px;border-radius:var(--r);border:0.5px solid var(--border);cursor:pointer}
 .comm:hover{background:var(--warm)}
@@ -181,17 +185,17 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
 </div>
 
 <div class="hero">
-  <div class="hero-main" onclick="alert('Full article in live version')">
-    <div class="hcat">News &middot; 2 hours ago</div>
-    <div class="htitle">Portugal extends AIMA waiting time reduction programme &mdash; appointments now within 4 months in most cities</div>
-    <div class="hmeta">Ministry of Internal Affairs &middot; All regions</div>
+  <div class="hero-main" id="hero-main" onclick="if(window._heroUrl)window.open(window._heroUrl,'_blank')" style="cursor:pointer">
+    <div class="hcat" id="hero-cat">Loading...</div>
+    <div class="htitle" id="hero-title">Fetching latest news...</div>
+    <div class="hmeta" id="hero-meta"></div>
     <div class="hero-read">Read full article &rarr;</div>
   </div>
-  <div class="hero-side">
-    <div class="hsc"><div class="hsc-cat">Bureaucracy</div><div class="hsc-title">New NIF online application launches &mdash; no Finanas office visit required for EU citizens</div><div class="hsc-meta">Yesterday &middot; All regions</div></div>
-    <div class="hsc"><div class="hsc-cat">Housing</div><div class="hsc-title">Porto rental prices drop for second consecutive quarter as new supply hits market</div><div class="hsc-meta">2 days ago &middot; Porto</div></div>
-    <div class="hsc"><div class="hsc-cat">Events</div><div class="hsc-title">Santos Populares 2025 programme announced &mdash; free concerts across Lisbon every night in June</div><div class="hsc-meta">3 days ago &middot; Lisbon</div></div>
-    <div class="hsc"><div class="hsc-cat">Community</div><div class="hsc-title">Language exchange programme launches in Porto &mdash; 200 expats and locals signed up in first week</div><div class="hsc-meta">4 days ago &middot; Porto</div></div>
+  <div class="hero-side" id="hero-side">
+    <div class="hsc"><div class="hsc-cat">...</div><div class="hsc-title">Loading...</div><div class="hsc-meta"></div></div>
+    <div class="hsc"><div class="hsc-cat">...</div><div class="hsc-title">Loading...</div><div class="hsc-meta"></div></div>
+    <div class="hsc"><div class="hsc-cat">...</div><div class="hsc-title">Loading...</div><div class="hsc-meta"></div></div>
+    <div class="hsc"><div class="hsc-cat">...</div><div class="hsc-title">Loading...</div><div class="hsc-meta"></div></div>
   </div>
 </div>
 
@@ -209,7 +213,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
 <div class="wrap">
   <div>
     <div id="news" style="margin-bottom:2rem">
-      <div class="sh"><span class="sh-t">Latest news</span><span class="sh-m">See all &rarr;</span></div>
+      <div class="sh"><span class="sh-t">Latest news</span><a href="news.html" class="sh-btn">See all news &rarr;</a></div>
       <div class="news-list" id="news-list">
         <div class="ni" style="justify-content:center;padding:2rem;color:var(--ink3);font-size:13px">Loading latest news...</div>
       </div>
@@ -258,26 +262,22 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
     <div class="widget">
       <div class="w-t">Weather this week</div>
       <div class="weath-top">
-        <div><div class="wt-name" id="w-city">Lisbon</div><div class="wt-desc">Sunny intervals</div></div>
-        <div class="wt-temp">22&deg;</div>
+        <div><div class="wt-name" id="w-city">Lisbon</div><div class="wt-desc" id="w-desc">Loading...</div></div>
+        <div class="wt-temp" id="w-temp">--&deg;</div>
       </div>
-      <div class="wweek">
-        <div class="wd"><div class="wd-d">Mon</div><span class="wd-i">&#9728;</span><div class="wd-t">24&deg;</div></div>
-        <div class="wd"><div class="wd-d">Tue</div><span class="wd-i">&#9925;</span><div class="wd-t">21&deg;</div></div>
-        <div class="wd"><div class="wd-d">Wed</div><span class="wd-i">&#127783;</span><div class="wd-t">18&deg;</div></div>
-        <div class="wd"><div class="wd-d">Thu</div><span class="wd-i">&#9728;</span><div class="wd-t">23&deg;</div></div>
-        <div class="wd"><div class="wd-d">Fri</div><span class="wd-i">&#9728;</span><div class="wd-t">25&deg;</div></div>
+      <div class="wweek" id="w-week">
+        <div class="wd"><div class="wd-d">--</div><span class="wd-i">--</span><div class="wd-t">--</div></div>
+        <div class="wd"><div class="wd-d">--</div><span class="wd-i">--</span><div class="wd-t">--</div></div>
+        <div class="wd"><div class="wd-d">--</div><span class="wd-i">--</span><div class="wd-t">--</div></div>
+        <div class="wd"><div class="wd-d">--</div><span class="wd-i">--</span><div class="wd-t">--</div></div>
+        <div class="wd"><div class="wd-d">--</div><span class="wd-i">--</span><div class="wd-t">--</div></div>
       </div>
     </div>
 
     <div class="widget">
       <div class="w-t">Public holidays</div>
-      <div class="hol-list">
-        <div class="hol"><span>Liberty Day</span><span class="hol-s">25 Apr &middot; soon</span></div>
-        <div class="hol"><span>Labour Day</span><span class="hol-d">1 May</span></div>
-        <div class="hol"><span>Portugal Day</span><span class="hol-d">10 Jun</span></div>
-        <div class="hol"><span>Corpus Christi</span><span class="hol-d">19 Jun</span></div>
-        <div class="hol"><span>Assumption Day</span><span class="hol-d">15 Aug</span></div>
+      <div class="hol-list" id="hol-list">
+        <div class="hol"><div class="hol" style="justify-content:center;font-size:12px;color:var(--ink3)">Loading...</div></div>
       </div>
     </div>
 
@@ -399,7 +399,7 @@ var activeNewsCat = 'all';
 
 async function loadLiveNews() {
   try {
-    var query = SB_URL + '/rest/v1/articles?status=eq.approved&order=published_at.desc&limit=8';
+    var query = SB_URL + '/rest/v1/articles?status=eq.approved&order=published_at.desc&limit=5';
     if (activeRegion !== 'all') query += '&region=eq.' + encodeURIComponent(activeRegion);
     if (activeNewsCat !== 'all') query += '&category=eq.' + encodeURIComponent(activeNewsCat);
     var res = await fetch(query, {
@@ -441,6 +441,177 @@ function setCat(c,el){
 }
 
 loadLiveNews();
+
+// ── HERO (top 5 articles) ─────────────────────────────────
+async function loadHero() {
+  try {
+    var res = await fetch(SB_URL + '/rest/v1/articles?status=eq.approved&order=published_at.desc&limit=5', {
+      headers: {'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY}
+    });
+    var arts = await res.json();
+    if (!arts || !arts.length) return;
+    var main = arts[0];
+    window._heroUrl = main.source_url || '#';
+    document.getElementById('hero-cat').textContent = (main.category || 'news').toUpperCase() + ' · just now';
+    document.getElementById('hero-title').textContent = main.title;
+    document.getElementById('hero-meta').textContent = (main.source_name || '') + ' · ' + (main.region || 'All regions');
+    var side = document.getElementById('hero-side');
+    side.innerHTML = arts.slice(1).map(function(a, i) {
+      var id = 'hsc' + i;
+      setTimeout(function() {
+        var el = document.getElementById(id);
+        if(el) el.addEventListener('click', function(){ window.open(a.source_url||'#','_blank'); });
+      }, 100);
+      return '<div class="hsc" id="' + id + '" style="cursor:pointer">' +
+        '<div class="hsc-cat">' + (a.category||'news') + '</div>' +
+        '<div class="hsc-title">' + a.title + '</div>' +
+        '<div class="hsc-meta">' + (a.region||'all') + '</div></div>';
+    }).join('');
+  } catch(e) { console.error('Hero error:', e); }
+}
+
+// ── WEATHER (Open-Meteo, free, no key needed) ─────────────
+var weatherCities = {
+  'all':      { name: 'Lisbon',   lat: 38.72, lon: -9.14 },
+  'Lisbon':   { name: 'Lisbon',   lat: 38.72, lon: -9.14 },
+  'Porto':    { name: 'Porto',    lat: 41.15, lon: -8.61 },
+  'Algarve':  { name: 'Faro',     lat: 37.02, lon: -7.93 },
+  'Cascais':  { name: 'Cascais',  lat: 38.70, lon: -9.42 },
+  'Braga':    { name: 'Braga',    lat: 41.55, lon: -8.43 },
+  'Alentejo': { name: 'Evora',    lat: 38.57, lon: -7.91 },
+  'Madeira':  { name: 'Funchal',  lat: 32.65, lon: -16.90 },
+  'Azores':   { name: 'Ponta Delgada', lat: 37.74, lon: -25.67 }
+};
+var weatherIcons = ['&#9728;','&#127780;','&#9925;','&#127783;','&#127783;','&#127783;','&#127783;','&#9928;','&#127783;','&#127783;','&#9928;','&#127783;','&#127784;','127784;','127784;','127784;','&#127784;','&#9928;','&#127781;','&#127782;','&#127782;','&#127782;','&#9928;','&#127783;','&#127783;','&#127783;','&#127781;','&#127782;','&#127781;','&#127782;','127780;','127780;'];
+function getWeatherIcon(code) {
+  if(code===0) return '&#9728;';
+  if(code<=2) return '&#127780;';
+  if(code<=3) return '&#9925;';
+  if(code<=48) return '&#127783;';
+  if(code<=67) return '&#127783;';
+  if(code<=77) return '&#127783;';
+  if(code<=82) return '&#127783;';
+  if(code<=99) return '&#26A1;';
+  return '&#9728;';
+}
+async function loadWeather(region) {
+  try {
+    var city = weatherCities[region] || weatherCities['all'];
+    document.getElementById('w-city').textContent = city.name;
+    var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + city.lat + '&longitude=' + city.lon +
+      '&daily=temperature_2m_max,weathercode&current_weather=true&timezone=Europe%2FLisbon&forecast_days=5';
+    var res = await fetch(url);
+    var data = await res.json();
+    var cur = data.current_weather;
+    document.getElementById('w-temp').innerHTML = Math.round(cur.temperature) + '&deg;';
+    var descs = ['Clear','Partly cloudy','Overcast','Foggy','Drizzle','Rain','Snow','Showers','Thunderstorm'];
+    document.getElementById('w-desc').textContent = getWeatherIcon(cur.weathercode).includes('9728') ? 'Sunny' : 'Cloudy intervals';
+    var days = data.daily;
+    var dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    var week = document.getElementById('w-week');
+    week.innerHTML = days.time.map(function(d,i) {
+      var name = dayNames[new Date(d).getDay()];
+      return '<div class="wd"><div class="wd-d">' + name + '</div><span class="wd-i">' +
+        getWeatherIcon(days.weathercode[i]) + '</span><div class="wd-t">' +
+        Math.round(days.temperature_2m_max[i]) + '&deg;</div></div>';
+    }).join('');
+  } catch(e) { console.error('Weather error:', e); }
+}
+
+// ── PUBLIC HOLIDAYS 2026 ──────────────────────────────────
+function loadHolidays() {
+  var today = new Date();
+  today.setHours(0,0,0,0);
+  var holidays = [
+    {
+      name: '&#127941; Easter Sunday', date: new Date('2026-04-05'),
+      tip: 'The most important religious holiday in Portugal. Catholics attend mass, families gather for lamb or bacalhau meals.',
+      free: true, closed: true
+    },
+    {
+      name: '&#127974; Liberty Day', date: new Date('2026-04-25'),
+      tip: 'Celebrates the 1974 Carnation Revolution that ended 48 years of dictatorship. A deeply meaningful day for Portuguese people.',
+      free: true, closed: true
+    },
+    {
+      name: 'Labour Day', date: new Date('2026-05-01'),
+      tip: 'International Workers Day. Parades in Lisbon and Porto. Most businesses closed, supermarkets may open with reduced hours.',
+      free: true, closed: true
+    },
+    {
+      name: '&#127477;&#127481; Portugal Day', date: new Date('2026-06-10'),
+      tip: 'National day celebrating Luis de Camoes and the Portuguese diaspora. Military parades, flags everywhere. Big national pride day.',
+      free: true, closed: true
+    },
+    {
+      name: 'Corpus Christi', date: new Date('2026-06-04'),
+      tip: 'Catholic feast day. Flower carpet processions in some towns. Most shops closed, especially outside major cities.',
+      free: true, closed: true
+    },
+    {
+      name: '&#127749; Assumption Day', date: new Date('2026-08-15'),
+      tip: 'Catholic feast celebrating the Virgin Mary. Major holiday — many Portuguese take the whole week off. Expect beach towns to be packed.',
+      free: true, closed: true
+    },
+    {
+      name: 'Republic Day', date: new Date('2026-10-05'),
+      tip: 'Marks the proclamation of the Portuguese Republic in 1910. Quiet holiday — government offices closed, most shops open.',
+      free: true, closed: false
+    },
+    {
+      name: '&#129382; All Saints Day', date: new Date('2026-11-01'),
+      tip: 'Families visit cemeteries to honour the dead. Solemn and reflective. Most businesses closed, especially in smaller towns.',
+      free: true, closed: true
+    },
+    {
+      name: 'Restoration Day', date: new Date('2026-12-01'),
+      tip: 'Celebrates Portugal regaining independence from Spain in 1640. Quiet national holiday, most shops closed.',
+      free: true, closed: true
+    },
+    {
+      name: 'Immaculate Conception', date: new Date('2026-12-08'),
+      tip: 'Catholic holiday. Often treated as the start of the Christmas season — decorations go up. Most shops closed.',
+      free: true, closed: true
+    },
+    {
+      name: '&#127876; Christmas Day', date: new Date('2026-12-25'),
+      tip: 'Portuguese Christmas is very family-focused. The main meal is on Christmas Eve (consoada) with bacalhau. Almost everything closed.',
+      free: true, closed: true
+    }
+  ];
+  var upcoming = holidays.filter(function(h){ return h.date >= today; }).slice(0,5);
+  var list = document.getElementById('hol-list');
+  list.innerHTML = upcoming.map(function(h) {
+    var diff = Math.round((h.date - today) / (1000*60*60*24));
+    var dateStr = h.date.toLocaleDateString('en-GB', {day:'numeric', month:'short'});
+    var badge = diff === 0
+      ? '<span class="hol-s">Today!</span>'
+      : diff <= 14
+        ? '<span class="hol-s">' + dateStr + ' &middot; soon</span>'
+        : '<span class="hol-d">' + dateStr + '</span>';
+    var icons = '<div class="hol-icons">' +
+      (h.free ? '&#128100; Most people off' : '&#128100; Mixed') +
+      (h.closed ? ' &nbsp; &#127978; Stores likely closed' : ' &nbsp; &#127978; Stores mostly open') +
+      '</div>';
+    return '<div class="hol"><span>' + h.name + '</span>' + badge +
+      '<div class="hol-tooltip">' + h.tip + icons + '</div></div>';
+  }).join('');
+}
+
+// ── OVERRIDE setReg to also update weather ────────────────
+var _origSetReg = setReg;
+setReg = function(r, el) {
+  activeRegion = r;
+  document.querySelectorAll('.rp').forEach(function(b){b.classList.remove('on');});
+  el.classList.add('on');
+  loadLiveNews();
+  loadWeather(r);
+};
+
+loadHero();
+loadWeather('all');
+loadHolidays();
+
 </script>
 </body>
 </html>
