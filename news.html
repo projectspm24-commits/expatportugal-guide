@@ -121,6 +121,18 @@ var activeCat = 'all';
 var activeRegion = 'all';
 var allLoaded = false;
 
+var categoryImages = {
+  'bureaucracy': 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&h=400&fit=crop',
+  'housing': 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&h=400&fit=crop',
+  'lifestyle': 'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=600&h=400&fit=crop',
+  'transport': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600&h=400&fit=crop',
+  'food': 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=400&fit=crop',
+  'economy': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=400&fit=crop',
+  'community': 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=400&fit=crop',
+  'news': 'https://images.unsplash.com/photo-1585208798174-6cedd86e019a?w=600&h=400&fit=crop'
+};
+function getCategoryImage(cat) { return categoryImages[cat] || categoryImages['news']; }
+
 function setFilter(type, val, el) {
   if (type === 'cat') {
     activeCat = val;
@@ -163,9 +175,8 @@ async function loadNews(reset) {
 
     var html = articles.map(function(a) {
       var date = a.published_at ? new Date(a.published_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
-      var img = a.image_url
-        ? '<img src="' + a.image_url + '" style="width:60px;height:60px;object-fit:cover;border-radius:var(--r);flex-shrink:0" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'"/><div class="ni-img" style="display:none">' + (a.image_emoji||'&#128240;') + '</div>'
-        : '<div class="ni-img">' + (a.image_emoji||'&#128240;') + '</div>';
+      var imgSrc = a.image_url || getCategoryImage(a.category);
+      var img = '<img src="' + imgSrc + '" style="width:60px;height:60px;object-fit:cover;border-radius:var(--r);flex-shrink:0" onerror="this.src=\'' + getCategoryImage(a.category) + '\'" />';
       return '<a class="ni" href="' + (a.source_url||'#') + '" target="_blank" rel="noopener">' +
         img +
         '<div style="flex:1">' +
