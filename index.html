@@ -9,29 +9,28 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
-:root{--ink:#1c1917;--ink2:#57534e;--ink3:#a8a29e;--cream:#faf9f7;--warm:#f5f0e8;--card:#fff;--border:rgba(28,25,23,0.08);--border2:rgba(28,25,23,0.16);--red:#c0381a;--red-l:#fdf0ec;--red-d:#a83015;--green:#15803d;--green-l:#f0fdf4;--teal:#0f766e;--amber:#b45309;--amber-l:#fffbeb;--blue:#1d4ed8;--blue-l:#eff6ff;--r:10px;--rl:16px}
+:root{--ink:#1c1917;--ink2:#57534e;--ink3:#a8a29e;--cream:#faf9f7;--warm:#f5f0e8;--card:#fff;--border:rgba(28,25,23,0.08);--border2:rgba(28,25,23,0.16);--red:#c0381a;--red-l:#fdf0ec;--red-d:#a83015;--green:#15803d;--green-l:#f0fdf4;--amber:#b45309;--amber-l:#fffbeb;--blue:#1d4ed8;--blue-l:#eff6ff;--r:10px;--rl:16px}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--ink);font-size:15px;line-height:1.6}
+body{font-family:"Outfit",sans-serif;background:var(--cream);color:var(--ink);font-size:15px;line-height:1.6}
 a{text-decoration:none;color:inherit}
 nav{background:rgba(250,249,247,0.96);border-bottom:0.5px solid var(--border);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;backdrop-filter:blur(10px)}
-.logo{font-family:'Playfair Display',serif;font-size:19px;color:var(--ink);display:flex;align-items:center;gap:8px}
+.logo{font-family:"Playfair Display",serif;font-size:19px;color:var(--ink);display:flex;align-items:center;gap:8px}
 .nav-links{display:flex;gap:2px}
-.nl{font-size:13px;padding:6px 11px;border-radius:var(--r);color:var(--ink2);background:none;border:none;cursor:pointer;font-family:'Outfit',sans-serif;text-decoration:none;display:inline-flex;align-items:center;white-space:nowrap}
+.nl{font-size:13px;padding:6px 11px;border-radius:var(--r);color:var(--ink2);background:none;border:none;cursor:pointer;font-family:"Outfit",sans-serif;text-decoration:none;display:inline-flex;align-items:center;white-space:nowrap}
 .nl:hover{background:var(--warm);color:var(--ink)}
 .nl.on{color:var(--ink);font-weight:500}
-.nav-right{display:flex;align-items:center;gap:8px}
-.nav-sub{font-size:12px;padding:7px 15px;background:var(--ink);color:white;border:none;border-radius:var(--r);cursor:pointer;font-family:'Outfit',sans-serif;font-weight:500;white-space:nowrap}
+.nav-sub{font-size:12px;padding:7px 15px;background:var(--ink);color:white;border:none;border-radius:var(--r);cursor:pointer;font-family:"Outfit",sans-serif;font-weight:500;white-space:nowrap}
 .nav-sub:hover{background:#2c2825}
 .region-bar{background:var(--card);border-bottom:0.5px solid var(--border);padding:0 2rem;height:36px;display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none}
 .region-bar::-webkit-scrollbar{display:none}
 .rb-label{font-size:11px;color:var(--ink3);white-space:nowrap;margin-right:4px;flex-shrink:0}
-.rp{font-size:11px;padding:3px 12px;border-radius:20px;border:0.5px solid var(--border2);color:var(--ink2);cursor:pointer;white-space:nowrap;background:var(--card);flex-shrink:0;font-family:'Outfit',sans-serif}
+.rp{font-size:11px;padding:3px 12px;border-radius:20px;border:0.5px solid var(--border2);color:var(--ink2);cursor:pointer;white-space:nowrap;background:var(--card);flex-shrink:0;font-family:"Outfit",sans-serif}
 .rp:hover{border-color:var(--ink);color:var(--ink)}
 .rp.on{background:var(--red);color:white;border-color:var(--red)}
 .hero{display:grid;grid-template-columns:1fr 340px;gap:0;max-width:1100px;margin:0 auto;padding:2rem 2rem 0}
 .hero-main{background:var(--ink);border-radius:var(--rl) 0 0 0;padding:2.5rem;display:flex;flex-direction:column;justify-content:flex-end;min-height:360px;position:relative;overflow:hidden;cursor:pointer}
 .hcat{font-size:10px;background:var(--red);color:white;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:12px;font-weight:500}
-.htitle{font-family:'Playfair Display',serif;font-size:clamp(18px,2.5vw,26px);font-weight:400;line-height:1.3;color:white;margin-bottom:10px}
+.htitle{font-family:"Playfair Display",serif;font-size:clamp(18px,2.5vw,26px);font-weight:400;line-height:1.3;color:white;margin-bottom:10px}
 .hmeta{font-size:12px;color:rgba(255,255,255,0.4)}
 .hero-read{font-size:12px;color:rgba(255,255,255,0.65);margin-top:18px;padding-top:14px;border-top:0.5px solid rgba(255,255,255,0.1)}
 .hero-side{display:flex;flex-direction:column}
@@ -51,7 +50,7 @@ nav{background:rgba(250,249,247,0.96);border-bottom:0.5px solid var(--border);pa
 .cc-sub{font-size:10px;color:var(--ink3);margin-top:2px}
 .wrap{max-width:1100px;margin:2rem auto 0;padding:0 2rem;display:grid;grid-template-columns:1fr 310px;gap:2rem;align-items:start}
 .sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:10px;border-bottom:0.5px solid var(--border)}
-.sh-t{font-family:'Playfair Display',serif;font-size:18px;font-weight:400}
+.sh-t{font-family:"Playfair Display",serif;font-size:18px;font-weight:400}
 .sh-m{font-size:12px;color:var(--red);cursor:pointer}
 .sh-btn{font-size:12px;padding:6px 14px;background:var(--red);color:white;border-radius:var(--r);text-decoration:none;font-weight:500;white-space:nowrap}
 .sh-btn:hover{background:var(--red-d)}
@@ -59,42 +58,43 @@ nav{background:rgba(250,249,247,0.96);border-bottom:0.5px solid var(--border);pa
 .ni{background:var(--card);padding:1rem 1.25rem;cursor:pointer;display:flex;gap:14px;align-items:flex-start;border-bottom:0.5px solid var(--border)}
 .ni:last-child{border-bottom:none}
 .ni:hover{background:var(--warm)}
-.ni-img{width:68px;height:68px;border-radius:var(--r);background:var(--warm);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:26px}
+.ni-img{width:68px;height:68px;border-radius:var(--r);background:var(--warm);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:26px;overflow:hidden}
+.ni-img img{width:100%;height:100%;object-fit:cover}
 .ni-cat{font-size:10px;color:var(--red);font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
 .ni-title{font-size:13px;font-weight:500;line-height:1.4;margin-bottom:4px}
 .ni-meta{font-size:11px;color:var(--ink3)}
 .ni-reg{font-size:10px;padding:2px 7px;border-radius:20px;background:var(--warm);color:var(--ink2);margin-left:5px}
 .tools-box{background:var(--ink);border-radius:var(--rl);padding:1.5rem;margin-bottom:2rem;color:white}
-.tb-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:400;margin-bottom:6px}
+.tb-title{font-family:"Playfair Display",serif;font-size:18px;font-weight:400;margin-bottom:6px}
 .tb-sub{font-size:12px;opacity:.6;margin-bottom:1.25rem;line-height:1.7}
 .chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:1.25rem}
 .chip{font-size:11px;padding:5px 10px;border-radius:20px;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.75)}
-.tb-btn{display:block;width:100%;padding:10px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;text-align:center;font-family:'Outfit',sans-serif;text-decoration:none}
+.tb-btn{display:block;width:100%;padding:10px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;text-align:center;font-family:"Outfit",sans-serif;text-decoration:none}
 .tb-btn:hover{background:var(--red-d)}
 .ev-list{display:flex;flex-direction:column;gap:8px;margin-bottom:2rem}
 .ev{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1rem;display:flex;gap:12px;cursor:pointer}
 .ev:hover{border-color:var(--border2)}
 .ev-date{min-width:40px;text-align:center;background:var(--warm);border-radius:var(--r);padding:6px 4px;flex-shrink:0}
-.ev-day{font-family:'Playfair Display',serif;font-size:20px;line-height:1}
+.ev-day{font-family:"Playfair Display",serif;font-size:20px;line-height:1}
 .ev-mon{font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3)}
 .ev-title{font-size:13px;font-weight:500;margin-bottom:3px}
 .ev-loc{font-size:11px;color:var(--ink3)}
 .ev-tag{font-size:10px;padding:2px 8px;border-radius:20px;display:inline-block;margin-top:5px;font-weight:500}
-.tm{background:#EEEDFE;color:#3C3489}.tf{background:var(--amber-l);color:var(--amber)}.ts{background:var(--green-l);color:var(--green)}.tsp{background:var(--blue-l);color:var(--blue)}.tc{background:var(--teal-l);color:var(--teal)}.tmk{background:var(--red-l);color:var(--red)}
+.tm{background:#EEEDFE;color:#3C3489}.ts{background:var(--green-l);color:var(--green)}.tsp{background:var(--blue-l);color:var(--blue)}.tmk{background:var(--red-l);color:var(--red)}
 .sidebar{display:flex;flex-direction:column;gap:1.25rem;position:sticky;top:70px}
 .widget{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem}
-.w-t{font-family:'Playfair Display',serif;font-size:16px;font-weight:400;margin-bottom:1rem}
+.w-t{font-family:"Playfair Display",serif;font-size:16px;font-weight:400;margin-bottom:1rem}
 .sub-widget{background:var(--ink);border-radius:var(--rl);padding:1.25rem;color:white}
-.swt{font-family:'Playfair Display',serif;font-size:18px;font-weight:400;margin-bottom:4px}
+.swt{font-family:"Playfair Display",serif;font-size:18px;font-weight:400;margin-bottom:4px}
 .sws{font-size:12px;opacity:.6;margin-bottom:1rem;line-height:1.6}
-.sw-inp{width:100%;padding:9px 11px;border:0.5px solid rgba(255,255,255,0.15);border-radius:var(--r);background:rgba(255,255,255,0.08);color:white;font-size:13px;margin-bottom:6px;outline:none;font-family:'Outfit',sans-serif}
+.sw-inp{width:100%;padding:9px 11px;border:0.5px solid rgba(255,255,255,0.15);border-radius:var(--r);background:rgba(255,255,255,0.08);color:white;font-size:13px;margin-bottom:6px;outline:none;font-family:"Outfit",sans-serif}
 .sw-inp::placeholder{color:rgba(255,255,255,0.3)}
-.sw-sel{width:100%;padding:9px 11px;border:0.5px solid rgba(255,255,255,0.15);border-radius:var(--r);background:rgba(255,255,255,0.08);color:white;font-size:13px;margin-bottom:8px;outline:none;font-family:'Outfit',sans-serif}
+.sw-sel{width:100%;padding:9px 11px;border:0.5px solid rgba(255,255,255,0.15);border-radius:var(--r);background:rgba(255,255,255,0.08);color:white;font-size:13px;margin-bottom:8px;outline:none;font-family:"Outfit",sans-serif}
 .sw-sel option{color:var(--ink);background:white}
-.sw-btn{width:100%;padding:9px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif}
+.sw-btn{width:100%;padding:9px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:"Outfit",sans-serif}
 .sw-btn:hover{background:var(--red-d)}
 .weath-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
-.wt-name{font-size:13px;font-weight:500}.wt-desc{font-size:11px;color:var(--ink3)}.wt-temp{font-family:'Playfair Display',serif;font-size:30px;line-height:1}
+.wt-name{font-size:13px;font-weight:500}.wt-desc{font-size:11px;color:var(--ink3)}.wt-temp{font-family:"Playfair Display",serif;font-size:30px;line-height:1}
 .wweek{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
 .wd{text-align:center;padding:6px 4px;background:var(--warm);border-radius:var(--r)}
 .wd-d{font-size:9px;color:var(--ink3);text-transform:uppercase;letter-spacing:.04em}
@@ -105,19 +105,12 @@ nav{background:rgba(250,249,247,0.96);border-bottom:0.5px solid var(--border);pa
 .hol:last-child{border-bottom:none}
 .hol-d{font-size:11px;color:var(--ink3)}
 .hol-s{font-size:10px;background:var(--red-l);color:var(--red);padding:2px 7px;border-radius:20px;font-weight:500}
-.hol-tooltip{display:none;position:absolute;bottom:calc(100% + 6px);left:0;right:0;background:var(--ink);color:white;font-size:11px;line-height:1.5;padding:8px 10px;border-radius:var(--r);z-index:50;box-shadow:0 4px 16px rgba(0,0,0,0.18);pointer-events:none}
-.hol-tooltip::after{content:'';position:absolute;top:100%;left:16px;border:5px solid transparent;border-top-color:var(--ink)}
-.hol:hover .hol-tooltip{display:block}
-.hol-icons{font-size:10px;margin-top:4px;display:flex;gap:8px;opacity:.75}
-.comm-list{display:flex;flex-direction:column;gap:7px}
-.comm{display:flex;align-items:center;gap:10px;padding:8px;border-radius:var(--r);border:0.5px solid var(--border);cursor:pointer}
-.comm:hover{background:var(--warm)}
-.c-av{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0}
-.c-name{font-size:12px;font-weight:500;margin-bottom:1px}
-.c-size{font-size:10px;color:var(--ink3)}
+.hol-tip{display:none;position:absolute;bottom:calc(100% + 6px);left:0;right:0;background:var(--ink);color:white;font-size:11px;line-height:1.5;padding:8px 10px;border-radius:var(--r);z-index:50;box-shadow:0 4px 16px rgba(0,0,0,0.18)}
+.hol-tip::after{content:"";position:absolute;top:100%;left:16px;border:5px solid transparent;border-top-color:var(--ink)}
+.hol:hover .hol-tip{display:block}
 .full{max-width:1100px;margin:2rem auto 0;padding:0 2rem}
 .feats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:2rem}
-.feat{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;cursor:pointer;text-decoration:none;display:block;transition:all .15s}
+.feat{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;text-decoration:none;display:block;transition:all .15s}
 .feat:hover{border-color:var(--border2);transform:translateY(-1px)}
 .feat-icon{font-size:26px;margin-bottom:10px;display:block}
 .feat-title{font-size:14px;font-weight:500;margin-bottom:5px;color:var(--ink)}
@@ -125,9 +118,9 @@ nav{background:rgba(250,249,247,0.96);border-bottom:0.5px solid var(--border);pa
 .feat-lnk{font-size:11px;color:var(--red);margin-top:8px;display:block;font-weight:500}
 .llp{background:var(--warm);border-radius:var(--rl);padding:2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;margin-bottom:2rem}
 .llp-ey{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--red);font-weight:500;margin-bottom:8px}
-.llp-t{font-family:'Playfair Display',serif;font-size:clamp(20px,2.5vw,28px);font-weight:400;margin-bottom:10px;line-height:1.25}
+.llp-t{font-family:"Playfair Display",serif;font-size:clamp(20px,2.5vw,28px);font-weight:400;margin-bottom:10px;line-height:1.25}
 .llp-d{font-size:13px;color:var(--ink2);line-height:1.8;margin-bottom:1.25rem}
-.llp-btn{display:inline-block;padding:11px 22px;background:var(--ink);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif;text-decoration:none}
+.llp-btn{display:inline-block;padding:11px 22px;background:var(--ink);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500;text-decoration:none}
 .llp-btn:hover{background:#2c2825}
 .llp-facts{display:flex;flex-direction:column;gap:10px}
 .llp-f{display:flex;gap:12px;align-items:flex-start;padding:12px;background:var(--card);border-radius:var(--r);border:0.5px solid var(--border)}
@@ -144,14 +137,14 @@ nav{background:rgba(250,249,247,0.96);border-bottom:0.5px solid var(--border);pa
 footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;margin-top:4rem}
 .fi{max-width:1100px;margin:0 auto}
 .ft{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:2.5rem}
-.flogo{font-family:'Playfair Display',serif;font-size:20px;color:white;margin-bottom:8px}
+.flogo{font-family:"Playfair Display",serif;font-size:20px;color:white;margin-bottom:8px}
 .ftag{font-size:13px;line-height:1.7;margin-bottom:1rem;max-width:280px}
 .fct{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,0.3);margin-bottom:12px;font-weight:500}
-.fl{display:block;font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:8px;cursor:pointer;text-decoration:none}
+.fl{display:block;font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:8px;text-decoration:none}
 .fl:hover{color:white}
 .fb{border-top:0.5px solid rgba(255,255,255,0.1);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;font-size:12px;flex-wrap:wrap;gap:8px}
 .fbadge{font-size:10px;background:rgba(255,255,255,0.07);padding:4px 12px;border-radius:20px}
-@media(max-width:900px){.hero{grid-template-columns:1fr;padding:1rem 1rem 0}.hero-main{border-radius:var(--rl) var(--rl) 0 0;min-height:260px}.hero-side{flex-direction:row;overflow-x:auto}.hsc{min-width:200px;flex-shrink:0;border-radius:0 !important;border-left:0.5px solid var(--border) !important}.wrap{grid-template-columns:1fr;padding:0 1rem}.sidebar{position:static}.cats{grid-template-columns:repeat(3,1fr)}.feats{grid-template-columns:repeat(2,1fr)}.llp{grid-template-columns:1fr}.sp-grid{grid-template-columns:repeat(2,1fr)}.ft{grid-template-columns:1fr 1fr}.full{padding:0 1rem}.cat-strip{padding:0 1rem}nav{padding:0 1rem}.region-bar{padding:0 1rem}}
+@media(max-width:900px){.hero{grid-template-columns:1fr;padding:1rem 1rem 0}.hero-main{border-radius:var(--rl) var(--rl) 0 0;min-height:260px}.hero-side{flex-direction:row;overflow-x:auto}.hsc{min-width:200px;flex-shrink:0}.wrap{grid-template-columns:1fr;padding:0 1rem}.sidebar{position:static}.cats{grid-template-columns:repeat(3,1fr)}.feats{grid-template-columns:repeat(2,1fr)}.llp{grid-template-columns:1fr}.sp-grid{grid-template-columns:repeat(2,1fr)}.ft{grid-template-columns:1fr 1fr}.full{padding:0 1rem}.cat-strip{padding:0 1rem}nav{padding:0 1rem}.region-bar{padding:0 1rem}}
 @media(max-width:600px){.nav-links{display:none}.cats{grid-template-columns:repeat(2,1fr)}.feats{grid-template-columns:1fr}.sp-grid{grid-template-columns:1fr}.ft{grid-template-columns:1fr}}
 </style>
 </head>
@@ -183,7 +176,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
   <button class="rp" onclick="setReg('Azores',this)">Azores</button>
 </div>
 <div class="hero">
-  <div class="hero-main" id="hero-main" style="cursor:pointer" onclick="if(window._heroUrl)window.open(window._heroUrl,'_blank')">
+  <div class="hero-main" id="hero-main" onclick="if(window._heroUrl)window.open(window._heroUrl,'_blank')">
     <div class="hcat" id="hero-cat">Loading...</div>
     <div class="htitle" id="hero-title">Fetching latest news...</div>
     <div class="hmeta" id="hero-meta"></div>
@@ -216,20 +209,20 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
     </div>
     <div class="tools-box">
       <div class="tb-title">9 free tools for expats</div>
-      <div class="tb-sub">Find your city, check your visa, calculate costs, compare taxes, track rentals, generate your document checklist &mdash; all free, all in one place.</div>
+      <div class="tb-sub">Find your city, check your visa, calculate costs, compare taxes, track rentals and more &mdash; all free.</div>
       <div class="chips">
         <span class="chip">Neighbourhood match</span><span class="chip">Visa finder</span><span class="chip">Cost calculator</span>
-        <span class="chip">Tax calculator</span><span class="chip">Doc checklist</span><span class="chip">Rental tracker</span><span class="chip">Ask AI &mdash; free</span>
+        <span class="chip">Tax calculator</span><span class="chip">Doc checklist</span><span class="chip">Rental tracker</span><span class="chip">Ask AI</span>
       </div>
       <a class="tb-btn" href="expat_tools_v4_fixed.html">Explore all free tools &rarr;</a>
     </div>
     <div id="events" style="margin-bottom:2rem">
       <div class="sh"><span class="sh-t">Events this week</span><span class="sh-m">Full calendar &rarr;</span></div>
       <div class="ev-list">
-        <div class="ev"><div class="ev-date"><div class="ev-day">5</div><div class="ev-mon">Apr</div></div><div><div class="ev-title">Mercado de Campo de Ourique &mdash; weekly food market</div><div class="ev-loc">Campo de Ourique, Lisbon</div><span class="ev-tag tmk">Market</span></div></div>
+        <div class="ev"><div class="ev-date"><div class="ev-day">5</div><div class="ev-mon">Apr</div></div><div><div class="ev-title">Mercado de Campo de Ourique</div><div class="ev-loc">Campo de Ourique, Lisbon</div><span class="ev-tag tmk">Market</span></div></div>
         <div class="ev"><div class="ev-date"><div class="ev-day">6</div><div class="ev-mon">Apr</div></div><div><div class="ev-title">Language exchange cafe &mdash; expats meet locals</div><div class="ev-loc">Principe Real, Lisbon</div><span class="ev-tag ts">Social</span></div></div>
-        <div class="ev"><div class="ev-date"><div class="ev-day">7</div><div class="ev-mon">Apr</div></div><div><div class="ev-title">Fado night at B.Leza &mdash; doors open 9pm</div><div class="ev-loc">Santos, Lisbon</div><span class="ev-tag tm">Music</span></div></div>
-        <div class="ev"><div class="ev-date"><div class="ev-day">12</div><div class="ev-mon">Apr</div></div><div><div class="ev-title">Algarve surf competition &mdash; free entry for spectators</div><div class="ev-loc">Sagres, Algarve</div><span class="ev-tag tsp">Sport</span></div></div>
+        <div class="ev"><div class="ev-date"><div class="ev-day">7</div><div class="ev-mon">Apr</div></div><div><div class="ev-title">Fado night at B.Leza</div><div class="ev-loc">Santos, Lisbon</div><span class="ev-tag tm">Music</span></div></div>
+        <div class="ev"><div class="ev-date"><div class="ev-day">12</div><div class="ev-mon">Apr</div></div><div><div class="ev-title">Algarve surf competition</div><div class="ev-loc">Sagres, Algarve</div><span class="ev-tag tsp">Sport</span></div></div>
       </div>
     </div>
   </div>
@@ -266,25 +259,19 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
     </div>
     <div class="widget">
       <div class="w-t">Expat communities</div>
-      <div style="font-size:12px;color:var(--ink2);line-height:1.7;margin-bottom:12px">
-        Do you organise expat meetups, clubs, or local groups in Portugal?
-      </div>
-      <div style="background:var(--warm);border-radius:var(--r);padding:12px;font-size:12px;color:var(--ink2);line-height:1.6;margin-bottom:10px">
-        &#128101; We list active expat communities here. Just send us a request below.
-      </div>
-      <a href="/cdn-cgi/l/email-protection#a7cfc2cbcbc8e7c2dfd7c6d3d7c8d5d3d2c0c6cb89c0d2cec3c298d4d2c5cdc2c4d39aebced4d387c8d2d587c4c8cacad2c9ced3de81c5c8c3de9ae4c8cacad2c9ced3de87c9c6cac29d878297e6e0d5c8d2d787f2f5eb9d878297e6f7cbc6d3c1c8d5ca878fe1c6c4c2c5c8c8cc88f0cfc6d3d4e6d7d788f5c2c3c3ced388c8d3cfc2d58e9d878297e6e6d7d7d5c8df8987cac2cac5c2d5d49d87" style="display:block;padding:9px 14px;background:var(--ink);color:white;border-radius:var(--r);font-size:12px;font-weight:500;text-align:center;text-decoration:none">
-        &#9993; Request to be listed &rarr;
-      </a>
+      <div style="font-size:12px;color:var(--ink2);line-height:1.7;margin-bottom:12px">Do you organise expat meetups, clubs, or local groups in Portugal?</div>
+      <div style="background:var(--warm);border-radius:var(--r);padding:12px;font-size:12px;color:var(--ink2);line-height:1.6;margin-bottom:10px">&#128101; We list active expat communities here. Just send us a request below.</div>
+      <a href="mailto:hello@expatportugal.guide?subject=List our community&body=Community name: %0ACity / region: %0AType of group: %0AApprox. members: " style="display:block;padding:9px 14px;background:var(--ink);color:white;border-radius:var(--r);font-size:12px;font-weight:500;text-align:center;text-decoration:none">&#9993; Request to be listed &rarr;</a>
     </div>
   </div>
 </div>
 <div class="full" style="margin-top:2.5rem">
   <div class="sh" style="margin-bottom:1.25rem"><span class="sh-t">Everything on this site</span></div>
   <div class="feats">
-    <a class="feat" href="expat_tools_v4_fixed.html"><span class="feat-icon">&#128295;</span><div class="feat-title">Free expat tools</div><div class="feat-desc">Visa finder, cost calculator, tax comparison, rental tracker, document checklist, neighbourhood quiz and AI assistant.</div><span class="feat-lnk">9 free tools &rarr;</span></a>
-    <a class="feat" href="lifestyle_services.html"><span class="feat-icon">&#128205;</span><div class="feat-title">Lifestyle services</div><div class="feat-desc">English-speaking personal trainers, dentists, vets, tutors, hairdressers, handymen recommended by expats.</div><span class="feat-lnk">Browse services &rarr;</span></a>
+    <a class="feat" href="expat_tools_v4_fixed.html"><span class="feat-icon">&#128295;</span><div class="feat-title">Free expat tools</div><div class="feat-desc">Visa finder, cost calculator, tax comparison, rental tracker, document checklist and AI assistant.</div><span class="feat-lnk">9 free tools &rarr;</span></a>
+    <a class="feat" href="lifestyle_services.html"><span class="feat-icon">&#128205;</span><div class="feat-title">Lifestyle services</div><div class="feat-desc">English-speaking personal trainers, dentists, vets, tutors, hairdressers recommended by expats.</div><span class="feat-lnk">Browse services &rarr;</span></a>
     <a class="feat" href="live_local.html"><span class="feat-icon">&#129309;</span><div class="feat-title">Live like a local</div><div class="feat-desc">Language exchange, cultural guides, etiquette, volunteering &mdash; close the gap between expats and locals.</div><span class="feat-lnk">Start integrating &rarr;</span></a>
-    <a class="feat" href="expat_tools_v4_fixed.html"><span class="feat-icon">&#128203;</span><div class="feat-title">Bureaucracy guide</div><div class="feat-desc">Step-by-step wizards for NIF, D7, D8, AIMA, NHR, citizenship and every major Portuguese bureaucratic process.</div><span class="feat-lnk">12 step-by-step guides &rarr;</span></a>
+    <a class="feat" href="expat_tools_v4_fixed.html"><span class="feat-icon">&#128203;</span><div class="feat-title">Bureaucracy guide</div><div class="feat-desc">Step-by-step wizards for NIF, D7, D8, AIMA, NHR, citizenship and every major Portuguese process.</div><span class="feat-lnk">12 guides &rarr;</span></a>
   </div>
 </div>
 <div class="full">
@@ -343,92 +330,63 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
         <a class="fl" href="#">Privacy policy</a>
       </div>
     </div>
-    <div class="fb">
-      <span>&copy; 2026 ExpatPortugal.guide</span>
-      <span class="fbadge">Content auto-updated daily</span>
-    </div>
+    <div class="fb"><span>&copy; 2026 ExpatPortugal.guide</span><span class="fbadge">Content auto-updated daily</span></div>
   </div>
 </footer>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 var SB_URL = 'https://waywvckvyizqkuuaecrp.supabase.co';
 var SB_KEY = 'sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b';
 var activeRegion = 'all';
 var activeNewsCat = 'all';
 
-function isPTSource(src) {
+function isPT(src) {
   src = src || '';
-  return src.indexOf('Publico') >= 0 || src.indexOf('blico') >= 0 ||
-         src.indexOf('servador') >= 0 || src.indexOf('gocios') >= 0 ||
-         src.indexOf('Resident') >= 0 || src.indexOf('Portuguese press') >= 0 ||
-         src.indexOf('PT') === 0;
+  return src.indexOf('blico') >= 0 || src.indexOf('servador') >= 0 ||
+         src.indexOf('gocios') >= 0 || src.indexOf('Resident') >= 0 ||
+         src.indexOf('portuguese') >= 0 || src.indexOf('PT ') === 0;
 }
 
 async function loadLiveNews() {
   try {
-    var query = SB_URL + '/rest/v1/articles?status=eq.approved&order=published_at.desc&limit=20';
-    if (activeRegion !== 'all') query += '&region=eq.' + encodeURIComponent(activeRegion);
-    if (activeNewsCat !== 'all') query += '&category=eq.' + encodeURIComponent(activeNewsCat);
-    var res = await fetch(query, { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY } });
-    var articles = await res.json();
+    var q = SB_URL + '/rest/v1/articles?status=eq.approved&order=published_at.desc&limit=20';
+    if (activeRegion !== 'all') q += '&region=eq.' + encodeURIComponent(activeRegion);
+    if (activeNewsCat !== 'all') q += '&category=eq.' + encodeURIComponent(activeNewsCat);
+    var res = await fetch(q, { headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } });
+    var arts = await res.json();
     var list = document.getElementById('news-list');
-    if (!articles || !articles.length) {
+    if (!arts || !arts.length) {
       list.innerHTML = '<div class="ni" style="justify-content:center;padding:2rem;color:var(--ink3);font-size:13px">No articles yet.</div>';
       return;
     }
-    var ptArts = articles.filter(function(a){ return isPTSource(a.source_name); });
-    var enArts = articles.filter(function(a){ return !isPTSource(a.source_name); });
-    var sorted = ptArts.slice(0,2).concat(enArts).slice(0,5);
+    var ptArts = arts.filter(function(a) { return isPT(a.source_name); });
+    var enArts = arts.filter(function(a) { return !isPT(a.source_name); });
+    var sorted = ptArts.slice(0, 2).concat(enArts).slice(0, 5);
     list.innerHTML = sorted.map(function(a) {
-      var date = a.published_at ? new Date(a.published_at).toLocaleDateString('en-GB',{day:'numeric',month:'short'}) : 'Today';
+      var date = a.published_at ? new Date(a.published_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : 'Today';
       var src = a.source_name || 'Google News';
-      var imgHtml = a.image_url
-        ? '<div class="ni-img" style="background:var(--warm);overflow:hidden"><img src="' + a.image_url + '" style="width:100%;height:100%;object-fit:cover;border-radius:var(--r)" onerror="this.parentNode.innerHTML='' + (a.image_emoji||'&#128240;') + ''" /></div>'
-        : '<div class="ni-img" style="font-size:24px">' + (a.image_emoji||'&#128240;') + '</div>';
-      return '<a class="ni" href="' + (a.source_url||'#') + '" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">' +
-        imgHtml +
-        '<div style="flex:1"><div class="ni-cat">' + (a.category||'news') + '</div>' +
+      var thumb = a.image_url
+        ? '<div class="ni-img"><img src="' + a.image_url + '" alt="" /></div>'
+        : '<div class="ni-img" style="font-size:26px">' + (a.image_emoji || '&#128240;') + '</div>';
+      return '<a class="ni" href="' + (a.source_url || '#') + '" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">' +
+        thumb +
+        '<div style="flex:1"><div class="ni-cat">' + (a.category || 'news') + '</div>' +
         '<div class="ni-title">' + a.title + '</div>' +
-        '<div class="ni-meta">' + date + '<span class="ni-reg">' + (a.region||'all') + '</span>' +
+        '<div class="ni-meta">' + date + '<span class="ni-reg">' + (a.region || 'all') + '</span>' +
         '<span style="font-size:10px;color:var(--ink3);margin-left:5px">via ' + src + '</span></div></div></a>';
     }).join('');
-  } catch(e) { console.error('News error:', e); }
-}
-
-function setReg(r, el) {
-  activeRegion = r;
-  document.querySelectorAll('.rp').forEach(function(b){ b.classList.remove('on'); });
-  el.classList.add('on');
-  var c = document.getElementById('w-city');
-  if (c) c.textContent = (r === 'all') ? 'Lisbon' : r;
-  loadLiveNews();
-  loadWeather(r);
-}
-
-function setCat(c, el) {
-  activeNewsCat = c;
-  document.querySelectorAll('.cat-card').forEach(function(x){ x.classList.remove('on'); });
-  el.classList.add('on');
-  loadLiveNews();
-}
-
-function subscribe() {
-  var e = document.getElementById('sw-email').value.trim();
-  if (!e || !e.includes('@')) { alert('Please enter a valid email address.'); return; }
-  var r = document.getElementById('sw-reg').value;
-  console.log('Subscribe:', e, r);
-  document.getElementById('sub-widget').innerHTML = '<div style="text-align:center;padding:1.5rem;color:white"><div style="font-size:30px;margin-bottom:10px">&#127477;&#127481;</div><div style="font-family:Playfair Display,serif;font-size:18px;margin-bottom:6px">You are subscribed!</div><div style="font-size:12px;opacity:.65;line-height:1.7">First digest arrives next Sunday.<br>Ate logo!</div></div>';
+  } catch (e) { console.error('News error:', e); }
 }
 
 async function loadHero() {
   try {
     var res = await fetch(SB_URL + '/rest/v1/articles?status=eq.approved&order=published_at.desc&limit=5', {
-      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
     });
     var arts = await res.json();
     if (!arts || !arts.length) return;
     var main = arts[0];
     window._heroUrl = main.source_url || '#';
-    document.getElementById('hero-cat').textContent = (main.category || 'news').toUpperCase() + ' just now';
+    document.getElementById('hero-cat').textContent = (main.category || 'news').toUpperCase() + ' - just now';
     document.getElementById('hero-title').textContent = main.title;
     document.getElementById('hero-meta').textContent = (main.source_name || '') + ' - ' + (main.region || 'All regions');
     var side = document.getElementById('hero-side');
@@ -436,40 +394,43 @@ async function loadHero() {
       var id = 'hsc' + i;
       setTimeout(function() {
         var el = document.getElementById(id);
-        if (el) el.addEventListener('click', function(){ window.open(a.source_url||'#','_blank'); });
+        if (el) el.addEventListener('click', function() { window.open(a.source_url || '#', '_blank'); });
       }, 100);
       return '<div class="hsc" id="' + id + '" style="cursor:pointer">' +
-        '<div class="hsc-cat">' + (a.category||'news') + '</div>' +
+        '<div class="hsc-cat">' + (a.category || 'news') + '</div>' +
         '<div class="hsc-title">' + a.title + '</div>' +
-        '<div class="hsc-meta">' + (a.source_name||'') + '</div></div>';
+        '<div class="hsc-meta">' + (a.source_name || '') + '</div></div>';
     }).join('');
-  } catch(e) { console.error('Hero error:', e); }
+  } catch (e) { console.error('Hero error:', e); }
 }
 
 var weatherCities = {
-  'all':{'name':'Lisbon','lat':38.72,'lon':-9.14},'Lisbon':{'name':'Lisbon','lat':38.72,'lon':-9.14},
-  'Porto':{'name':'Porto','lat':41.15,'lon':-8.61},'Algarve':{'name':'Faro','lat':37.02,'lon':-7.93},
-  'Cascais':{'name':'Cascais','lat':38.70,'lon':-9.42},'Braga':{'name':'Braga','lat':41.55,'lon':-8.43},
-  'Alentejo':{'name':'Evora','lat':38.57,'lon':-7.91},'Madeira':{'name':'Funchal','lat':32.65,'lon':-16.90},
-  'Azores':{'name':'Ponta Delgada','lat':37.74,'lon':-25.67}
+  all:     { name: 'Lisbon',          lat: 38.72, lon: -9.14 },
+  Lisbon:  { name: 'Lisbon',          lat: 38.72, lon: -9.14 },
+  Porto:   { name: 'Porto',           lat: 41.15, lon: -8.61 },
+  Algarve: { name: 'Faro',            lat: 37.02, lon: -7.93 },
+  Cascais: { name: 'Cascais',         lat: 38.70, lon: -9.42 },
+  Braga:   { name: 'Braga',           lat: 41.55, lon: -8.43 },
+  Alentejo:{ name: 'Evora',           lat: 38.57, lon: -7.91 },
+  Madeira: { name: 'Funchal',         lat: 32.65, lon: -16.90 },
+  Azores:  { name: 'Ponta Delgada',   lat: 37.74, lon: -25.67 }
 };
 
-function getWeatherIcon(code) {
-  if (code === 0) return '&#9728;';
-  if (code <= 2) return '&#127780;';
-  if (code === 3) return '&#9925;';
-  if (code <= 48) return '&#127783;';
-  if (code <= 57) return '&#127242;';
-  if (code <= 67) return '&#127783;';
-  if (code <= 77) return '&#10052;';
-  if (code <= 82) return '&#127783;';
-  if (code <= 99) return '&#9928;';
-  return '&#9728;';
+function wIcon(c) {
+  if (c === 0)  return '&#9728;';
+  if (c <= 2)   return '&#127780;';
+  if (c === 3)  return '&#9925;';
+  if (c <= 48)  return '&#127783;';
+  if (c <= 57)  return '&#127242;';
+  if (c <= 67)  return '&#127783;';
+  if (c <= 77)  return '&#10052;';
+  if (c <= 82)  return '&#127783;';
+  return '&#9928;';
 }
 
 async function loadWeather(region) {
   try {
-    var city = weatherCities[region] || weatherCities['all'];
+    var city = weatherCities[region] || weatherCities.all;
     document.getElementById('w-city').textContent = city.name;
     var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + city.lat + '&longitude=' + city.lon +
       '&daily=temperature_2m_max,weathercode&current_weather=true&timezone=Europe%2FLisbon&forecast_days=5';
@@ -479,37 +440,73 @@ async function loadWeather(region) {
     document.getElementById('w-temp').innerHTML = Math.round(cur.temperature) + '&deg;';
     document.getElementById('w-desc').textContent = cur.weathercode <= 2 ? 'Sunny' : cur.weathercode <= 3 ? 'Partly cloudy' : 'Cloudy intervals';
     var days = data.daily;
-    var dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    var dn = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     document.getElementById('w-week').innerHTML = days.time.map(function(d, i) {
-      return '<div class="wd"><div class="wd-d">' + dayNames[new Date(d).getDay()] + '</div>' +
-        '<span class="wd-i">' + getWeatherIcon(days.weathercode[i]) + '</span>' +
+      return '<div class="wd"><div class="wd-d">' + dn[new Date(d).getDay()] + '</div>' +
+        '<span class="wd-i">' + wIcon(days.weathercode[i]) + '</span>' +
         '<div class="wd-t">' + Math.round(days.temperature_2m_max[i]) + '&deg;</div></div>';
     }).join('');
-  } catch(e) { console.error('Weather error:', e); }
+  } catch (e) { console.error('Weather error:', e); }
 }
 
 function loadHolidays() {
-  var today = new Date(); today.setHours(0,0,0,0);
-  var holidays = [
-    { name: '&#127941; Easter Sunday', date: new Date('2026-04-05'), tip: 'The most important religious holiday. Families gather for lamb or bacalhau. Everything closed.', free: true, closed: true },
-    { name: '&#127974; Liberty Day', date: new Date('2026-04-25'), tip: 'Celebrates the 1974 Carnation Revolution ending 48 years of dictatorship. Very meaningful to Portuguese people.', free: true, closed: true },
-    { name: 'Labour Day', date: new Date('2026-05-01'), tip: 'International Workers Day. Parades in Lisbon and Porto. Most businesses closed.', free: true, closed: true },
-    { name: '&#127477;&#127481; Portugal Day', date: new Date('2026-06-10'), tip: 'National day celebrating Luis de Camoes. Military parades, flags everywhere. Big national pride day.', free: true, closed: true },
-    { name: 'Corpus Christi', date: new Date('2026-06-04'), tip: 'Catholic feast day. Flower carpet processions in some towns. Most shops closed outside major cities.', free: true, closed: true },
-    { name: '&#127749; Assumption Day', date: new Date('2026-08-15'), tip: 'Major holiday - many Portuguese take the whole week off. Expect beach towns to be packed.', free: true, closed: true },
-    { name: 'Republic Day', date: new Date('2026-10-05'), tip: 'Marks proclamation of the Portuguese Republic in 1910. Government offices closed, most shops open.', free: true, closed: false },
-    { name: '&#129382; All Saints Day', date: new Date('2026-11-01'), tip: 'Families visit cemeteries to honour the dead. Most businesses closed, especially in smaller towns.', free: true, closed: true },
-    { name: 'Restoration Day', date: new Date('2026-12-01'), tip: 'Celebrates Portugal regaining independence from Spain in 1640. Quiet national holiday.', free: true, closed: true },
-    { name: 'Immaculate Conception', date: new Date('2026-12-08'), tip: 'Catholic holiday. Start of Christmas season - decorations go up. Most shops closed.', free: true, closed: true },
-    { name: '&#127876; Christmas Day', date: new Date('2026-12-25'), tip: 'Main meal is Christmas Eve (consoada) with bacalhau. Very family-focused. Almost everything closed.', free: true, closed: true }
+  var today = new Date();
+  today.setHours(0, 0, 0, 0);
+  var hols = [
+    { n: '&#127941; Easter Sunday',      d: '2026-04-05', tip: 'Most important religious holiday. Families gather for lamb or bacalhau. Everything closed.',          closed: true },
+    { n: '&#127974; Liberty Day',         d: '2026-04-25', tip: 'Celebrates the 1974 Carnation Revolution ending 48 years of dictatorship. Very meaningful.',         closed: true },
+    { n: 'Labour Day',                    d: '2026-05-01', tip: 'International Workers Day. Parades in Lisbon and Porto. Most businesses closed.',                     closed: true },
+    { n: '&#127477;&#127481; Portugal Day', d: '2026-06-10', tip: 'National day. Military parades, flags everywhere. Big national pride day.',                        closed: true },
+    { n: 'Corpus Christi',                d: '2026-06-04', tip: 'Catholic feast day. Flower carpet processions. Most shops closed outside major cities.',              closed: true },
+    { n: '&#127749; Assumption Day',      d: '2026-08-15', tip: 'Major holiday - many Portuguese take the whole week off. Beach towns will be packed.',                closed: true },
+    { n: 'Republic Day',                  d: '2026-10-05', tip: 'Marks proclamation of the Portuguese Republic in 1910. Government closed, most shops open.',         closed: false },
+    { n: '&#129382; All Saints Day',      d: '2026-11-01', tip: 'Families visit cemeteries to honour the dead. Most businesses closed.',                              closed: true },
+    { n: 'Restoration Day',               d: '2026-12-01', tip: 'Celebrates Portugal regaining independence from Spain in 1640. Quiet national holiday.',             closed: true },
+    { n: 'Immaculate Conception',         d: '2026-12-08', tip: 'Catholic holiday marking the start of Christmas season. Most shops closed.',                         closed: true },
+    { n: '&#127876; Christmas Day',       d: '2026-12-25', tip: 'Very family-focused. Main meal is Christmas Eve (consoada) with bacalhau. Almost everything closed.',closed: true }
   ];
-  var upcoming = holidays.filter(function(h){ return h.date >= today; }).slice(0, 5);
+  var upcoming = hols.filter(function(h) { return new Date(h.d) >= today; }).slice(0, 5);
   document.getElementById('hol-list').innerHTML = upcoming.map(function(h) {
-    var diff = Math.round((h.date - today) / (1000*60*60*24));
-    var dateStr = h.date.toLocaleDateString('en-GB', { day:'numeric', month:'short' });
+    var hdate = new Date(h.d);
+    var diff = Math.round((hdate - today) / 86400000);
+    var dateStr = hdate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
     var badge = diff === 0 ? '<span class="hol-s">Today!</span>' :
       diff <= 14 ? '<span class="hol-s">' + dateStr + ' soon</span>' :
       '<span class="hol-d">' + dateStr + '</span>';
-    return '<div class="hol"><span>' + h.name + '</span>' + badge +
-      '<div class="hol-tooltip">' + h.tip +
-      '<div class="hol-
+    var icons = '&#128100; Most people off &nbsp; &#127978; ' + (h.closed ? 'Stores likely closed' : 'Stores mostly open');
+    return '<div class="hol"><span>' + h.n + '</span>' + badge +
+      '<div class="hol-tip">' + h.tip + '<div style="font-size:10px;margin-top:4px;opacity:.75">' + icons + '</div></div></div>';
+  }).join('');
+}
+
+function setReg(r, el) {
+  activeRegion = r;
+  document.querySelectorAll('.rp').forEach(function(b) { b.classList.remove('on'); });
+  el.classList.add('on');
+  var c = document.getElementById('w-city');
+  if (c) c.textContent = r === 'all' ? 'Lisbon' : r;
+  loadLiveNews();
+  loadWeather(r);
+}
+
+function setCat(c, el) {
+  activeNewsCat = c;
+  document.querySelectorAll('.cat-card').forEach(function(x) { x.classList.remove('on'); });
+  el.classList.add('on');
+  loadLiveNews();
+}
+
+function subscribe() {
+  var e = document.getElementById('sw-email').value.trim();
+  if (!e || !e.includes('@')) { alert('Please enter a valid email address.'); return; }
+  console.log('Subscribe:', e, document.getElementById('sw-reg').value);
+  document.getElementById('sub-widget').innerHTML = '<div style="text-align:center;padding:1.5rem;color:white"><div style="font-size:30px;margin-bottom:10px">&#127477;&#127481;</div><div style="font-family:Playfair Display,serif;font-size:18px;margin-bottom:6px">You are subscribed!</div><div style="font-size:12px;opacity:.65;line-height:1.7">First digest arrives next Sunday.</div></div>';
+}
+
+loadLiveNews();
+loadHero();
+loadWeather('all');
+loadHolidays();
+</script>
+</body>
+</html>
