@@ -606,20 +606,38 @@ async function approveAll() {
 
 async function depublishArticle(id) {
   if (!confirm('Depublish this article? It will no longer show on the site but stays in the database.')) return;
-  await sb('articles?id=eq.' + id, {
-    method: 'PATCH',
-    body: { status: 'rejected' },
-    prefer: 'return=minimal'
-  });
-  loadArticles();
-  loadMetrics();
+  try {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/articles?id=eq.' + id, {
+      method: 'PATCH',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ status: 'rejected' })
+    });
+    if (!res.ok) { const e = await res.text(); alert('Error: ' + e); return; }
+    loadArticles();
+    loadMetrics();
+  } catch(e) { alert('Error: ' + e.message); }
 }
 
 async function deleteArticle(id) {
   if (!confirm('Permanently delete this article? This cannot be undone.')) return;
-  await sb('articles?id=eq.' + id, { method: 'DELETE', prefer: 'return=minimal' });
-  loadArticles();
-  loadMetrics();
+  try {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/articles?id=eq.' + id, {
+      method: 'DELETE',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Prefer': 'return=minimal'
+      }
+    });
+    if (!res.ok) { const e = await res.text(); alert('Error: ' + e); return; }
+    loadArticles();
+    loadMetrics();
+  } catch(e) { alert('Error: ' + e.message); }
 }
 
 // ── EVENTS ────────────────────────────────────────────────
