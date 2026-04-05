@@ -83,6 +83,7 @@ tr:hover td{background:var(--warm)}
 .status-badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:500}
 .status-pending{background:var(--amber-l);color:var(--amber)}
 .status-approved{background:var(--green-l);color:var(--green)}
+.status-auto_approved{background:#e0f2fe;color:#0369a1}
 .status-rejected{background:var(--red-l);color:var(--red)}
 .cat-badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;background:var(--blue-l);color:var(--blue)}
 .region-badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;background:var(--warm);color:var(--ink2);margin-left:4px}
@@ -488,7 +489,7 @@ async function loadMetrics() {
   try {
     const [pending, published, subs, exchange] = await Promise.all([
       sb('articles?status=eq.pending&select=id'),
-      sb('articles?status=eq.approved&published_at=gte.' + new Date().toISOString().slice(0,10) + '&select=id'),
+      sb('articles?status=in.(approved,auto_approved)&published_at=gte.' + new Date().toISOString().slice(0,10) + '&select=id'),
       sb('subscribers?status=eq.active&select=id'),
       sb('language_exchange?select=id')
     ]);
@@ -537,7 +538,7 @@ function loadCurrentPanel() {
 async function loadArticles() {
   try {
     const pending = await sb('articles?status=eq.pending&order=created_at.desc&limit=20');
-    const recent  = await sb('articles?status=eq.approved&order=published_at.desc&limit=10');
+    const recent  = await sb('articles?status=in.(approved,auto_approved)&order=published_at.desc&limit=20');
     renderArticlesTable('articles-table', pending, true);
     renderArticlesTable('published-table', recent, false);
   } catch(e) {
@@ -553,26 +554,26 @@ function renderArticlesTable(elId, articles, showActions) {
   }
   el.innerHTML = `<table>
     <thead><tr>
-      <th style="width:40%">Article</th>
+      <th style="width:38%">Article</th>
       <th>Category</th>
       <th>Region</th>
       <th>Status</th>
-      ${showActions ? '<th>Actions</th>' : '<th>Published</th>'}
+      <th>Actions</th>
     </tr></thead>
     <tbody>
       ${articles.map(a => `<tr>
         <td>
-          <div class="article-title">${a.image_emoji || '📰'} ${a.title}</div>
-          <div class="article-summary">${a.summary}</div>
+          <div class="article-title">${a.image_emoji || '📰'} <a href="${a.source_url}" target="_blank" style="color:var(--ink);text-decoration:none">${a.title}</a></div>
           ${a.source_name ? `<div style="font-size:10px;color:var(--ink3);margin-top:3px">via ${a.source_name}</div>` : ''}
         </td>
         <td><span class="cat-badge">${a.category}</span></td>
-        <td><span class="region-badge">${a.region}</span></td>
-        <td><span class="status-badge status-${a.status}">${a.status}</span></td>
-        ${showActions ? `<td><div class="action-btns">
-          <button class="btn btn-sm btn-green" onclick="approveArticle(${a.id})">✓ Approve</button>
-          <button class="btn btn-sm btn-red" onclick="rejectArticle(${a.id})">✗ Reject</button>
-        </div></td>` : `<td style="font-size:11px;color:var(--ink3)">${a.published_at ? new Date(a.published_at).toLocaleDateString('en-GB') : '—'}</td>`}
+        <td><span class="region-badge">${a.region || 'all'}</span></td>
+        <td><span class="status-badge status-${a.status}">${a.status === 'auto_approved' ? '⚡ auto' : a.status}</span></td>
+        <td><div class="action-btns">
+          ${showActions ? `<button class="btn btn-sm btn-green" onclick="approveArticle(${a.id})">✓ Approve</button>` : ''}
+          ${a.status !== 'rejected' ? `<button class="btn btn-sm" style="background:var(--amber-l);color:var(--amber)" onclick="depublishArticle(${a.id})">⊘ Depublish</button>` : ''}
+          <button class="btn btn-sm btn-red" onclick="deleteArticle(${a.id})">🗑 Delete</button>
+        </div></td>
       </tr>`).join('')}
     </tbody>
   </table>`;
@@ -601,6 +602,24 @@ async function rejectArticle(id) {
 async function approveAll() {
   const pending = await sb('articles?status=eq.pending&select=id');
   await Promise.all(pending.map(a => approveArticle(a.id)));
+}
+
+async function depublishArticle(id) {
+  if (!confirm('Depublish this article? It will no longer show on the site but stays in the database.')) return;
+  await sb('articles?id=eq.' + id, {
+    method: 'PATCH',
+    body: { status: 'rejected' },
+    prefer: 'return=minimal'
+  });
+  loadArticles();
+  loadMetrics();
+}
+
+async function deleteArticle(id) {
+  if (!confirm('Permanently delete this article? This cannot be undone.')) return;
+  await sb('articles?id=eq.' + id, { method: 'DELETE', prefer: 'return=minimal' });
+  loadArticles();
+  loadMetrics();
 }
 
 // ── EVENTS ────────────────────────────────────────────────

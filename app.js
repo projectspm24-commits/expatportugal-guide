@@ -12,7 +12,7 @@ function isPT(src) {
 
 async function loadLiveNews() {
   try {
-    var q = SB_URL + '/rest/v1/articles?status=eq.approved&order=published_at.desc&limit=20';
+    var q = SB_URL + '/rest/v1/articles?status=in.(approved,auto_approved)&order=published_at.desc&limit=20';
     if (activeRegion !== 'all') q += '&region=eq.' + encodeURIComponent(activeRegion);
     if (activeNewsCat !== 'all') q += '&category=eq.' + encodeURIComponent(activeNewsCat);
     var res = await fetch(q, { headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } });
@@ -43,7 +43,7 @@ async function loadLiveNews() {
 
 async function loadHero() {
   try {
-    var res = await fetch(SB_URL + '/rest/v1/articles?status=eq.approved&order=published_at.desc&limit=5', {
+    var res = await fetch(SB_URL + '/rest/v1/articles?status=in.(approved,auto_approved)&order=published_at.desc&limit=5', {
       headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
     });
     var arts = await res.json();

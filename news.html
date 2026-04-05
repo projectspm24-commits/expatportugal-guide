@@ -141,7 +141,7 @@ async function loadNews(reset) {
     document.getElementById('load-more').style.display = 'none';
   }
   try {
-    var query = SB_URL + '/rest/v1/articles?status=eq.approved&order=published_at.desc&limit=' + PAGE_SIZE + '&offset=' + currentOffset;
+    var query = SB_URL + '/rest/v1/articles?status=in.(approved,auto_approved)&order=published_at.desc&limit=' + PAGE_SIZE + '&offset=' + currentOffset;
     if (activeCat !== 'all') query += '&category=eq.' + encodeURIComponent(activeCat);
     if (activeRegion !== 'all') query += '&region=eq.' + encodeURIComponent(activeRegion);
     var res = await fetch(query, {
@@ -163,8 +163,11 @@ async function loadNews(reset) {
 
     var html = articles.map(function(a) {
       var date = a.published_at ? new Date(a.published_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
+      var img = a.image_url
+        ? '<img src="' + a.image_url + '" style="width:60px;height:60px;object-fit:cover;border-radius:var(--r);flex-shrink:0" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'"/><div class="ni-img" style="display:none">' + (a.image_emoji||'&#128240;') + '</div>'
+        : '<div class="ni-img">' + (a.image_emoji||'&#128240;') + '</div>';
       return '<a class="ni" href="' + (a.source_url||'#') + '" target="_blank" rel="noopener">' +
-        '<div class="ni-img">' + (a.image_emoji||'&#128240;') + '</div>' +
+        img +
         '<div style="flex:1">' +
           '<div class="ni-cat">' + (a.category||'news') + '</div>' +
           '<div class="ni-title">' + a.title + '</div>' +
