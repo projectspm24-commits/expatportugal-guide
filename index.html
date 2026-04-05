@@ -390,6 +390,57 @@ function subscribe(){
   w.style.padding='1.5rem';
   w.innerHTML='<div style="color:white"><div style="font-size:32px;margin-bottom:10px">&#127477;&#127481;</div><div style="font-family:Playfair Display,serif;font-size:18px;margin-bottom:6px;color:white">You are subscribed!</div><div style="font-size:12px;opacity:.65;color:white;line-height:1.7">First digest arrives next Monday. Ate logo!</div></div>';
 }
+
+// ── LIVE NEWS FROM SUPABASE ───────────────────────────────
+var SB_URL = 'https://waywvckvyizqkuuaecrp.supabase.co';
+var SB_KEY = 'sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b';
+var activeRegion = 'all';
+var activeNewsCat = 'all';
+
+async function loadLiveNews() {
+  try {
+    var query = SB_URL + '/rest/v1/articles?status=eq.approved&order=published_at.desc&limit=8';
+    if (activeRegion !== 'all') query += '&region=eq.' + encodeURIComponent(activeRegion);
+    if (activeNewsCat !== 'all') query += '&category=eq.' + encodeURIComponent(activeNewsCat);
+    var res = await fetch(query, {
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+    });
+    var articles = await res.json();
+    var list = document.getElementById('news-list');
+    if (!articles || !articles.length) {
+      list.innerHTML = '<div class="ni" style="justify-content:center;padding:2rem;color:var(--ink3);font-size:13px">No articles yet.</div>';
+      return;
+    }
+    list.innerHTML = articles.map(function(a) {
+      var date = a.published_at ? new Date(a.published_at).toLocaleDateString('en-GB',{day:'numeric',month:'short'}) : 'Today';
+      return '<a class="ni" href="' + (a.source_url||'#') + '" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">' +
+        '<div class="ni-img">' + (a.image_emoji||'&#128240;') + '</div>' +
+        '<div><div class="ni-cat">' + (a.category||'news') + '</div>' +
+        '<div class="ni-title">' + a.title + '</div>' +
+        '<div class="ni-meta">' + date + '<span class="ni-reg">' + (a.region||'all') + '</span></div></div></a>';
+    }).join('');
+  } catch(e) {
+    console.error('News load error:', e);
+  }
+}
+
+function setReg(r,el){
+  activeRegion=r;
+  document.querySelectorAll('.rp').forEach(function(b){b.classList.remove('on');});
+  el.classList.add('on');
+  var c=document.getElementById('w-city');
+  if(c) c.textContent=(r==='all')?'Lisbon':r;
+  loadLiveNews();
+}
+
+function setCat(c,el){
+  activeNewsCat=c;
+  document.querySelectorAll('.cat-card').forEach(function(x){x.classList.remove('on');});
+  el.classList.add('on');
+  loadLiveNews();
+}
+
+loadLiveNews();
 </script>
 </body>
 </html>
