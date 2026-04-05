@@ -3,31 +3,41 @@ var SB_KEY = 'sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b';
 var activeRegion = 'all';
 var activeNewsCat = 'all';
 
-/* ── Category placeholder images (Unsplash, free to use) ── */
-var catImages = {
-  bureaucracy: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&h=400&fit=crop',
-  housing:     'https://images.unsplash.com/photo-1555636222-cae831e670b3?w=600&h=400&fit=crop',
-  lifestyle:   'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=400&fit=crop',
-  transport:   'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600&h=400&fit=crop',
-  community:   'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=400&fit=crop',
-  food:        'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&h=400&fit=crop',
-  news:        'https://images.unsplash.com/photo-1585208798174-6cedd86e019a?w=600&h=400&fit=crop'
-};
-var heroImages = {
-  bureaucracy: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1200&h=600&fit=crop',
-  housing:     'https://images.unsplash.com/photo-1555636222-cae831e670b3?w=1200&h=600&fit=crop',
-  lifestyle:   'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&h=600&fit=crop',
-  transport:   'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=1200&h=600&fit=crop',
-  community:   'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&h=600&fit=crop',
-  food:        'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&h=600&fit=crop',
-  news:        'https://images.unsplash.com/photo-1585208798174-6cedd86e019a?w=1200&h=600&fit=crop'
-};
+/* ── OG Image fetching ── */
+var ogCache = {};
 
-function getThumbUrl(a) {
-  return a.image_url || catImages[a.category] || catImages.news;
+async function fetchOgImage(articleId, sourceUrl) {
+  if (ogCache[articleId]) return ogCache[articleId];
+  try {
+    var res = await fetch('/api/og-image?url=' + encodeURIComponent(sourceUrl));
+    if (!res.ok) return null;
+    var data = await res.json();
+    if (data.image) {
+      ogCache[articleId] = data.image;
+      // Save to Supabase so we don't need to fetch again
+      fetch(SB_URL + '/rest/v1/articles?id=eq.' + articleId, {
+        method: 'PATCH',
+        headers: {
+          'apikey': SB_KEY,
+          'Authorization': 'Bearer ' + SB_KEY,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({ image_url: data.image })
+      }).catch(function() {});
+      return data.image;
+    }
+  } catch (e) { /* silent */ }
+  return null;
 }
-function getHeroUrl(a) {
-  return a.image_url || heroImages[a.category] || heroImages.news;
+
+function loadArticleImage(imgEl, articleId, sourceUrl, emoji) {
+  if (!sourceUrl) return;
+  fetchOgImage(articleId, sourceUrl).then(function(url) {
+    if (url && imgEl) {
+      imgEl.innerHTML = '<img src="' + url + '" alt="" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML=\'<span style=font-size:26px>' + (emoji || '📰') + '</span>\'" />';
+    }
+  });
 }
 
 function isPT(src) {
@@ -55,8 +65,18 @@ async function loadLiveNews() {
     list.innerHTML = sorted.map(function(a) {
       var date = a.published_at ? new Date(a.published_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : 'Today';
       var src = a.source_name || 'Google News';
-      var imgUrl = getThumbUrl(a);
-      var thumb = '<div class="ni-img"><img src="' + imgUrl + '" alt="" onerror="this.parentElement.innerHTML=\'<span style=font-size:26px>' + (a.image_emoji || '📰') + '</span>\'" /></div>';
+      var hasImg = !!a.image_url;
+      var thumbId = 'ni-thumb-' + a.id;
+      var thumb = hasImg
+        ? '<div class="ni-img" id="' + thumbId + '"><img src="' + a.image_url + '" alt="" onerror="this.parentElement.innerHTML=\'<span style=font-size:26px>' + (a.image_emoji || '📰') + '</span>\'" /></div>'
+        : '<div class="ni-img" id="' + thumbId + '" style="font-size:26px">' + (a.image_emoji || '📰') + '</div>';
+      // Queue OG image fetch for articles without images
+      if (!hasImg) {
+        setTimeout(function() {
+          var el = document.getElementById(thumbId);
+          if (el) loadArticleImage(el, a.id, a.source_url, a.image_emoji);
+        }, 100);
+      }
       return '<a class="ni" href="' + (a.source_url || '#') + '" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">' +
         thumb +
         '<div style="flex:1"><div class="ni-cat">' + (a.category || 'news') + '</div>' +
@@ -81,40 +101,67 @@ async function loadHero() {
     document.getElementById('hero-meta').textContent = (main.source_name || '') + ' – ' + (main.region || 'All regions');
 
     var hm = document.getElementById('hero-main');
-    var bgUrl = getHeroUrl(main);
 
-    var testImg = new Image();
-    testImg.onload = function() {
-      hm.style.backgroundImage = 'url(' + bgUrl + ')';
-      hm.style.backgroundSize = 'cover';
-      hm.style.backgroundPosition = 'center';
-      if (!hm.querySelector('.hero-overlay')) {
-        var overlay = document.createElement('div');
-        overlay.className = 'hero-overlay';
-        overlay.style.cssText = 'position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.3) 60%,rgba(0,0,0,0.1) 100%);border-radius:inherit;z-index:0';
-        hm.insertBefore(overlay, hm.firstChild);
-      }
-      // Ensure text is above overlay
-      hm.querySelectorAll('.hero-cat-pill, .hero-title, .hero-meta-line, .hero-cta').forEach(function(el) {
-        el.style.position = 'relative';
-        el.style.zIndex = '1';
+    function applyHeroBg(url) {
+      var testImg = new Image();
+      testImg.onload = function() {
+        hm.style.backgroundImage = 'url(' + url + ')';
+        hm.style.backgroundSize = 'cover';
+        hm.style.backgroundPosition = 'center';
+        if (!hm.querySelector('.hero-overlay')) {
+          var overlay = document.createElement('div');
+          overlay.className = 'hero-overlay';
+          overlay.style.cssText = 'position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.3) 60%,rgba(0,0,0,0.1) 100%);border-radius:inherit;z-index:0';
+          hm.insertBefore(overlay, hm.firstChild);
+        }
+        hm.querySelectorAll('.hero-cat-pill, .hero-title, .hero-meta-line, .hero-cta').forEach(function(el) {
+          el.style.position = 'relative';
+          el.style.zIndex = '1';
+        });
+      };
+      testImg.src = url;
+    }
+
+    if (main.image_url) {
+      applyHeroBg(main.image_url);
+    } else {
+      // Fetch OG image for hero article
+      fetchOgImage(main.id, main.source_url).then(function(url) {
+        if (url) applyHeroBg(url);
       });
-    };
-    testImg.onerror = function() {
-      console.warn('Hero image failed to load:', bgUrl);
-    };
-    testImg.src = bgUrl;
+    }
 
     var side = document.getElementById('hero-side');
     side.innerHTML = arts.slice(1).map(function(a, i) {
       var id = 'hsc' + i;
-      var sideImg = getThumbUrl(a);
       setTimeout(function() {
         var el = document.getElementById(id);
         if (el) el.addEventListener('click', function() { window.open(a.source_url || '#', '_blank'); });
+        // Load OG image for side card
+        if (!a.image_url && el) {
+          fetchOgImage(a.id, a.source_url).then(function(url) {
+            if (url && el) {
+              el.style.backgroundImage = 'url(' + url + ')';
+              el.style.backgroundSize = 'cover';
+              el.style.backgroundPosition = 'center';
+              if (!el.querySelector('.hsc-overlay')) {
+                var ov = document.createElement('div');
+                ov.className = 'hsc-overlay';
+                ov.style.cssText = 'position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.15) 100%);border-radius:inherit';
+                el.insertBefore(ov, el.firstChild);
+              }
+            }
+          });
+        }
       }, 100);
-      return '<div class="hsc" id="' + id + '" style="cursor:pointer;background-image:url(' + sideImg + ');background-size:cover;background-position:center">' +
-        '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.15) 100%);border-radius:inherit"></div>' +
+      var bgStyle = a.image_url
+        ? 'background-image:url(' + a.image_url + ');background-size:cover;background-position:center'
+        : '';
+      var overlayHtml = a.image_url
+        ? '<div class="hsc-overlay" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.15) 100%);border-radius:inherit"></div>'
+        : '';
+      return '<div class="hsc" id="' + id + '" style="cursor:pointer;' + bgStyle + '">' +
+        overlayHtml +
         '<div style="position:relative;z-index:1"><div class="hsc-cat">' + (a.category || 'news') + '</div>' +
         '<div class="hsc-title">' + a.title + '</div>' +
         '<div class="hsc-meta">' + (a.source_name || '') + '</div></div></div>';
