@@ -177,10 +177,11 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
           </div>
           
           <div class="widget" style="margin-bottom:12px">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-              <div style="font-size:14px;font-weight:500">Community reviews</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+              <div style="font-size:14px;font-weight:500">Expat community reviews</div>
               <button id="d-review-btn" class="review-btn" style="position:static" onclick="">Leave a review</button>
             </div>
+            <div style="font-size:11px;color:var(--ink3);margin-bottom:10px">Reviews from expats in Portugal &mdash; not sourced from Google.</div>
             <div id="d-reviews"></div>
           </div>
           
@@ -240,12 +241,13 @@ var allBiz = [];
 var reviewStars = 0;
 
 function parseRating(pr) {
-  if (!pr) return { rating: 0, reviews: 0 };
-  var r = { rating: 0, reviews: 0 };
+  if (!pr) return { rating: 0, reviews: 0, source: '' };
+  var r = { rating: 0, reviews: 0, source: '' };
   (pr || '').split('|').forEach(function(p) {
     var kv = p.split(':');
     if (kv[0] === 'rating') r.rating = parseFloat(kv[1]) || 0;
     if (kv[0] === 'reviews') r.reviews = parseInt(kv[1]) || 0;
+    if (kv[0] === 'source') r.source = kv[1] || '';
   });
   return r;
 }
@@ -281,6 +283,7 @@ function renderBiz() {
     var r = parseRating(b.price_range);
     b._rating = r.rating;
     b._reviews = r.reviews;
+    b._source = r.source;
     return b;
   });
   
@@ -302,9 +305,11 @@ function renderBiz() {
   grid.innerHTML = filtered.map(function(b, i) {
     var url = b.url ? '<a href="' + b.url + '" target="_blank" class="biz-link">Visit &rarr;</a>' : '';
     var verified = b.status === 'featured' ? '<span class="biz-verified">&#10003; Verified</span>' : '';
+    var reviewLabel = b._source === 'google' ? '<span style="font-size:9px;color:var(--ink3);display:block;margin-top:1px">Google rating</span>' : '';
+    var reviewCount = b._reviews >= 1000 ? (b._reviews / 1000).toFixed(1) + 'k' : b._reviews;
     return '<div class="biz" data-id="' + b.id + '" onclick="if(event.target.tagName!==\'A\'&&!event.target.classList.contains(\'review-btn\'))showOnMap(this)">' +
       '<div class="biz-top"><div style="display:flex;align-items:flex-start"><span class="biz-emoji">' + b.emoji + '</span><div><div class="biz-name">' + b.name + '</div><div class="biz-loc">' + [b.area, b.city].filter(Boolean).join(', ') + '</div></div></div>' +
-      '<div class="biz-rating"><div class="biz-stars">' + starsHTML(b._rating) + '</div><span class="biz-score">' + b._rating.toFixed(1) + '</span><span class="biz-reviews">(' + b._reviews + ')</span></div></div>' +
+      '<div class="biz-rating"><div class="biz-stars">' + starsHTML(b._rating) + '</div><span class="biz-score">' + b._rating.toFixed(1) + '</span><span class="biz-reviews">(' + reviewCount + ')' + reviewLabel + '</span></div></div>' +
       '<div class="biz-desc">' + (b.reason || '') + '</div>' +
       '<div class="biz-tags">' + '<span class="biz-tag">' + b.type + '</span><span class="biz-tag">' + b.city + '</span>' + verified + ' ' + url + '</div>' +
       '<button class="review-btn" onclick="openReview(' + b.id + ',\'' + b.name.replace(/'/g, "\\'") + '\')">Leave a review</button>' +
@@ -338,8 +343,11 @@ function showOnMap(el) {
   document.getElementById('d-emoji').textContent = biz.emoji || '';
   document.getElementById('d-name').textContent = biz.name;
   document.getElementById('d-loc').textContent = [biz.area, biz.city].filter(Boolean).join(', ');
+  
+  var reviewCount = r.reviews >= 1000 ? (r.reviews / 1000).toFixed(1) + 'k' : r.reviews;
+  var sourceLabel = r.source === 'google' ? 'Google rating' : 'Rating';
   document.getElementById('d-stars').innerHTML = starsHTML(r.rating);
-  document.getElementById('d-score').textContent = r.rating.toFixed(1) + ' · ' + r.reviews + ' reviews';
+  document.getElementById('d-score').innerHTML = '<span style="font-weight:500">' + r.rating.toFixed(1) + '</span> &middot; ' + reviewCount + ' reviews' + (r.source === 'google' ? '<br><span style="font-size:10px;color:var(--ink3)">Source: Google Maps</span>' : '');
   document.getElementById('d-desc').textContent = biz.reason || '';
   document.getElementById('d-address').textContent = biz.address ? '📍 ' + biz.address : '';
   
@@ -387,7 +395,7 @@ async function loadReviews(bizId) {
     });
     var reviews = await res.json();
     if (!reviews.length) {
-      el.innerHTML = '<div style="font-size:12px;color:var(--ink3);padding:8px 0">No reviews yet. Be the first!</div>';
+      el.innerHTML = '<div style="font-size:12px;color:var(--ink3);padding:8px 0">No expat community reviews yet. Be the first to share your experience!</div>';
       return;
     }
     el.innerHTML = reviews.map(function(r) {
