@@ -195,13 +195,13 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
 <!-- 2. EVENTS + WEATHER -->
 <div class="full fade-in" id="events" style="margin-top:2.5rem">
   <div class="sh"><span class="sh-t">What's happening this week</span><a class="sh-m" href="news.html">Full calendar &rarr;</a></div>
-  <div class="evw-grid">
-    <div>
-      <div class="ev-list" id="events-list">
+  <div class="evw-grid" style="align-items:stretch">
+    <div style="display:flex;flex-direction:column">
+      <div class="ev-list" id="events-list" style="flex:1">
         <div class="ev" style="justify-content:center;color:var(--ink3);font-size:12px">Loading events...</div>
       </div>
-      <div style="margin-top:8px">
-        <a href="#" onclick="openSubmitEvent();return false" style="font-size:11px;color:var(--ink3);display:inline-flex;align-items:center;gap:4px">&#128197; Know about an event? Submit it here</a>
+      <div class="widget" style="margin-top:8px;display:flex;align-items:center;justify-content:center;padding:14px">
+        <a href="#" onclick="openSubmitEvent();return false" style="font-size:12px;color:var(--ink2);display:inline-flex;align-items:center;gap:5px">&#128197; Know about an event? Submit it here &rarr;</a>
       </div>
     </div>
     <div style="display:flex;flex-direction:column;gap:1.25rem">
