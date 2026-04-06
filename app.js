@@ -293,6 +293,19 @@ var catTagMap = {
   'culture': 'tcu', 'food': 'tfo', 'art': 'tar', 'family': 'tfa'
 };
 
+var eventCatImages = {
+  'music': 'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=200&h=200&fit=crop',
+  'social': 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=200&h=200&fit=crop',
+  'sport': 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=200&h=200&fit=crop',
+  'market': 'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=200&h=200&fit=crop',
+  'culture': 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=200&h=200&fit=crop',
+  'food': 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&h=200&fit=crop',
+  'art': 'https://images.unsplash.com/photo-1541367777708-7905fe3296c0?w=200&h=200&fit=crop',
+  'family': 'https://images.unsplash.com/photo-1536640712-4d998f60b42c?w=200&h=200&fit=crop'
+};
+
+var dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
 async function loadEvents() {
   try {
     var today = new Date().toISOString().slice(0, 10);
@@ -310,14 +323,17 @@ async function loadEvents() {
       var d = new Date(e.event_date + 'T12:00:00');
       var day = d.getDate();
       var mon = d.toLocaleDateString('en-GB', { month: 'short' });
+      var dow = dayNames[d.getDay()];
       var tagClass = catTagMap[e.category] || 'ts';
       var loc = [e.venue, e.city].filter(Boolean).join(', ');
-      var time = e.event_time ? ' · ' + e.event_time : '';
-      var price = e.price && e.price !== 'Free' ? ' · ' + e.price : '';
+      var time = e.event_time ? ' · ' + dow + ' ' + e.event_time : ' · ' + dow;
+      var price = e.price && e.price !== 'Free' && e.price !== 'Free entry' ? ' · ' + e.price : '';
       var link = e.url ? ' href="' + e.url + '" target="_blank" rel="noopener"' : '';
-      return '<a class="ev" style="text-decoration:none;color:inherit"' + link + '>' +
+      var img = eventCatImages[e.category] || eventCatImages['culture'];
+      return '<a class="ev"' + link + '>' +
+        '<img class="ev-img" src="' + img + '" alt="" />' +
         '<div class="ev-date"><div class="ev-day">' + day + '</div><div class="ev-mon">' + mon + '</div></div>' +
-        '<div><div class="ev-title">' + e.title + '</div>' +
+        '<div style="flex:1"><div class="ev-title">' + e.title + '</div>' +
         '<div class="ev-loc">' + loc + time + price + '</div>' +
         '<span class="ev-tag ' + tagClass + '">' + (e.category || 'social') + '</span></div></a>';
     }).join('');

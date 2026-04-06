@@ -10,35 +10,36 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
 <script data-cfasync="false" src="app.js" defer></script>
 <style>
-:root{--ink:#1c1917;--ink2:#57534e;--ink3:#a8a29e;--cream:#faf9f7;--warm:#f5f0e8;--card:#fff;--border:rgba(28,25,23,0.08);--border2:rgba(28,25,23,0.16);--red:#c0381a;--red-l:#fdf0ec;--red-d:#a83015;--green:#15803d;--green-l:#f0fdf4;--amber:#b45309;--amber-l:#fffbeb;--blue:#1d4ed8;--blue-l:#eff6ff;--r:10px;--rl:16px}
+:root{--ink:#1c1917;--ink2:#57534e;--ink3:#a8a29e;--cream:#f7f5f0;--warm:#f5f0e8;--card:#fff;--border:rgba(28,25,23,0.08);--border2:rgba(28,25,23,0.16);--red:#c0381a;--red-l:#fdf0ec;--red-d:#a83015;--green:#15803d;--green-l:#f0fdf4;--amber:#b45309;--amber-l:#fffbeb;--blue:#1d4ed8;--blue-l:#eff6ff;--r:10px;--rl:16px}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"Outfit",sans-serif;background:var(--cream);color:var(--ink);font-size:15px;line-height:1.6}
+body{font-family:"Outfit",sans-serif;background:var(--cream);color:var(--ink);font-size:15px;line-height:1.6;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0v60M0 30h60M0 0h60v60H0z' fill='none' stroke='%23d4cfc4' stroke-width='.3'/%3E%3Ccircle cx='30' cy='30' r='8' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='0' cy='0' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='60' cy='0' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='0' cy='60' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='60' cy='60' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3C/svg%3E")}
 a{text-decoration:none;color:inherit}
-nav{background:rgba(250,249,247,0.96);border-bottom:0.5px solid var(--border);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;backdrop-filter:blur(10px)}
+nav{background:rgba(247,245,240,0.96);border-bottom:0.5px solid var(--border);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;backdrop-filter:blur(10px)}
 .logo{font-family:"Playfair Display",serif;font-size:19px;color:var(--ink);display:flex;align-items:center;gap:8px}
 .nav-links{display:flex;gap:2px}
 .nl{font-size:13px;padding:6px 11px;border-radius:var(--r);color:var(--ink2);background:none;border:none;cursor:pointer;font-family:"Outfit",sans-serif;text-decoration:none;display:inline-flex;align-items:center;white-space:nowrap}
 .nl:hover{background:var(--warm);color:var(--ink)}.nl.on{color:var(--ink);font-weight:500}
-.nav-sub{font-size:12px;padding:7px 15px;background:var(--ink);color:white;border:none;border-radius:var(--r);cursor:pointer;font-family:"Outfit",sans-serif;font-weight:500;white-space:nowrap}
-.nav-sub:hover{background:#2c2825}
-.region-bar{background:var(--card);border-bottom:0.5px solid var(--border);padding:0 2rem;height:36px;display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none}
-.region-bar::-webkit-scrollbar{display:none}
+.nav-sub{font-size:12px;padding:7px 15px;background:var(--ink);color:white;border:none;border-radius:var(--r);cursor:pointer;font-family:"Outfit",sans-serif;font-weight:500;white-space:nowrap}.nav-sub:hover{background:#2c2825}
+.region-bar{background:rgba(255,255,255,0.8);border-bottom:0.5px solid var(--border);padding:0 2rem;height:36px;display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none}.region-bar::-webkit-scrollbar{display:none}
 .rb-label{font-size:11px;color:var(--ink3);white-space:nowrap;margin-right:4px;flex-shrink:0}
-.rp{font-size:11px;padding:3px 12px;border-radius:20px;border:0.5px solid var(--border2);color:var(--ink2);cursor:pointer;white-space:nowrap;background:var(--card);flex-shrink:0;font-family:"Outfit",sans-serif}
-.rp:hover{border-color:var(--ink);color:var(--ink)}.rp.on{background:var(--red);color:white;border-color:var(--red)}
+.rp{font-size:11px;padding:3px 12px;border-radius:20px;border:0.5px solid var(--border2);color:var(--ink2);cursor:pointer;white-space:nowrap;background:var(--card);flex-shrink:0;font-family:"Outfit",sans-serif}.rp:hover{border-color:var(--ink);color:var(--ink)}.rp.on{background:var(--red);color:white;border-color:var(--red)}
+
+.fade-in{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}.fade-in.vis{opacity:1;transform:translateY(0)}
 
 .vp-hero{max-width:1100px;margin:0 auto;padding:2.5rem 2rem 0}
-.vp-inner{background:var(--ink);border-radius:var(--rl);padding:3rem;position:relative;overflow:hidden}
-.vp-inner::before{content:"";position:absolute;top:-60%;right:-10%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(192,56,26,0.12) 0%,transparent 70%)}
-.vp-ey{font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:var(--red);font-weight:500;margin-bottom:12px;position:relative}
-.vp-t{font-family:"Playfair Display",serif;font-size:clamp(26px,3.5vw,38px);font-weight:400;line-height:1.2;color:white;margin-bottom:12px;max-width:600px;position:relative}
-.vp-sub{font-size:14px;color:rgba(255,255,255,0.55);line-height:1.7;max-width:520px;margin-bottom:1.75rem;position:relative}
-.vp-actions{display:flex;flex-wrap:wrap;gap:10px;position:relative}
-.vp-btn{padding:10px 20px;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;border:none;font-family:"Outfit",sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.vp-inner{border-radius:var(--rl);position:relative;overflow:hidden;min-height:360px}
+.vp-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vp-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(28,25,23,.92) 0%,rgba(28,25,23,.75) 50%,rgba(28,25,23,.6) 100%)}
+.vp-content{position:relative;z-index:1;padding:3rem}
+.vp-ey{font-size:11px;text-transform:uppercase;letter-spacing:.15em;color:var(--red);font-weight:500;margin-bottom:14px}
+.vp-t{font-family:"Playfair Display",serif;font-size:clamp(26px,3.5vw,38px);font-weight:400;line-height:1.15;color:white;margin-bottom:12px;max-width:520px}
+.vp-sub{font-size:14px;color:rgba(255,255,255,0.55);line-height:1.7;max-width:480px;margin-bottom:24px}
+.vp-actions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.vp-btn{padding:9px 18px;border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;border:none;font-family:"Outfit",sans-serif;transition:all .2s;display:inline-flex;align-items:center;gap:5px;text-decoration:none}.vp-btn:hover{transform:translateY(-1px)}
 .vp-p{background:var(--red);color:white}.vp-p:hover{background:var(--red-d)}
 .vp-s{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.85);border:0.5px solid rgba(255,255,255,0.15)}.vp-s:hover{background:rgba(255,255,255,0.15);color:white}
-.vp-stats{display:flex;gap:2rem;margin-top:1.5rem;padding-top:1.25rem;border-top:0.5px solid rgba(255,255,255,0.08);position:relative}
-.vp-sn{font-family:"Playfair Display",serif;font-size:22px;color:white}.vp-sl{font-size:11px;color:rgba(255,255,255,0.4)}
+.vp-stats{display:flex;gap:2.5rem;padding-top:16px;border-top:0.5px solid rgba(255,255,255,0.08)}
+.vp-sn{font-family:"Playfair Display",serif;font-size:22px;color:white}.vp-sl{font-size:11px;color:rgba(255,255,255,0.35)}
 
 .full{max-width:1100px;margin:2rem auto 0;padding:0 2rem}
 .sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:10px;border-bottom:0.5px solid var(--border)}
@@ -48,9 +49,11 @@ nav{background:rgba(250,249,247,0.96);border-bottom:0.5px solid var(--border);pa
 
 .evw-grid{display:grid;grid-template-columns:1fr 320px;gap:1.5rem;align-items:start}
 .ev-list{display:flex;flex-direction:column;gap:8px}
-.ev{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1rem;display:flex;gap:12px;cursor:pointer;text-decoration:none;color:inherit}.ev:hover{border-color:var(--border2)}
-.ev-date{min-width:40px;text-align:center;background:var(--warm);border-radius:var(--r);padding:6px 4px;flex-shrink:0}
-.ev-day{font-family:"Playfair Display",serif;font-size:20px;line-height:1}.ev-mon{font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3)}
+.ev{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:12px;display:flex;gap:12px;cursor:pointer;text-decoration:none;color:inherit;transition:all .2s;overflow:hidden}
+.ev:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.ev-img{width:80px;height:80px;border-radius:var(--r);object-fit:cover;flex-shrink:0}
+.ev-date{min-width:44px;text-align:center;background:var(--warm);border-radius:var(--r);padding:6px 6px 5px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ev-day{font-family:"Playfair Display",serif;font-size:20px;line-height:1}.ev-mon{font-size:9px;text-transform:uppercase;letter-spacing:.03em;color:var(--ink3)}
 .ev-title{font-size:13px;font-weight:500;margin-bottom:3px}.ev-loc{font-size:11px;color:var(--ink3)}
 .ev-tag{font-size:10px;padding:2px 8px;border-radius:20px;display:inline-block;margin-top:5px;font-weight:500}
 .tm{background:#EEEDFE;color:#3C3489}.ts{background:var(--green-l);color:var(--green)}.tsp{background:var(--blue-l);color:var(--blue)}.tmk{background:var(--red-l);color:var(--red)}.tcu{background:#FFF3E0;color:#E65100}.tfo{background:#FFF8E1;color:#F57F17}.tar{background:#F3E5F5;color:#7B1FA2}.tfa{background:#E8F5E9;color:#2E7D32}
@@ -68,17 +71,17 @@ nav{background:rgba(250,249,247,0.96);border-bottom:0.5px solid var(--border);pa
 .hol-tip::after{content:"";position:absolute;top:100%;left:16px;border:5px solid transparent;border-top-color:var(--ink)}.hol:hover .hol-tip{display:block}
 
 .tg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
-.tc{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;display:block;transition:all .15s}.tc:hover{border-color:var(--red);transform:translateY(-1px)}
+.tc{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;display:block;transition:all .2s;text-decoration:none;color:inherit}.tc:hover{border-color:var(--red);transform:translateY(-2px);box-shadow:0 4px 16px rgba(192,56,26,.08)}
 .tc-i{font-size:22px;margin-bottom:8px}.tc-t{font-size:13px;font-weight:500;margin-bottom:3px;color:var(--ink)}.tc-d{font-size:11px;color:var(--ink3);line-height:1.5}
 
 .sp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1rem}
-.sp{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;display:block}.sp:hover{border-color:var(--border2)}
+.sp{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;display:block;text-decoration:none;color:inherit;transition:all .2s}.sp:hover{border-color:var(--border2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.05)}
 .sp-icon{font-size:22px;margin-bottom:8px;display:block}.sp-cat{font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
 .sp-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:3px}.sp-n{font-size:11px;color:var(--ink3)}
-.list-cta{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:var(--warm);border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;font-weight:500;color:var(--ink2);cursor:pointer;margin-top:6px}.list-cta:hover{background:var(--card);border-color:var(--border2);color:var(--ink)}
+.list-cta{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:var(--warm);border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;font-weight:500;color:var(--ink2);cursor:pointer;margin-top:6px;transition:all .2s}.list-cta:hover{background:var(--card);border-color:var(--border2);color:var(--ink)}
 
 .news-list{border:0.5px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:1rem}
-.ni{background:var(--card);padding:1rem 1.25rem;cursor:pointer;display:flex;gap:14px;align-items:flex-start;border-bottom:0.5px solid var(--border)}.ni:last-child{border-bottom:none}.ni:hover{background:var(--warm)}
+.ni{background:var(--card);padding:12px 1.25rem;cursor:pointer;display:flex;gap:14px;align-items:flex-start;border-bottom:0.5px solid var(--border);transition:background .15s}.ni:last-child{border-bottom:none}.ni:hover{background:var(--warm)}
 .ni-img{width:68px;height:68px;border-radius:var(--r);background:var(--warm);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:26px;overflow:hidden}.ni-img img{width:100%;height:100%;object-fit:cover}
 .ni-cat{font-size:10px;color:var(--red);font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
 .ni-title{font-size:13px;font-weight:500;line-height:1.4;margin-bottom:4px}.ni-meta{font-size:11px;color:var(--ink3)}
@@ -92,16 +95,16 @@ nav{background:rgba(250,249,247,0.96);border-bottom:0.5px solid var(--border);pa
 .llp-ey{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--red);font-weight:500;margin-bottom:8px}
 .llp-t{font-family:"Playfair Display",serif;font-size:clamp(20px,2.5vw,28px);font-weight:400;margin-bottom:10px;line-height:1.25}
 .llp-d{font-size:13px;color:var(--ink2);line-height:1.8;margin-bottom:1.25rem}
-.llp-btn{display:inline-block;padding:11px 22px;background:var(--ink);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500}.llp-btn:hover{background:#2c2825}
+.llp-btn{display:inline-block;padding:11px 22px;background:var(--ink);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500;transition:background .2s}.llp-btn:hover{background:#2c2825}
 .llp-facts{display:flex;flex-direction:column;gap:10px}
-.llp-f{display:flex;gap:12px;align-items:flex-start;padding:12px;background:var(--card);border-radius:var(--r);border:0.5px solid var(--border)}
+.llp-f{display:flex;gap:12px;align-items:flex-start;padding:12px;background:var(--card);border-radius:var(--r);border:0.5px solid var(--border);transition:all .15s}.llp-f:hover{border-color:var(--border2);transform:translateX(4px)}
 .llp-fi{font-size:18px;flex-shrink:0}.llp-ft{font-size:13px;font-weight:500;margin-bottom:2px}.llp-fd{font-size:11px;color:var(--ink2);line-height:1.5}
 
 .sub-sec{background:var(--ink);border-radius:var(--rl);padding:2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center}
 .sub-sec .swt{font-family:"Playfair Display",serif;font-size:24px;color:white;margin-bottom:6px}.sub-sec .sws{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7}
 .sw-inp{width:100%;padding:10px 12px;border:0.5px solid rgba(255,255,255,0.15);border-radius:var(--r);background:rgba(255,255,255,0.08);color:white;font-size:13px;outline:none;font-family:"Outfit",sans-serif;margin-bottom:6px}.sw-inp::placeholder{color:rgba(255,255,255,0.3)}
 .sw-sel{width:100%;padding:10px 12px;border:0.5px solid rgba(255,255,255,0.15);border-radius:var(--r);background:rgba(255,255,255,0.08);color:white;font-size:13px;outline:none;font-family:"Outfit",sans-serif;margin-bottom:8px}.sw-sel option{color:var(--ink);background:white}
-.sw-btn{width:100%;padding:10px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:"Outfit",sans-serif}.sw-btn:hover{background:var(--red-d)}
+.sw-btn{width:100%;padding:10px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:"Outfit",sans-serif;transition:background .2s}.sw-btn:hover{background:var(--red-d)}
 
 footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;margin-top:4rem}
 .fi{max-width:1100px;margin:0 auto}
@@ -113,7 +116,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
 .fb{border-top:0.5px solid rgba(255,255,255,0.1);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;font-size:12px;flex-wrap:wrap;gap:8px}
 .fbadge{font-size:10px;background:rgba(255,255,255,0.07);padding:4px 12px;border-radius:20px}
 
-@media(max-width:900px){.vp-hero{padding:1.5rem 1rem 0}.vp-inner{padding:2rem}.evw-grid{grid-template-columns:1fr}.tg{grid-template-columns:repeat(2,1fr)}.sp-grid{grid-template-columns:repeat(2,1fr)}.llp{grid-template-columns:1fr}.sub-sec{grid-template-columns:1fr}.ft{grid-template-columns:1fr 1fr}.full{padding:0 1rem}nav{padding:0 1rem}.region-bar{padding:0 1rem}}
+@media(max-width:900px){.vp-hero{padding:1.5rem 1rem 0}.vp-content{padding:2rem}.evw-grid{grid-template-columns:1fr}.tg{grid-template-columns:repeat(2,1fr)}.sp-grid{grid-template-columns:repeat(2,1fr)}.llp{grid-template-columns:1fr}.sub-sec{grid-template-columns:1fr}.ft{grid-template-columns:1fr 1fr}.full{padding:0 1rem}nav{padding:0 1rem}.region-bar{padding:0 1rem}}
 @media(max-width:600px){.nav-links{display:none}.tg{grid-template-columns:1fr}.sp-grid{grid-template-columns:1fr}.ft{grid-template-columns:1fr}.vp-stats{flex-wrap:wrap;gap:1.5rem}}
 </style>
 </head>
@@ -145,29 +148,33 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
   <button class="rp" onclick="setReg('Azores',this)">Azores</button>
 </div>
 
-<!-- 1. HERO VALUE PROPOSITION -->
+<!-- 1. HERO -->
 <div class="vp-hero">
-  <div class="vp-inner">
-    <div class="vp-ey">Updated daily &middot; Made for expats</div>
-    <div class="vp-t">Your expat life in Portugal, sorted.</div>
-    <div class="vp-sub">Events, local services, free tools, daily news, and everything you need to feel at home. Built by expats, for expats.</div>
-    <div class="vp-actions">
-      <a class="vp-btn vp-p" href="#events">&#128197; What's on this week</a>
-      <a class="vp-btn vp-s" href="lifestyle_services.html">&#128269; Find local services</a>
-      <a class="vp-btn vp-s" href="expat_tools_v4_fixed.html">&#9889; Free expat tools</a>
-      <a class="vp-btn vp-s" href="news.html">&#128240; Latest news</a>
-    </div>
-    <div class="vp-stats">
-      <div><div class="vp-sn">70+</div><div class="vp-sl">upcoming events</div></div>
-      <div><div class="vp-sn">9</div><div class="vp-sl">free tools</div></div>
-      <div><div class="vp-sn">33</div><div class="vp-sl">service providers</div></div>
-      <div><div class="vp-sn">200+</div><div class="vp-sl">news articles</div></div>
+  <div class="vp-inner fade-in">
+    <img class="vp-bg" src="https://images.unsplash.com/photo-1513735492246-483525079686?w=1200&h=500&fit=crop" alt="" />
+    <div class="vp-overlay"></div>
+    <div class="vp-content">
+      <div class="vp-ey">Updated daily &middot; Made for expats</div>
+      <div class="vp-t">Your expat life in Portugal, sorted.</div>
+      <div class="vp-sub">Events, local services, free tools, daily news, and everything you need to feel at home.</div>
+      <div class="vp-actions">
+        <a class="vp-btn vp-p" href="#events">&#128197; What's on this week</a>
+        <a class="vp-btn vp-s" href="lifestyle_services.html">&#128269; Find local services</a>
+        <a class="vp-btn vp-s" href="expat_tools_v4_fixed.html">&#9889; Free expat tools</a>
+        <a class="vp-btn vp-s" href="news.html">&#128240; Latest news</a>
+      </div>
+      <div class="vp-stats">
+        <div><div class="vp-sn" id="stat-events">0</div><div class="vp-sl">upcoming events</div></div>
+        <div><div class="vp-sn" id="stat-tools">0</div><div class="vp-sl">free tools</div></div>
+        <div><div class="vp-sn" id="stat-providers">0</div><div class="vp-sl">service providers</div></div>
+        <div><div class="vp-sn" id="stat-news">0</div><div class="vp-sl">news articles</div></div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- 2. EVENTS + WEATHER -->
-<div class="full" id="events" style="margin-top:2.5rem">
+<div class="full fade-in" id="events" style="margin-top:2.5rem">
   <div class="sh"><span class="sh-t">What's happening this week</span><a class="sh-m" href="news.html">Full calendar &rarr;</a></div>
   <div class="evw-grid">
     <div class="ev-list" id="events-list">
@@ -188,20 +195,20 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
 </div>
 
 <!-- 3. FREE TOOLS -->
-<div class="full" style="margin-top:2.5rem">
+<div class="full fade-in" style="margin-top:2.5rem">
   <div class="sh"><span class="sh-t">Free expat tools</span><a class="sh-btn" href="expat_tools_v4_fixed.html">All 9 tools &rarr;</a></div>
   <div class="tg">
-    <a class="tc" href="expat_tools_v4_fixed.html#visa"><div class="tc-i">&#128205;</div><div class="tc-t">Visa finder</div><div class="tc-d">Find the right visa for your situation in 60 seconds.</div></a>
-    <a class="tc" href="expat_tools_v4_fixed.html#cost"><div class="tc-i">&#128178;</div><div class="tc-t">Cost of living calculator</div><div class="tc-d">Compare cities, estimate monthly budgets.</div></a>
+    <a class="tc" href="expat_tools_v4_fixed.html#visa"><div class="tc-i">&#128205;</div><div class="tc-t">Visa finder</div><div class="tc-d">Find the right visa in 60 seconds.</div></a>
+    <a class="tc" href="expat_tools_v4_fixed.html#cost"><div class="tc-i">&#128178;</div><div class="tc-t">Cost of living calculator</div><div class="tc-d">Compare cities, estimate budgets.</div></a>
     <a class="tc" href="expat_tools_v4_fixed.html#tax"><div class="tc-i">&#128200;</div><div class="tc-t">Tax comparison</div><div class="tc-d">NHR vs IFICI vs standard — side by side.</div></a>
-    <a class="tc" href="expat_tools_v4_fixed.html#neighbourhood"><div class="tc-i">&#127968;</div><div class="tc-t">Neighbourhood match</div><div class="tc-d">Find the right area for your lifestyle and budget.</div></a>
-    <a class="tc" href="expat_tools_v4_fixed.html#rental"><div class="tc-i">&#128200;</div><div class="tc-t">Rental tracker</div><div class="tc-d">Average rents by city, neighbourhood and type.</div></a>
-    <a class="tc" href="expat_tools_v4_fixed.html#docs"><div class="tc-i">&#128203;</div><div class="tc-t">Document checklist</div><div class="tc-d">Every document you need for NIF, D7, D8, AIMA.</div></a>
+    <a class="tc" href="expat_tools_v4_fixed.html#neighbourhood"><div class="tc-i">&#127968;</div><div class="tc-t">Neighbourhood match</div><div class="tc-d">Right area for your lifestyle and budget.</div></a>
+    <a class="tc" href="expat_tools_v4_fixed.html#rental"><div class="tc-i">&#128200;</div><div class="tc-t">Rental tracker</div><div class="tc-d">Average rents by area and type.</div></a>
+    <a class="tc" href="expat_tools_v4_fixed.html#docs"><div class="tc-i">&#128203;</div><div class="tc-t">Document checklist</div><div class="tc-d">NIF, D7, D8, AIMA — every document sorted.</div></a>
   </div>
 </div>
 
-<!-- 4. LOCAL SERVICES (revenue) -->
-<div class="full" style="margin-top:2.5rem">
+<!-- 4. LOCAL SERVICES -->
+<div class="full fade-in" style="margin-top:2.5rem">
   <div class="sh"><span class="sh-t">Find local services</span><a class="sh-m" href="lifestyle_services.html">All 33 providers &rarr;</a></div>
   <div class="sp-grid">
     <a class="sp" href="lifestyle_services.html"><span class="sp-icon">&#127947;</span><div class="sp-cat">Fitness &amp; sport</div><div class="sp-title">Personal trainers</div><div class="sp-n">5 providers</div></a>
@@ -216,8 +223,8 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
   <a class="list-cta" href="mailto:hello@expatportugal.guide?subject=List my service&body=Business name:%0ACategory:%0ACity:%0AWebsite:">&#9993; Are you a service provider? Get listed &rarr;</a>
 </div>
 
-<!-- 5. LATEST NEWS -->
-<div class="full" style="margin-top:2.5rem">
+<!-- 5. NEWS -->
+<div class="full fade-in" style="margin-top:2.5rem">
   <div class="sh"><span class="sh-t">Latest news</span><a class="sh-btn" href="news.html">All news &rarr;</a></div>
   <div class="hero-main" id="hero-main" onclick="if(window._heroUrl)window.open(window._heroUrl,'_blank')">
     <div class="hcat" id="hero-cat">Loading...</div>
@@ -229,8 +236,8 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
   </div>
 </div>
 
-<!-- 6. LIVE LIKE A LOCAL -->
-<div class="full" style="margin-top:2.5rem">
+<!-- 6. LIVE LOCAL -->
+<div class="full fade-in" style="margin-top:2.5rem">
   <div class="llp">
     <div>
       <div class="llp-ey">Integration guide</div>
@@ -248,11 +255,11 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
 </div>
 
 <!-- 7. SUBSCRIBE -->
-<div class="full" style="margin-top:2.5rem" id="sub-section">
+<div class="full fade-in" style="margin-top:2.5rem" id="sub-section">
   <div class="sub-sec" id="sub-widget">
     <div>
       <div class="swt">The Sunday Digest</div>
-      <div class="sws">Every Sunday morning — the week's news, upcoming events, and what you need to know as an expat in Portugal. Free, no spam.</div>
+      <div class="sws">Every Sunday morning &mdash; the week's news, upcoming events, and what you need to know as an expat in Portugal. Free, no spam.</div>
     </div>
     <div>
       <input class="sw-inp" type="email" id="sw-email" placeholder="your@email.com" />
@@ -287,5 +294,39 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
     <div class="fb"><span>&copy; 2026 ExpatPortugal.guide</span><span class="fbadge">Content auto-updated daily</span></div>
   </div>
 </footer>
+
+<script>
+/* Scroll fade-in observer */
+var fadeObs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) { e.target.classList.add('vis'); fadeObs.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(function(el, i) {
+  el.style.transitionDelay = (i * 0.06) + 's';
+  fadeObs.observe(el);
+});
+
+/* Counter animation */
+function animateCounter(el, target, suffix) {
+  var s = suffix || '';
+  var dur = 1400;
+  var startTime = null;
+  function step(ts) {
+    if (!startTime) startTime = ts;
+    var p = Math.min((ts - startTime) / dur, 1);
+    var eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(eased * target) + s;
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+setTimeout(function() {
+  animateCounter(document.getElementById('stat-events'), 70, '+');
+  animateCounter(document.getElementById('stat-tools'), 9, '');
+  animateCounter(document.getElementById('stat-providers'), 33, '');
+  animateCounter(document.getElementById('stat-news'), 200, '+');
+}, 500);
+</script>
 </body>
 </html>
