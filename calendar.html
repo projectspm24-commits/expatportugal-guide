@@ -104,7 +104,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
       <div class="cal-hero-t">Events calendar</div>
       <div class="cal-hero-sub">Everything happening in Portugal for expats &mdash; markets, meetups, fado, surf, festivals, and more.</div>
     </div>
-    <a class="submit-btn" href="#" onclick="if(window.openSubmitEvent)openSubmitEvent();else window.location='index.html';return false">&#128197; Submit an event</a>
+    <a class="submit-btn" href="#" onclick="openSubmitEvent();return false">&#128197; Submit an event</a>
   </div>
 
   <div class="cal-controls">
@@ -155,6 +155,26 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
   </div>
 </div>
 
+<div id="submit-event-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:300;align-items:center;justify-content:center" onclick="if(event.target===this)closeSubmitEvent()">
+  <div id="submit-event-form" style="background:var(--card);border-radius:var(--rl);padding:1.75rem;width:90%;max-width:460px;position:relative">
+    <button onclick="closeSubmitEvent()" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:18px;cursor:pointer;color:var(--ink3);line-height:1">&times;</button>
+    <div style="font-size:16px;font-weight:500;margin-bottom:4px">Submit an event</div>
+    <div style="font-size:12px;color:var(--ink3);margin-bottom:16px;line-height:1.5">We'll review it and add it to the calendar if it's a good fit.</div>
+    <input id="se-title" type="text" placeholder="Event name *" style="width:100%;padding:9px 11px;border:0.5px solid var(--border);border-radius:var(--r);font-size:13px;margin-bottom:8px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+      <input id="se-city" type="text" placeholder="City *" style="width:100%;padding:9px 11px;border:0.5px solid var(--border);border-radius:var(--r);font-size:13px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+      <input id="se-price" type="text" placeholder="Fee (Free, €10...) *" style="width:100%;padding:9px 11px;border:0.5px solid var(--border);border-radius:var(--r);font-size:13px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+      <input id="se-date" type="date" style="width:100%;padding:9px 11px;border:0.5px solid var(--border);border-radius:var(--r);font-size:13px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+      <input id="se-time" type="time" style="width:100%;padding:9px 11px;border:0.5px solid var(--border);border-radius:var(--r);font-size:13px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+    </div>
+    <input id="se-url" type="url" placeholder="Event link (website, Meetup, Facebook...) *" style="width:100%;padding:9px 11px;border:0.5px solid var(--border);border-radius:var(--r);font-size:13px;margin-bottom:8px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+    <input id="se-email" type="email" placeholder="Your email (optional, for updates)" style="width:100%;padding:9px 11px;border:0.5px solid var(--border);border-radius:var(--r);font-size:13px;margin-bottom:14px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+    <button onclick="submitEvent()" style="width:100%;padding:10px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .2s" onmouseover="this.style.background='var(--red-d)'" onmouseout="this.style.background='var(--red)'">Submit for review</button>
+  </div>
+</div>
+
 <footer>
   <div class="fi">
     <div style="margin-bottom:12px">&#127477;&#127481; ExpatPortugal.guide &middot; <a href="index.html" style="color:rgba(255,255,255,0.7)">Home</a> &middot; <a href="directory.html" style="color:rgba(255,255,255,0.7)">Directory</a> &middot; <a href="communities.html" style="color:rgba(255,255,255,0.7)">Communities</a></div>
@@ -192,6 +212,41 @@ var regionCities = {
   Braga:['Braga','Guimarães'],Alentejo:['Alentejo','Évora','Beja'],
   Madeira:['Madeira','Funchal'],Azores:['Azores','Açores','Ponta Delgada']
 };
+
+function openSubmitEvent() {
+  document.getElementById('submit-event-overlay').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeSubmitEvent() {
+  document.getElementById('submit-event-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+async function submitEvent() {
+  var title = document.getElementById('se-title').value.trim();
+  var city = document.getElementById('se-city').value.trim();
+  var date = document.getElementById('se-date').value;
+  var time = document.getElementById('se-time').value;
+  var url = document.getElementById('se-url').value.trim();
+  var price = document.getElementById('se-price').value.trim();
+  var email = document.getElementById('se-email').value.trim();
+  if (!title || !city || !date || !time || !url || !price) {
+    alert('Please fill in all required fields (event name, city, date, time, event link, and fee).');
+    return;
+  }
+  try {
+    await fetch(SB_URL + '/rest/v1/events', {
+      method: 'POST',
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ title: title, city: city, event_date: date, event_time: time, url: url, price: price, description: email ? 'Submitted by: ' + email : 'User submitted', category: 'social', source: 'User submission', status: 'pending' })
+    });
+    document.getElementById('submit-event-form').innerHTML =
+      '<div style="text-align:center;padding:1.5rem">' +
+      '<div style="font-size:28px;margin-bottom:10px">&#9989;</div>' +
+      '<div style="font-size:15px;font-weight:500;margin-bottom:6px">Event submitted!</div>' +
+      '<div style="font-size:12px;color:var(--ink3);margin-bottom:16px">We\'ll review it and add it to the calendar. Thanks for helping the community!</div>' +
+      '<button onclick="closeSubmitEvent()" style="padding:8px 20px;background:var(--ink);color:white;border:none;border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;font-family:Outfit,sans-serif">Close</button></div>';
+  } catch (e) { alert('Could not submit. Please try again later.'); }
+}
 
 function init() {
   var now = new Date();
