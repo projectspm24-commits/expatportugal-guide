@@ -152,9 +152,7 @@ tr:hover td{background:var(--warm)}
     <div class="s-section">Community</div>
     <div class="s-nav-item" onclick="showPanel('subscribers',this)">👥 Subscribers</div>
     <div class="s-nav-item" onclick="showPanel('exchange',this)">🤝 Language exchange</div>
-    <div class="s-nav-item" onclick="showPanel('directory',this)">📋 Directory</div>
-
-    <div class="s-nav-item" onclick="showPanel('businesses',this)">&#127978; Local businesses</div>
+    <div class="s-nav-item" onclick="showPanel('businesses',this)">&#128203; Directory</div>
 
     <div class="s-section">System</div>
     <div class="s-nav-item" onclick="showPanel('logs',this)">⚙️ Automation logs</div>
@@ -291,12 +289,21 @@ tr:hover td{background:var(--warm)}
           <div style="display:flex;flex-direction:column;gap:3px">
             <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Type *</label>
             <select id="biz-type" class="setting-input" style="margin:0">
-              <option value="restaurant">Restaurant / Cafe / Tasca</option>
+              <option value="cafe">Cafe / Coffee</option>
+              <option value="restaurant">Restaurant / Tasca</option>
+              <option value="pottery">Pottery / Ceramics</option>
+              <option value="gallery">Gallery / Art</option>
+              <option value="yoga">Yoga / Pilates</option>
+              <option value="organic">Organic / Farm shop</option>
+              <option value="flowers">Flower shop</option>
+              <option value="gym">Local gym</option>
+              <option value="vintage">Vintage / Second-hand</option>
+              <option value="furniture">Furniture repair</option>
+              <option value="fabric">Fabric / Sewing</option>
+              <option value="clothing">Clothing maker</option>
               <option value="market">Market / Shop</option>
               <option value="bakery">Bakery / Pastelaria</option>
               <option value="bar">Bar / Wine bar</option>
-              <option value="cultural">Cultural / Arts</option>
-              <option value="sport">Sport / Fitness</option>
               <option value="services">Local services</option>
               <option value="other">Other</option>
             </select>
@@ -305,7 +312,8 @@ tr:hover td{background:var(--warm)}
             <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">City *</label>
             <select id="biz-city" class="setting-input" style="margin:0">
               <option>Lisbon</option><option>Porto</option><option>Algarve</option>
-              <option>Cascais</option><option>Sintra</option><option>Braga</option>
+              <option>Cascais</option><option>Ericeira</option><option>Peniche</option>
+              <option>Mafra</option><option>Sintra</option><option>Braga</option>
               <option>Coimbra</option><option>Alentejo</option><option>Madeira</option><option>Azores</option>
             </select>
           </div>
@@ -326,13 +334,12 @@ tr:hover td{background:var(--warm)}
             <input id="biz-url" class="setting-input" style="margin:0" placeholder="https://..." />
           </div>
           <div style="display:flex;flex-direction:column;gap:3px">
-            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Price range</label>
-            <select id="biz-price" class="setting-input" style="margin:0">
-              <option value="€">€ — Very affordable</option>
-              <option value="€€">€€ — Moderate</option>
-              <option value="€€€">€€€ — Pricier</option>
-              <option value="">N/A</option>
-            </select>
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Google rating (e.g. 4.6)</label>
+            <input id="biz-rating" class="setting-input" style="margin:0" type="number" step="0.1" min="0" max="5" placeholder="4.6" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Google reviews count</label>
+            <input id="biz-reviews" class="setting-input" style="margin:0" type="number" min="0" placeholder="77" />
           </div>
           <div style="display:flex;flex-direction:column;gap:3px;grid-column:1/-1">
             <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Emoji icon</label>
@@ -367,17 +374,27 @@ tr:hover td{background:var(--warm)}
             <select id="biz-filter-city" class="btn" style="border:0.5px solid var(--border2)" onchange="loadBusinesses()">
               <option value="">All cities</option>
               <option>Lisbon</option><option>Porto</option><option>Algarve</option>
-              <option>Cascais</option><option>Braga</option><option>Alentejo</option><option>Madeira</option>
+              <option>Cascais</option><option>Ericeira</option><option>Peniche</option>
+              <option>Mafra</option><option>Braga</option><option>Alentejo</option><option>Madeira</option>
             </select>
             <select id="biz-filter-type" class="btn" style="border:0.5px solid var(--border2)" onchange="loadBusinesses()">
               <option value="">All types</option>
+              <option value="cafe">Cafe</option>
               <option value="restaurant">Restaurant</option>
-              <option value="market">Market / Shop</option>
-              <option value="bakery">Bakery</option>
+              <option value="pottery">Pottery</option>
+              <option value="gallery">Gallery</option>
+              <option value="yoga">Yoga / Pilates</option>
+              <option value="organic">Organic</option>
+              <option value="flowers">Flowers</option>
+              <option value="gym">Gym</option>
+              <option value="vintage">Vintage</option>
+              <option value="furniture">Furniture</option>
+              <option value="fabric">Fabric</option>
+              <option value="clothing">Clothing</option>
+              <option value="market">Market</option>
               <option value="bar">Bar</option>
-              <option value="cultural">Cultural</option>
-              <option value="sport">Sport</option>
               <option value="services">Services</option>
+            </select>
             </select>
           </div>
         </div>
@@ -512,7 +529,7 @@ const PANELS = {
   subscribers: { title: 'Subscribers',            sub: 'Newsletter subscriber list and stats by region' },
   exchange:    { title: 'Language exchange',       sub: 'Match expats with Portuguese locals for language exchange' },
   directory:   { title: 'Directory',              sub: 'Manage professional and lifestyle service listings' },
-  businesses:  { title: 'Local businesses',        sub: 'Add and manage locally-owned Portuguese businesses for the Live Like a Local page' },
+  businesses:  { title: 'Directory',               sub: 'Add, edit, and manage all business listings. Ratings, reviews, and details.' },
   logs:        { title: 'Automation logs',        sub: 'Check what ran, when, and whether it succeeded' },
   settings:    { title: 'Settings',               sub: 'Configure database connection, passwords, and automation options' }
 };
@@ -1075,6 +1092,8 @@ async function loadBusinesses() {
         }).join('') + '</tbody></table></div>';
     }
     
+    allBizAdmin = items;
+    
     el.innerHTML = reviewHTML +
       '<div style="font-size:14px;font-weight:500;margin-bottom:8px">&#127978; All listings (' + items.length + ')</div>' +
       '<table><thead><tr><th>Business</th><th>Type</th><th>City / Area</th><th>Rating</th><th>Actions</th></tr></thead><tbody>' +
@@ -1089,10 +1108,11 @@ async function loadBusinesses() {
           '</td>' +
           '<td><span class="cat-badge">' + (b.type || '') + '</span></td>' +
           '<td><div style="font-weight:500">' + (b.city || '') + '</div><div style="font-size:11px;color:var(--ink3)">' + (b.area || '') + '</div></td>' +
-          '<td><div style="color:#f59e0b;font-size:12px">&#9733; ' + rating + '</div><div style="font-size:11px;color:var(--ink3)">' + reviews + ' reviews</div>' +
-          '<button onclick="updateRating(' + b.id + ')" style="padding:2px 8px;background:none;border:0.5px solid var(--border);border-radius:4px;font-size:10px;cursor:pointer;color:var(--ink3);margin-top:3px">Edit rating</button></td>' +
-          '<td><button class="btn btn-sm btn-red" onclick="deleteBusiness(' + b.id + ')">Delete</button></td>' +
-          '</tr>';
+          '<td><div style="color:#f59e0b;font-size:12px">&#9733; ' + rating + '</div><div style="font-size:11px;color:var(--ink3)">' + reviews + ' reviews</div></td>' +
+          '<td style="white-space:nowrap">' +
+          '<button onclick="editBusiness(' + b.id + ')" style="padding:4px 10px;background:var(--blue-l);border:0.5px solid var(--blue);border-radius:4px;font-size:11px;cursor:pointer;color:var(--blue);margin-right:4px">Edit</button>' +
+          '<button class="btn btn-sm btn-red" onclick="deleteBusiness(' + b.id + ')">Delete</button>' +
+          '</td></tr>';
       }).join('') +
       '</tbody></table>';
   } catch(e) {
@@ -1120,11 +1140,13 @@ async function updateRating(id) {
   loadBusinesses();
 }
 
-async function saveBusiness() {
+async function saveBusiness(editId) {
   var name   = document.getElementById('biz-name').value.trim();
   var reason = document.getElementById('biz-reason').value.trim();
   var city   = document.getElementById('biz-city').value;
-  if (!name || !reason) { alert('Business name and reason are required.'); return; }
+  if (!name || !reason) { alert('Business name and description are required.'); return; }
+  var rating = document.getElementById('biz-rating').value || '0';
+  var reviews = document.getElementById('biz-reviews').value || '0';
   var data = {
     name:        name,
     type:        document.getElementById('biz-type').value,
@@ -1133,21 +1155,56 @@ async function saveBusiness() {
     reason:      reason,
     address:     document.getElementById('biz-address').value.trim(),
     url:         document.getElementById('biz-url').value.trim(),
-    price_range: document.getElementById('biz-price').value,
+    price_range: 'rating:' + rating + '|reviews:' + reviews + '|source:google',
     emoji:       document.getElementById('biz-emoji').value.trim() || '&#127978;',
     status:      'active'
   };
   try {
-    await sb('local_businesses', { method: 'POST', body: data });
+    if (editId) {
+      await sb('local_businesses?id=eq.' + editId, { method: 'PATCH', body: data });
+    } else {
+      await sb('local_businesses', { method: 'POST', body: data });
+    }
     var msg = document.getElementById('biz-msg');
+    msg.textContent = editId ? 'Updated!' : 'Saved!';
     msg.style.display = 'inline';
     setTimeout(function() { msg.style.display = 'none'; }, 2500);
     clearBizForm();
     loadBusinesses();
   } catch(e) {
-    alert('Error saving: ' + e.message + '\n\nMake sure you have run the updated supabase_schema_v2.sql in Supabase.');
+    alert('Error saving: ' + e.message);
   }
 }
+
+function editBusiness(id) {
+  var biz = allBizAdmin.find(function(b) { return b.id === id; });
+  if (!biz) return;
+  document.getElementById('biz-name').value = biz.name || '';
+  document.getElementById('biz-type').value = biz.type || 'cafe';
+  document.getElementById('biz-city').value = biz.city || 'Lisbon';
+  document.getElementById('biz-area').value = biz.area || '';
+  document.getElementById('biz-reason').value = biz.reason || '';
+  document.getElementById('biz-address').value = biz.address || '';
+  document.getElementById('biz-url').value = biz.url || '';
+  document.getElementById('biz-emoji').value = biz.emoji || '&#127978;';
+  document.getElementById('emoji-preview').innerHTML = biz.emoji || '&#127978;';
+  
+  var pr = (biz.price_range || '').split('|');
+  var rating = '0', reviews = '0';
+  pr.forEach(function(p) { var kv = p.split(':'); if (kv[0]==='rating') rating = kv[1]; if (kv[0]==='reviews') reviews = kv[1]; });
+  document.getElementById('biz-rating').value = rating;
+  document.getElementById('biz-reviews').value = reviews;
+  
+  // Change save button to update mode
+  var saveBtn = document.querySelector('#biz-form .btn-green');
+  saveBtn.textContent = 'Save changes';
+  saveBtn.onclick = function() { saveBusiness(id); };
+  
+  // Scroll to form
+  document.getElementById('biz-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+var allBizAdmin = [];
 
 async function deleteBusiness(id) {
   if (!confirm('Delete this business listing?')) return;
@@ -1156,12 +1213,15 @@ async function deleteBusiness(id) {
 }
 
 function clearBizForm() {
-  ['biz-name','biz-area','biz-reason','biz-address','biz-url'].forEach(function(id) {
+  ['biz-name','biz-area','biz-reason','biz-address','biz-url','biz-rating','biz-reviews'].forEach(function(id) {
     document.getElementById(id).value = '';
   });
   document.getElementById('biz-emoji').value = '&#127978;';
   document.getElementById('emoji-preview').innerHTML = '&#127978;';
   document.getElementById('emoji-label').textContent = 'Shop / business (default)';
+  var saveBtn = document.querySelector('#biz-form .btn-green');
+  saveBtn.textContent = '+ Add business';
+  saveBtn.onclick = function() { saveBusiness(); };
 }
 
 // ── INIT ──────────────────────────────────────────────────
