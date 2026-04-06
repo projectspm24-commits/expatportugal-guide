@@ -380,7 +380,7 @@ async function loadEvents() {
       list.innerHTML = '<div style="text-align:center;padding:2rem 1.5rem;background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl)">' +
         '<div style="font-size:13px;color:var(--ink2);margin-bottom:10px">No known upcoming events in ' + region + ' this week.</div>' +
         '<div style="font-size:12px;color:var(--ink3);margin-bottom:14px">Know about an event? Help the community!</div>' +
-        '<a href="#" onclick="document.getElementById(\'submit-event-form\').style.display=\'block\';this.style.display=\'none\';return false" style="display:inline-block;padding:8px 18px;background:var(--warm);border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;font-weight:500;color:var(--ink2)">&#128197; Submit an event &rarr;</a>' +
+        '<a href="#" onclick="openSubmitEvent();return false" style="display:inline-block;padding:8px 18px;background:var(--warm);border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;font-weight:500;color:var(--ink2)">&#128197; Submit an event &rarr;</a>' +
         '</div>';
       return;
     }
@@ -429,6 +429,18 @@ async function loadEvents() {
   } catch (err) { console.error('Events error:', err); }
 }
 
+function openSubmitEvent() {
+  var overlay = document.getElementById('submit-event-overlay');
+  overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSubmitEvent() {
+  var overlay = document.getElementById('submit-event-overlay');
+  overlay.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
 async function submitEvent() {
   var title = document.getElementById('se-title').value.trim();
   var city = document.getElementById('se-city').value.trim();
@@ -439,7 +451,7 @@ async function submitEvent() {
   var email = document.getElementById('se-email').value.trim();
 
   if (!title || !city || !date || !time || !url || !price) {
-    alert('Please fill in all required fields (event name, city, date, time, event link, and price).');
+    alert('Please fill in all required fields (event name, city, date, time, event link, and fee).');
     return;
   }
 
@@ -468,10 +480,11 @@ async function submitEvent() {
 
     if (res.ok) {
       document.getElementById('submit-event-form').innerHTML =
-        '<div style="text-align:center;padding:1rem">' +
-        '<div style="font-size:20px;margin-bottom:8px">&#9989;</div>' +
-        '<div style="font-size:13px;font-weight:500;margin-bottom:4px">Event submitted!</div>' +
-        '<div style="font-size:11px;color:var(--ink3)">We\'ll review it and add it to the calendar. Thanks for helping the community!</div>' +
+        '<div style="text-align:center;padding:1.5rem">' +
+        '<div style="font-size:28px;margin-bottom:10px">&#9989;</div>' +
+        '<div style="font-size:15px;font-weight:500;margin-bottom:6px">Event submitted!</div>' +
+        '<div style="font-size:12px;color:var(--ink3);margin-bottom:16px">We\'ll review it and add it to the calendar. Thanks for helping the community!</div>' +
+        '<button onclick="closeSubmitEvent()" style="padding:8px 20px;background:var(--ink);color:white;border:none;border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;font-family:Outfit,sans-serif">Close</button>' +
         '</div>';
     } else {
       alert('Something went wrong. Please try again.');
