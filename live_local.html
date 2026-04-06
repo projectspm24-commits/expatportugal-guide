@@ -11,7 +11,7 @@
 <style>
 :root {
   --ink:#1c1917;--ink2:#57534e;--ink3:#a8a29e;
-  --cream:#faf9f7;--warm:#f5f0e8;--card:#fff;
+  --cream:#f7f5f0;--warm:#f5f0e8;--card:#fff;
   --border:rgba(28,25,23,0.08);--border2:rgba(28,25,23,0.15);
   --red:#c0381a;--red-l:#fdf0ec;
   --green:#15803d;--green-l:#f0fdf4;
@@ -22,7 +22,7 @@
   --r:10px;--rl:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--ink);font-size:15px;line-height:1.6}
+body{font-family:"Outfit",sans-serif;background:var(--cream);color:var(--ink);font-size:15px;line-height:1.6;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0v60M0 30h60M0 0h60v60H0z' fill='none' stroke='%23d4cfc4' stroke-width='.3'/%3E%3Ccircle cx='30' cy='30' r='8' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='0' cy='0' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='60' cy='0' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='0' cy='60' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='60' cy='60' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3C/svg%3E")}
 
 /* NAV */
 nav{background:var(--card);border-bottom:0.5px solid var(--border);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
@@ -167,14 +167,15 @@ footer a{color:var(--ink3);text-decoration:none}
 <body>
 
 <nav>
-  <a class="logo" href="index.html">🇵🇹 ExpatPortugal.guide</a>
+  <a class="logo" href="index.html">&#127477;&#127481; ExpatPortugal<span style="font-weight:300;opacity:.5">.guide</span></a>
   <div class="nav-links">
     <a class="nl" href="index.html">Home</a>
-    <a class="nl" href="expat_tools_v4_fixed.html">Tools</a>
+    <a class="nl" href="calendar.html">Events</a>
+    <a class="nl" href="directory.html">Directory</a>
     <a class="nl" href="lifestyle_services.html">Services</a>
-    <a class="nl on" href="#">Live local</a>
+    <a class="nl" href="expat_tools_v4_fixed.html">Free tools</a>
+    <a class="nl" href="news.html">News</a>
   </div>
-  <a class="nav-cta" href="#language-exchange">Join language exchange</a>
 </nav>
 
 <!-- HERO -->
@@ -575,7 +576,7 @@ footer a{color:var(--ink3);text-decoration:none}
       </div>
     </div>
     <div style="text-align:center;margin-top:1.5rem">
-      <button onclick="alert('Share your integration story with us at hello@expatportugal.guide — we feature real stories from real expats every month.')" style="padding:10px 24px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;cursor:pointer;font-family:'Outfit',sans-serif;background:var(--card);color:var(--ink)">Share your story →</button>
+      <button onclick="window.location='mailto:hello@expatportugal.guide?subject=My integration story&body=Your name:%0AHow long in Portugal:%0ACity:%0AYour story:'" style="padding:10px 24px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;cursor:pointer;font-family:'Outfit',sans-serif;background:var(--card);color:var(--ink)">Share your story →</button>
     </div>
   </div>
 
@@ -592,7 +593,7 @@ footer a{color:var(--ink3);text-decoration:none}
     <div style="background:var(--warm);border-radius:var(--rl);padding:1.25rem;margin-top:1rem;text-align:center">
       <div style="font-size:14px;font-weight:500;margin-bottom:4px">Know a great local Portuguese business?</div>
       <div style="font-size:13px;color:var(--ink2);margin-bottom:12px">We're building a directory of locally-owned businesses worth supporting — recommended by expats who've been going for years.</div>
-      <button onclick="alert('Submit a local business recommendation to hello@expatportugal.guide — name, city, and what makes it special. We list them free.')" style="padding:9px 20px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:500">Recommend a local business →</button>
+      <button onclick="window.location='mailto:hello@expatportugal.guide?subject=Business recommendation&body=Business name:%0ACity:%0AWhat makes it special:'" style="padding:9px 20px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:500">Recommend a local business →</button>
     </div>
   </div>
 
@@ -609,7 +610,7 @@ footer a{color:var(--ink3);text-decoration:none}
 </div>
 
 <footer>
-  <p>© 2025 ExpatPortugal.guide &nbsp;·&nbsp; <a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Terms</a> &nbsp;·&nbsp; Made with respect for Portugal and its people</p>
+  <p>© 2026 ExpatPortugal.guide &nbsp;·&nbsp; <a href="index.html">Home</a> &nbsp;·&nbsp; <a href="directory.html">Directory</a> &nbsp;·&nbsp; Made with respect for Portugal and its people</p>
 </footer>
 
 <script>
@@ -636,6 +637,7 @@ function submitExchange() {
 function subscribeNL() {
   const email = document.getElementById('nl-email').value.trim();
   if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+  fetch('https://api.buttondown.com/v1/subscribers',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Token 0ed48c80-0e4d-4916-a3ab-f2aea603cea1'},body:JSON.stringify({email:email,tags:['live-local']})}).catch(function(){});
   console.log('Newsletter subscribe:', email);
   document.querySelector('.newsletter').innerHTML = `<div style="padding:2rem;text-align:center">
     <div style="font-size:36px;margin-bottom:12px">🇵🇹</div>
@@ -644,5 +646,6 @@ function subscribeNL() {
   </div>`;
 }
 </script>
+<script src="chat-widget.js" defer></script>
 </body>
 </html>

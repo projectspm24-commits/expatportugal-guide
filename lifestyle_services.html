@@ -71,6 +71,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
     <a class="nl" href="calendar.html">Events</a>
     <a class="nl" href="directory.html">Directory</a>
     <a class="nl on" href="lifestyle_services.html">Services</a>
+    <a class="nl" href="expat_tools_v4_fixed.html">Free tools</a>
     <a class="nl" href="news.html">News</a>
   </div>
 </nav>
@@ -182,5 +183,6 @@ function setCat(c,el){activeCat=c;document.querySelectorAll('.filter-bar .fb').f
 function resetFilters(){activeCat='all';document.getElementById('search').value='';document.getElementById('city-filter').value='all';document.querySelectorAll('.filter-bar .fb').forEach(function(b){b.classList.remove('on');});document.querySelector('.filter-bar .fb').classList.add('on');renderServices();}
 loadServices();
 </script>
+<script src="chat-widget.js" defer></script>
 </body>
 </html>

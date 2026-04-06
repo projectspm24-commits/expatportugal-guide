@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
-:root{--ink:#1c1917;--ink2:#57534e;--ink3:#a8a29e;--cream:#faf9f7;--warm:#f5f0e8;--card:#fff;--border:rgba(28,25,23,0.08);--border2:rgba(28,25,23,0.16);--red:#c0381a;--red-l:#fdf0ec;--red-d:#a83015;--green:#15803d;--green-l:#f0fdf4;--amber:#b45309;--amber-l:#fffbeb;--blue:#1d4ed8;--blue-l:#eff6ff;--r:10px;--rl:16px}
+:root{--ink:#1c1917;--ink2:#57534e;--ink3:#a8a29e;--cream:#f7f5f0;--warm:#f5f0e8;--card:#fff;--border:rgba(28,25,23,0.08);--border2:rgba(28,25,23,0.16);--red:#c0381a;--red-l:#fdf0ec;--red-d:#a83015;--green:#15803d;--green-l:#f0fdf4;--amber:#b45309;--amber-l:#fffbeb;--blue:#1d4ed8;--blue-l:#eff6ff;--r:10px;--rl:16px}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--ink);font-size:15px;line-height:1.6}
+body{font-family:"Outfit",sans-serif;background:var(--cream);color:var(--ink);font-size:15px;line-height:1.6;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0v60M0 30h60M0 0h60v60H0z' fill='none' stroke='%23d4cfc4' stroke-width='.3'/%3E%3Ccircle cx='30' cy='30' r='8' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='0' cy='0' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='60' cy='0' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='0' cy='60' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='60' cy='60' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3C/svg%3E")}
 a{text-decoration:none;color:inherit}
 nav{background:rgba(250,249,247,0.96);border-bottom:0.5px solid var(--border);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;backdrop-filter:blur(10px)}
 .logo{font-family:'Playfair Display',serif;font-size:19px;color:var(--ink);display:flex;align-items:center;gap:8px}
@@ -58,12 +58,13 @@ footer{border-top:0.5px solid var(--border);padding:1.5rem 2rem;background:var(-
 <body>
 
 <nav>
-  <a class="logo" href="index.html">&#127477;&#127481; ExpatPortugal.guide</a>
+  <a class="logo" href="index.html">&#127477;&#127481; ExpatPortugal<span style="font-weight:300;opacity:.5">.guide</span></a>
   <div class="nav-links">
     <a class="nl" href="index.html">Home</a>
-    <a class="nl" href="expat_tools_v4_fixed.html">Free tools</a>
+    <a class="nl" href="calendar.html">Events</a>
+    <a class="nl" href="directory.html">Directory</a>
     <a class="nl" href="lifestyle_services.html">Services</a>
-    <a class="nl" href="live_local.html">Live local</a>
+    <a class="nl" href="expat_tools_v4_fixed.html">Free tools</a>
     <a class="nl on" href="news.html">News</a>
   </div>
 </nav>
@@ -213,5 +214,6 @@ function loadMore() {
 
 loadNews(true);
 </script>
+<script src="chat-widget.js" defer></script>
 </body>
 </html>
