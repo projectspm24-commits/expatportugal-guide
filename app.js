@@ -288,9 +288,46 @@ function subscribe() {
   document.getElementById('sub-widget').innerHTML = '<div style="text-align:center;padding:1.5rem;color:white"><div style="font-size:30px;margin-bottom:10px">\ud83c\uddf5\ud83c\uddf9</div><div style="font-family:Playfair Display,serif;font-size:18px;margin-bottom:6px">You are subscribed!</div><div style="font-size:12px;opacity:.65;line-height:1.7">First digest arrives next Sunday.</div></div>';
 }
 
+var catTagMap = {
+  'music': 'tm', 'social': 'ts', 'sport': 'tsp', 'market': 'tmk',
+  'culture': 'tcu', 'food': 'tfo', 'art': 'tar', 'family': 'tfa'
+};
+
+async function loadEvents() {
+  try {
+    var today = new Date().toISOString().slice(0, 10);
+    var nextWeek = new Date(Date.now() + 10 * 86400000).toISOString().slice(0, 10);
+    var q = SB_URL + '/rest/v1/events?status=eq.approved&event_date=gte.' + today + '&event_date=lte.' + nextWeek + '&order=event_date.asc&limit=6';
+    if (activeRegion !== 'all') q += '&city=ilike.*' + encodeURIComponent(activeRegion) + '*';
+    var res = await fetch(q, { headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } });
+    var events = await res.json();
+    var list = document.getElementById('events-list');
+    if (!events || !events.length) {
+      list.innerHTML = '<div class="ev" style="justify-content:center;color:var(--ink3);font-size:12px">No upcoming events this week.</div>';
+      return;
+    }
+    list.innerHTML = events.map(function(e) {
+      var d = new Date(e.event_date + 'T12:00:00');
+      var day = d.getDate();
+      var mon = d.toLocaleDateString('en-GB', { month: 'short' });
+      var tagClass = catTagMap[e.category] || 'ts';
+      var loc = [e.venue, e.city].filter(Boolean).join(', ');
+      var time = e.event_time ? ' · ' + e.event_time : '';
+      var price = e.price && e.price !== 'Free' ? ' · ' + e.price : '';
+      var link = e.url ? ' href="' + e.url + '" target="_blank" rel="noopener"' : '';
+      return '<a class="ev" style="text-decoration:none;color:inherit"' + link + '>' +
+        '<div class="ev-date"><div class="ev-day">' + day + '</div><div class="ev-mon">' + mon + '</div></div>' +
+        '<div><div class="ev-title">' + e.title + '</div>' +
+        '<div class="ev-loc">' + loc + time + price + '</div>' +
+        '<span class="ev-tag ' + tagClass + '">' + (e.category || 'social') + '</span></div></a>';
+    }).join('');
+  } catch (err) { console.error('Events error:', err); }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   loadLiveNews();
   loadHero();
   loadWeather('all');
   loadHolidays();
+  loadEvents();
 });

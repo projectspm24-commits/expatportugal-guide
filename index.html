@@ -81,7 +81,7 @@ nav{background:rgba(250,249,247,0.96);border-bottom:0.5px solid var(--border);pa
 .ev-title{font-size:13px;font-weight:500;margin-bottom:3px}
 .ev-loc{font-size:11px;color:var(--ink3)}
 .ev-tag{font-size:10px;padding:2px 8px;border-radius:20px;display:inline-block;margin-top:5px;font-weight:500}
-.tm{background:#EEEDFE;color:#3C3489}.ts{background:var(--green-l);color:var(--green)}.tsp{background:var(--blue-l);color:var(--blue)}.tmk{background:var(--red-l);color:var(--red)}
+.tm{background:#EEEDFE;color:#3C3489}.ts{background:var(--green-l);color:var(--green)}.tsp{background:var(--blue-l);color:var(--blue)}.tmk{background:var(--red-l);color:var(--red)}.tcu{background:#FFF3E0;color:#E65100}.tfo{background:#FFF8E1;color:#F57F17}.tar{background:#F3E5F5;color:#7B1FA2}.tfa{background:#E8F5E9;color:#2E7D32}
 .sidebar{display:flex;flex-direction:column;gap:1.25rem;position:sticky;top:70px}
 .widget{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem}
 .w-t{font-family:"Playfair Display",serif;font-size:16px;font-weight:400;margin-bottom:1rem}
@@ -218,12 +218,9 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
       <a class="tb-btn" href="expat_tools_v4_fixed.html">Explore all free tools &rarr;</a>
     </div>
     <div id="events" style="margin-bottom:2rem">
-      <div class="sh"><span class="sh-t">Events this week</span><span class="sh-m">Full calendar &rarr;</span></div>
-      <div class="ev-list">
-        <div class="ev"><div class="ev-date"><div class="ev-day">5</div><div class="ev-mon">Apr</div></div><div><div class="ev-title">Mercado de Campo de Ourique</div><div class="ev-loc">Campo de Ourique, Lisbon</div><span class="ev-tag tmk">Market</span></div></div>
-        <div class="ev"><div class="ev-date"><div class="ev-day">6</div><div class="ev-mon">Apr</div></div><div><div class="ev-title">Language exchange cafe &mdash; expats meet locals</div><div class="ev-loc">Principe Real, Lisbon</div><span class="ev-tag ts">Social</span></div></div>
-        <div class="ev"><div class="ev-date"><div class="ev-day">7</div><div class="ev-mon">Apr</div></div><div><div class="ev-title">Fado night at B.Leza</div><div class="ev-loc">Santos, Lisbon</div><span class="ev-tag tm">Music</span></div></div>
-        <div class="ev"><div class="ev-date"><div class="ev-day">12</div><div class="ev-mon">Apr</div></div><div><div class="ev-title">Algarve surf competition</div><div class="ev-loc">Sagres, Algarve</div><span class="ev-tag tsp">Sport</span></div></div>
+      <div class="sh"><span class="sh-t">Events this week</span><span class="sh-m"><a href="news.html" style="color:var(--ink3);text-decoration:none">Full calendar &rarr;</a></span></div>
+      <div class="ev-list" id="events-list">
+        <div class="ev" style="justify-content:center;color:var(--ink3);font-size:12px">Loading events...</div>
       </div>
     </div>
   </div>
