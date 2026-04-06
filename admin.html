@@ -1052,16 +1052,45 @@ async function loadBusinesses() {
       el.innerHTML = '<div class="empty"><div class="empty-icon">&#127978;</div>No businesses added yet. Use the form above to add the first one.</div>';
       return;
     }
-    el.innerHTML = '<table><thead><tr><th>Business</th><th>Type</th><th>City / Area</th><th>Price</th><th>Actions</th></tr></thead><tbody>' +
+    
+    // Also load pending reviews
+    var pendingReviews = await sb('events?category=eq.review&status=eq.pending&order=created_at.desc&limit=50');
+    var reviewHTML = '';
+    if (pendingReviews.length) {
+      reviewHTML = '<div style="margin-bottom:1.5rem"><div style="font-size:14px;font-weight:500;margin-bottom:8px;color:var(--amber)">&#9201; ' + pendingReviews.length + ' pending reviews</div>' +
+        '<table><thead><tr><th>Review</th><th>Business ID</th><th>By</th><th>Date</th><th>Actions</th></tr></thead><tbody>' +
+        pendingReviews.map(function(r) {
+          var stars = r.title ? r.title.match(/(\d+) stars/) : null;
+          var starCount = stars ? parseInt(stars[1]) : 0;
+          var starStr = '&#9733;'.repeat(starCount) + '&#9734;'.repeat(5 - starCount);
+          return '<tr>' +
+            '<td><div style="color:#f59e0b;font-size:14px">' + starStr + '</div><div style="font-size:12px;color:var(--ink2)">' + (r.description || '') + '</div></td>' +
+            '<td style="font-size:12px">#' + (r.url || '?') + '</td>' +
+            '<td style="font-size:12px">' + (r.city || '') + '</td>' +
+            '<td style="font-size:12px">' + r.event_date + '</td>' +
+            '<td style="white-space:nowrap">' +
+            '<button onclick="approveReview(' + r.id + ')" style="padding:4px 10px;background:var(--green);color:white;border:none;border-radius:4px;font-size:11px;cursor:pointer;margin-right:4px">Approve</button>' +
+            '<button onclick="rejectReview(' + r.id + ')" style="padding:4px 10px;background:var(--red);color:white;border:none;border-radius:4px;font-size:11px;cursor:pointer">Reject</button>' +
+            '</td></tr>';
+        }).join('') + '</tbody></table></div>';
+    }
+    
+    el.innerHTML = reviewHTML +
+      '<div style="font-size:14px;font-weight:500;margin-bottom:8px">&#127978; All listings (' + items.length + ')</div>' +
+      '<table><thead><tr><th>Business</th><th>Type</th><th>City / Area</th><th>Rating</th><th>Actions</th></tr></thead><tbody>' +
       items.map(function(b) {
+        var pr = (b.price_range || '').split('|');
+        var rating = '0', reviews = '0';
+        pr.forEach(function(p) { var kv = p.split(':'); if (kv[0]==='rating') rating = kv[1]; if (kv[0]==='reviews') reviews = kv[1]; });
         return '<tr>' +
           '<td><div style="font-weight:500">' + (b.emoji || '') + ' ' + b.name + '</div>' +
           '<div style="font-size:12px;color:var(--ink2);line-height:1.5;margin-top:3px">' + (b.reason || '') + '</div>' +
-          (b.url ? '<a href="' + b.url + '" target="_blank" style="font-size:11px;color:var(--red)">View on map &#8599;</a>' : '') +
+          (b.url ? '<a href="' + b.url + '" target="_blank" style="font-size:11px;color:var(--red)">Website &#8599;</a>' : '') +
           '</td>' +
           '<td><span class="cat-badge">' + (b.type || '') + '</span></td>' +
           '<td><div style="font-weight:500">' + (b.city || '') + '</div><div style="font-size:11px;color:var(--ink3)">' + (b.area || '') + '</div></td>' +
-          '<td style="font-size:13px">' + (b.price_range || '') + '</td>' +
+          '<td><div style="color:#f59e0b;font-size:12px">&#9733; ' + rating + '</div><div style="font-size:11px;color:var(--ink3)">' + reviews + ' reviews</div>' +
+          '<button onclick="updateRating(' + b.id + ')" style="padding:2px 8px;background:none;border:0.5px solid var(--border);border-radius:4px;font-size:10px;cursor:pointer;color:var(--ink3);margin-top:3px">Edit rating</button></td>' +
           '<td><button class="btn btn-sm btn-red" onclick="deleteBusiness(' + b.id + ')">Delete</button></td>' +
           '</tr>';
       }).join('') +
@@ -1069,6 +1098,26 @@ async function loadBusinesses() {
   } catch(e) {
     document.getElementById('businesses-table').innerHTML = '<div class="empty"><div class="empty-icon">&#9888;&#65039;</div>Could not load — make sure the local_businesses table exists in Supabase.</div>';
   }
+}
+
+async function approveReview(id) {
+  await sb('events?id=eq.' + id, { method: 'PATCH', body: { status: 'approved' } });
+  loadBusinesses();
+}
+
+async function rejectReview(id) {
+  if (!confirm('Reject this review?')) return;
+  await sb('events?id=eq.' + id, { method: 'DELETE' });
+  loadBusinesses();
+}
+
+async function updateRating(id) {
+  var rating = prompt('New rating (e.g. 4.7):');
+  if (!rating) return;
+  var reviews = prompt('Number of reviews:');
+  if (!reviews) return;
+  await sb('local_businesses?id=eq.' + id, { method: 'PATCH', body: { price_range: 'rating:' + rating + '|reviews:' + reviews } });
+  loadBusinesses();
 }
 
 async function saveBusiness() {
