@@ -509,6 +509,15 @@ async function submitReview() {
   }
 }
 
+// Handle ?cat= URL parameter
+var urlCat = new URLSearchParams(window.location.search).get('cat');
+if (urlCat && urlCat !== 'all') {
+  activeCat = urlCat;
+  document.querySelectorAll('.fb').forEach(function(b) { b.classList.remove('on'); });
+  var match = document.querySelector('.fb[onclick*="' + urlCat + '"]');
+  if (match) match.classList.add('on');
+}
+
 loadDirectory();
 </script>
 </body>
