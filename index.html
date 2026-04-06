@@ -201,7 +201,10 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
         <input id="se-time" type="time" required style="width:100%;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
       </div>
       <input id="se-url" type="url" placeholder="Event link (website, Meetup, Facebook...) *" required style="width:100%;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;margin-bottom:6px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
-      <input id="se-email" type="email" placeholder="Your email (optional, for updates)" style="width:100%;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;margin-bottom:10px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px">
+        <input id="se-price" type="text" placeholder="Price (e.g. Free, €10, €15-25) *" required style="width:100%;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+        <input id="se-email" type="email" placeholder="Your email (optional)" style="width:100%;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+      </div>
       <button onclick="submitEvent()" style="width:100%;padding:9px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif">Submit for review</button>
     </div>
     <div id="submit-event-link" style="margin-top:8px">

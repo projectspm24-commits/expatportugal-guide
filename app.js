@@ -435,10 +435,11 @@ async function submitEvent() {
   var date = document.getElementById('se-date').value;
   var time = document.getElementById('se-time').value;
   var url = document.getElementById('se-url').value.trim();
+  var price = document.getElementById('se-price').value.trim();
   var email = document.getElementById('se-email').value.trim();
 
-  if (!title || !city || !date || !time || !url) {
-    alert('Please fill in all required fields: event name, city, date, time, and event link.');
+  if (!title || !city || !date || !time || !url || !price) {
+    alert('Please fill in all required fields (event name, city, date, time, event link, and price).');
     return;
   }
 
@@ -457,6 +458,7 @@ async function submitEvent() {
         event_date: date,
         event_time: time,
         url: url,
+        price: price,
         description: email ? 'Submitted by: ' + email : 'User submitted',
         category: 'social',
         source: 'User submission',
