@@ -77,7 +77,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
 <div class="full">
   <div class="hero">
     <div class="hero-t">Free expat tools</div>
-    <div class="hero-sub">Tax calculator, visa finder, cost of living estimator, and more. Everything free, no signup needed.</div>
+    <div class="hero-sub">Tax calculator, visa finder, cost of living, rental tracker, and more. 9 tools, all free, no signup needed.</div>
   </div>
   <div class="tool-nav">
     <button class="tn on" onclick="showTool(0,this)">&#129518; Tax calculator</button>
@@ -85,6 +85,10 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
     <button class="tn" onclick="showTool(2,this)">&#128182; Cost of living</button>
     <button class="tn" onclick="showTool(3,this)">&#128203; Doc checklist</button>
     <button class="tn" onclick="showTool(4,this)">&#127968; Neighbourhood match</button>
+    <button class="tn" onclick="showTool(5,this)">&#127968; Rental tracker</button>
+    <button class="tn" onclick="showTool(6,this)">&#128230; Relocation guide</button>
+    <button class="tn" onclick="showTool(7,this)">&#128101; Service directory</button>
+    <button class="tn" onclick="showTool(8,this)">&#129302; Ask AI</button>
   </div>
 
   <!-- TOOL 0: TAX CALCULATOR (2026 brackets) -->
@@ -137,6 +141,87 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
     <div class="sr"><label>Your situation</label><select id="nb-who"><option value="solo">Solo</option><option value="couple">Couple</option><option value="family">Family with kids</option><option value="retiree">Retiree</option><option value="nomad">Digital nomad</option></select></div>
     <button class="btn" onclick="matchNeighbourhood()">Find my neighbourhood &rarr;</button>
     <div id="nb-result"></div>
+  </div>
+
+  <!-- TOOL 5: RENTAL TRACKER -->
+  <div class="tool" id="tool-5">
+    <div class="tool-t">Rental price tracker</div>
+    <div class="tool-sub">Average rental prices by city and apartment type &mdash; based on 2026 data from Idealista and ERA.</div>
+    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+      <select id="rt-type" class="sel" style="width:auto;flex:1" onchange="renderRental()">
+        <option value="1bed">1-bedroom</option>
+        <option value="2bed">2-bedroom</option>
+        <option value="3bed">3-bedroom</option>
+        <option value="studio">Studio</option>
+      </select>
+    </div>
+    <div id="rt-result"></div>
+    <div style="font-size:11px;color:var(--ink3);margin-top:10px">Data sourced from Idealista &amp; ERA Portugal. Last updated: April 2026. Prices are averages and vary by neighbourhood.</div>
+    <div style="margin-top:14px;padding-top:14px;border-top:0.5px solid var(--border)">
+      <div style="font-size:13px;font-weight:500;margin-bottom:8px">Find your rental</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <a href="https://idealista.pt" target="_blank" rel="noopener" style="padding:6px 14px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:12px;color:var(--ink2)">Idealista &rarr;</a>
+        <a href="https://uniplaces.com" target="_blank" rel="noopener" style="padding:6px 14px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:12px;color:var(--ink2)">Uniplaces &rarr;</a>
+        <a href="https://era.pt" target="_blank" rel="noopener" style="padding:6px 14px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:12px;color:var(--ink2)">ERA &rarr;</a>
+        <a href="https://airbnb.com" target="_blank" rel="noopener" style="padding:6px 14px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:12px;color:var(--ink2)">Airbnb Monthly &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOL 6: RELOCATION GUIDE (free, email capture) -->
+  <div class="tool" id="tool-6">
+    <div class="tool-t">Free relocation guide</div>
+    <div class="tool-sub">Everything you need to move to Portugal &mdash; in one free guide. Updated for 2026.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.25rem">
+      <div style="padding:14px;background:var(--warm);border-radius:var(--r)"><div style="font-size:18px;margin-bottom:4px">&#9989;</div><div style="font-size:13px;font-weight:500">Master checklist</div><div style="font-size:11px;color:var(--ink3);margin-top:3px">120-point checklist from deciding to move to your first year settled.</div></div>
+      <div style="padding:14px;background:var(--warm);border-radius:var(--r)"><div style="font-size:18px;margin-bottom:4px">&#128214;</div><div style="font-size:13px;font-weight:500">First month guide</div><div style="font-size:11px;color:var(--ink3);margin-top:3px">What to do in your first 30 days, which offices to visit, what to bring.</div></div>
+      <div style="padding:14px;background:var(--warm);border-radius:var(--r)"><div style="font-size:18px;margin-bottom:4px">&#128218;</div><div style="font-size:13px;font-weight:500">Bureaucracy glossary</div><div style="font-size:11px;color:var(--ink3);margin-top:3px">80+ Portuguese bureaucratic terms explained in plain English.</div></div>
+      <div style="padding:14px;background:var(--warm);border-radius:var(--r)"><div style="font-size:18px;margin-bottom:4px">&#128222;</div><div style="font-size:13px;font-weight:500">Phone script templates</div><div style="font-size:11px;color:var(--ink3);margin-top:3px">Scripts for calling Finan&ccedil;as, AIMA, health centres &mdash; in Portuguese.</div></div>
+      <div style="padding:14px;background:var(--warm);border-radius:var(--r)"><div style="font-size:18px;margin-bottom:4px">&#128451;&#65039;</div><div style="font-size:13px;font-weight:500">Document organiser</div><div style="font-size:11px;color:var(--ink3);margin-top:3px">Template to track all documents, expiry dates, and appointments.</div></div>
+      <div style="padding:14px;background:var(--warm);border-radius:var(--r)"><div style="font-size:18px;margin-bottom:4px">&#128506;</div><div style="font-size:13px;font-weight:500">Neighbourhood guides</div><div style="font-size:11px;color:var(--ink3);margin-top:3px">Quick-reference cards for 12 popular expat neighbourhoods.</div></div>
+    </div>
+    <div style="background:var(--green-l);border:0.5px solid rgba(21,128,61,0.15);border-radius:var(--rl);padding:1.25rem;text-align:center">
+      <div style="font-size:16px;font-weight:500;margin-bottom:4px">Get the complete guide &mdash; free</div>
+      <div style="font-size:12px;color:var(--ink2);margin-bottom:12px">Enter your email and we'll send you all 6 guides. You'll also get our Sunday Digest newsletter.</div>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;max-width:400px;margin:0 auto">
+        <input type="email" id="relo-email" placeholder="your@email.com" style="flex:1;padding:9px 14px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;font-family:'Outfit',sans-serif;outline:none" />
+        <button class="btn" onclick="sendReloGuide()">Send me the guide &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOL 7: SERVICE DIRECTORY (links to actual page) -->
+  <div class="tool" id="tool-7">
+    <div class="tool-t">Expat service directory</div>
+    <div class="tool-sub">33+ verified English-speaking professionals serving expats across Portugal. All ranked by Google ratings.</div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:1.25rem">
+      <a href="lifestyle_services.html" style="padding:14px;background:var(--amber-l);border-radius:var(--r);display:block"><div style="font-size:16px;margin-bottom:4px">&#127947;</div><div style="font-size:13px;font-weight:500;color:var(--amber)">Fitness &amp; sport</div><div style="font-size:11px;color:var(--ink3)">Personal trainers, yoga, surf schools</div></a>
+      <a href="lifestyle_services.html" style="padding:14px;background:#f0fdfa;border-radius:var(--r);display:block"><div style="font-size:16px;margin-bottom:4px">&#129463;</div><div style="font-size:13px;font-weight:500;color:#0f766e">Health &amp; dental</div><div style="font-size:11px;color:var(--ink3)">Dentists, GPs, physio, therapy</div></a>
+      <a href="lifestyle_services.html" style="padding:14px;background:var(--green-l);border-radius:var(--r);display:block"><div style="font-size:16px;margin-bottom:4px">&#128062;</div><div style="font-size:13px;font-weight:500;color:var(--green)">Pets &amp; vets</div><div style="font-size:11px;color:var(--ink3)">Vets, groomers, pet sitters</div></a>
+      <a href="lifestyle_services.html" style="padding:14px;background:var(--blue-l);border-radius:var(--r);display:block"><div style="font-size:16px;margin-bottom:4px">&#128736;</div><div style="font-size:13px;font-weight:500;color:var(--blue)">Home &amp; repairs</div><div style="font-size:11px;color:var(--ink3)">Handymen, cleaning, IT support</div></a>
+      <a href="lifestyle_services.html" style="padding:14px;background:var(--purple-l);border-radius:var(--r);display:block"><div style="font-size:16px;margin-bottom:4px">&#128218;</div><div style="font-size:13px;font-weight:500;color:var(--purple)">Tutoring &amp; lessons</div><div style="font-size:11px;color:var(--ink3)">Portuguese, music, maths, art</div></a>
+      <a href="lifestyle_services.html" style="padding:14px;background:var(--red-l);border-radius:var(--r);display:block"><div style="font-size:16px;margin-bottom:4px">&#128188;</div><div style="font-size:13px;font-weight:500;color:var(--red)">Tax, legal &amp; other</div><div style="font-size:11px;color:var(--ink3)">Accountants, translators, driving</div></a>
+    </div>
+    <a href="lifestyle_services.html" class="btn" style="display:inline-block;text-align:center">Browse all 33 services &rarr;</a>
+  </div>
+
+  <!-- TOOL 8: ASK AI (links to chat widget) -->
+  <div class="tool" id="tool-8">
+    <div class="tool-t">Ask AI &mdash; unlimited, free</div>
+    <div class="tool-sub">Our AI concierge can answer any question about living in Portugal. Free, no limit, no signup.</div>
+    <div style="background:var(--warm);border-radius:var(--rl);padding:1.5rem;margin-bottom:14px">
+      <div style="font-size:13px;color:var(--ink2);line-height:1.7;margin-bottom:12px">Ask about visas, taxes, NIF, healthcare, cost of living, neighbourhoods, events, or anything else. The AI knows about all our tools, services, and directory listings.</div>
+      <div style="font-size:13px;font-weight:500;margin-bottom:10px">Popular questions:</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <button onclick="openChatWith('How do I get a NIF number?')" style="font-size:11px;padding:5px 12px;border:0.5px solid var(--border2);border-radius:20px;background:var(--card);cursor:pointer;font-family:'Outfit',sans-serif;color:var(--ink2)">How do I get a NIF?</button>
+        <button onclick="openChatWith('What is the D7 visa?')" style="font-size:11px;padding:5px 12px;border:0.5px solid var(--border2);border-radius:20px;background:var(--card);cursor:pointer;font-family:'Outfit',sans-serif;color:var(--ink2)">What is the D7 visa?</button>
+        <button onclick="openChatWith('How does NHR / IFICI tax work?')" style="font-size:11px;padding:5px 12px;border:0.5px solid var(--border2);border-radius:20px;background:var(--card);cursor:pointer;font-family:'Outfit',sans-serif;color:var(--ink2)">How does NHR work?</button>
+        <button onclick="openChatWith('Cost of living in Lisbon for a couple')" style="font-size:11px;padding:5px 12px;border:0.5px solid var(--border2);border-radius:20px;background:var(--card);cursor:pointer;font-family:'Outfit',sans-serif;color:var(--ink2)">Cost of living Lisbon?</button>
+        <button onclick="openChatWith('Plan a day in Porto for a family')" style="font-size:11px;padding:5px 12px;border:0.5px solid var(--border2);border-radius:20px;background:var(--card);cursor:pointer;font-family:'Outfit',sans-serif;color:var(--ink2)">Plan a day in Porto</button>
+      </div>
+    </div>
+    <button onclick="openChatWith('')" class="btn">Open AI concierge &rarr;</button>
+    <div style="font-size:11px;color:var(--ink3);margin-top:8px">&#128274; Free &amp; unlimited. Powered by Claude AI. The chat icon is in the bottom-right corner of every page.</div>
   </div>
 </div>
 
@@ -373,6 +458,59 @@ function matchNeighbourhood() {
     '</div>' +
     '<div style="font-size:12px;color:var(--ink2);margin-top:8px">&#128161; Visit before you commit. Rent short-term first, then decide. <a href="directory.html" style="color:var(--red)">Explore our directory &rarr;</a></div>' +
     emailSaveHTML('nb');
+}
+
+/* ── RENTAL TRACKER ── */
+var rentalData = {
+  studio: {Lisbon:650,Porto:500,Cascais:600,Ericeira:500,Algarve:550,Braga:350,Madeira:400},
+  '1bed': {Lisbon:950,Porto:700,Cascais:850,Ericeira:750,Algarve:750,Braga:500,Madeira:600},
+  '2bed': {Lisbon:1400,Porto:1000,Cascais:1200,Ericeira:1050,Algarve:1100,Braga:700,Madeira:850},
+  '3bed': {Lisbon:1900,Porto:1400,Cascais:1700,Ericeira:1450,Algarve:1500,Braga:950,Madeira:1100}
+};
+
+function renderRental() {
+  var type = document.getElementById('rt-type').value;
+  var data = rentalData[type];
+  var cities = Object.keys(data).sort(function(a,b) { return data[a] - data[b]; });
+  var maxPrice = Math.max.apply(null, cities.map(function(c) { return data[c]; }));
+  document.getElementById('rt-result').innerHTML =
+    '<div style="display:flex;flex-direction:column;gap:8px">' +
+    cities.map(function(city) {
+      var price = data[city];
+      var pct = Math.round((price / maxPrice) * 100);
+      return '<div style="display:flex;align-items:center;gap:12px"><div style="width:80px;font-size:13px;font-weight:500">' + city + '</div>' +
+        '<div style="flex:1;height:28px;background:var(--warm);border-radius:4px;position:relative;overflow:hidden"><div style="height:100%;width:' + pct + '%;background:var(--red);border-radius:4px;opacity:0.7"></div></div>' +
+        '<div style="width:70px;text-align:right;font-size:14px;font-weight:500">&euro;' + price.toLocaleString() + '</div></div>';
+    }).join('') + '</div>' + emailSaveHTML('rental');
+}
+renderRental();
+
+/* ── RELOCATION GUIDE EMAIL ── */
+async function sendReloGuide() {
+  var email = document.getElementById('relo-email').value.trim();
+  if (!email || !email.includes('@')) { alert('Please enter a valid email.'); return; }
+  try {
+    await fetch('https://api.buttondown.com/v1/subscribers', {
+      method:'POST', headers:{'Content-Type':'application/json',Authorization:'Token 0ed48c80-0e4d-4916-a3ab-f2aea603cea1'},
+      body:JSON.stringify({email:email,tags:['relocation-guide']})
+    });
+  } catch(e){}
+  try {
+    await fetch('https://waywvckvyizqkuuaecrp.supabase.co/rest/v1/subscribers', {
+      method:'POST', headers:{apikey:'sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b',Authorization:'Bearer sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b','Content-Type':'application/json',Prefer:'return=minimal'},
+      body:JSON.stringify({email:email,region:'All Portugal',source:'relocation-guide'})
+    });
+  } catch(e){}
+  document.getElementById('relo-email').parentElement.innerHTML = '<div style="color:var(--green);font-size:13px;font-weight:500">&#9989; We\'ll send the guide to your inbox! Also subscribed to the Sunday Digest.</div>';
+}
+
+/* ── OPEN CHAT WITH QUESTION ── */
+function openChatWith(question) {
+  if (typeof toggleChat === 'function') {
+    var chatBox = document.getElementById('chat-box');
+    if (!chatBox || !chatBox.classList.contains('open')) toggleChat();
+    if (question) setTimeout(function() { chatSend(question); }, 600);
+  }
 }
 </script>
 <script src="chat-widget.js" defer></script>
