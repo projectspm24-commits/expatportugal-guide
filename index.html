@@ -4,7 +4,26 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>ExpatPortugal.guide — Your expat life in Portugal, sorted</title>
-<meta name="description" content="Events, tools, local services, news and community for expats in Portugal. Updated daily." />
+<meta name="description" content="Events, local services, business directory, free tools, daily news and community for expats in Portugal. Find English-speaking services, upcoming events, and everything you need to feel at home. Updated daily." />
+<meta name="keywords" content="expat Portugal, expats Lisbon, Portugal expat services, English speaking dentist Portugal, events Portugal expats, digital nomad Portugal, moving to Portugal, NIF Portugal, D7 visa Portugal, expat community Portugal" />
+<link rel="canonical" href="https://expatportugal-guide.vercel.app/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="ExpatPortugal.guide — Your expat life in Portugal, sorted" />
+<meta property="og:description" content="Events, local services, business directory, free tools, and daily news for expats in Portugal. Updated daily." />
+<meta property="og:url" content="https://expatportugal-guide.vercel.app/" />
+<meta property="og:image" content="https://images.unsplash.com/photo-1513735492246-483525079686?w=1200&h=630&fit=crop" />
+<meta property="og:site_name" content="ExpatPortugal.guide" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="ExpatPortugal.guide — Your expat life in Portugal, sorted" />
+<meta name="twitter:description" content="Events, services, directory, tools, and news for expats in Portugal." />
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1513735492246-483525079686?w=1200&h=630&fit=crop" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"ExpatPortugal.guide","url":"https://expatportugal-guide.vercel.app/","description":"Events, local services, business directory, free tools, and daily news for expats in Portugal.","potentialAction":{"@type":"SearchAction","target":"https://expatportugal-guide.vercel.app/directory.html?q={search_term_string}","query-input":"required name=search_term_string"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Organization","name":"ExpatPortugal.guide","url":"https://expatportugal-guide.vercel.app/","description":"The daily resource for English-speaking expats in Portugal","contactPoint":{"@type":"ContactPoint","email":"hello@expatportugal.guide","contactType":"customer service"}}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -709,6 +728,94 @@ async function sendChat() {
     addMsg('bot', 'Sorry, I\'m having trouble connecting right now. Please try again in a moment!');
   }
 }
+</script>
+
+<!-- EMAIL CAPTURE BAR -->
+<style>
+.email-bar{position:fixed;bottom:0;left:0;right:0;background:var(--ink);padding:14px 2rem;z-index:240;transform:translateY(100%);transition:transform .6s ease;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.email-bar.show{transform:translateY(0)}
+.email-bar-text{color:rgba(255,255,255,0.8);font-size:13px}
+.email-bar-text b{color:white}
+.email-bar-input{padding:8px 14px;border:0.5px solid rgba(255,255,255,0.2);border-radius:var(--r);background:rgba(255,255,255,0.08);color:white;font-size:13px;font-family:"Outfit",sans-serif;outline:none;width:220px}
+.email-bar-input::placeholder{color:rgba(255,255,255,0.3)}
+.email-bar-btn{padding:8px 18px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;font-family:"Outfit",sans-serif}
+.email-bar-btn:hover{background:var(--red-d)}
+.email-bar-close{background:none;border:none;color:rgba(255,255,255,0.3);font-size:18px;cursor:pointer;padding:0 8px}
+.email-bar-close:hover{color:white}
+@media(max-width:600px){.email-bar{padding:12px 1rem;gap:8px}.email-bar-input{width:100%}}
+</style>
+
+<div class="email-bar" id="email-bar">
+  <span class="email-bar-text"><b>&#128232; The Sunday Digest</b> &mdash; weekly news, events &amp; tips</span>
+  <input class="email-bar-input" type="email" id="bar-email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')barSubscribe()" />
+  <button class="email-bar-btn" onclick="barSubscribe()">Subscribe free</button>
+  <button class="email-bar-close" onclick="dismissBar()">&times;</button>
+</div>
+
+<script>
+/* Email capture bar — shows after 30s or 50% scroll, once per session */
+var barShown = false;
+function showEmailBar() {
+  if (barShown || sessionStorage.getItem('epg-bar-dismissed')) return;
+  barShown = true;
+  document.getElementById('email-bar').classList.add('show');
+}
+function dismissBar() {
+  document.getElementById('email-bar').classList.remove('show');
+  sessionStorage.setItem('epg-bar-dismissed', '1');
+}
+setTimeout(showEmailBar, 30000);
+window.addEventListener('scroll', function() {
+  if (window.scrollY > document.body.scrollHeight * 0.4) showEmailBar();
+});
+
+async function barSubscribe() {
+  var email = document.getElementById('bar-email').value.trim();
+  if (!email || !email.includes('@')) { alert('Please enter a valid email.'); return; }
+  try {
+    await fetch('https://api.buttondown.com/v1/subscribers', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Token 0ed48c80-0e4d-4916-a3ab-f2aea603cea1' },
+      body: JSON.stringify({ email: email, tags: ['website-bar'] })
+    });
+  } catch(e) {}
+  /* Also save to Supabase */
+  try {
+    await fetch('https://waywvckvyizqkuuaecrp.supabase.co/rest/v1/subscribers', {
+      method: 'POST',
+      headers: { apikey: 'sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b', Authorization: 'Bearer sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b', 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ email: email, region: 'All Portugal', source: 'email-bar' })
+    });
+  } catch(e) {}
+  document.getElementById('email-bar').innerHTML = '<span style="color:white;font-size:13px">&#9989; Subscribed! Check your inbox on Sunday.</span>';
+  setTimeout(dismissBar, 3000);
+}
+</script>
+
+<!-- SOCIAL SHARE BUTTONS (added to each major section via JS) -->
+<script>
+/* Add share buttons to key pages */
+function addShareButtons() {
+  var url = encodeURIComponent(window.location.href);
+  var title = encodeURIComponent(document.title);
+  var shareHTML = '<div style="display:flex;gap:6px;align-items:center;margin-top:12px">' +
+    '<span style="font-size:11px;color:var(--ink3)">Share:</span>' +
+    '<a href="https://www.facebook.com/sharer/sharer.php?u=' + url + '" target="_blank" rel="noopener" style="padding:4px 10px;background:var(--warm);border-radius:var(--r);font-size:11px;color:var(--ink2)">Facebook</a>' +
+    '<a href="https://twitter.com/intent/tweet?url=' + url + '&text=' + title + '" target="_blank" rel="noopener" style="padding:4px 10px;background:var(--warm);border-radius:var(--r);font-size:11px;color:var(--ink2)">X</a>' +
+    '<a href="https://wa.me/?text=' + title + '%20' + url + '" target="_blank" rel="noopener" style="padding:4px 10px;background:var(--warm);border-radius:var(--r);font-size:11px;color:var(--ink2)">WhatsApp</a>' +
+    '<a href="https://www.linkedin.com/sharing/share-offsite/?url=' + url + '" target="_blank" rel="noopener" style="padding:4px 10px;background:var(--warm);border-radius:var(--r);font-size:11px;color:var(--ink2)">LinkedIn</a>' +
+    '</div>';
+  /* Add to the subscribe section */
+  var subSec = document.getElementById('sub-section');
+  if (subSec) {
+    var shareDiv = document.createElement('div');
+    shareDiv.innerHTML = shareHTML;
+    shareDiv.style.textAlign = 'center';
+    shareDiv.style.marginTop = '10px';
+    subSec.parentElement.insertBefore(shareDiv, subSec.nextSibling);
+  }
+}
+setTimeout(addShareButtons, 1000);
 </script>
 </body>
 </html>
