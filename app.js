@@ -293,24 +293,64 @@ var catTagMap = {
   'culture': 'tcu', 'food': 'tfo', 'art': 'tar', 'family': 'tfa'
 };
 
-var eventCatImages = {
-  'music': 'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=200&h=200&fit=crop',
-  'social': 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=200&h=200&fit=crop',
-  'sport': 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=200&h=200&fit=crop',
-  'market': 'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=200&h=200&fit=crop',
-  'culture': 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=200&h=200&fit=crop',
-  'food': 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&h=200&fit=crop',
-  'art': 'https://images.unsplash.com/photo-1541367777708-7905fe3296c0?w=200&h=200&fit=crop',
-  'family': 'https://images.unsplash.com/photo-1536640712-4d998f60b42c?w=200&h=200&fit=crop'
+var eventCatImageSets = {
+  'music': [
+    'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop'
+  ],
+  'social': [
+    'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1543807535-eceef0bc6599?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=200&h=200&fit=crop'
+  ],
+  'sport': [
+    'https://images.unsplash.com/photo-1551632811-561732d1e306?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1502904550040-7534597429ae?w=200&h=200&fit=crop'
+  ],
+  'market': [
+    'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1504711331672-5aba867562b0?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=200&h=200&fit=crop'
+  ],
+  'culture': [
+    'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1585208798174-6cedd86e019a?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1573455494060-c5595004fb6c?w=200&h=200&fit=crop'
+  ],
+  'food': [
+    'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=200&h=200&fit=crop'
+  ],
+  'art': [
+    'https://images.unsplash.com/photo-1541367777708-7905fe3296c0?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1531913764164-f85c3e01b2aa?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=200&h=200&fit=crop'
+  ],
+  'family': [
+    'https://images.unsplash.com/photo-1536640712-4d998f60b42c?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1511895426328-dc8714191300?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1484665754804-74b091211472?w=200&h=200&fit=crop'
+  ]
 };
 
 var dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+var _evImgCounter = 0;
+
+function getEventImage(category) {
+  var set = eventCatImageSets[category] || eventCatImageSets['culture'];
+  var img = set[_evImgCounter % set.length];
+  _evImgCounter++;
+  return img;
+}
 
 async function loadEvents() {
   try {
     var today = new Date().toISOString().slice(0, 10);
-    var nextWeek = new Date(Date.now() + 10 * 86400000).toISOString().slice(0, 10);
-    var q = SB_URL + '/rest/v1/events?status=eq.approved&event_date=gte.' + today + '&event_date=lte.' + nextWeek + '&order=event_date.asc&limit=6';
+    var endDate = new Date(Date.now() + 8 * 86400000).toISOString().slice(0, 10);
+    var q = SB_URL + '/rest/v1/events?status=eq.approved&event_date=gte.' + today + '&event_date=lte.' + endDate + '&order=event_date.asc&limit=50';
     if (activeRegion !== 'all') q += '&city=ilike.*' + encodeURIComponent(activeRegion) + '*';
     var res = await fetch(q, { headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } });
     var events = await res.json();
@@ -319,7 +359,31 @@ async function loadEvents() {
       list.innerHTML = '<div class="ev" style="justify-content:center;color:var(--ink3);font-size:12px">No upcoming events this week.</div>';
       return;
     }
-    list.innerHTML = events.map(function(e) {
+
+    // Pick one highlight event per day (prefer non-culture, non-public-holiday categories)
+    var catPriority = { music: 5, art: 4, food: 4, market: 3, social: 3, sport: 3, family: 2, culture: 1 };
+    var byDay = {};
+    events.forEach(function(e) {
+      var dateKey = e.event_date;
+      if (!byDay[dateKey]) byDay[dateKey] = [];
+      byDay[dateKey].push(e);
+    });
+
+    var highlights = [];
+    Object.keys(byDay).sort().forEach(function(dateKey) {
+      var dayEvents = byDay[dateKey];
+      // Sort by priority: prefer interesting categories over public holidays
+      dayEvents.sort(function(a, b) {
+        return (catPriority[b.category] || 1) - (catPriority[a.category] || 1);
+      });
+      highlights.push(dayEvents[0]);
+    });
+
+    // Show max 7 days
+    highlights = highlights.slice(0, 7);
+    _evImgCounter = 0;
+
+    list.innerHTML = highlights.map(function(e) {
       var d = new Date(e.event_date + 'T12:00:00');
       var day = d.getDate();
       var mon = d.toLocaleDateString('en-GB', { month: 'short' });
@@ -329,7 +393,7 @@ async function loadEvents() {
       var time = e.event_time ? ' · ' + dow + ' ' + e.event_time : ' · ' + dow;
       var price = e.price && e.price !== 'Free' && e.price !== 'Free entry' ? ' · ' + e.price : '';
       var link = e.url ? ' href="' + e.url + '" target="_blank" rel="noopener"' : '';
-      var img = eventCatImages[e.category] || eventCatImages['culture'];
+      var img = getEventImage(e.category);
       return '<a class="ev"' + link + '>' +
         '<img class="ev-img" src="' + img + '" alt="" />' +
         '<div class="ev-date"><div class="ev-day">' + day + '</div><div class="ev-mon">' + mon + '</div></div>' +
