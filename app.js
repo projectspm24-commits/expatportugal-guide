@@ -291,7 +291,7 @@ function subscribe() {
 
 var catTagMap = {
   'music': 'tm', 'social': 'ts', 'sport': 'tsp', 'market': 'tmk',
-  'culture': 'tcu', 'food': 'tfo', 'art': 'tar', 'family': 'tfa'
+  'culture': 'tcu', 'food': 'tfo', 'art': 'tar', 'family': 'tfa', 'dancing': 'tda'
 };
 
 var eventCatImageSets = {
@@ -334,6 +334,11 @@ var eventCatImageSets = {
     'https://images.unsplash.com/photo-1511895426328-dc8714191300?w=200&h=200&fit=crop',
     'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=200&h=200&fit=crop',
     'https://images.unsplash.com/photo-1474552226712-ac0f0961a954?w=200&h=200&fit=crop'
+  ],
+  'dancing': [
+    'https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1545959570-a94084071b5d?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1524117074681-31bd4de22ad3?w=200&h=200&fit=crop'
   ]
 };
 

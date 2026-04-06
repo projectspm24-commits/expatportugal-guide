@@ -55,6 +55,7 @@ nav{background:rgba(247,245,240,0.96);border-bottom:0.5px solid var(--border);pa
 .cal-ev.cat-food{background:#FFF8E1;color:#F57F17}
 .cal-ev.cat-art{background:var(--purple-l);color:var(--purple)}
 .cal-ev.cat-family{background:#E8F5E9;color:#2E7D32}
+.cal-ev.cat-dancing{background:#FCE4EC;color:#C2185B}
 .cal-more{font-size:10px;color:var(--ink3);padding:2px 5px}
 
 .list-view{display:none;margin-bottom:2rem}
@@ -127,6 +128,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
     <button class="fb" onclick="setCatFilter('culture',this)">&#127984; Culture</button>
     <button class="fb" onclick="setCatFilter('art',this)">&#127912; Art</button>
     <button class="fb" onclick="setCatFilter('family',this)">&#128118; Family</button>
+    <button class="fb" onclick="setCatFilter('dancing',this)">&#128131; Dancing</button>
     <span style="font-size:10px;color:var(--ink3);padding:4px 6px">|</span>
     <button class="fb" onclick="setRegFilter('all',this)">All regions</button>
     <button class="fb" onclick="setRegFilter('Lisbon',this)">Lisbon</button>
@@ -179,7 +181,8 @@ var catImages = {
   culture:'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=160&h=160&fit=crop',
   food:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=160&h=160&fit=crop',
   art:'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=160&h=160&fit=crop',
-  family:'https://images.unsplash.com/photo-1536640712-4d998f60b42c?w=160&h=160&fit=crop'
+  family:'https://images.unsplash.com/photo-1536640712-4d998f60b42c?w=160&h=160&fit=crop',
+  dancing:'https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=160&h=160&fit=crop'
 };
 
 var regionCities = {
