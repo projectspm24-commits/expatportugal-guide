@@ -132,7 +132,14 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
     <button class="fb" onclick="setRegFilter('Lisbon',this)">Lisbon</button>
     <button class="fb" onclick="setRegFilter('Porto',this)">Porto</button>
     <button class="fb" onclick="setRegFilter('Algarve',this)">Algarve</button>
+    <button class="fb" onclick="setRegFilter('Cascais',this)">Cascais</button>
     <button class="fb" onclick="setRegFilter('Ericeira',this)">Ericeira</button>
+    <button class="fb" onclick="setRegFilter('Peniche',this)">Peniche</button>
+    <button class="fb" onclick="setRegFilter('Mafra',this)">Mafra</button>
+    <button class="fb" onclick="setRegFilter('Braga',this)">Braga</button>
+    <button class="fb" onclick="setRegFilter('Alentejo',this)">Alentejo</button>
+    <button class="fb" onclick="setRegFilter('Madeira',this)">Madeira</button>
+    <button class="fb" onclick="setRegFilter('Azores',this)">Azores</button>
   </div>
 
   <div class="cal-grid" id="cal-grid"></div>
@@ -176,9 +183,11 @@ var catImages = {
 };
 
 var regionCities = {
-  Algarve:['Algarve','Faro','Lagos','Albufeira','Tavira','Vilamoura','Loulé','Olhão'],
+  Algarve:['Algarve','Faro','Lagos','Albufeira','Tavira','Vilamoura','Loulé','Olhão','Portimão','Silves','Sagres'],
   Lisbon:['Lisbon','Lisboa'],Porto:['Porto'],Ericeira:['Ericeira'],
-  Cascais:['Cascais','Sintra','Estoril'],Peniche:['Peniche'],Mafra:['Mafra']
+  Cascais:['Cascais','Sintra','Estoril'],Peniche:['Peniche'],Mafra:['Mafra'],
+  Braga:['Braga','Guimarães'],Alentejo:['Alentejo','Évora','Beja'],
+  Madeira:['Madeira','Funchal'],Azores:['Azores','Açores','Ponta Delgada']
 };
 
 function init() {
