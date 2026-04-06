@@ -471,8 +471,8 @@ setTimeout(function() {
 <style>
 .chat-fab{position:fixed;bottom:24px;right:24px;width:56px;height:56px;background:var(--red);color:white;border:none;border-radius:50%;font-size:24px;cursor:pointer;z-index:250;box-shadow:0 4px 20px rgba(192,56,26,0.3);transition:all .2s;display:flex;align-items:center;justify-content:center}
 .chat-fab:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(192,56,26,0.4)}
-.chat-fab-badge{position:absolute;top:-2px;right:-2px;background:var(--ink);color:white;font-size:9px;padding:2px 6px;border-radius:10px;font-family:"Outfit",sans-serif;display:none}
-.chat-panel{position:fixed;bottom:90px;right:24px;width:380px;max-height:520px;background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);box-shadow:0 8px 40px rgba(0,0,0,0.12);z-index:250;display:flex;flex-direction:column;overflow:hidden}
+.chat-fab-badge{position:absolute;top:-2px;right:-2px;background:var(--ink);color:white;font-size:9px;padding:2px 6px;border-radius:10px;font-family:"Outfit",sans-serif}
+.chat-panel{position:fixed;bottom:90px;right:24px;width:380px;max-height:520px;background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);box-shadow:0 8px 40px rgba(0,0,0,0.12);z-index:250;display:none;flex-direction:column;overflow:hidden}
 .chat-panel.open{display:flex}
 .chat-header{background:var(--ink);color:white;padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
 .chat-header-t{font-size:14px;font-weight:500}
@@ -530,7 +530,7 @@ setTimeout(function() {
 </div>
 
 <script>
-var chatOpen = true;
+var chatOpen = false;
 var chatHistory = [];
 
 function toggleChat() {
@@ -541,6 +541,15 @@ function toggleChat() {
   }
   document.getElementById('chat-fab').querySelector('.chat-fab-badge').style.display = chatOpen ? 'none' : '';
 }
+
+/* Auto-open chat after 3 seconds on desktop only (screen > 900px) */
+setTimeout(function() {
+  if (window.innerWidth > 900) {
+    chatOpen = true;
+    document.getElementById('chat-panel').style.display = 'flex';
+    document.getElementById('chat-fab').querySelector('.chat-fab-badge').style.display = 'none';
+  }
+}, 3000);
 
 function sendQuick(text) {
   document.getElementById('chat-quick').style.display = 'none';
