@@ -31,11 +31,25 @@ nav{background:rgba(247,245,240,0.96);border-bottom:0.5px solid var(--border);pa
 .sort-bar span{font-size:13px;color:var(--ink3)}
 .sort-sel{font-size:12px;padding:5px 10px;border:0.5px solid var(--border);border-radius:var(--r);background:var(--card);font-family:"Outfit",sans-serif;color:var(--ink2);cursor:pointer}
 
-.dir-layout{display:grid;grid-template-columns:1fr 400px;gap:1.5rem;align-items:start}
+.dir-layout{display:grid;grid-template-columns:1fr 420px;gap:1.5rem;align-items:start}
 .dir-main{min-width:0}
 .dir-map-col{position:sticky;top:70px}
-.map-container{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);height:480px;overflow:hidden}
-.map-biz-name{padding:10px 14px;background:var(--ink);color:white;font-size:13px;font-weight:500;display:none}
+.map-container{overflow:hidden}
+
+.d-related-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--border);cursor:pointer;transition:background .1s}
+.d-related-item:last-child{border-bottom:none}
+.d-related-item:hover{background:var(--warm);margin:0 -6px;padding:8px 6px;border-radius:var(--r)}
+.d-rev{padding:10px 0;border-bottom:0.5px solid var(--border)}
+.d-rev:last-child{border-bottom:none}
+.d-rev-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.d-rev-name{font-size:13px;font-weight:500}
+.d-rev-stars{font-size:12px;color:#f59e0b}
+.d-rev-text{font-size:12px;color:var(--ink2);line-height:1.6}
+.d-ev{display:flex;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--border);font-size:12px}
+.d-ev:last-child{border-bottom:none}
+.d-ev-date{min-width:36px;text-align:center;background:var(--warm);border-radius:6px;padding:4px}
+.d-ev-day{font-family:"Playfair Display",serif;font-size:16px;line-height:1}
+.d-ev-mon{font-size:9px;color:var(--ink3);text-transform:uppercase}
 
 .biz-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:2rem}
 .biz{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;transition:all .2s;cursor:pointer;position:relative}
@@ -81,7 +95,7 @@ nav{background:rgba(247,245,240,0.96);border-bottom:0.5px solid var(--border);pa
 footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top:3rem}
 .fi{max-width:1100px;margin:0 auto;font-size:12px;text-align:center}
 
-@media(max-width:900px){.dir-layout{grid-template-columns:1fr}.dir-map-col{position:relative;top:0;order:-1}.map-container{height:300px}.full{padding:0 1rem}nav{padding:0 1rem}}
+@media(max-width:900px){.dir-layout{grid-template-columns:1fr}.dir-map-col{position:relative;top:0}.full{padding:0 1rem}nav{padding:0 1rem}}
 @media(max-width:700px){.full{padding:0 1rem}nav{padding:0 1rem}}
 </style>
 </head>
@@ -134,9 +148,52 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
     </div>
 
     <div class="dir-map-col">
-      <div class="map-container" id="map-container">
-        <div id="map-placeholder" style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--ink3);font-size:13px;text-align:center;padding:1rem">Click a business to see it on the map</div>
-        <iframe id="map-iframe" style="display:none;width:100%;height:100%;border:none;border-radius:var(--rl)" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <div id="detail-panel">
+        <div id="detail-placeholder" class="widget" style="text-align:center;padding:2.5rem 1.5rem;color:var(--ink3)">
+          <div style="font-size:28px;margin-bottom:10px">&#128072;</div>
+          <div style="font-size:14px;margin-bottom:4px;color:var(--ink2)">Click a business to explore</div>
+          <div style="font-size:12px">See it on the map, read reviews, and discover what's nearby.</div>
+        </div>
+        <div id="detail-content" style="display:none">
+          <div class="widget" style="padding:0;overflow:hidden;margin-bottom:12px">
+            <div class="map-container" style="height:220px">
+              <iframe id="map-iframe" style="width:100%;height:100%;border:none" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <div style="padding:1rem 1.25rem">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+                <div>
+                  <div style="display:flex;align-items:center;gap:8px"><span id="d-emoji" style="font-size:22px"></span><span id="d-name" style="font-size:16px;font-weight:500"></span></div>
+                  <div id="d-loc" style="font-size:12px;color:var(--ink3);margin-top:3px"></div>
+                </div>
+                <div style="text-align:right">
+                  <div id="d-stars" style="color:#f59e0b;font-size:14px"></div>
+                  <div id="d-score" style="font-size:11px;color:var(--ink3)"></div>
+                </div>
+              </div>
+              <div id="d-desc" style="font-size:13px;color:var(--ink2);line-height:1.7;margin-bottom:10px"></div>
+              <div id="d-address" style="font-size:12px;color:var(--ink3);margin-bottom:6px"></div>
+              <div id="d-links" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+            </div>
+          </div>
+          
+          <div class="widget" style="margin-bottom:12px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <div style="font-size:14px;font-weight:500">Community reviews</div>
+              <button id="d-review-btn" class="review-btn" style="position:static" onclick="">Leave a review</button>
+            </div>
+            <div id="d-reviews"></div>
+          </div>
+          
+          <div class="widget" style="margin-bottom:12px">
+            <div style="font-size:14px;font-weight:500;margin-bottom:10px">More in this area</div>
+            <div id="d-related"></div>
+          </div>
+          
+          <div class="widget" style="margin-bottom:12px">
+            <div style="font-size:14px;font-weight:500;margin-bottom:10px">Events nearby this week</div>
+            <div id="d-events"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -245,8 +302,7 @@ function renderBiz() {
   grid.innerHTML = filtered.map(function(b, i) {
     var url = b.url ? '<a href="' + b.url + '" target="_blank" class="biz-link">Visit &rarr;</a>' : '';
     var verified = b.status === 'featured' ? '<span class="biz-verified">&#10003; Verified</span>' : '';
-    var mapQuery = encodeURIComponent(b.name + ', ' + (b.address || b.area + ', ' + b.city + ', Portugal'));
-    return '<div class="biz" data-map="' + mapQuery + '" data-name="' + b.name.replace(/"/g, '&quot;') + '" onclick="if(event.target.tagName!==\'A\'&&!event.target.classList.contains(\'review-btn\'))showOnMap(this)">' +
+    return '<div class="biz" data-id="' + b.id + '" onclick="if(event.target.tagName!==\'A\'&&!event.target.classList.contains(\'review-btn\'))showOnMap(this)">' +
       '<div class="biz-top"><div style="display:flex;align-items:flex-start"><span class="biz-emoji">' + b.emoji + '</span><div><div class="biz-name">' + b.name + '</div><div class="biz-loc">' + [b.area, b.city].filter(Boolean).join(', ') + '</div></div></div>' +
       '<div class="biz-rating"><div class="biz-stars">' + starsHTML(b._rating) + '</div><span class="biz-score">' + b._rating.toFixed(1) + '</span><span class="biz-reviews">(' + b._reviews + ')</span></div></div>' +
       '<div class="biz-desc">' + (b.reason || '') + '</div>' +
@@ -261,19 +317,114 @@ function renderBiz() {
 }
 
 function showOnMap(el) {
+  var bizId = parseInt(el.getAttribute('data-id'));
+  var biz = allBiz.find(function(b) { return b.id === bizId; });
+  if (!biz) return;
+  
   document.querySelectorAll('.biz.active').forEach(function(b) { b.classList.remove('active'); });
   el.classList.add('active');
-  var query = el.getAttribute('data-map');
-  var name = el.getAttribute('data-name');
-  var iframe = document.getElementById('map-iframe');
-  var placeholder = document.getElementById('map-placeholder');
-  iframe.src = 'https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=' + query + '&zoom=15';
-  iframe.style.display = 'block';
-  placeholder.style.display = 'none';
   
-  // Scroll card into view on mobile
+  var r = parseRating(biz.price_range);
+  var query = encodeURIComponent(biz.name + ', ' + (biz.address || biz.area + ', ' + biz.city + ', Portugal'));
+  
+  // Show detail panel
+  document.getElementById('detail-placeholder').style.display = 'none';
+  document.getElementById('detail-content').style.display = 'block';
+  
+  // Map
+  document.getElementById('map-iframe').src = 'https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=' + query + '&zoom=15';
+  
+  // Business info
+  document.getElementById('d-emoji').textContent = biz.emoji || '';
+  document.getElementById('d-name').textContent = biz.name;
+  document.getElementById('d-loc').textContent = [biz.area, biz.city].filter(Boolean).join(', ');
+  document.getElementById('d-stars').innerHTML = starsHTML(r.rating);
+  document.getElementById('d-score').textContent = r.rating.toFixed(1) + ' · ' + r.reviews + ' reviews';
+  document.getElementById('d-desc').textContent = biz.reason || '';
+  document.getElementById('d-address').textContent = biz.address ? '📍 ' + biz.address : '';
+  
+  // Links
+  var links = '';
+  if (biz.url) links += '<a href="' + biz.url + '" target="_blank" style="font-size:12px;padding:5px 14px;background:var(--warm);border:0.5px solid var(--border);border-radius:var(--r);color:var(--ink2)">Visit website &#8599;</a>';
+  links += '<button onclick="openReview(' + biz.id + ',\'' + biz.name.replace(/'/g, "\\'") + '\')" style="font-size:12px;padding:5px 14px;background:var(--red-l);border:0.5px solid var(--red);border-radius:var(--r);color:var(--red);cursor:pointer;font-family:Outfit,sans-serif">&#9733; Leave a review</button>';
+  document.getElementById('d-links').innerHTML = links;
+  
+  // Review button
+  document.getElementById('d-review-btn').onclick = function() { openReview(biz.id, biz.name); };
+  
+  // Community reviews (from approved review events)
+  loadReviews(biz.id);
+  
+  // Related businesses (same type or same area, excluding current)
+  var related = allBiz.filter(function(b) {
+    return b.id !== biz.id && (b.type === biz.type || b.area === biz.area);
+  }).slice(0, 4);
+  
+  var relHTML = related.length ? related.map(function(b) {
+    var br = parseRating(b.price_range);
+    return '<div class="d-related-item" onclick="document.querySelector(\'.biz[data-id=\\x27' + b.id + '\\x27]\').click()">' +
+      '<span style="font-size:18px">' + b.emoji + '</span>' +
+      '<div style="flex:1"><div style="font-size:13px;font-weight:500">' + b.name + '</div><div style="font-size:11px;color:var(--ink3)">' + [b.area, b.city].filter(Boolean).join(', ') + '</div></div>' +
+      '<div style="text-align:right"><div style="font-size:11px;color:#f59e0b">&#9733; ' + br.rating.toFixed(1) + '</div><div style="font-size:10px;color:var(--ink3)">' + br.reviews + ' rev</div></div>' +
+      '</div>';
+  }).join('') : '<div style="font-size:12px;color:var(--ink3)">No related businesses yet.</div>';
+  document.getElementById('d-related').innerHTML = relHTML;
+  
+  // Nearby events this week
+  loadNearbyEvents(biz.city, biz.area);
+  
+  // Scroll detail into view on mobile
   if (window.innerWidth <= 900) {
-    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    document.getElementById('detail-content').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+async function loadReviews(bizId) {
+  var el = document.getElementById('d-reviews');
+  try {
+    var res = await fetch(SB_URL + '/rest/v1/events?category=eq.review&url=eq.' + bizId + '&status=eq.approved&order=created_at.desc&limit=10', {
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
+    });
+    var reviews = await res.json();
+    if (!reviews.length) {
+      el.innerHTML = '<div style="font-size:12px;color:var(--ink3);padding:8px 0">No reviews yet. Be the first!</div>';
+      return;
+    }
+    el.innerHTML = reviews.map(function(r) {
+      var stars = r.title ? r.title.match(/(\d+) stars/) : null;
+      var starCount = stars ? parseInt(stars[1]) : 5;
+      return '<div class="d-rev">' +
+        '<div class="d-rev-head"><span class="d-rev-name">' + (r.city || 'Anonymous') + '</span><span class="d-rev-stars">' + '&#9733;'.repeat(starCount) + '&#9734;'.repeat(5 - starCount) + '</span></div>' +
+        (r.description && r.description !== 'No comment' ? '<div class="d-rev-text">' + r.description + '</div>' : '') +
+        '</div>';
+    }).join('');
+  } catch (e) {
+    el.innerHTML = '<div style="font-size:12px;color:var(--ink3)">Could not load reviews.</div>';
+  }
+}
+
+async function loadNearbyEvents(city, area) {
+  var el = document.getElementById('d-events');
+  try {
+    var today = new Date().toISOString().slice(0, 10);
+    var nextWeek = new Date(Date.now() + 8 * 86400000).toISOString().slice(0, 10);
+    var q = SB_URL + '/rest/v1/events?status=eq.approved&category=neq.review&event_date=gte.' + today + '&event_date=lte.' + nextWeek + '&order=event_date.asc&limit=5';
+    q += '&or=(city.ilike.*' + encodeURIComponent(city) + '*,city.eq.All Portugal)';
+    var res = await fetch(q, { headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } });
+    var events = await res.json();
+    if (!events.length) {
+      el.innerHTML = '<div style="font-size:12px;color:var(--ink3)">No events nearby this week.</div>';
+      return;
+    }
+    el.innerHTML = events.map(function(e) {
+      var d = new Date(e.event_date + 'T12:00:00');
+      return '<div class="d-ev">' +
+        '<div class="d-ev-date"><div class="d-ev-day">' + d.getDate() + '</div><div class="d-ev-mon">' + d.toLocaleDateString('en-GB', { month: 'short' }) + '</div></div>' +
+        '<div><div style="font-weight:500">' + e.title + '</div><div style="color:var(--ink3)">' + [e.venue, e.city].filter(Boolean).join(', ') + (e.event_time ? ' · ' + e.event_time : '') + '</div></div>' +
+        '</div>';
+    }).join('');
+  } catch (e) {
+    el.innerHTML = '<div style="font-size:12px;color:var(--ink3)">Could not load events.</div>';
   }
 }
 
