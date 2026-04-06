@@ -289,6 +289,7 @@ tr:hover td{background:var(--warm)}
           <div style="display:flex;flex-direction:column;gap:3px">
             <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Type *</label>
             <select id="biz-type" class="setting-input" style="margin:0">
+              <optgroup label="Local businesses">
               <option value="cafe">Cafe / Coffee</option>
               <option value="restaurant">Restaurant / Tasca</option>
               <option value="pottery">Pottery / Ceramics</option>
@@ -305,6 +306,15 @@ tr:hover td{background:var(--warm)}
               <option value="bakery">Bakery / Pastelaria</option>
               <option value="bar">Bar / Wine bar</option>
               <option value="services">Local services</option>
+              </optgroup>
+              <optgroup label="Places to explore">
+              <option value="museum">Museum</option>
+              <option value="park">Park / Garden</option>
+              <option value="beach">Beach</option>
+              <option value="entertainment">Entertainment</option>
+              <option value="viewpoint">Viewpoint / Miradouro</option>
+              <option value="historic">Historic site</option>
+              </optgroup>
               <option value="other">Other</option>
             </select>
           </div>

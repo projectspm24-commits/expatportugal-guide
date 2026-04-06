@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Local Business Directory — ExpatPortugal.guide</title>
-<meta name="description" content="Independent, locally owned businesses in Portugal recommended by the expat community. Cafes, restaurants, yoga, pottery, vintage shops and more." />
+<title>Directory — Businesses &amp; Places to Explore in Portugal | ExpatPortugal.guide</title>
+<meta name="description" content="Discover local businesses, museums, parks, beaches, and hidden gems in Portugal — curated for expats, ranked by community reviews." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -114,12 +114,13 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
 
 <div class="full">
   <div class="dir-hero">
-    <div class="dir-hero-t">Local business directory</div>
-    <div class="dir-hero-sub">Independent, locally owned businesses in Portugal &mdash; ranked by expat reviews. No paid rankings. The best-reviewed businesses rise to the top.</div>
+    <div class="dir-hero-t">Discover Portugal</div>
+    <div class="dir-hero-sub">Businesses and places in Portugal &mdash; curated for expats, ranked by community reviews. No paid rankings.</div>
   </div>
 
   <div class="filter-bar" id="filter-bar">
     <button class="fb on" onclick="filterCat('all',this)">All</button>
+    <span style="font-size:10px;color:var(--ink3);padding:5px 4px;text-transform:uppercase;letter-spacing:.06em">Businesses</span>
     <button class="fb" onclick="filterCat('cafe',this)">&#9749; Caf&eacute;s</button>
     <button class="fb" onclick="filterCat('restaurant',this)">&#127869; Restaurants</button>
     <button class="fb" onclick="filterCat('pottery',this)">&#127994; Pottery</button>
@@ -129,6 +130,13 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
     <button class="fb" onclick="filterCat('flowers',this)">&#128144; Flowers</button>
     <button class="fb" onclick="filterCat('gym',this)">&#128170; Gyms</button>
     <button class="fb" onclick="filterCat('vintage',this)">&#128717; Vintage</button>
+    <span style="font-size:10px;color:var(--ink3);padding:5px 4px;text-transform:uppercase;letter-spacing:.06em">Places</span>
+    <button class="fb" onclick="filterCat('museum',this)">&#127963; Museums</button>
+    <button class="fb" onclick="filterCat('park',this)">&#127795; Parks</button>
+    <button class="fb" onclick="filterCat('beach',this)">&#127958; Beaches</button>
+    <button class="fb" onclick="filterCat('entertainment',this)">&#127914; Entertainment</button>
+    <button class="fb" onclick="filterCat('viewpoint',this)">&#127748; Viewpoints</button>
+    <button class="fb" onclick="filterCat('historic',this)">&#127984; Historic sites</button>
   </div>
 
   <div class="dir-layout">
@@ -200,9 +208,12 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
   </div>
 
   <div class="cta-box">
-    <div class="cta-box-t">Own a local business in Portugal?</div>
-    <div class="cta-box-sub">Get listed for free. Your ranking is based on reviews, not how much you pay.</div>
-    <a class="cta-box-btn" href="mailto:hello@expatportugal.guide?subject=List my local business&body=Business name:%0ACategory:%0ACity / neighbourhood:%0AWebsite or Instagram:%0AShort description (why expats should visit):">Get listed for free &rarr;</a>
+    <div class="cta-box-t">Know a great place or business?</div>
+    <div class="cta-box-sub">Help the expat community discover the best of Portugal. Suggest a local business or a place to explore.</div>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <a class="cta-box-btn" href="mailto:hello@expatportugal.guide?subject=List my local business&body=Business name:%0ACategory:%0ACity / neighbourhood:%0AWebsite or Instagram:%0AShort description:">List a business (free)</a>
+      <a class="cta-box-btn" style="background:rgba(255,255,255,0.1);border:0.5px solid rgba(255,255,255,0.2)" href="mailto:hello@expatportugal.guide?subject=Suggest a place to explore&body=Place name:%0AType (museum, park, beach, viewpoint, historic site):%0ACity:%0AWhy expats should visit:">Suggest a place</a>
+    </div>
   </div>
 </div>
 
