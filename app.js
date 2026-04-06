@@ -272,6 +272,7 @@ function setReg(r, el) {
   if (c) c.textContent = r === 'all' ? 'Lisbon' : r;
   loadLiveNews();
   loadWeather(r);
+  loadEvents();
 }
 
 function setCat(c, el) {
@@ -346,17 +347,36 @@ function getEventImage(category) {
   return img;
 }
 
+var regionCities = {
+  'Algarve': ['Algarve','Faro','Lagos','Albufeira','Tavira','Vilamoura','Loulé','Olhão','Portimão','Silves','Sagres'],
+  'Lisbon': ['Lisbon','Lisboa'],
+  'Porto': ['Porto'],
+  'Cascais': ['Cascais','Sintra','Estoril'],
+  'Ericeira': ['Ericeira'],
+  'Peniche': ['Peniche'],
+  'Mafra': ['Mafra'],
+  'Braga': ['Braga','Guimarães'],
+  'Alentejo': ['Alentejo','Évora','Beja'],
+  'Madeira': ['Madeira','Funchal'],
+  'Azores': ['Azores','Açores','Ponta Delgada']
+};
+
 async function loadEvents() {
   try {
     var today = new Date().toISOString().slice(0, 10);
     var endDate = new Date(Date.now() + 8 * 86400000).toISOString().slice(0, 10);
     var q = SB_URL + '/rest/v1/events?status=eq.approved&event_date=gte.' + today + '&event_date=lte.' + endDate + '&order=event_date.asc&limit=50';
-    if (activeRegion !== 'all') q += '&city=ilike.*' + encodeURIComponent(activeRegion) + '*';
+    if (activeRegion !== 'all') {
+      var cities = regionCities[activeRegion] || [activeRegion];
+      var orParts = cities.map(function(c) { return 'city.ilike.*' + c + '*'; });
+      orParts.push('city.eq.All Portugal');
+      q += '&or=(' + orParts.join(',') + ')';
+    }
     var res = await fetch(q, { headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } });
     var events = await res.json();
     var list = document.getElementById('events-list');
     if (!events || !events.length) {
-      list.innerHTML = '<div class="ev" style="justify-content:center;color:var(--ink3);font-size:12px">No upcoming events this week.</div>';
+      list.innerHTML = '<div class="ev" style="justify-content:center;color:var(--ink3);font-size:12px">No upcoming events in ' + activeRegion + ' this week.</div>';
       return;
     }
 
