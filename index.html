@@ -194,12 +194,13 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
     <div id="submit-event-form" style="display:none;background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;margin-top:8px">
       <div style="font-size:14px;font-weight:500;margin-bottom:4px">Submit an event</div>
       <div style="font-size:11px;color:var(--ink3);margin-bottom:12px;line-height:1.5">We'll review it and add it to the calendar if it's a good fit.</div>
-      <input id="se-title" type="text" placeholder="Event name" style="width:100%;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;margin-bottom:6px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px">
-        <input id="se-city" type="text" placeholder="City (e.g. Lisbon)" style="width:100%;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
-        <input id="se-date" type="date" style="width:100%;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+      <input id="se-title" type="text" placeholder="Event name *" required style="width:100%;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;margin-bottom:6px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:6px">
+        <input id="se-city" type="text" placeholder="City *" required style="width:100%;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+        <input id="se-date" type="date" required style="width:100%;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+        <input id="se-time" type="time" required style="width:100%;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
       </div>
-      <input id="se-url" type="url" placeholder="Event link (website, Meetup, Facebook...)" style="width:100%;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;margin-bottom:6px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+      <input id="se-url" type="url" placeholder="Event link (website, Meetup, Facebook...) *" required style="width:100%;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;margin-bottom:6px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
       <input id="se-email" type="email" placeholder="Your email (optional, for updates)" style="width:100%;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;margin-bottom:10px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
       <button onclick="submitEvent()" style="width:100%;padding:9px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif">Submit for review</button>
     </div>

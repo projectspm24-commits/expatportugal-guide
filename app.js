@@ -433,11 +433,12 @@ async function submitEvent() {
   var title = document.getElementById('se-title').value.trim();
   var city = document.getElementById('se-city').value.trim();
   var date = document.getElementById('se-date').value;
+  var time = document.getElementById('se-time').value;
   var url = document.getElementById('se-url').value.trim();
   var email = document.getElementById('se-email').value.trim();
 
-  if (!title || !city) {
-    alert('Please fill in at least the event name and city.');
+  if (!title || !city || !date || !time || !url) {
+    alert('Please fill in all required fields: event name, city, date, time, and event link.');
     return;
   }
 
@@ -453,8 +454,9 @@ async function submitEvent() {
       body: JSON.stringify({
         title: title,
         city: city,
-        event_date: date || new Date().toISOString().slice(0, 10),
-        url: url || null,
+        event_date: date,
+        event_time: time,
+        url: url,
         description: email ? 'Submitted by: ' + email : 'User submitted',
         category: 'social',
         source: 'User submission',
