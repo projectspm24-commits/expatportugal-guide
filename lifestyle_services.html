@@ -145,9 +145,9 @@ function renderServices(){
   var q=document.getElementById('search').value.toLowerCase().trim();
   var city=document.getElementById('city-filter').value;
   var sort=document.getElementById('sort-sel').value;
-  var filtered=allServices;
+  var filtered=allServices.slice();
   if(activeCat!=='all')filtered=filtered.filter(function(s){return s.cat===activeCat;});
-  if(city!=='all')filtered=filtered.filter(function(s){return s.city===city;});
+  if(city!=='all')filtered=filtered.filter(function(s){return s.city===city||s.city==='Online';});
   if(q)filtered=filtered.filter(function(s){return s._raw.indexOf(q)!==-1;});
   
   if(sort==='rating')filtered.sort(function(a,b){return b.rating-a.rating||b.reviews-a.reviews;});
