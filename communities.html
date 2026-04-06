@@ -87,7 +87,14 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
     <button class="fb" onclick="filterComm('lisbon',this)">Lisbon</button>
     <button class="fb" onclick="filterComm('porto',this)">Porto</button>
     <button class="fb" onclick="filterComm('algarve',this)">Algarve</button>
+    <button class="fb" onclick="filterComm('cascais',this)">Cascais</button>
     <button class="fb" onclick="filterComm('ericeira',this)">Ericeira</button>
+    <button class="fb" onclick="filterComm('peniche',this)">Peniche</button>
+    <button class="fb" onclick="filterComm('mafra',this)">Mafra</button>
+    <button class="fb" onclick="filterComm('braga',this)">Braga</button>
+    <button class="fb" onclick="filterComm('alentejo',this)">Alentejo</button>
+    <button class="fb" onclick="filterComm('madeira',this)">Madeira</button>
+    <button class="fb" onclick="filterComm('azores',this)">Azores</button>
   </div>
 
   <div class="comm-list" id="comm-list"></div>
@@ -122,34 +129,43 @@ var activeFilter = 'all';
 
 var communities = [
   // SOCIAL & MEETUPS
-  {name:"Lisbon Cascais Expats & Friends",type:"social",region:"lisbon",members:"10,000+",platform:"Meetup",url:"https://www.meetup.com/lisbon-expats-friends/",img:"https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=500&h=300&fit=crop",desc:"The largest expat community in the Lisbon area. Weekly meetups, dinners, hikes, cultural events, and weekend trips. Very welcoming to newcomers."},
+  {name:"Lisbon Cascais Expats & Friends",type:"social",region:"lisbon,cascais",members:"10,000+",platform:"Meetup",url:"https://www.meetup.com/lisbon-expats-friends/",img:"https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=500&h=300&fit=crop",desc:"The largest expat community in the Lisbon area. Weekly meetups, dinners, hikes, cultural events, and weekend trips. Covers Lisbon, Cascais, and Sintra."},
   {name:"Porto Internationals",type:"social",region:"porto",members:"4,000+",platform:"Meetup",url:"https://www.meetup.com/porto-internationals/",img:"https://images.unsplash.com/photo-1543807535-eceef0bc6599?w=500&h=300&fit=crop",desc:"Weekly Friday meetups at different venues, pub crawls, day trips to the Douro, and networking events. Expats and locals mix well here."},
   {name:"Algarve Social Club",type:"social",region:"algarve",members:"3,500+",platform:"Facebook",url:"https://www.facebook.com/groups/algarvesocialclub",img:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&h=300&fit=crop",desc:"Social events, beach meetups, restaurant outings, and cultural activities across the Algarve. Very active in Faro, Lagos, and Albufeira."},
   {name:"Ericeira Expat Community",type:"social",region:"ericeira",members:"1,200+",platform:"WhatsApp",url:"",img:"https://images.unsplash.com/photo-1502904550040-7534597429ae?w=500&h=300&fit=crop",desc:"Tight-knit community of expats in Ericeira. Group dinners, surf sessions, coffee meetups, and tips on local life. Ask in local cafes for the WhatsApp link."},
+  {name:"Braga Expats",type:"social",region:"braga",members:"500+",platform:"Facebook",url:"",img:"https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=500&h=300&fit=crop",desc:"Growing expat community in Braga. Monthly meetups, language exchange, and help navigating life in the Minho region. Friendly and welcoming."},
+  {name:"Madeira International Community",type:"social",region:"madeira",members:"1,800+",platform:"Facebook",url:"",img:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&h=300&fit=crop",desc:"Expats and digital nomads in Funchal and across Madeira. Hiking groups, social dinners, and tips on island life. Very active since the digital nomad village launched."},
+  {name:"Azores Expat Network",type:"social",region:"azores",members:"400+",platform:"WhatsApp",url:"",img:"https://images.unsplash.com/photo-1502904550040-7534597429ae?w=500&h=300&fit=crop",desc:"Small but growing community on the Azores islands. Mainly on São Miguel. Hiking, whale watching trips, and monthly dinners in Ponta Delgada."},
+  {name:"Peniche & Silver Coast Expats",type:"social",region:"peniche",members:"600+",platform:"Facebook",url:"",img:"https://images.unsplash.com/photo-1461896836934-bd45ba8fcf9b?w=500&h=300&fit=crop",desc:"Expats along the Silver Coast from Peniche to Nazaré. Beach walks, surf meetups, restaurant discoveries. Also covers Caldas da Rainha and Óbidos."},
+  {name:"Alentejo Slow Living",type:"social",region:"alentejo",members:"300+",platform:"WhatsApp",url:"",img:"https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=500&h=300&fit=crop",desc:"Expats embracing the slow pace of Alentejo. Wine tastings, farm visits, stargazing nights, and honest chats about rural life. Covers Évora, Beja, and surroundings."},
 
   // DIGITAL NOMADS
   {name:"Lisbon Digital Nomads",type:"nomad",region:"lisbon",members:"6,000+",platform:"Meetup",url:"https://www.meetup.com/lisbon-digital-nomads/",img:"https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500&h=300&fit=crop",desc:"NomadTalks, coworking sessions, and social events for remote workers. Weekly meetups at different coworking spaces across Lisbon."},
-  {name:"Remote Workers Portugal",type:"nomad",region:"lisbon",members:"2,500+",platform:"Slack",url:"",img:"https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=500&h=300&fit=crop",desc:"Slack community for remote workers across Portugal. Channels for each city, visa questions, tax advice, coworking recommendations, and job postings."},
+  {name:"Remote Workers Portugal",type:"nomad",region:"lisbon,porto,algarve",members:"2,500+",platform:"Slack",url:"",img:"https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=500&h=300&fit=crop",desc:"Slack community for remote workers across Portugal. Channels for each city, visa questions, tax advice, coworking recommendations, and job postings."},
   {name:"Ericeira Digital Nomads",type:"nomad",region:"ericeira",members:"800+",platform:"Facebook",url:"https://www.facebook.com/groups/ericeiranomads",img:"https://images.unsplash.com/photo-1461896836934-bd45ba8fcf9b?w=500&h=300&fit=crop",desc:"Surf and work community in Ericeira. Coworking meetups, surf sessions before work, and weekend trips. The surf-nomad lifestyle in action."},
+  {name:"Madeira Digital Nomads",type:"nomad",region:"madeira",members:"1,200+",platform:"Slack",url:"",img:"https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=500&h=300&fit=crop",desc:"Remote workers on Madeira island. Coworking at Ponta do Sol digital nomad village, hiking groups, and weekly social events. Fast wifi, slow pace."},
 
   // FAMILIES & KIDS
-  {name:"Expat Families Lisbon",type:"family",region:"lisbon",members:"3,200+",platform:"Facebook",url:"https://www.facebook.com/groups/expatfamilieslisbon",img:"https://images.unsplash.com/photo-1536640712-4d998f60b42c?w=500&h=300&fit=crop",desc:"Playdates, school recommendations, paediatrician referrals, kid-friendly restaurant tips, and family events. Covers Lisbon, Cascais, Sintra, and Estoril."},
+  {name:"Expat Families Lisbon",type:"family",region:"lisbon,cascais",members:"3,200+",platform:"Facebook",url:"https://www.facebook.com/groups/expatfamilieslisbon",img:"https://images.unsplash.com/photo-1536640712-4d998f60b42c?w=500&h=300&fit=crop",desc:"Playdates, school recommendations, paediatrician referrals, kid-friendly restaurant tips, and family events. Covers Lisbon, Cascais, Sintra, and Estoril."},
   {name:"Porto Parents Network",type:"family",region:"porto",members:"1,100+",platform:"Facebook",url:"",img:"https://images.unsplash.com/photo-1511895426328-dc8714191300?w=500&h=300&fit=crop",desc:"Expat families in Porto sharing school advice, activities for kids, family-friendly restaurants, and weekend trip ideas in the north."},
   {name:"Mums in Lisbon",type:"family",region:"lisbon",members:"2,400+",platform:"WhatsApp",url:"",img:"https://images.unsplash.com/photo-1474552226712-ac0f0961a954?w=500&h=300&fit=crop",desc:"Support network for expat mothers. Baby groups, toddler activities, postpartum support, and honest conversations about raising kids in Portugal."},
+  {name:"Algarve Family Life",type:"family",region:"algarve",members:"900+",platform:"Facebook",url:"",img:"https://images.unsplash.com/photo-1536640712-4d998f60b42c?w=500&h=300&fit=crop",desc:"Expat families in the Algarve. Beach playdates, international school advice, family-friendly restaurants, and holiday activities for kids."},
 
   // SPORTS & OUTDOOR
   {name:"Hash House Harriers Lisbon",type:"sport",region:"lisbon",members:"200+",platform:"Website",url:"https://www.lisbonhash.com",img:"https://images.unsplash.com/photo-1551632811-561732d1e306?w=500&h=300&fit=crop",desc:"A drinking club with a running problem. Weekly runs/walks through Lisbon's hills followed by socialising. All fitness levels welcome. Classic expat tradition."},
   {name:"Surf Club Ericeira",type:"sport",region:"ericeira",members:"400+",platform:"Instagram",url:"",img:"https://images.unsplash.com/photo-1502904550040-7534597429ae?w=500&h=300&fit=crop",desc:"Weekly group surf sessions at Ribeira d'Ilhas and Foz do Lizandro. All levels welcome. Also organises beach clean-ups and surf competitions."},
-  {name:"Lisbon Cycling Group",type:"sport",region:"lisbon",members:"900+",platform:"Strava",url:"",img:"https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=500&h=300&fit=crop",desc:"Weekend rides along the Tagus, to Sintra, and across the 25 de Abril bridge. Road and gravel. Coffee stops included."},
+  {name:"Lisbon Cycling Group",type:"sport",region:"lisbon,cascais",members:"900+",platform:"Strava",url:"",img:"https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=500&h=300&fit=crop",desc:"Weekend rides along the Tagus, to Sintra, and across the 25 de Abril bridge. Road and gravel. Coffee stops included."},
+  {name:"Peniche Surf Community",type:"sport",region:"peniche",members:"350+",platform:"Instagram",url:"",img:"https://images.unsplash.com/photo-1502904550040-7534597429ae?w=500&h=300&fit=crop",desc:"Surf group at Supertubos and Baleal. WSL championship viewing parties, group sessions, and beach barbecues. All levels from beginner to advanced."},
 
   // PROFESSIONAL
   {name:"Startup Lisboa Community",type:"professional",region:"lisbon",members:"5,000+",platform:"Slack",url:"https://www.startuplisboa.com",img:"https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=500&h=300&fit=crop",desc:"Lisbon's startup ecosystem hub. Networking events, pitch nights, mentor matching, and office hours with investors. Great for founders and freelancers."},
-  {name:"Women in Tech Portugal",type:"professional",region:"lisbon",members:"1,800+",platform:"LinkedIn",url:"",img:"https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=500&h=300&fit=crop",desc:"Networking, mentoring, and career support for women in technology across Portugal. Monthly events and an active online community."},
+  {name:"Women in Tech Portugal",type:"professional",region:"lisbon,porto",members:"1,800+",platform:"LinkedIn",url:"",img:"https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=500&h=300&fit=crop",desc:"Networking, mentoring, and career support for women in technology across Portugal. Monthly events and an active online community."},
 
   // CULTURE & LANGUAGE
   {name:"Portuguese Language Exchange Lisbon",type:"culture",region:"lisbon",members:"2,200+",platform:"Meetup",url:"",img:"https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500&h=300&fit=crop",desc:"Weekly language exchange meetups — practice Portuguese with native speakers who want to practice English. Relaxed bar setting. Rotating locations."},
   {name:"Book Club Lisbon",type:"culture",region:"lisbon",members:"350+",platform:"Meetup",url:"",img:"https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=500&h=300&fit=crop",desc:"Monthly English-language book club meeting in different Lisbon cafes. Diverse reading list from Portuguese authors to international bestsellers."},
   {name:"Fado & Wine Evenings",type:"culture",region:"lisbon",members:"600+",platform:"Instagram",url:"",img:"https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=500&h=300&fit=crop",desc:"Monthly fado evenings with wine tasting in Alfama and Mouraria. Learn about the music tradition while enjoying local wines. Very atmospheric."},
+  {name:"Porto Language Exchange",type:"culture",region:"porto",members:"800+",platform:"Meetup",url:"",img:"https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500&h=300&fit=crop",desc:"Weekly Portuguese-English language exchange in Porto's Ribeira district. Casual bar setting with structured conversation rounds."},
 ];
 
 var platformColors = {Meetup:'#f64060',Facebook:'#1877f2',WhatsApp:'#25d366',Slack:'#4a154b',Instagram:'#e4405f',LinkedIn:'#0077b5',Strava:'#fc4c02',Website:'var(--ink3)'};
@@ -165,7 +181,7 @@ function renderComms() {
   var filtered = communities;
   if (activeFilter !== 'all') {
     filtered = communities.filter(function(c) {
-      return c.type === activeFilter || c.region === activeFilter;
+      return c.type === activeFilter || c.region.split(',').indexOf(activeFilter) !== -1;
     });
   }
 
