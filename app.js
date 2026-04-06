@@ -377,8 +377,8 @@ async function loadEvents() {
     var list = document.getElementById('events-list');
     if (!events || !events.length) {
       var region = activeRegion === 'all' ? 'Portugal' : activeRegion;
-      list.innerHTML = '<div style="text-align:center;padding:2rem 1rem">' +
-        '<div style="font-size:13px;color:var(--ink3);margin-bottom:10px">No known upcoming events in ' + region + ' this week.</div>' +
+      list.innerHTML = '<div style="text-align:center;padding:2rem 1.5rem;background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl)">' +
+        '<div style="font-size:13px;color:var(--ink2);margin-bottom:10px">No known upcoming events in ' + region + ' this week.</div>' +
         '<div style="font-size:12px;color:var(--ink3);margin-bottom:14px">Know about an event? Help the community!</div>' +
         '<a href="#" onclick="document.getElementById(\'submit-event-form\').style.display=\'block\';this.style.display=\'none\';return false" style="display:inline-block;padding:8px 18px;background:var(--warm);border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;font-weight:500;color:var(--ink2)">&#128197; Submit an event &rarr;</a>' +
         '</div>';
