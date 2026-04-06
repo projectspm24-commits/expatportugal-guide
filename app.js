@@ -376,7 +376,12 @@ async function loadEvents() {
     var events = await res.json();
     var list = document.getElementById('events-list');
     if (!events || !events.length) {
-      list.innerHTML = '<div class="ev" style="justify-content:center;color:var(--ink3);font-size:12px">No upcoming events in ' + activeRegion + ' this week.</div>';
+      var region = activeRegion === 'all' ? 'Portugal' : activeRegion;
+      list.innerHTML = '<div style="text-align:center;padding:2rem 1rem">' +
+        '<div style="font-size:13px;color:var(--ink3);margin-bottom:10px">No known upcoming events in ' + region + ' this week.</div>' +
+        '<div style="font-size:12px;color:var(--ink3);margin-bottom:14px">Know about an event? Help the community!</div>' +
+        '<a href="#" onclick="document.getElementById(\'submit-event-form\').style.display=\'block\';this.style.display=\'none\';return false" style="display:inline-block;padding:8px 18px;background:var(--warm);border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;font-weight:500;color:var(--ink2)">&#128197; Submit an event &rarr;</a>' +
+        '</div>';
       return;
     }
 
@@ -422,6 +427,54 @@ async function loadEvents() {
         '<span class="ev-tag ' + tagClass + '">' + (e.category || 'social') + '</span></div></a>';
     }).join('');
   } catch (err) { console.error('Events error:', err); }
+}
+
+async function submitEvent() {
+  var title = document.getElementById('se-title').value.trim();
+  var city = document.getElementById('se-city').value.trim();
+  var date = document.getElementById('se-date').value;
+  var url = document.getElementById('se-url').value.trim();
+  var email = document.getElementById('se-email').value.trim();
+
+  if (!title || !city) {
+    alert('Please fill in at least the event name and city.');
+    return;
+  }
+
+  try {
+    var res = await fetch(SB_URL + '/rest/v1/events', {
+      method: 'POST',
+      headers: {
+        'apikey': SB_KEY,
+        'Authorization': 'Bearer ' + SB_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        title: title,
+        city: city,
+        event_date: date || new Date().toISOString().slice(0, 10),
+        url: url || null,
+        description: email ? 'Submitted by: ' + email : 'User submitted',
+        category: 'social',
+        source: 'User submission',
+        status: 'pending'
+      })
+    });
+
+    if (res.ok) {
+      document.getElementById('submit-event-form').innerHTML =
+        '<div style="text-align:center;padding:1rem">' +
+        '<div style="font-size:20px;margin-bottom:8px">&#9989;</div>' +
+        '<div style="font-size:13px;font-weight:500;margin-bottom:4px">Event submitted!</div>' +
+        '<div style="font-size:11px;color:var(--ink3)">We\'ll review it and add it to the calendar. Thanks for helping the community!</div>' +
+        '</div>';
+    } else {
+      alert('Something went wrong. Please try again.');
+    }
+  } catch (err) {
+    alert('Could not submit. Please try again later.');
+  }
 }
 
 document.addEventListener('DOMContentLoaded', function() {

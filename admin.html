@@ -643,18 +643,43 @@ async function deleteArticle(id) {
 // ── EVENTS ────────────────────────────────────────────────
 async function loadEvents() {
   try {
-    const events = await sb('events?order=event_date.asc&limit=30');
+    const events = await sb('events?order=event_date.asc&limit=50');
     const el = document.getElementById('events-table');
     if (!events.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">📅</div>No events yet</div>'; return; }
-    el.innerHTML = `<table><thead><tr><th>Event</th><th>Category</th><th>City</th><th>Date</th><th>Status</th></tr></thead><tbody>
-      ${events.map(e => `<tr>
+    
+    const pending = events.filter(e => e.status === 'pending' || e.status === 'submitted');
+    const approved = events.filter(e => e.status === 'approved');
+    
+    let html = '';
+    if (pending.length) {
+      html += `<div style="margin-bottom:1.5rem"><div style="font-size:14px;font-weight:500;margin-bottom:8px;color:var(--amber)">⏳ ${pending.length} pending review</div>
+      <table><thead><tr><th>Event</th><th>City</th><th>Date</th><th>Link</th><th>Actions</th></tr></thead><tbody>
+        ${pending.map(e => `<tr>
+          <td><div style="font-weight:500">${e.title}</div><div style="font-size:11px;color:var(--ink3)">${e.description || ''}</div></td>
+          <td>${e.city}</td>
+          <td style="font-size:12px">${e.event_date}</td>
+          <td>${e.url ? `<a href="${e.url}" target="_blank" rel="noopener" style="color:var(--blue);font-size:12px">View link ↗</a>` : '<span style="font-size:11px;color:var(--ink3)">No link</span>'}</td>
+          <td style="white-space:nowrap">
+            <button onclick="approveEvent(${e.id})" style="padding:4px 12px;background:var(--green);color:white;border:none;border-radius:4px;font-size:11px;cursor:pointer;margin-right:4px">Approve</button>
+            <button onclick="rejectEvent(${e.id})" style="padding:4px 12px;background:var(--red);color:white;border:none;border-radius:4px;font-size:11px;cursor:pointer">Reject</button>
+          </td>
+        </tr>`).join('')}
+      </tbody></table></div>`;
+    }
+    
+    html += `<div style="font-size:14px;font-weight:500;margin-bottom:8px">📅 Upcoming events (${approved.length})</div>
+    <table><thead><tr><th>Event</th><th>Category</th><th>City</th><th>Date</th><th>Source</th><th>Actions</th></tr></thead><tbody>
+      ${approved.map(e => `<tr>
         <td><div style="font-weight:500">${e.title}</div><div style="font-size:11px;color:var(--ink3)">${e.venue || ''}</div></td>
         <td><span class="cat-badge">${e.category}</span></td>
         <td>${e.city}</td>
         <td style="font-size:12px">${e.event_date}</td>
-        <td><span class="status-badge status-${e.status}">${e.status}</span></td>
+        <td style="font-size:11px;color:var(--ink3)">${e.source || ''}</td>
+        <td><button onclick="deleteEvent(${e.id})" style="padding:4px 10px;background:none;border:0.5px solid var(--border);border-radius:4px;font-size:11px;cursor:pointer;color:var(--ink3)">Delete</button></td>
       </tr>`).join('')}
     </tbody></table>`;
+    
+    el.innerHTML = html;
   } catch(e) { document.getElementById('events-table').innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div>Connection error</div>'; }
 }
 
@@ -668,6 +693,23 @@ function showAddEvent() {
     sb('events', { method: 'POST', body: { title, city, event_date: date, category: cat || 'social', status: 'approved' } })
       .then(() => loadEvents());
   }
+}
+
+async function approveEvent(id) {
+  await sb('events?id=eq.' + id, { method: 'PATCH', body: { status: 'approved' } });
+  loadEvents();
+}
+
+async function rejectEvent(id) {
+  if (!confirm('Reject and delete this event submission?')) return;
+  await sb('events?id=eq.' + id, { method: 'DELETE' });
+  loadEvents();
+}
+
+async function deleteEvent(id) {
+  if (!confirm('Delete this event?')) return;
+  await sb('events?id=eq.' + id, { method: 'DELETE' });
+  loadEvents();
 }
 
 // ── DIGEST ────────────────────────────────────────────────
