@@ -297,43 +297,43 @@ var catTagMap = {
 var eventCatImageSets = {
   'music': [
     'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=200&h=200&fit=crop',
-    'https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=200&h=200&fit=crop',
-    'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop'
+    'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=200&h=200&fit=crop'
   ],
   'social': [
     'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=200&h=200&fit=crop',
-    'https://images.unsplash.com/photo-1543807535-eceef0bc6599?w=200&h=200&fit=crop',
-    'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=200&h=200&fit=crop'
+    'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=200&h=200&fit=crop'
   ],
   'sport': [
     'https://images.unsplash.com/photo-1551632811-561732d1e306?w=200&h=200&fit=crop',
     'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=200&h=200&fit=crop',
-    'https://images.unsplash.com/photo-1502904550040-7534597429ae?w=200&h=200&fit=crop'
+    'https://images.unsplash.com/photo-1461896836934-bd45ba8fcf9b?w=200&h=200&fit=crop'
   ],
   'market': [
     'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=200&h=200&fit=crop',
-    'https://images.unsplash.com/photo-1504711331672-5aba867562b0?w=200&h=200&fit=crop',
-    'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=200&h=200&fit=crop'
+    'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=200&h=200&fit=crop'
   ],
   'culture': [
     'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=200&h=200&fit=crop',
     'https://images.unsplash.com/photo-1585208798174-6cedd86e019a?w=200&h=200&fit=crop',
-    'https://images.unsplash.com/photo-1573455494060-c5595004fb6c?w=200&h=200&fit=crop'
+    'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=200&h=200&fit=crop'
   ],
   'food': [
     'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&h=200&fit=crop',
     'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200&h=200&fit=crop',
-    'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=200&h=200&fit=crop'
+    'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=200&h=200&fit=crop'
   ],
   'art': [
-    'https://images.unsplash.com/photo-1541367777708-7905fe3296c0?w=200&h=200&fit=crop',
-    'https://images.unsplash.com/photo-1531913764164-f85c3e01b2aa?w=200&h=200&fit=crop',
-    'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=200&h=200&fit=crop'
+    'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=200&h=200&fit=crop'
   ],
   'family': [
-    'https://images.unsplash.com/photo-1536640712-4d998f60b42c?w=200&h=200&fit=crop',
     'https://images.unsplash.com/photo-1511895426328-dc8714191300?w=200&h=200&fit=crop',
-    'https://images.unsplash.com/photo-1484665754804-74b091211472?w=200&h=200&fit=crop'
+    'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=200&h=200&fit=crop',
+    'https://images.unsplash.com/photo-1474552226712-ac0f0961a954?w=200&h=200&fit=crop'
   ]
 };
 
@@ -419,8 +419,11 @@ async function loadEvents() {
       var price = e.price && e.price !== 'Free' && e.price !== 'Free entry' ? ' · ' + e.price : '';
       var link = e.url ? ' href="' + e.url + '" target="_blank" rel="noopener"' : '';
       var img = getEventImage(e.category);
+      var catEmojis = {music:'🎵',social:'👥',sport:'🏃',market:'🛍',culture:'🏛',food:'🍽',art:'🎨',family:'👨‍👩‍👧'};
+      var emoji = catEmojis[e.category] || '📅';
       return '<a class="ev"' + link + '>' +
-        '<img class="ev-img" src="' + img + '" alt="" />' +
+        '<img class="ev-img" src="' + img + '" alt="" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'" />' +
+        '<div class="ev-img" style="display:none;align-items:center;justify-content:center;font-size:26px;background:var(--warm)">' + emoji + '</div>' +
         '<div class="ev-date"><div class="ev-day">' + day + '</div><div class="ev-mon">' + mon + '</div></div>' +
         '<div style="flex:1"><div class="ev-title">' + e.title + '</div>' +
         '<div class="ev-loc">' + loc + time + price + '</div>' +
