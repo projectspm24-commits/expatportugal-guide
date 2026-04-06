@@ -31,9 +31,16 @@ nav{background:rgba(247,245,240,0.96);border-bottom:0.5px solid var(--border);pa
 .sort-bar span{font-size:13px;color:var(--ink3)}
 .sort-sel{font-size:12px;padding:5px 10px;border:0.5px solid var(--border);border-radius:var(--r);background:var(--card);font-family:"Outfit",sans-serif;color:var(--ink2);cursor:pointer}
 
-.biz-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:2rem}
+.dir-layout{display:grid;grid-template-columns:1fr 400px;gap:1.5rem;align-items:start}
+.dir-main{min-width:0}
+.dir-map-col{position:sticky;top:70px}
+.map-container{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);height:480px;overflow:hidden}
+.map-biz-name{padding:10px 14px;background:var(--ink);color:white;font-size:13px;font-weight:500;display:none}
+
+.biz-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:2rem}
 .biz{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;transition:all .2s;cursor:pointer;position:relative}
 .biz:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.biz.active{border-color:var(--red);border-width:1.5px;box-shadow:0 4px 20px rgba(192,56,26,.1)}
 .biz-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
 .biz-emoji{font-size:24px;margin-right:10px;flex-shrink:0}
 .biz-name{font-size:15px;font-weight:500}
@@ -74,7 +81,8 @@ nav{background:rgba(247,245,240,0.96);border-bottom:0.5px solid var(--border);pa
 footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top:3rem}
 .fi{max-width:1100px;margin:0 auto;font-size:12px;text-align:center}
 
-@media(max-width:700px){.biz-grid{grid-template-columns:1fr}.full{padding:0 1rem}nav{padding:0 1rem}}
+@media(max-width:900px){.dir-layout{grid-template-columns:1fr}.dir-map-col{position:relative;top:0;order:-1}.map-container{height:300px}.full{padding:0 1rem}nav{padding:0 1rem}}
+@media(max-width:700px){.full{padding:0 1rem}nav{padding:0 1rem}}
 </style>
 </head>
 <body>
@@ -109,17 +117,28 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
     <button class="fb" onclick="filterCat('vintage',this)">&#128717; Vintage</button>
   </div>
 
-  <div class="sort-bar">
-    <span id="result-count">Loading...</span>
-    <select class="sort-sel" id="sort-sel" onchange="loadDirectory()">
-      <option value="rating">Highest rated</option>
-      <option value="reviews">Most reviewed</option>
-      <option value="name">A-Z</option>
-    </select>
-  </div>
+  <div class="dir-layout">
+    <div class="dir-main">
+      <div class="sort-bar">
+        <span id="result-count">Loading...</span>
+        <select class="sort-sel" id="sort-sel" onchange="loadDirectory()">
+          <option value="rating">Highest rated</option>
+          <option value="reviews">Most reviewed</option>
+          <option value="name">A-Z</option>
+        </select>
+      </div>
 
-  <div class="biz-grid" id="biz-grid">
-    <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--ink3)">Loading businesses...</div>
+      <div class="biz-grid" id="biz-grid">
+        <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--ink3)">Loading businesses...</div>
+      </div>
+    </div>
+
+    <div class="dir-map-col">
+      <div class="map-container" id="map-container">
+        <div id="map-placeholder" style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--ink3);font-size:13px;text-align:center;padding:1rem">Click a business to see it on the map</div>
+        <iframe id="map-iframe" style="display:none;width:100%;height:100%;border:none;border-radius:var(--rl)" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
   </div>
 
   <div class="cta-box">
@@ -223,10 +242,11 @@ function renderBiz() {
     return;
   }
   
-  grid.innerHTML = filtered.map(function(b) {
+  grid.innerHTML = filtered.map(function(b, i) {
     var url = b.url ? '<a href="' + b.url + '" target="_blank" class="biz-link">Visit &rarr;</a>' : '';
     var verified = b.status === 'featured' ? '<span class="biz-verified">&#10003; Verified</span>' : '';
-    return '<div class="biz" onclick="if(event.target.tagName!==\'A\'&&!event.target.classList.contains(\'review-btn\'))window.open(\'' + (b.url || '#') + '\',\'_blank\')">' +
+    var mapQuery = encodeURIComponent(b.name + ', ' + (b.address || b.area + ', ' + b.city + ', Portugal'));
+    return '<div class="biz" data-map="' + mapQuery + '" data-name="' + b.name.replace(/"/g, '&quot;') + '" onclick="if(event.target.tagName!==\'A\'&&!event.target.classList.contains(\'review-btn\'))showOnMap(this)">' +
       '<div class="biz-top"><div style="display:flex;align-items:flex-start"><span class="biz-emoji">' + b.emoji + '</span><div><div class="biz-name">' + b.name + '</div><div class="biz-loc">' + [b.area, b.city].filter(Boolean).join(', ') + '</div></div></div>' +
       '<div class="biz-rating"><div class="biz-stars">' + starsHTML(b._rating) + '</div><span class="biz-score">' + b._rating.toFixed(1) + '</span><span class="biz-reviews">(' + b._reviews + ')</span></div></div>' +
       '<div class="biz-desc">' + (b.reason || '') + '</div>' +
@@ -234,6 +254,27 @@ function renderBiz() {
       '<button class="review-btn" onclick="openReview(' + b.id + ',\'' + b.name.replace(/'/g, "\\'") + '\')">Leave a review</button>' +
       '</div>';
   }).join('');
+  
+  // Auto-show first business on map
+  var first = grid.querySelector('.biz');
+  if (first) showOnMap(first);
+}
+
+function showOnMap(el) {
+  document.querySelectorAll('.biz.active').forEach(function(b) { b.classList.remove('active'); });
+  el.classList.add('active');
+  var query = el.getAttribute('data-map');
+  var name = el.getAttribute('data-name');
+  var iframe = document.getElementById('map-iframe');
+  var placeholder = document.getElementById('map-placeholder');
+  iframe.src = 'https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=' + query + '&zoom=15';
+  iframe.style.display = 'block';
+  placeholder.style.display = 'none';
+  
+  // Scroll card into view on mobile
+  if (window.innerWidth <= 900) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 }
 
 function filterCat(cat, el) {
