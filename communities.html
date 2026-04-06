@@ -125,40 +125,45 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
 </footer>
 
 <script>
+var SB_URL = 'https://waywvckvyizqkuuaecrp.supabase.co';
+var SB_KEY = 'sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b';
 var activeFilter = 'all';
+var communities = [];
 
-var communities = [
-  // SOCIAL & MEETUPS
-  {name:"Lisbon Cascais Expats & Friends",type:"social",region:"lisbon",members:"10,000+",platform:"Meetup",url:"https://www.meetup.com/lisbon-cascais-expats-friends/",img:"https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=500&h=300&fit=crop",desc:"The largest expat community in the Lisbon area. Weekly meetups, dinners, hikes, cultural events, and weekend trips. Also has a WhatsApp community and Facebook group."},
-  {name:"The Lisbon Expat Meetup Group",type:"social",region:"lisbon",members:"5,000+",platform:"Meetup",url:"https://www.meetup.com/lisbon-expats/",img:"https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=500&h=300&fit=crop",desc:"Culture, art, food, music, and nature — with a focus on building real friendships. Cozy dinners, wellness workshops, and river sunset walks."},
-  {name:"EXPATS LISBON CONNECTION",type:"social",region:"lisbon",members:"3,000+",platform:"Meetup",url:"https://www.meetup.com/expats-locals-meet-up-for-making-new-friends-in-lisbon/",img:"https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500&h=300&fit=crop",desc:"Free events focused purely on creating connections. Game nights, quiz events, park meetups. Very first-timer friendly — no pressure, no agenda."},
-  {name:"Porto Internationals",type:"social",region:"porto",members:"5,200+",platform:"Meetup",url:"https://www.meetup.com/porto-internationals/",img:"https://images.unsplash.com/photo-1543807535-eceef0bc6599?w=500&h=300&fit=crop",desc:"Weekly Friday meetups at different venues, pub crawls, day trips to the Douro, and networking events. Expats and locals mix well here."},
-  {name:"Lisbon Community Connections",type:"social",region:"lisbon",members:"1,000+",platform:"Meetup",url:"https://www.meetup.com/lisbon-newcomers-welcome-group/",img:"https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=500&h=300&fit=crop",desc:"Specifically designed for newcomers. Structured integration activities so you don't feel like you're entering a room where everyone already knows each other."},
-  {name:"Expat Connect",type:"social",region:"lisbon",members:"300+",platform:"Meetup",url:"https://www.meetup.com/meetup-group-expat-connect/",img:"https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=500&h=300&fit=crop",desc:"Bi-weekly networking events in different Lisbon venues. Mix of expats, locals, and tourists. Casual drinks in a relaxed setting."},
-  {name:"Expats Portugal Algarve",type:"social",region:"algarve",members:"1,500+",platform:"Meetup",url:"https://www.meetup.com/expats-portugal-algarve-meet-up/",img:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&h=300&fit=crop",desc:"Social networking for foreigners in the Algarve. In-person events to share knowledge, build community, and make friends across the region."},
-  {name:"Lisbon Cascais Expats & Locals (Facebook)",type:"social",region:"lisbon",members:"15,000+",platform:"Facebook",url:"https://www.facebook.com/groups/expatsandlocalsworld/",img:"https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=500&h=300&fit=crop",desc:"One of the biggest Facebook groups for expats in Lisbon. Event updates, recommendations, questions about daily life. Very active."},
-  {name:"Expats Lisbon (Facebook)",type:"social",region:"lisbon",members:"8,000+",platform:"Facebook",url:"https://www.facebook.com/groups/649214002237096/",img:"https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500&h=300&fit=crop",desc:"Active Facebook group for expats in Lisbon. Apartment tips, bureaucracy questions, restaurant recommendations, and event announcements."},
+var platformColors = {Meetup:'#f64060',Facebook:'#1877f2',WhatsApp:'#25d366',Slack:'#4a154b',Instagram:'#e4405f',LinkedIn:'#0077b5',Strava:'#fc4c02',Website:'#57534e',App:'#15803d'};
+var categoryImages = {
+  social:'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=500&h=300&fit=crop',
+  nomad:'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=500&h=300&fit=crop',
+  family:'https://images.unsplash.com/photo-1536640712-4d998f60b42c?w=500&h=300&fit=crop',
+  sport:'https://images.unsplash.com/photo-1551632811-561732d1e306?w=500&h=300&fit=crop',
+  professional:'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=500&h=300&fit=crop',
+  culture:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500&h=300&fit=crop'
+};
 
-  // DIGITAL NOMADS
-  {name:"Lisbon Digital Nomads",type:"nomad",region:"lisbon",members:"24,000+",platform:"Meetup",url:"https://www.meetup.com/lisbon-digital-nomads/",img:"https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500&h=300&fit=crop",desc:"The largest nomad community in Portugal. Weekly Thursday meetups, coworking days, comedy nights, talks, and workshops. Also has a Slack community."},
-  {name:"Lisbon Digital Nomads & Expats (Facebook)",type:"nomad",region:"lisbon",members:"24,000+",platform:"Facebook",url:"https://www.facebook.com/groups/532696873566509/",img:"https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=500&h=300&fit=crop",desc:"The Facebook arm of Lisbon's digital nomad community. Coworking tips, visa questions, apartment hunting, and event announcements."},
-  {name:"Ericeira Digital Nomads",type:"nomad",region:"ericeira",members:"800+",platform:"Facebook",url:"https://www.facebook.com/groups/ericeiranomads",img:"https://images.unsplash.com/photo-1461896836934-bd45ba8fcf9b?w=500&h=300&fit=crop",desc:"Surf and work community in Ericeira. Coworking meetups, surf sessions before work, and weekend trips. The surf-nomad lifestyle in action."},
-  {name:"Lisbon Coworking Friends",type:"nomad",region:"lisbon",members:"1,000+",platform:"Meetup",url:"https://www.meetup.com/lisbon-coworking-friends/",img:"https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=500&h=300&fit=crop",desc:"Weekly social coworking sessions at different spaces across Lisbon. Work alongside other remote workers, then grab lunch together."},
+function parseCommunity(b) {
+  var pr = {};
+  (b.price_range || '').split('|').forEach(function(p) { var kv = p.split(':'); pr[kv[0]] = kv[1]; });
+  var members = parseInt(pr.members) || 0;
+  var memberStr = members >= 1000 ? Math.round(members/1000).toLocaleString() + ',000+' : members + '+';
+  return {
+    name: b.name, type: b.area || 'social',
+    region: pr.region || b.city.toLowerCase(),
+    members: memberStr, platform: pr.platform || 'Website',
+    url: b.url || '', desc: b.reason || '',
+    img: categoryImages[b.area] || categoryImages.social
+  };
+}
 
-  // FAMILIES & KIDS
-  {name:"Expat Families Lisbon",type:"family",region:"lisbon",members:"3,200+",platform:"Facebook",url:"https://www.facebook.com/groups/expatfamilieslisbon",img:"https://images.unsplash.com/photo-1536640712-4d998f60b42c?w=500&h=300&fit=crop",desc:"Playdates, school recommendations, paediatrician referrals, kid-friendly restaurant tips, and family events. Covers Lisbon, Cascais, Sintra, and Estoril."},
-
-  // SPORTS & OUTDOOR
-  {name:"Hash House Harriers Lisbon",type:"sport",region:"lisbon",members:"200+",platform:"Website",url:"https://www.lisbonhash.com",img:"https://images.unsplash.com/photo-1551632811-561732d1e306?w=500&h=300&fit=crop",desc:"A drinking club with a running problem. Weekly runs and walks through Lisbon's hills followed by socialising. All fitness levels welcome. Classic expat tradition."},
-
-  // PROFESSIONAL
-  {name:"Startup Lisboa Community",type:"professional",region:"lisbon",members:"5,000+",platform:"Website",url:"https://www.startuplisboa.com",img:"https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=500&h=300&fit=crop",desc:"Lisbon's startup ecosystem hub. Networking events, pitch nights, mentor matching, and office hours with investors. Great for founders and freelancers."},
-
-  // CULTURE & LANGUAGE
-  {name:"Speak Language Exchange",type:"culture",region:"lisbon",members:"50,000+",platform:"App",url:"https://www.speak.social/en/",img:"https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500&h=300&fit=crop",desc:"Free language groups in 20+ cities across Portugal. Learn Portuguese with native speakers in small groups. Available in Lisbon, Porto, Faro, Ericeira, Braga, and more."},
-];
-
-var platformColors = {Meetup:'#f64060',Facebook:'#1877f2',WhatsApp:'#25d366',Slack:'#4a154b',Instagram:'#e4405f',LinkedIn:'#0077b5',Strava:'#fc4c02',Website:'var(--ink3)'};
+async function loadCommunities() {
+  try {
+    var res = await fetch(SB_URL + '/rest/v1/local_businesses?type=eq.community&status=eq.active&order=name.asc', {
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
+    });
+    var data = await res.json();
+    communities = data.map(parseCommunity);
+    renderComms();
+  } catch(e) { console.error(e); }
+}
 
 function filterComm(f, el) {
   activeFilter = f;
@@ -171,34 +176,31 @@ function renderComms() {
   var filtered = communities;
   if (activeFilter !== 'all') {
     filtered = communities.filter(function(c) {
-      return c.type === activeFilter || c.region.split(',').indexOf(activeFilter) !== -1;
+      return c.type === activeFilter || c.region === activeFilter;
     });
   }
-
   var el = document.getElementById('comm-list');
   if (!filtered.length) {
-    el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--ink3)">No communities found for this filter. <a href="mailto:hello@expatportugal.guide?subject=Suggest a community" style="color:var(--red)">Suggest one!</a></div>';
+    el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--ink3)">No communities found. <a href="mailto:hello@expatportugal.guide?subject=Suggest a community" style="color:var(--red)">Suggest one!</a></div>';
     return;
   }
-
   el.innerHTML = filtered.map(function(c) {
-    var pColor = platformColors[c.platform] || 'var(--ink3)';
-    return '<a class="cc" ' + (c.url ? 'href="' + c.url + '" target="_blank" rel="noopener"' : '') + '>' +
+    var pColor = platformColors[c.platform] || '#57534e';
+    return '<a class="cc" href="' + c.url + '" target="_blank" rel="noopener">' +
       '<img class="cc-img" src="' + c.img + '" alt="" />' +
       '<div class="cc-body">' +
       '<div class="cc-name">' + c.name + '</div>' +
       '<div class="cc-meta">' +
       '<span>' + c.members + ' members</span>' +
       '<span class="cc-platform" style="background:' + pColor + '15;color:' + pColor + '">' + c.platform + '</span>' +
-      '<span class="cc-tag">' + c.type + '</span>' +
-      '</div>' +
+      '<span class="cc-tag">' + c.type + '</span></div>' +
       '<div class="cc-desc">' + c.desc + '</div>' +
-      (c.url ? '<span class="cc-link">Join community &rarr;</span>' : '<span style="font-size:11px;color:var(--ink3)">Ask locally for the invite link</span>') +
+      '<span class="cc-link">Join community \u2192</span>' +
       '</div></a>';
   }).join('');
 }
 
-renderComms();
+loadCommunities();
 </script>
 </body>
 </html>

@@ -153,6 +153,7 @@ tr:hover td{background:var(--warm)}
     <div class="s-nav-item" onclick="showPanel('subscribers',this)">👥 Subscribers</div>
     <div class="s-nav-item" onclick="showPanel('exchange',this)">🤝 Language exchange</div>
     <div class="s-nav-item" onclick="showPanel('businesses',this)">&#128203; Directory</div>
+    <div class="s-nav-item" onclick="showPanel('communities',this)">&#128101; Communities</div>
 
     <div class="s-section">System</div>
     <div class="s-nav-item" onclick="showPanel('logs',this)">⚙️ Automation logs</div>
@@ -412,6 +413,63 @@ tr:hover td{background:var(--warm)}
       </div>
     </div>
 
+    <!-- COMMUNITIES PANEL -->
+    <div class="panel" id="panel-communities">
+      <div class="section-card" style="margin-bottom:1.25rem">
+        <div class="sc-header"><div class="sc-title">Add / edit community</div></div>
+        <div style="padding:1.25rem;display:grid;grid-template-columns:1fr 1fr;gap:10px" id="comm-form">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Community name *</label>
+            <input id="comm-name" class="setting-input" style="margin:0" placeholder="e.g. Lisbon Digital Nomads" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Type *</label>
+            <select id="comm-type" class="setting-input" style="margin:0">
+              <option value="social">Social & meetups</option>
+              <option value="nomad">Digital nomads</option>
+              <option value="family">Families & kids</option>
+              <option value="sport">Sports & outdoor</option>
+              <option value="professional">Professional</option>
+              <option value="culture">Culture & language</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">City / region *</label>
+            <select id="comm-city" class="setting-input" style="margin:0">
+              <option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Mafra</option><option>Braga</option><option>Alentejo</option><option>Madeira</option><option>Azores</option><option>All Portugal</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Platform *</label>
+            <select id="comm-platform" class="setting-input" style="margin:0">
+              <option>Meetup</option><option>Facebook</option><option>WhatsApp</option><option>Slack</option><option>Instagram</option><option>LinkedIn</option><option>Website</option><option>App</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Join link (URL) *</label>
+            <input id="comm-url" class="setting-input" style="margin:0" placeholder="https://www.meetup.com/..." />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Approx. members</label>
+            <input id="comm-members" class="setting-input" style="margin:0" type="number" placeholder="5000" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px;grid-column:1/-1">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Description *</label>
+            <input id="comm-desc" class="setting-input" style="margin:0" placeholder="What makes this community great? What do they organise?" />
+          </div>
+          <div style="grid-column:1/-1;display:flex;gap:8px;align-items:center;margin-top:4px">
+            <button class="btn btn-green" id="comm-save-btn" onclick="saveCommunity()">+ Add community</button>
+            <button class="btn" onclick="clearCommForm()">Clear</button>
+            <span id="comm-msg" style="font-size:12px;color:var(--green);display:none">Saved!</span>
+          </div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="sc-header"><div class="sc-title">All communities</div></div>
+        <div id="communities-table"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+    </div>
+
     <!-- AUTOMATION LOGS PANEL -->
     <div class="panel" id="panel-logs">
       <div class="section-card">
@@ -540,6 +598,7 @@ const PANELS = {
   exchange:    { title: 'Language exchange',       sub: 'Match expats with Portuguese locals for language exchange' },
   directory:   { title: 'Directory',              sub: 'Manage professional and lifestyle service listings' },
   businesses:  { title: 'Directory',               sub: 'Add, edit, and manage all business listings. Ratings, reviews, and details.' },
+  communities: { title: 'Communities',             sub: 'Add, edit, and manage expat community listings.' },
   logs:        { title: 'Automation logs',        sub: 'Check what ran, when, and whether it succeeded' },
   settings:    { title: 'Settings',               sub: 'Configure database connection, passwords, and automation options' }
 };
@@ -556,7 +615,7 @@ function showPanel(name, el) {
 }
 
 function loadCurrentPanel() {
-  const loaders = { articles: loadArticles, events: loadEvents, digest: loadDigest, subscribers: loadSubscribers, exchange: loadExchange, directory: loadDirectory, businesses: loadBusinesses, logs: loadLogs };
+  const loaders = { articles: loadArticles, events: loadEvents, digest: loadDigest, subscribers: loadSubscribers, exchange: loadExchange, directory: loadDirectory, businesses: loadBusinesses, communities: loadCommunities, logs: loadLogs };
   if (loaders[currentPanel]) loaders[currentPanel]();
   loadMetrics();
 }
@@ -1232,6 +1291,108 @@ function clearBizForm() {
   var saveBtn = document.querySelector('#biz-form .btn-green');
   saveBtn.textContent = '+ Add business';
   saveBtn.onclick = function() { saveBusiness(); };
+}
+
+// ── COMMUNITIES ──────────────────────────────────────────
+var allCommAdmin = [];
+var editCommId = null;
+
+async function loadCommunities() {
+  try {
+    var items = await sb('local_businesses?type=eq.community&order=name.asc&limit=100');
+    allCommAdmin = items;
+    var el = document.getElementById('communities-table');
+    if (!items.length) {
+      el.innerHTML = '<div class="empty"><div class="empty-icon">&#128101;</div>No communities yet. Add one above.</div>';
+      return;
+    }
+    el.innerHTML = '<table><thead><tr><th>Community</th><th>Type</th><th>City</th><th>Platform</th><th>Members</th><th>Actions</th></tr></thead><tbody>' +
+      items.map(function(c) {
+        var pr = {};
+        (c.price_range || '').split('|').forEach(function(p) { var kv = p.split(':'); pr[kv[0]] = kv[1]; });
+        return '<tr>' +
+          '<td><div style="font-weight:500">' + c.name + '</div>' +
+          '<div style="font-size:11px;color:var(--ink2);margin-top:2px;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (c.reason || '') + '</div>' +
+          (c.url ? '<a href="' + c.url + '" target="_blank" style="font-size:11px;color:var(--red)">Join link &#8599;</a>' : '') +
+          '</td>' +
+          '<td><span class="cat-badge">' + (c.area || '') + '</span></td>' +
+          '<td>' + (c.city || '') + '</td>' +
+          '<td style="font-size:12px">' + (pr.platform || '') + '</td>' +
+          '<td style="font-size:12px">' + (pr.members ? parseInt(pr.members).toLocaleString() : '?') + '</td>' +
+          '<td style="white-space:nowrap">' +
+          '<button onclick="editCommunity(' + c.id + ')" style="padding:4px 10px;background:var(--blue-l);border:0.5px solid var(--blue);border-radius:4px;font-size:11px;cursor:pointer;color:var(--blue);margin-right:4px">Edit</button>' +
+          '<button onclick="deleteCommunity(' + c.id + ')" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
+          '</td></tr>';
+      }).join('') + '</tbody></table>';
+  } catch(e) {
+    document.getElementById('communities-table').innerHTML = '<div class="empty"><div class="empty-icon">&#9888;</div>Could not load communities.</div>';
+  }
+}
+
+async function saveCommunity(overrideId) {
+  var id = overrideId || editCommId;
+  var name = document.getElementById('comm-name').value.trim();
+  var desc = document.getElementById('comm-desc').value.trim();
+  var url = document.getElementById('comm-url').value.trim();
+  if (!name || !desc || !url) { alert('Name, description, and join link are required.'); return; }
+  var members = document.getElementById('comm-members').value || '0';
+  var platform = document.getElementById('comm-platform').value;
+  var region = document.getElementById('comm-city').value.toLowerCase();
+  var data = {
+    name: name,
+    type: 'community',
+    city: document.getElementById('comm-city').value,
+    area: document.getElementById('comm-type').value,
+    reason: desc,
+    url: url,
+    price_range: 'members:' + members + '|platform:' + platform + '|region:' + region,
+    emoji: '👥',
+    status: 'active'
+  };
+  try {
+    if (id) {
+      await sb('local_businesses?id=eq.' + id, { method: 'PATCH', body: data });
+    } else {
+      await sb('local_businesses', { method: 'POST', body: data });
+    }
+    var msg = document.getElementById('comm-msg');
+    msg.textContent = id ? 'Updated!' : 'Saved!';
+    msg.style.display = 'inline';
+    setTimeout(function() { msg.style.display = 'none'; }, 2500);
+    clearCommForm();
+    loadCommunities();
+  } catch(e) { alert('Error: ' + e.message); }
+}
+
+function editCommunity(id) {
+  var c = allCommAdmin.find(function(x) { return x.id === id; });
+  if (!c) return;
+  editCommId = id;
+  document.getElementById('comm-name').value = c.name || '';
+  document.getElementById('comm-type').value = c.area || 'social';
+  document.getElementById('comm-city').value = c.city || 'Lisbon';
+  document.getElementById('comm-desc').value = c.reason || '';
+  document.getElementById('comm-url').value = c.url || '';
+  var pr = {};
+  (c.price_range || '').split('|').forEach(function(p) { var kv = p.split(':'); pr[kv[0]] = kv[1]; });
+  document.getElementById('comm-members').value = pr.members || '';
+  document.getElementById('comm-platform').value = pr.platform || 'Meetup';
+  document.getElementById('comm-save-btn').textContent = 'Save changes';
+  document.getElementById('comm-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function deleteCommunity(id) {
+  if (!confirm('Delete this community?')) return;
+  await sb('local_businesses?id=eq.' + id, { method: 'DELETE' });
+  loadCommunities();
+}
+
+function clearCommForm() {
+  editCommId = null;
+  ['comm-name','comm-desc','comm-url','comm-members'].forEach(function(id) {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('comm-save-btn').textContent = '+ Add community';
 }
 
 // ── INIT ──────────────────────────────────────────────────
