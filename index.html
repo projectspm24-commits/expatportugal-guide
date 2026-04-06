@@ -79,6 +79,7 @@ nav{background:rgba(247,245,240,0.96);border-bottom:0.5px solid var(--border);pa
 .sp-icon{font-size:22px;margin-bottom:8px;display:block}.sp-cat{font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
 .sp-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:3px}.sp-n{font-size:11px;color:var(--ink3)}
 .list-cta{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:var(--warm);border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;font-weight:500;color:var(--ink2);cursor:pointer;margin-top:6px;transition:all .2s}.list-cta:hover{background:var(--card);border-color:var(--border2);color:var(--ink)}
+.pyd-btn{width:100%;padding:8px 12px;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.12);border-radius:var(--r);color:rgba(255,255,255,0.8);font-size:12px;font-family:"Outfit",sans-serif;cursor:pointer;text-align:left;transition:all .15s}.pyd-btn:hover{background:rgba(255,255,255,0.14);border-color:rgba(255,255,255,0.25);color:white}
 
 .lb-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
 .lb{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);overflow:hidden;transition:all .2s;display:block}.lb:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,.06)}
@@ -212,6 +213,18 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
       <div class="widget">
         <div class="w-t">Upcoming holidays</div>
         <div class="hol-list" id="hol-list"><div style="font-size:12px;color:var(--ink3)">Loading...</div></div>
+      </div>
+      <div class="widget" style="background:var(--ink);color:white">
+        <div style="font-size:18px;margin-bottom:8px">&#128161;</div>
+        <div style="font-family:'Playfair Display',serif;font-size:16px;margin-bottom:6px;color:white">Plan your day</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:14px">Tell us who you are and where you are &mdash; we'll curate your perfect day in Portugal.</div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px">
+          <button class="pyd-btn" onclick="planDay('I\'m a mom with a toddler in Lisbon, plan my day')">&#128476; Mom with toddler</button>
+          <button class="pyd-btn" onclick="planDay('I\'m a solo guy in my 50s in Cascais, what should I do today?')">&#128694; Solo explorer</button>
+          <button class="pyd-btn" onclick="planDay('We are a couple of digital nomads in Ericeira, plan our day')">&#128187; Digital nomad duo</button>
+          <button class="pyd-btn" onclick="planDay('I\'m a retired couple in the Algarve, plan a relaxing day')">&#9728;&#65039; Retired &amp; relaxed</button>
+        </div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.3);text-align:center">Or open the chat and describe yourself</div>
       </div>
     </div>
   </div>
@@ -568,6 +581,13 @@ setTimeout(function() {
 }, 3000);
 
 function sendQuick(text) {
+  document.getElementById('chat-quick').style.display = 'none';
+  document.getElementById('chat-input').value = text;
+  sendChat();
+}
+
+function planDay(text) {
+  openChat();
   document.getElementById('chat-quick').style.display = 'none';
   document.getElementById('chat-input').value = text;
   sendChat();
