@@ -92,7 +92,14 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
   </div>
   <div class="res-bar">
     <span class="res-count" id="res-count">Loading...</span>
-    <button class="res-clear" onclick="resetFilters()">Clear filters</button>
+    <div style="display:flex;gap:8px;align-items:center">
+      <select class="city-sel" id="sort-sel" onchange="renderServices()" style="padding:6px 10px;font-size:12px">
+        <option value="rating">Highest rated</option>
+        <option value="reviews">Most reviewed</option>
+        <option value="name">A-Z</option>
+      </select>
+      <button class="res-clear" onclick="resetFilters()">Clear filters</button>
+    </div>
   </div>
   <div class="grid" id="grid"></div>
   <div class="cta-box">
@@ -119,7 +126,9 @@ var catStyles={fitness:{bg:'var(--amber-l)',color:'var(--amber)'},health:{bg:'#f
 function parseService(s){
   var pr={};
   (s.price_range||'').split('|').forEach(function(p){var idx=p.indexOf(':');if(idx>0)pr[p.slice(0,idx)]=p.slice(idx+1);});
-  return{id:s.id,name:s.name,cat:s.area||'other',city:s.city,role:pr.role||'',tags:(pr.tags||'').split(',').filter(Boolean),desc:s.reason||'',emoji:s.emoji||'',url:s.url||'',_raw:(s.name+' '+s.area+' '+(pr.role||'')+' '+(pr.tags||'')+' '+(s.reason||'')+' '+s.city).toLowerCase()};
+  var rating=parseFloat(pr.rating)||0;
+  var reviews=parseInt(pr.reviews)||0;
+  return{id:s.id,name:s.name,cat:s.area||'other',city:s.city,role:pr.role||'',tags:(pr.tags||'').split(',').filter(Boolean),desc:s.reason||'',emoji:s.emoji||'',url:s.url||'',rating:rating,reviews:reviews,source:pr.source||'',_raw:(s.name+' '+s.area+' '+(pr.role||'')+' '+(pr.tags||'')+' '+(s.reason||'')+' '+s.city).toLowerCase()};
 }
 
 async function loadServices(){
@@ -130,13 +139,21 @@ async function loadServices(){
   }catch(e){console.error(e);}
 }
 
+function starsHTML(r){var f=Math.floor(r);var h=r-f>=0.3?1:0;var e=5-f-h;var s='';for(var i=0;i<f;i++)s+='\u2605';if(h)s+='\u2606';for(var i=0;i<e;i++)s+='\u2606';return s;}
+
 function renderServices(){
   var q=document.getElementById('search').value.toLowerCase().trim();
   var city=document.getElementById('city-filter').value;
+  var sort=document.getElementById('sort-sel').value;
   var filtered=allServices;
   if(activeCat!=='all')filtered=filtered.filter(function(s){return s.cat===activeCat;});
   if(city!=='all')filtered=filtered.filter(function(s){return s.city===city;});
   if(q)filtered=filtered.filter(function(s){return s._raw.indexOf(q)!==-1;});
+  
+  if(sort==='rating')filtered.sort(function(a,b){return b.rating-a.rating||b.reviews-a.reviews;});
+  else if(sort==='reviews')filtered.sort(function(a,b){return b.reviews-a.reviews||b.rating-a.rating;});
+  else filtered.sort(function(a,b){return a.name.localeCompare(b.name);});
+  
   document.getElementById('res-count').textContent=filtered.length+' service'+(filtered.length!==1?'s':'')+(activeCat!=='all'?' in '+activeCat:'');
   var grid=document.getElementById('grid');
   if(!filtered.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:3rem;background:var(--card);border-radius:var(--rl);color:var(--ink3)">No services found. <a href="mailto:hello@expatportugal.guide?subject=Suggest a service" style="color:var(--red)">Suggest one!</a></div>';return;}
@@ -144,7 +161,9 @@ function renderServices(){
     var cs=catStyles[s.cat]||catStyles.other;
     var href=s.url?s.url:'mailto:hello@expatportugal.guide?subject=Contact '+encodeURIComponent(s.name);
     var tgt=s.url?' target="_blank" rel="noopener"':'';
+    var ratingHTML=s.rating?'<div style="display:flex;align-items:center;gap:4px;margin-bottom:8px"><span style="color:#f59e0b;font-size:12px">'+starsHTML(s.rating)+'</span><span style="font-size:12px;font-weight:500">'+s.rating.toFixed(1)+'</span><span style="font-size:11px;color:var(--ink3)">('+s.reviews+')</span>'+(s.source==='google'?'<span style="font-size:9px;color:var(--ink3)">Google</span>':'')+'</div>':'';
     return '<div class="sc"><div class="sc-top"><div class="sc-icon" style="background:'+cs.bg+'">'+s.emoji+'</div><div><div class="sc-name">'+s.name+'</div><div class="sc-role">'+s.role+'</div></div></div>'+
+    ratingHTML+
     '<div class="sc-tags">'+s.tags.map(function(t){return '<span class="sc-tag" style="background:'+cs.bg+';color:'+cs.color+'">'+t+'</span>';}).join('')+'</div>'+
     '<div class="sc-desc">'+s.desc+'</div>'+
     '<div class="sc-footer"><span class="sc-city">&#128205; '+s.city+'</span><span class="sc-badge">&#9733; Listed</span></div>'+
