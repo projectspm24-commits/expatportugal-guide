@@ -305,7 +305,7 @@ function renderBiz() {
   grid.innerHTML = filtered.map(function(b, i) {
     var url = b.url ? '<a href="' + b.url + '" target="_blank" class="biz-link">Visit &rarr;</a>' : '';
     var verified = b.status === 'featured' ? '<span class="biz-verified">&#10003; Verified</span>' : '';
-    var reviewLabel = b._source === 'google' ? '<span style="font-size:9px;color:var(--ink3);display:block;margin-top:1px">Google rating</span>' : '';
+    var reviewLabel = b._source === 'google' ? '<span style="font-size:9px;color:var(--ink3);display:block;margin-top:1px">Google · Apr 2026</span>' : '';
     var reviewCount = b._reviews >= 1000 ? (b._reviews / 1000).toFixed(1) + 'k' : b._reviews;
     return '<div class="biz" data-id="' + b.id + '" onclick="if(event.target.tagName!==\'A\'&&!event.target.classList.contains(\'review-btn\'))showOnMap(this)">' +
       '<div class="biz-top"><div style="display:flex;align-items:flex-start"><span class="biz-emoji">' + b.emoji + '</span><div><div class="biz-name">' + b.name + '</div><div class="biz-loc">' + [b.area, b.city].filter(Boolean).join(', ') + '</div></div></div>' +
@@ -347,7 +347,7 @@ function showOnMap(el) {
   var reviewCount = r.reviews >= 1000 ? (r.reviews / 1000).toFixed(1) + 'k' : r.reviews;
   var sourceLabel = r.source === 'google' ? 'Google rating' : 'Rating';
   document.getElementById('d-stars').innerHTML = starsHTML(r.rating);
-  document.getElementById('d-score').innerHTML = '<span style="font-weight:500">' + r.rating.toFixed(1) + '</span> &middot; ' + reviewCount + ' reviews' + (r.source === 'google' ? '<br><span style="font-size:10px;color:var(--ink3)">Source: Google Maps</span>' : '');
+  document.getElementById('d-score').innerHTML = '<span style="font-weight:500">' + r.rating.toFixed(1) + '</span> &middot; ' + reviewCount + ' reviews' + (r.source === 'google' ? '<br><span style="font-size:10px;color:var(--ink3)">Google Maps · Last updated Apr 2026</span>' : '');
   document.getElementById('d-desc').textContent = biz.reason || '';
   document.getElementById('d-address').textContent = biz.address ? '📍 ' + biz.address : '';
   
