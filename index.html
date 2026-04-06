@@ -80,6 +80,13 @@ nav{background:rgba(247,245,240,0.96);border-bottom:0.5px solid var(--border);pa
 .sp-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:3px}.sp-n{font-size:11px;color:var(--ink3)}
 .list-cta{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:var(--warm);border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;font-weight:500;color:var(--ink2);cursor:pointer;margin-top:6px;transition:all .2s}.list-cta:hover{background:var(--card);border-color:var(--border2);color:var(--ink)}
 
+.lb-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+.lb{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);overflow:hidden;transition:all .2s;display:block}.lb:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.lb-img{width:100%;height:90px;background-size:cover;background-position:center}
+.lb-body{padding:10px 12px}
+.lb-cat{font-size:12px;font-weight:500;margin-bottom:2px}
+.lb-n{font-size:11px;color:var(--ink3)}
+
 .comm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .comm-card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);overflow:hidden;transition:all .2s;display:block}.comm-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,.06)}
 .comm-img{width:100%;height:120px;object-fit:cover}
@@ -124,7 +131,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
 .fb{border-top:0.5px solid rgba(255,255,255,0.1);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;font-size:12px;flex-wrap:wrap;gap:8px}
 .fbadge{font-size:10px;background:rgba(255,255,255,0.07);padding:4px 12px;border-radius:20px}
 
-@media(max-width:900px){.vp-hero{padding:1.5rem 1rem 0}.vp-content{padding:2rem}.evw-grid{grid-template-columns:1fr}.tg{grid-template-columns:repeat(2,1fr)}.sp-grid{grid-template-columns:repeat(2,1fr)}.comm-grid{grid-template-columns:1fr}.llp{grid-template-columns:1fr}.sub-sec{grid-template-columns:1fr}.ft{grid-template-columns:1fr 1fr}.full{padding:0 1rem}nav{padding:0 1rem}.region-bar{padding:0 1rem}}
+@media(max-width:900px){.vp-hero{padding:1.5rem 1rem 0}.vp-content{padding:2rem}.evw-grid{grid-template-columns:1fr}.tg{grid-template-columns:repeat(2,1fr)}.sp-grid{grid-template-columns:repeat(2,1fr)}.lb-grid{grid-template-columns:repeat(2,1fr)}.comm-grid{grid-template-columns:1fr}.llp{grid-template-columns:1fr}.sub-sec{grid-template-columns:1fr}.ft{grid-template-columns:1fr 1fr}.full{padding:0 1rem}nav{padding:0 1rem}.region-bar{padding:0 1rem}}
 @media(max-width:600px){.nav-links{display:none}.tg{grid-template-columns:1fr}.sp-grid{grid-template-columns:1fr}.ft{grid-template-columns:1fr}.vp-stats{flex-wrap:wrap;gap:1.5rem}}
 </style>
 </head>
@@ -258,6 +265,63 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
     <a class="sp" href="lifestyle_services.html"><span class="sp-icon">&#128663;</span><div class="sp-cat">Moving &amp; storage</div><div class="sp-title">International movers</div><div class="sp-n">2 providers</div></a>
   </div>
   <a class="list-cta" href="mailto:hello@expatportugal.guide?subject=List my service&body=Business name:%0ACategory:%0ACity:%0AWebsite:">&#9993; Are you a service provider? Get listed &rarr;</a>
+</div>
+
+<!-- 4a. SUPPORT LOCAL BUSINESSES -->
+<div class="full fade-in" style="margin-top:2.5rem">
+  <div class="sh"><span class="sh-t">Support local businesses</span><a class="sh-m" href="lifestyle_services.html#local">Browse all &rarr;</a></div>
+  <div style="font-size:13px;color:var(--ink2);margin-bottom:1rem;line-height:1.6">Independent, locally owned businesses in Portugal &mdash; recommended by the expat community. No chains, no franchises.</div>
+  <div class="lb-grid">
+    <a class="lb" href="lifestyle_services.html#local">
+      <div class="lb-img" style="background-image:url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=200&fit=crop')"></div>
+      <div class="lb-body"><div class="lb-cat">Caf&eacute;s &amp; coffee</div><div class="lb-n">Coming soon</div></div>
+    </a>
+    <a class="lb" href="lifestyle_services.html#local">
+      <div class="lb-img" style="background-image:url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=200&fit=crop')"></div>
+      <div class="lb-body"><div class="lb-cat">Restaurants</div><div class="lb-n">Coming soon</div></div>
+    </a>
+    <a class="lb" href="lifestyle_services.html#local">
+      <div class="lb-img" style="background-image:url('https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=400&h=200&fit=crop')"></div>
+      <div class="lb-body"><div class="lb-cat">Pottery &amp; ceramics</div><div class="lb-n">Coming soon</div></div>
+    </a>
+    <a class="lb" href="lifestyle_services.html#local">
+      <div class="lb-img" style="background-image:url('https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&h=200&fit=crop')"></div>
+      <div class="lb-body"><div class="lb-cat">Galleries &amp; art</div><div class="lb-n">Coming soon</div></div>
+    </a>
+    <a class="lb" href="lifestyle_services.html#local">
+      <div class="lb-img" style="background-image:url('https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=400&h=200&fit=crop')"></div>
+      <div class="lb-body"><div class="lb-cat">Yoga &amp; pilates</div><div class="lb-n">Coming soon</div></div>
+    </a>
+    <a class="lb" href="lifestyle_services.html#local">
+      <div class="lb-img" style="background-image:url('https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=400&h=200&fit=crop')"></div>
+      <div class="lb-body"><div class="lb-cat">Organic &amp; farm shops</div><div class="lb-n">Coming soon</div></div>
+    </a>
+    <a class="lb" href="lifestyle_services.html#local">
+      <div class="lb-img" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=200&fit=crop')"></div>
+      <div class="lb-body"><div class="lb-cat">Flower shops</div><div class="lb-n">Coming soon</div></div>
+    </a>
+    <a class="lb" href="lifestyle_services.html#local">
+      <div class="lb-img" style="background-image:url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&h=200&fit=crop')"></div>
+      <div class="lb-body"><div class="lb-cat">Local gyms</div><div class="lb-n">Coming soon</div></div>
+    </a>
+    <a class="lb" href="lifestyle_services.html#local">
+      <div class="lb-img" style="background-image:url('https://images.unsplash.com/photo-1558171813-4c088753af8f?w=400&h=200&fit=crop')"></div>
+      <div class="lb-body"><div class="lb-cat">Second-hand shops</div><div class="lb-n">Coming soon</div></div>
+    </a>
+    <a class="lb" href="lifestyle_services.html#local">
+      <div class="lb-img" style="background-image:url('https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=400&h=200&fit=crop')"></div>
+      <div class="lb-body"><div class="lb-cat">Furniture repair</div><div class="lb-n">Coming soon</div></div>
+    </a>
+    <a class="lb" href="lifestyle_services.html#local">
+      <div class="lb-img" style="background-image:url('https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=400&h=200&fit=crop')"></div>
+      <div class="lb-body"><div class="lb-cat">Fabric &amp; sewing</div><div class="lb-n">Coming soon</div></div>
+    </a>
+    <a class="lb" href="lifestyle_services.html#local">
+      <div class="lb-img" style="background-image:url('https://images.unsplash.com/photo-1558171813-4c088753af8f?w=400&h=200&fit=crop')"></div>
+      <div class="lb-body"><div class="lb-cat">Clothing makers</div><div class="lb-n">Coming soon</div></div>
+    </a>
+  </div>
+  <a class="list-cta" href="mailto:hello@expatportugal.guide?subject=List my local business&body=Business name:%0ACategory (cafe, restaurant, pottery, gallery, yoga, gym, etc.):%0ACity / neighbourhood:%0AWebsite or Instagram:%0AShort description:">&#127961; Own a local business? Get featured for free &rarr;</a>
 </div>
 
 <!-- 4b. EXPAT COMMUNITIES -->
