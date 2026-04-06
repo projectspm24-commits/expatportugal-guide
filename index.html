@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ExpatPortugal.guide - Your home for expat life in Portugal</title>
-<meta name="description" content="News, tools, community and culture for expats in Portugal. Updated daily." />
+<title>ExpatPortugal.guide — Your expat life in Portugal, sorted</title>
+<meta name="description" content="Events, tools, local services, news and community for expats in Portugal. Updated daily." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -18,154 +18,122 @@ nav{background:rgba(250,249,247,0.96);border-bottom:0.5px solid var(--border);pa
 .logo{font-family:"Playfair Display",serif;font-size:19px;color:var(--ink);display:flex;align-items:center;gap:8px}
 .nav-links{display:flex;gap:2px}
 .nl{font-size:13px;padding:6px 11px;border-radius:var(--r);color:var(--ink2);background:none;border:none;cursor:pointer;font-family:"Outfit",sans-serif;text-decoration:none;display:inline-flex;align-items:center;white-space:nowrap}
-.nl:hover{background:var(--warm);color:var(--ink)}
-.nl.on{color:var(--ink);font-weight:500}
+.nl:hover{background:var(--warm);color:var(--ink)}.nl.on{color:var(--ink);font-weight:500}
 .nav-sub{font-size:12px;padding:7px 15px;background:var(--ink);color:white;border:none;border-radius:var(--r);cursor:pointer;font-family:"Outfit",sans-serif;font-weight:500;white-space:nowrap}
 .nav-sub:hover{background:#2c2825}
 .region-bar{background:var(--card);border-bottom:0.5px solid var(--border);padding:0 2rem;height:36px;display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none}
 .region-bar::-webkit-scrollbar{display:none}
 .rb-label{font-size:11px;color:var(--ink3);white-space:nowrap;margin-right:4px;flex-shrink:0}
 .rp{font-size:11px;padding:3px 12px;border-radius:20px;border:0.5px solid var(--border2);color:var(--ink2);cursor:pointer;white-space:nowrap;background:var(--card);flex-shrink:0;font-family:"Outfit",sans-serif}
-.rp:hover{border-color:var(--ink);color:var(--ink)}
-.rp.on{background:var(--red);color:white;border-color:var(--red)}
-.hero{display:grid;grid-template-columns:1fr 340px;gap:0;max-width:1100px;margin:0 auto;padding:2rem 2rem 0}
-.hero-main{background:var(--ink);border-radius:var(--rl) 0 0 0;padding:2.5rem;display:flex;flex-direction:column;justify-content:flex-end;min-height:360px;position:relative;overflow:hidden;cursor:pointer}
-.hcat{font-size:10px;background:var(--red);color:white;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:12px;font-weight:500;position:relative;z-index:1}
-.htitle{font-family:"Playfair Display",serif;font-size:clamp(18px,2.5vw,26px);font-weight:400;line-height:1.3;color:white;margin-bottom:10px;position:relative;z-index:1}
-.hmeta{font-size:12px;color:rgba(255,255,255,0.4);position:relative;z-index:1}
-.hero-read{font-size:12px;color:rgba(255,255,255,0.65);margin-top:18px;padding-top:14px;border-top:0.5px solid rgba(255,255,255,0.1);position:relative;z-index:1}
-.hero-side{display:flex;flex-direction:column}
-.hsc{background:var(--card);border:0.5px solid var(--border);border-left:none;border-top:none;padding:1rem 1.25rem;cursor:pointer;position:relative;overflow:hidden}
-.hsc:first-child{border-top:0.5px solid var(--border);border-radius:0 var(--rl) 0 0}
-.hsc:last-child{border-radius:0 0 var(--rl) 0}
-.hsc:hover{background:var(--warm)}
-.hsc-cat{font-size:10px;color:#e8a87c;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
-.hsc-title{font-size:13px;font-weight:500;line-height:1.4;margin-bottom:3px;color:#fff}
-.hsc-meta{font-size:11px;color:rgba(255,255,255,.7)}
-.cat-strip{max-width:1100px;margin:1.5rem auto 0;padding:0 2rem}
-.cats{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
-.cat-card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1rem 10px;text-align:center;cursor:pointer}
-.cat-card:hover,.cat-card.on{border-color:var(--red)}
-.cc-icon{font-size:22px;margin-bottom:6px;display:block}
-.cc-label{font-size:11px;font-weight:500}
-.cc-sub{font-size:10px;color:var(--ink3);margin-top:2px}
-.wrap{max-width:1100px;margin:2rem auto 0;padding:0 2rem;display:grid;grid-template-columns:1fr 310px;gap:2rem;align-items:start}
+.rp:hover{border-color:var(--ink);color:var(--ink)}.rp.on{background:var(--red);color:white;border-color:var(--red)}
+
+.vp-hero{max-width:1100px;margin:0 auto;padding:2.5rem 2rem 0}
+.vp-inner{background:var(--ink);border-radius:var(--rl);padding:3rem;position:relative;overflow:hidden}
+.vp-inner::before{content:"";position:absolute;top:-60%;right:-10%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(192,56,26,0.12) 0%,transparent 70%)}
+.vp-ey{font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:var(--red);font-weight:500;margin-bottom:12px;position:relative}
+.vp-t{font-family:"Playfair Display",serif;font-size:clamp(26px,3.5vw,38px);font-weight:400;line-height:1.2;color:white;margin-bottom:12px;max-width:600px;position:relative}
+.vp-sub{font-size:14px;color:rgba(255,255,255,0.55);line-height:1.7;max-width:520px;margin-bottom:1.75rem;position:relative}
+.vp-actions{display:flex;flex-wrap:wrap;gap:10px;position:relative}
+.vp-btn{padding:10px 20px;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;border:none;font-family:"Outfit",sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.vp-p{background:var(--red);color:white}.vp-p:hover{background:var(--red-d)}
+.vp-s{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.85);border:0.5px solid rgba(255,255,255,0.15)}.vp-s:hover{background:rgba(255,255,255,0.15);color:white}
+.vp-stats{display:flex;gap:2rem;margin-top:1.5rem;padding-top:1.25rem;border-top:0.5px solid rgba(255,255,255,0.08);position:relative}
+.vp-sn{font-family:"Playfair Display",serif;font-size:22px;color:white}.vp-sl{font-size:11px;color:rgba(255,255,255,0.4)}
+
+.full{max-width:1100px;margin:2rem auto 0;padding:0 2rem}
 .sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:10px;border-bottom:0.5px solid var(--border)}
 .sh-t{font-family:"Playfair Display",serif;font-size:18px;font-weight:400}
-.sh-m{font-size:12px;color:var(--red);cursor:pointer}
-.sh-btn{font-size:12px;padding:6px 14px;background:var(--red);color:white;border-radius:var(--r);text-decoration:none;font-weight:500;white-space:nowrap}
-.sh-btn:hover{background:var(--red-d)}
-.news-list{border:0.5px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:2rem}
-.ni{background:var(--card);padding:1rem 1.25rem;cursor:pointer;display:flex;gap:14px;align-items:flex-start;border-bottom:0.5px solid var(--border)}
-.ni:last-child{border-bottom:none}
-.ni:hover{background:var(--warm)}
-.ni-img{width:68px;height:68px;border-radius:var(--r);background:var(--warm);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:26px;overflow:hidden}
-.ni-img img{width:100%;height:100%;object-fit:cover}
-.ni-cat{font-size:10px;color:var(--red);font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
-.ni-title{font-size:13px;font-weight:500;line-height:1.4;margin-bottom:4px}
-.ni-meta{font-size:11px;color:var(--ink3)}
-.ni-reg{font-size:10px;padding:2px 7px;border-radius:20px;background:var(--warm);color:var(--ink2);margin-left:5px}
-.tools-box{background:var(--ink);border-radius:var(--rl);padding:1.5rem;margin-bottom:2rem;color:white}
-.tb-title{font-family:"Playfair Display",serif;font-size:18px;font-weight:400;margin-bottom:6px}
-.tb-sub{font-size:12px;opacity:.6;margin-bottom:1.25rem;line-height:1.7}
-.chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:1.25rem}
-.chip{font-size:11px;padding:5px 10px;border-radius:20px;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.75)}
-.tb-btn{display:block;width:100%;padding:10px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;text-align:center;font-family:"Outfit",sans-serif;text-decoration:none}
-.tb-btn:hover{background:var(--red-d)}
-.ev-list{display:flex;flex-direction:column;gap:8px;margin-bottom:2rem}
-.ev{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1rem;display:flex;gap:12px;cursor:pointer}
-.ev:hover{border-color:var(--border2)}
+.sh-m{font-size:12px;color:var(--red);cursor:pointer;text-decoration:none}
+.sh-btn{font-size:12px;padding:6px 14px;background:var(--red);color:white;border-radius:var(--r);text-decoration:none;font-weight:500;white-space:nowrap}.sh-btn:hover{background:var(--red-d)}
+
+.evw-grid{display:grid;grid-template-columns:1fr 320px;gap:1.5rem;align-items:start}
+.ev-list{display:flex;flex-direction:column;gap:8px}
+.ev{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1rem;display:flex;gap:12px;cursor:pointer;text-decoration:none;color:inherit}.ev:hover{border-color:var(--border2)}
 .ev-date{min-width:40px;text-align:center;background:var(--warm);border-radius:var(--r);padding:6px 4px;flex-shrink:0}
-.ev-day{font-family:"Playfair Display",serif;font-size:20px;line-height:1}
-.ev-mon{font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3)}
-.ev-title{font-size:13px;font-weight:500;margin-bottom:3px}
-.ev-loc{font-size:11px;color:var(--ink3)}
+.ev-day{font-family:"Playfair Display",serif;font-size:20px;line-height:1}.ev-mon{font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3)}
+.ev-title{font-size:13px;font-weight:500;margin-bottom:3px}.ev-loc{font-size:11px;color:var(--ink3)}
 .ev-tag{font-size:10px;padding:2px 8px;border-radius:20px;display:inline-block;margin-top:5px;font-weight:500}
 .tm{background:#EEEDFE;color:#3C3489}.ts{background:var(--green-l);color:var(--green)}.tsp{background:var(--blue-l);color:var(--blue)}.tmk{background:var(--red-l);color:var(--red)}.tcu{background:#FFF3E0;color:#E65100}.tfo{background:#FFF8E1;color:#F57F17}.tar{background:#F3E5F5;color:#7B1FA2}.tfa{background:#E8F5E9;color:#2E7D32}
-.sidebar{display:flex;flex-direction:column;gap:1.25rem;position:sticky;top:70px}
+
 .widget{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem}
 .w-t{font-family:"Playfair Display",serif;font-size:16px;font-weight:400;margin-bottom:1rem}
-.sub-widget{background:var(--ink);border-radius:var(--rl);padding:1.25rem;color:white}
-.swt{font-family:"Playfair Display",serif;font-size:18px;font-weight:400;margin-bottom:4px}
-.sws{font-size:12px;opacity:.6;margin-bottom:1rem;line-height:1.6}
-.sw-inp{width:100%;padding:9px 11px;border:0.5px solid rgba(255,255,255,0.15);border-radius:var(--r);background:rgba(255,255,255,0.08);color:white;font-size:13px;margin-bottom:6px;outline:none;font-family:"Outfit",sans-serif}
-.sw-inp::placeholder{color:rgba(255,255,255,0.3)}
-.sw-sel{width:100%;padding:9px 11px;border:0.5px solid rgba(255,255,255,0.15);border-radius:var(--r);background:rgba(255,255,255,0.08);color:white;font-size:13px;margin-bottom:8px;outline:none;font-family:"Outfit",sans-serif}
-.sw-sel option{color:var(--ink);background:white}
-.sw-btn{width:100%;padding:9px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:"Outfit",sans-serif}
-.sw-btn:hover{background:var(--red-d)}
 .weath-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
 .wt-name{font-size:13px;font-weight:500}.wt-desc{font-size:11px;color:var(--ink3)}.wt-temp{font-family:"Playfair Display",serif;font-size:30px;line-height:1}
 .wweek{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
-.wd{text-align:center;padding:6px 4px;background:var(--warm);border-radius:var(--r)}
-.wd-d{font-size:9px;color:var(--ink3);text-transform:uppercase;letter-spacing:.04em}
-.wd-i{font-size:13px;margin:3px 0;display:block}
-.wd-t{font-size:12px;font-weight:500}
+.wd{text-align:center;padding:6px 4px;background:var(--warm);border-radius:var(--r)}.wd-d{font-size:9px;color:var(--ink3);text-transform:uppercase;letter-spacing:.04em}.wd-i{font-size:13px;margin:3px 0;display:block}.wd-t{font-size:12px;font-weight:500}
 .hol-list{display:flex;flex-direction:column}
-.hol{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid var(--border);font-size:13px;position:relative;cursor:default}
-.hol:last-child{border-bottom:none}
-.hol-d{font-size:11px;color:var(--ink3)}
-.hol-s{font-size:10px;background:var(--red-l);color:var(--red);padding:2px 7px;border-radius:20px;font-weight:500}
+.hol{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid var(--border);font-size:13px;position:relative;cursor:default}.hol:last-child{border-bottom:none}
+.hol-d{font-size:11px;color:var(--ink3)}.hol-s{font-size:10px;background:var(--red-l);color:var(--red);padding:2px 7px;border-radius:20px;font-weight:500}
 .hol-tip{display:none;position:absolute;bottom:calc(100% + 6px);left:0;right:0;background:var(--ink);color:white;font-size:11px;line-height:1.5;padding:8px 10px;border-radius:var(--r);z-index:50;box-shadow:0 4px 16px rgba(0,0,0,0.18)}
-.hol-tip::after{content:"";position:absolute;top:100%;left:16px;border:5px solid transparent;border-top-color:var(--ink)}
-.hol:hover .hol-tip{display:block}
-.full{max-width:1100px;margin:2rem auto 0;padding:0 2rem}
-.feats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:2rem}
-.feat{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;text-decoration:none;display:block;transition:all .15s}
-.feat:hover{border-color:var(--border2);transform:translateY(-1px)}
-.feat-icon{font-size:26px;margin-bottom:10px;display:block}
-.feat-title{font-size:14px;font-weight:500;margin-bottom:5px;color:var(--ink)}
-.feat-desc{font-size:12px;color:var(--ink2);line-height:1.6}
-.feat-lnk{font-size:11px;color:var(--red);margin-top:8px;display:block;font-weight:500}
-.llp{background:var(--warm);border-radius:var(--rl);padding:2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;margin-bottom:2rem}
+.hol-tip::after{content:"";position:absolute;top:100%;left:16px;border:5px solid transparent;border-top-color:var(--ink)}.hol:hover .hol-tip{display:block}
+
+.tg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
+.tc{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;display:block;transition:all .15s}.tc:hover{border-color:var(--red);transform:translateY(-1px)}
+.tc-i{font-size:22px;margin-bottom:8px}.tc-t{font-size:13px;font-weight:500;margin-bottom:3px;color:var(--ink)}.tc-d{font-size:11px;color:var(--ink3);line-height:1.5}
+
+.sp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1rem}
+.sp{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;display:block}.sp:hover{border-color:var(--border2)}
+.sp-icon{font-size:22px;margin-bottom:8px;display:block}.sp-cat{font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.sp-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:3px}.sp-n{font-size:11px;color:var(--ink3)}
+.list-cta{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:var(--warm);border:0.5px solid var(--border);border-radius:var(--r);font-size:12px;font-weight:500;color:var(--ink2);cursor:pointer;margin-top:6px}.list-cta:hover{background:var(--card);border-color:var(--border2);color:var(--ink)}
+
+.news-list{border:0.5px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:1rem}
+.ni{background:var(--card);padding:1rem 1.25rem;cursor:pointer;display:flex;gap:14px;align-items:flex-start;border-bottom:0.5px solid var(--border)}.ni:last-child{border-bottom:none}.ni:hover{background:var(--warm)}
+.ni-img{width:68px;height:68px;border-radius:var(--r);background:var(--warm);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:26px;overflow:hidden}.ni-img img{width:100%;height:100%;object-fit:cover}
+.ni-cat{font-size:10px;color:var(--red);font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.ni-title{font-size:13px;font-weight:500;line-height:1.4;margin-bottom:4px}.ni-meta{font-size:11px;color:var(--ink3)}
+.ni-reg{font-size:10px;padding:2px 7px;border-radius:20px;background:var(--warm);color:var(--ink2);margin-left:5px}
+.hero-main{background:var(--ink);border-radius:var(--rl);padding:2rem;display:flex;flex-direction:column;justify-content:flex-end;min-height:280px;position:relative;overflow:hidden;cursor:pointer;margin-bottom:1rem}
+.hcat{font-size:10px;background:var(--red);color:white;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:10px;font-weight:500;position:relative;z-index:1}
+.htitle{font-family:"Playfair Display",serif;font-size:clamp(18px,2.5vw,24px);font-weight:400;line-height:1.3;color:white;margin-bottom:6px;position:relative;z-index:1}
+.hmeta{font-size:11px;color:rgba(255,255,255,0.4);position:relative;z-index:1}
+
+.llp{background:var(--warm);border-radius:var(--rl);padding:2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center}
 .llp-ey{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--red);font-weight:500;margin-bottom:8px}
 .llp-t{font-family:"Playfair Display",serif;font-size:clamp(20px,2.5vw,28px);font-weight:400;margin-bottom:10px;line-height:1.25}
 .llp-d{font-size:13px;color:var(--ink2);line-height:1.8;margin-bottom:1.25rem}
-.llp-btn{display:inline-block;padding:11px 22px;background:var(--ink);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500;text-decoration:none}
-.llp-btn:hover{background:#2c2825}
+.llp-btn{display:inline-block;padding:11px 22px;background:var(--ink);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500}.llp-btn:hover{background:#2c2825}
 .llp-facts{display:flex;flex-direction:column;gap:10px}
 .llp-f{display:flex;gap:12px;align-items:flex-start;padding:12px;background:var(--card);border-radius:var(--r);border:0.5px solid var(--border)}
-.llp-fi{font-size:18px;flex-shrink:0}
-.llp-ft{font-size:13px;font-weight:500;margin-bottom:2px}
-.llp-fd{font-size:11px;color:var(--ink2);line-height:1.5}
-.sp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:2rem}
-.sp{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;text-decoration:none;display:block}
-.sp:hover{border-color:var(--border2)}
-.sp-icon{font-size:22px;margin-bottom:8px;display:block}
-.sp-cat{font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
-.sp-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:3px}
-.sp-n{font-size:11px;color:var(--ink3)}
+.llp-fi{font-size:18px;flex-shrink:0}.llp-ft{font-size:13px;font-weight:500;margin-bottom:2px}.llp-fd{font-size:11px;color:var(--ink2);line-height:1.5}
+
+.sub-sec{background:var(--ink);border-radius:var(--rl);padding:2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center}
+.sub-sec .swt{font-family:"Playfair Display",serif;font-size:24px;color:white;margin-bottom:6px}.sub-sec .sws{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7}
+.sw-inp{width:100%;padding:10px 12px;border:0.5px solid rgba(255,255,255,0.15);border-radius:var(--r);background:rgba(255,255,255,0.08);color:white;font-size:13px;outline:none;font-family:"Outfit",sans-serif;margin-bottom:6px}.sw-inp::placeholder{color:rgba(255,255,255,0.3)}
+.sw-sel{width:100%;padding:10px 12px;border:0.5px solid rgba(255,255,255,0.15);border-radius:var(--r);background:rgba(255,255,255,0.08);color:white;font-size:13px;outline:none;font-family:"Outfit",sans-serif;margin-bottom:8px}.sw-sel option{color:var(--ink);background:white}
+.sw-btn{width:100%;padding:10px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:"Outfit",sans-serif}.sw-btn:hover{background:var(--red-d)}
+
 footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;margin-top:4rem}
 .fi{max-width:1100px;margin:0 auto}
 .ft{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:2.5rem}
 .flogo{font-family:"Playfair Display",serif;font-size:20px;color:white;margin-bottom:8px}
 .ftag{font-size:13px;line-height:1.7;margin-bottom:1rem;max-width:280px}
 .fct{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,0.3);margin-bottom:12px;font-weight:500}
-.fl{display:block;font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:8px;text-decoration:none}
-.fl:hover{color:white}
+.fl{display:block;font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:8px}.fl:hover{color:white}
 .fb{border-top:0.5px solid rgba(255,255,255,0.1);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;font-size:12px;flex-wrap:wrap;gap:8px}
 .fbadge{font-size:10px;background:rgba(255,255,255,0.07);padding:4px 12px;border-radius:20px}
-@media(max-width:900px){.hero{grid-template-columns:1fr;padding:1rem 1rem 0}.hero-main{border-radius:var(--rl) var(--rl) 0 0;min-height:260px}.hero-side{flex-direction:row;overflow-x:auto}.hsc{min-width:200px;flex-shrink:0}.wrap{grid-template-columns:1fr;padding:0 1rem}.sidebar{position:static}.cats{grid-template-columns:repeat(3,1fr)}.feats{grid-template-columns:repeat(2,1fr)}.llp{grid-template-columns:1fr}.sp-grid{grid-template-columns:repeat(2,1fr)}.ft{grid-template-columns:1fr 1fr}.full{padding:0 1rem}.cat-strip{padding:0 1rem}nav{padding:0 1rem}.region-bar{padding:0 1rem}}
-@media(max-width:600px){.nav-links{display:none}.cats{grid-template-columns:repeat(2,1fr)}.feats{grid-template-columns:1fr}.sp-grid{grid-template-columns:1fr}.ft{grid-template-columns:1fr}}
+
+@media(max-width:900px){.vp-hero{padding:1.5rem 1rem 0}.vp-inner{padding:2rem}.evw-grid{grid-template-columns:1fr}.tg{grid-template-columns:repeat(2,1fr)}.sp-grid{grid-template-columns:repeat(2,1fr)}.llp{grid-template-columns:1fr}.sub-sec{grid-template-columns:1fr}.ft{grid-template-columns:1fr 1fr}.full{padding:0 1rem}nav{padding:0 1rem}.region-bar{padding:0 1rem}}
+@media(max-width:600px){.nav-links{display:none}.tg{grid-template-columns:1fr}.sp-grid{grid-template-columns:1fr}.ft{grid-template-columns:1fr}.vp-stats{flex-wrap:wrap;gap:1.5rem}}
 </style>
 </head>
 <body>
+
 <nav>
-  <a class="logo" href="index.html">&#127477;&#127481; ExpatPortugal.guide</a>
+  <a class="logo" href="index.html">&#127477;&#127481; ExpatPortugal<span style="font-weight:300;opacity:.5">.guide</span></a>
   <div class="nav-links">
     <a class="nl on" href="index.html">Home</a>
+    <a class="nl" href="#events">Events</a>
     <a class="nl" href="expat_tools_v4_fixed.html">Free tools</a>
     <a class="nl" href="lifestyle_services.html">Services</a>
     <a class="nl" href="live_local.html">Live local</a>
     <a class="nl" href="news.html">News</a>
-    <a class="nl" href="#events">Events</a>
   </div>
-  <div class="nav-right">
-    <button class="nav-sub" onclick="document.getElementById('sub-widget').scrollIntoView({behavior:'smooth'})">Subscribe free</button>
-  </div>
+  <button class="nav-sub" onclick="document.getElementById('sub-section').scrollIntoView({behavior:'smooth'})">Subscribe free</button>
 </nav>
+
 <div class="region-bar">
-  <span class="rb-label">Filter by region:</span>
+  <span class="rb-label">Your region:</span>
   <button class="rp on" onclick="setReg('all',this)">All Portugal</button>
   <button class="rp" onclick="setReg('Lisbon',this)">Lisbon</button>
   <button class="rp" onclick="setReg('Porto',this)">Porto</button>
@@ -176,106 +144,96 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
   <button class="rp" onclick="setReg('Madeira',this)">Madeira</button>
   <button class="rp" onclick="setReg('Azores',this)">Azores</button>
 </div>
-<div class="hero">
+
+<!-- 1. HERO VALUE PROPOSITION -->
+<div class="vp-hero">
+  <div class="vp-inner">
+    <div class="vp-ey">Updated daily &middot; Made for expats</div>
+    <div class="vp-t">Your expat life in Portugal, sorted.</div>
+    <div class="vp-sub">Events, local services, free tools, daily news, and everything you need to feel at home. Built by expats, for expats.</div>
+    <div class="vp-actions">
+      <a class="vp-btn vp-p" href="#events">&#128197; What's on this week</a>
+      <a class="vp-btn vp-s" href="lifestyle_services.html">&#128269; Find local services</a>
+      <a class="vp-btn vp-s" href="expat_tools_v4_fixed.html">&#9889; Free expat tools</a>
+      <a class="vp-btn vp-s" href="news.html">&#128240; Latest news</a>
+    </div>
+    <div class="vp-stats">
+      <div><div class="vp-sn">70+</div><div class="vp-sl">upcoming events</div></div>
+      <div><div class="vp-sn">9</div><div class="vp-sl">free tools</div></div>
+      <div><div class="vp-sn">33</div><div class="vp-sl">service providers</div></div>
+      <div><div class="vp-sn">200+</div><div class="vp-sl">news articles</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. EVENTS + WEATHER -->
+<div class="full" id="events" style="margin-top:2.5rem">
+  <div class="sh"><span class="sh-t">What's happening this week</span><a class="sh-m" href="news.html">Full calendar &rarr;</a></div>
+  <div class="evw-grid">
+    <div class="ev-list" id="events-list">
+      <div class="ev" style="justify-content:center;color:var(--ink3);font-size:12px">Loading events...</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1.25rem">
+      <div class="widget">
+        <div class="w-t">Weather this week</div>
+        <div class="weath-top"><div><div class="wt-name" id="w-city">Lisbon</div><div class="wt-desc" id="w-desc">Loading...</div></div><div class="wt-temp" id="w-temp">--&deg;</div></div>
+        <div class="wweek" id="w-week"><div class="wd"><div class="wd-d">--</div><span class="wd-i">--</span><div class="wd-t">--</div></div><div class="wd"><div class="wd-d">--</div><span class="wd-i">--</span><div class="wd-t">--</div></div><div class="wd"><div class="wd-d">--</div><span class="wd-i">--</span><div class="wd-t">--</div></div><div class="wd"><div class="wd-d">--</div><span class="wd-i">--</span><div class="wd-t">--</div></div><div class="wd"><div class="wd-d">--</div><span class="wd-i">--</span><div class="wd-t">--</div></div></div>
+      </div>
+      <div class="widget">
+        <div class="w-t">Upcoming holidays</div>
+        <div class="hol-list" id="hol-list"><div style="font-size:12px;color:var(--ink3)">Loading...</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. FREE TOOLS -->
+<div class="full" style="margin-top:2.5rem">
+  <div class="sh"><span class="sh-t">Free expat tools</span><a class="sh-btn" href="expat_tools_v4_fixed.html">All 9 tools &rarr;</a></div>
+  <div class="tg">
+    <a class="tc" href="expat_tools_v4_fixed.html#visa"><div class="tc-i">&#128205;</div><div class="tc-t">Visa finder</div><div class="tc-d">Find the right visa for your situation in 60 seconds.</div></a>
+    <a class="tc" href="expat_tools_v4_fixed.html#cost"><div class="tc-i">&#128178;</div><div class="tc-t">Cost of living calculator</div><div class="tc-d">Compare cities, estimate monthly budgets.</div></a>
+    <a class="tc" href="expat_tools_v4_fixed.html#tax"><div class="tc-i">&#128200;</div><div class="tc-t">Tax comparison</div><div class="tc-d">NHR vs IFICI vs standard — side by side.</div></a>
+    <a class="tc" href="expat_tools_v4_fixed.html#neighbourhood"><div class="tc-i">&#127968;</div><div class="tc-t">Neighbourhood match</div><div class="tc-d">Find the right area for your lifestyle and budget.</div></a>
+    <a class="tc" href="expat_tools_v4_fixed.html#rental"><div class="tc-i">&#128200;</div><div class="tc-t">Rental tracker</div><div class="tc-d">Average rents by city, neighbourhood and type.</div></a>
+    <a class="tc" href="expat_tools_v4_fixed.html#docs"><div class="tc-i">&#128203;</div><div class="tc-t">Document checklist</div><div class="tc-d">Every document you need for NIF, D7, D8, AIMA.</div></a>
+  </div>
+</div>
+
+<!-- 4. LOCAL SERVICES (revenue) -->
+<div class="full" style="margin-top:2.5rem">
+  <div class="sh"><span class="sh-t">Find local services</span><a class="sh-m" href="lifestyle_services.html">All 33 providers &rarr;</a></div>
+  <div class="sp-grid">
+    <a class="sp" href="lifestyle_services.html"><span class="sp-icon">&#127947;</span><div class="sp-cat">Fitness &amp; sport</div><div class="sp-title">Personal trainers</div><div class="sp-n">5 providers</div></a>
+    <a class="sp" href="lifestyle_services.html"><span class="sp-icon">&#129463;</span><div class="sp-cat">Health &amp; dental</div><div class="sp-title">English-speaking dentists</div><div class="sp-n">5 providers</div></a>
+    <a class="sp" href="lifestyle_services.html"><span class="sp-icon">&#128062;</span><div class="sp-cat">Pets &amp; vets</div><div class="sp-title">Vets &amp; pet care</div><div class="sp-n">4 providers</div></a>
+    <a class="sp" href="lifestyle_services.html"><span class="sp-icon">&#128218;</span><div class="sp-cat">Tutoring &amp; lessons</div><div class="sp-title">Tutors &amp; teachers</div><div class="sp-n">5 providers</div></a>
+    <a class="sp" href="lifestyle_services.html"><span class="sp-icon">&#128135;</span><div class="sp-cat">Beauty &amp; wellness</div><div class="sp-title">Hairdressers &amp; spa</div><div class="sp-n">4 providers</div></a>
+    <a class="sp" href="lifestyle_services.html"><span class="sp-icon">&#128188;</span><div class="sp-cat">Legal &amp; finance</div><div class="sp-title">Tax advisors &amp; lawyers</div><div class="sp-n">5 providers</div></a>
+    <a class="sp" href="lifestyle_services.html"><span class="sp-icon">&#128736;</span><div class="sp-cat">Home services</div><div class="sp-title">Cleaners &amp; handymen</div><div class="sp-n">3 providers</div></a>
+    <a class="sp" href="lifestyle_services.html"><span class="sp-icon">&#128663;</span><div class="sp-cat">Moving &amp; storage</div><div class="sp-title">International movers</div><div class="sp-n">2 providers</div></a>
+  </div>
+  <a class="list-cta" href="mailto:hello@expatportugal.guide?subject=List my service&body=Business name:%0ACategory:%0ACity:%0AWebsite:">&#9993; Are you a service provider? Get listed &rarr;</a>
+</div>
+
+<!-- 5. LATEST NEWS -->
+<div class="full" style="margin-top:2.5rem">
+  <div class="sh"><span class="sh-t">Latest news</span><a class="sh-btn" href="news.html">All news &rarr;</a></div>
   <div class="hero-main" id="hero-main" onclick="if(window._heroUrl)window.open(window._heroUrl,'_blank')">
     <div class="hcat" id="hero-cat">Loading...</div>
     <div class="htitle" id="hero-title">Fetching latest news...</div>
     <div class="hmeta" id="hero-meta"></div>
-    <div class="hero-read">Read full article &rarr;</div>
   </div>
-  <div class="hero-side" id="hero-side">
-    <div class="hsc"><div class="hsc-cat">...</div><div class="hsc-title">Loading...</div><div class="hsc-meta"></div></div>
-    <div class="hsc"><div class="hsc-cat">...</div><div class="hsc-title">Loading...</div><div class="hsc-meta"></div></div>
-    <div class="hsc"><div class="hsc-cat">...</div><div class="hsc-title">Loading...</div><div class="hsc-meta"></div></div>
-    <div class="hsc"><div class="hsc-cat">...</div><div class="hsc-title">Loading...</div><div class="hsc-meta"></div></div>
+  <div class="news-list" id="news-list">
+    <div class="ni" style="justify-content:center;padding:2rem;color:var(--ink3);font-size:13px">Loading latest news...</div>
   </div>
 </div>
-<div class="cat-strip">
-  <div class="cats">
-    <div class="cat-card on" onclick="setCat('all',this)"><span class="cc-icon">&#128240;</span><div class="cc-label">All news</div><div class="cc-sub">Latest</div></div>
-    <div class="cat-card" onclick="setCat('bureaucracy',this)"><span class="cc-icon">&#127963;</span><div class="cc-label">Bureaucracy</div><div class="cc-sub">Visas, NIF, AIMA</div></div>
-    <div class="cat-card" onclick="setCat('housing',this)"><span class="cc-icon">&#127968;</span><div class="cc-label">Housing</div><div class="cc-sub">Rents, buying</div></div>
-    <div class="cat-card" onclick="setCat('events',this)"><span class="cc-icon">&#127881;</span><div class="cc-label">Events</div><div class="cc-sub">This week</div></div>
-    <div class="cat-card" onclick="setCat('food',this)"><span class="cc-icon">&#127869;</span><div class="cc-label">Food &amp; drink</div><div class="cc-sub">Restaurants</div></div>
-    <div class="cat-card" onclick="setCat('community',this)"><span class="cc-icon">&#128101;</span><div class="cc-label">Community</div><div class="cc-sub">People &amp; stories</div></div>
-  </div>
-</div>
-<div class="wrap">
-  <div>
-    <div id="news" style="margin-bottom:2rem">
-      <div class="sh"><span class="sh-t">Latest news</span><a href="news.html" class="sh-btn">See all news &rarr;</a></div>
-      <div class="news-list" id="news-list">
-        <div class="ni" style="justify-content:center;padding:2rem;color:var(--ink3);font-size:13px">Loading latest news...</div>
-      </div>
-    </div>
-    <div class="tools-box">
-      <div class="tb-title">9 free tools for expats</div>
-      <div class="tb-sub">Find your city, check your visa, calculate costs, compare taxes, track rentals and more &mdash; all free.</div>
-      <div class="chips">
-        <span class="chip">Neighbourhood match</span><span class="chip">Visa finder</span><span class="chip">Cost calculator</span>
-        <span class="chip">Tax calculator</span><span class="chip">Doc checklist</span><span class="chip">Rental tracker</span><span class="chip">Ask AI</span>
-      </div>
-      <a class="tb-btn" href="expat_tools_v4_fixed.html">Explore all free tools &rarr;</a>
-    </div>
-    <div id="events" style="margin-bottom:2rem">
-      <div class="sh"><span class="sh-t">Events this week</span><span class="sh-m"><a href="news.html" style="color:var(--ink3);text-decoration:none">Full calendar &rarr;</a></span></div>
-      <div class="ev-list" id="events-list">
-        <div class="ev" style="justify-content:center;color:var(--ink3);font-size:12px">Loading events...</div>
-      </div>
-    </div>
-  </div>
-  <div class="sidebar">
-    <div class="sub-widget" id="sub-widget">
-      <div class="swt">Weekly digest</div>
-      <div class="sws">Every Sunday &mdash; news, events, and what you need to know. Free.</div>
-      <input class="sw-inp" type="email" id="sw-email" placeholder="your@email.com" />
-      <select class="sw-sel" id="sw-reg">
-        <option value="">All Portugal</option>
-        <option>Lisbon</option><option>Porto</option><option>Algarve</option>
-        <option>Cascais</option><option>Braga</option><option>Alentejo</option><option>Madeira</option>
-      </select>
-      <button class="sw-btn" onclick="subscribe()">Subscribe free</button>
-      <div style="font-size:10px;opacity:.4;margin-top:8px;text-align:center">No spam &middot; Unsubscribe anytime</div>
-    </div>
-    <div class="widget">
-      <div class="w-t">Weather this week</div>
-      <div class="weath-top">
-        <div><div class="wt-name" id="w-city">Lisbon</div><div class="wt-desc" id="w-desc">Loading...</div></div>
-        <div class="wt-temp" id="w-temp">--&deg;</div>
-      </div>
-      <div class="wweek" id="w-week">
-        <div class="wd"><div class="wd-d">--</div><span class="wd-i">--</span><div class="wd-t">--</div></div>
-        <div class="wd"><div class="wd-d">--</div><span class="wd-i">--</span><div class="wd-t">--</div></div>
-        <div class="wd"><div class="wd-d">--</div><span class="wd-i">--</span><div class="wd-t">--</div></div>
-        <div class="wd"><div class="wd-d">--</div><span class="wd-i">--</span><div class="wd-t">--</div></div>
-        <div class="wd"><div class="wd-d">--</div><span class="wd-i">--</span><div class="wd-t">--</div></div>
-      </div>
-    </div>
-    <div class="widget">
-      <div class="w-t">Public holidays</div>
-      <div class="hol-list" id="hol-list"><div style="font-size:12px;color:var(--ink3)">Loading...</div></div>
-    </div>
-    <div class="widget">
-      <div class="w-t">Expat communities</div>
-      <div style="font-size:12px;color:var(--ink2);line-height:1.7;margin-bottom:12px">Do you organise expat meetups, clubs, or local groups in Portugal?</div>
-      <div style="background:var(--warm);border-radius:var(--r);padding:12px;font-size:12px;color:var(--ink2);line-height:1.6;margin-bottom:10px">&#128101; We list active expat communities here. Just send us a request below.</div>
-      <a href="mailto:hello@expatportugal.guide?subject=List our community&body=Community name: %0ACity / region: %0AType of group: %0AApprox. members: " style="display:block;padding:9px 14px;background:var(--ink);color:white;border-radius:var(--r);font-size:12px;font-weight:500;text-align:center;text-decoration:none">&#9993; Request to be listed &rarr;</a>
-    </div>
-  </div>
-</div>
+
+<!-- 6. LIVE LIKE A LOCAL -->
 <div class="full" style="margin-top:2.5rem">
-  <div class="sh" style="margin-bottom:1.25rem"><span class="sh-t">Everything on this site</span></div>
-  <div class="feats">
-    <a class="feat" href="expat_tools_v4_fixed.html"><span class="feat-icon">&#128295;</span><div class="feat-title">Free expat tools</div><div class="feat-desc">Visa finder, cost calculator, tax comparison, rental tracker, document checklist and AI assistant.</div><span class="feat-lnk">9 free tools &rarr;</span></a>
-    <a class="feat" href="lifestyle_services.html"><span class="feat-icon">&#128205;</span><div class="feat-title">Lifestyle services</div><div class="feat-desc">English-speaking personal trainers, dentists, vets, tutors and hairdressers recommended by expats.</div><span class="feat-lnk">Browse services &rarr;</span></a>
-    <a class="feat" href="live_local.html"><span class="feat-icon">&#129309;</span><div class="feat-title">Live like a local</div><div class="feat-desc">Language exchange, cultural guides, etiquette, volunteering &mdash; close the gap between expats and locals.</div><span class="feat-lnk">Start integrating &rarr;</span></a>
-    <a class="feat" href="expat_tools_v4_fixed.html"><span class="feat-icon">&#128203;</span><div class="feat-title">Bureaucracy guide</div><div class="feat-desc">Step-by-step wizards for NIF, D7, D8, AIMA, NHR, citizenship and every major Portuguese process.</div><span class="feat-lnk">12 guides &rarr;</span></a>
-  </div>
-</div>
-<div class="full">
   <div class="llp">
     <div>
-      <div class="llp-ey">New on the site</div>
+      <div class="llp-ey">Integration guide</div>
       <div class="llp-t">We live in Portugal.<br>Let's actually belong here.</div>
       <div class="llp-d">The gap between expats and locals is growing. This page is about closing it practically, honestly, and with respect for the country that has welcomed us.</div>
       <a class="llp-btn" href="live_local.html">Explore the integration guide &rarr;</a>
@@ -288,44 +246,42 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
     </div>
   </div>
 </div>
-<div class="full">
-  <div class="sh" style="margin-bottom:1.25rem"><span class="sh-t">Find local services</span><a class="sh-m" href="lifestyle_services.html">See all 33 providers &rarr;</a></div>
-  <div class="sp-grid">
-    <a class="sp" href="lifestyle_services.html"><span class="sp-icon">&#127947;</span><div class="sp-cat">Fitness &amp; sport</div><div class="sp-title">Personal trainers</div><div class="sp-n">5 providers</div></a>
-    <a class="sp" href="lifestyle_services.html"><span class="sp-icon">&#129463;</span><div class="sp-cat">Health &amp; dental</div><div class="sp-title">English-speaking dentists</div><div class="sp-n">5 providers</div></a>
-    <a class="sp" href="lifestyle_services.html"><span class="sp-icon">&#128062;</span><div class="sp-cat">Pets &amp; vets</div><div class="sp-title">Vets &amp; pet care</div><div class="sp-n">4 providers</div></a>
-    <a class="sp" href="lifestyle_services.html"><span class="sp-icon">&#128218;</span><div class="sp-cat">Tutoring &amp; lessons</div><div class="sp-title">Tutors &amp; teachers</div><div class="sp-n">5 providers</div></a>
+
+<!-- 7. SUBSCRIBE -->
+<div class="full" style="margin-top:2.5rem" id="sub-section">
+  <div class="sub-sec" id="sub-widget">
+    <div>
+      <div class="swt">The Sunday Digest</div>
+      <div class="sws">Every Sunday morning — the week's news, upcoming events, and what you need to know as an expat in Portugal. Free, no spam.</div>
+    </div>
+    <div>
+      <input class="sw-inp" type="email" id="sw-email" placeholder="your@email.com" />
+      <select class="sw-sel" id="sw-reg"><option value="">All Portugal</option><option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Braga</option><option>Alentejo</option><option>Madeira</option></select>
+      <button class="sw-btn" onclick="subscribe()">Subscribe free &rarr;</button>
+      <div style="font-size:10px;opacity:.4;color:white;text-align:center;margin-top:6px">No spam &middot; Unsubscribe anytime</div>
+    </div>
   </div>
 </div>
+
 <footer>
   <div class="fi">
     <div class="ft">
       <div>
         <div class="flogo">&#127477;&#127481; ExpatPortugal.guide</div>
-        <div class="ftag">The home for expats in Portugal. News, tools, community and culture &mdash; updated daily. Made with respect for Portugal and its people.</div>
+        <div class="ftag">Your home for expat life in Portugal. Events, tools, services, news and community &mdash; updated daily.</div>
         <div style="font-size:11px;opacity:.3">Not legal or tax advice &middot; Always consult a professional</div>
       </div>
       <div>
         <div class="fct">Tools</div>
-        <a class="fl" href="expat_tools_v4_fixed.html">Visa finder</a>
-        <a class="fl" href="expat_tools_v4_fixed.html">Cost calculator</a>
-        <a class="fl" href="expat_tools_v4_fixed.html">Tax calculator</a>
-        <a class="fl" href="expat_tools_v4_fixed.html">Rental tracker</a>
-        <a class="fl" href="expat_tools_v4_fixed.html">Doc checklist</a>
+        <a class="fl" href="expat_tools_v4_fixed.html">Visa finder</a><a class="fl" href="expat_tools_v4_fixed.html">Cost calculator</a><a class="fl" href="expat_tools_v4_fixed.html">Tax calculator</a><a class="fl" href="expat_tools_v4_fixed.html">Rental tracker</a><a class="fl" href="expat_tools_v4_fixed.html">Doc checklist</a>
       </div>
       <div>
         <div class="fct">Pages</div>
-        <a class="fl" href="lifestyle_services.html">Lifestyle services</a>
-        <a class="fl" href="live_local.html">Live like a local</a>
-        <a class="fl" href="live_local.html#language-exchange">Language exchange</a>
-        <a class="fl" href="news.html">All news</a>
+        <a class="fl" href="lifestyle_services.html">Local services</a><a class="fl" href="live_local.html">Live like a local</a><a class="fl" href="live_local.html#language-exchange">Language exchange</a><a class="fl" href="news.html">All news</a>
       </div>
       <div>
         <div class="fct">Site</div>
-        <a class="fl" href="#">About</a>
-        <a class="fl" href="#">Advertise</a>
-        <a class="fl" href="#">List your service</a>
-        <a class="fl" href="#">Privacy policy</a>
+        <a class="fl" href="#">About</a><a class="fl" href="mailto:hello@expatportugal.guide?subject=Advertise on ExpatPortugal.guide">Advertise</a><a class="fl" href="mailto:hello@expatportugal.guide?subject=List my service">List your service</a><a class="fl" href="#">Privacy policy</a>
       </div>
     </div>
     <div class="fb"><span>&copy; 2026 ExpatPortugal.guide</span><span class="fbadge">Content auto-updated daily</span></div>
