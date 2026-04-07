@@ -154,6 +154,7 @@ tr:hover td{background:var(--warm)}
     <div class="s-nav-item" onclick="showPanel('exchange',this)">🤝 Language exchange</div>
     <div class="s-nav-item" onclick="showPanel('businesses',this)">&#128203; Directory</div>
     <div class="s-nav-item" onclick="showPanel('communities',this)">&#128101; Communities</div>
+    <div class="s-nav-item" onclick="showPanel('housing',this)">&#127968; Housing</div>
 
     <div class="s-section">System</div>
     <div class="s-nav-item" onclick="showPanel('logs',this)">⚙️ Automation logs</div>
@@ -470,6 +471,80 @@ tr:hover td{background:var(--warm)}
       </div>
     </div>
 
+    <!-- HOUSING PANEL -->
+    <div class="panel" id="panel-housing">
+      <div class="section-card" style="margin-bottom:1.25rem">
+        <div class="sc-header"><div class="sc-title">Add / edit listing</div></div>
+        <div style="padding:1.25rem;display:grid;grid-template-columns:1fr 1fr;gap:10px" id="housing-form">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Title *</label>
+            <input id="h-title" class="setting-input" style="margin:0" placeholder="e.g. Sunny 1-bed in Estrela" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">City *</label>
+            <select id="h-city" class="setting-input" style="margin:0">
+              <option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Mafra</option><option>Braga</option><option>Alentejo</option><option>Madeira</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Neighbourhood</label>
+            <input id="h-hood" class="setting-input" style="margin:0" placeholder="e.g. Estrela, Alfama" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Apartment type</label>
+            <select id="h-type" class="setting-input" style="margin:0">
+              <option value="studio">Studio</option><option value="1bed">1-bedroom</option><option value="2bed">2-bedroom</option><option value="3bed">3+ bedrooms</option><option value="room">Private room</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Monthly rent (&euro;)</label>
+            <input id="h-rent" class="setting-input" style="margin:0" type="number" placeholder="1200" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Tier</label>
+            <select id="h-tier" class="setting-input" style="margin:0">
+              <option value="basic">Basic (&euro;9)</option><option value="featured">Featured (&euro;29)</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Available from</label>
+            <input id="h-from" class="setting-input" style="margin:0" type="date" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Available until</label>
+            <input id="h-until" class="setting-input" style="margin:0" type="date" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Contact email *</label>
+            <input id="h-contact" class="setting-input" style="margin:0" type="email" placeholder="owner@email.com" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Photo URL (featured only)</label>
+            <input id="h-img" class="setting-input" style="margin:0" placeholder="https://..." />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px;grid-column:1/-1">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Description</label>
+            <input id="h-desc" class="setting-input" style="margin:0" placeholder="Furnished, wifi, balcony, close to metro..." />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Listing kind</label>
+            <select id="h-kind" class="setting-input" style="margin:0">
+              <option value="available">Available (renting out)</option><option value="looking">Looking (searching)</option>
+            </select>
+          </div>
+          <div style="grid-column:1/-1;display:flex;gap:8px;align-items:center;margin-top:4px">
+            <button class="btn btn-green" id="h-save-btn" onclick="saveHousing()">+ Add listing</button>
+            <button class="btn" onclick="clearHousingForm()">Clear</button>
+            <span id="h-msg" style="font-size:12px;color:var(--green);display:none">Saved!</span>
+          </div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="sc-header"><div class="sc-title">All housing listings</div></div>
+        <div id="housing-table"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+    </div>
+
     <!-- AUTOMATION LOGS PANEL -->
     <div class="panel" id="panel-logs">
       <div class="section-card">
@@ -599,6 +674,7 @@ const PANELS = {
   directory:   { title: 'Directory',              sub: 'Manage professional and lifestyle service listings' },
   businesses:  { title: 'Directory',               sub: 'Add, edit, and manage all business listings. Ratings, reviews, and details.' },
   communities: { title: 'Communities',             sub: 'Add, edit, and manage expat community listings.' },
+  housing:     { title: 'Housing board',           sub: 'Manage medium-term rental listings. Featured and basic tiers.' },
   logs:        { title: 'Automation logs',        sub: 'Check what ran, when, and whether it succeeded' },
   settings:    { title: 'Settings',               sub: 'Configure database connection, passwords, and automation options' }
 };
@@ -615,7 +691,7 @@ function showPanel(name, el) {
 }
 
 function loadCurrentPanel() {
-  const loaders = { articles: loadArticles, events: loadEvents, digest: loadDigest, subscribers: loadSubscribers, exchange: loadExchange, directory: loadDirectory, businesses: loadBusinesses, communities: loadCommunities, logs: loadLogs };
+  const loaders = { articles: loadArticles, events: loadEvents, digest: loadDigest, subscribers: loadSubscribers, exchange: loadExchange, directory: loadDirectory, businesses: loadBusinesses, communities: loadCommunities, housing: loadHousing, logs: loadLogs };
   if (loaders[currentPanel]) loaders[currentPanel]();
   loadMetrics();
 }
@@ -1393,6 +1469,95 @@ function clearCommForm() {
     document.getElementById(id).value = '';
   });
   document.getElementById('comm-save-btn').textContent = '+ Add community';
+}
+
+// ── HOUSING ──────────────────────────────────────────
+var allHousingAdmin = [];
+var editHousingId = null;
+
+async function loadHousing() {
+  try {
+    var items = await sb('local_businesses?type=eq.housing&order=name.asc&limit=100');
+    allHousingAdmin = items;
+    var el = document.getElementById('housing-table');
+    if (!items.length) {
+      el.innerHTML = '<div class="empty"><div class="empty-icon">&#127968;</div>No housing listings yet.</div>';
+      return;
+    }
+    el.innerHTML = '<table><thead><tr><th>Listing</th><th>City</th><th>Rent</th><th>Tier</th><th>Dates</th><th>Actions</th></tr></thead><tbody>' +
+      items.map(function(h) {
+        var pr = {};
+        (h.price_range || '').split('|').forEach(function(p) { var kv = p.split(':'); if(kv.length>=2) pr[kv[0]] = kv.slice(1).join(':'); });
+        return '<tr>' +
+          '<td><div style="font-weight:500">' + h.name + '</div><div style="font-size:11px;color:var(--ink3)">' + (h.reason||'').substring(0,60) + '</div></td>' +
+          '<td>' + (h.city||'') + '</td>' +
+          '<td style="font-weight:500">&euro;' + (pr.rent||'?') + '</td>' +
+          '<td><span class="cat-badge" style="' + (pr.tier==='featured'?'background:var(--amber-l);color:var(--amber)':'') + '">' + (pr.tier||'basic') + '</span></td>' +
+          '<td style="font-size:11px">' + (pr.available||'') + '<br>' + (pr.until||'') + '</td>' +
+          '<td style="white-space:nowrap">' +
+          '<button onclick="editHousing(' + h.id + ')" style="padding:4px 10px;background:var(--blue-l);border:0.5px solid var(--blue);border-radius:4px;font-size:11px;cursor:pointer;color:var(--blue);margin-right:4px">Edit</button>' +
+          '<button onclick="deleteHousing(' + h.id + ')" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
+          '</td></tr>';
+      }).join('') + '</tbody></table>';
+  } catch(e) { document.getElementById('housing-table').innerHTML = '<div class="empty">Could not load.</div>'; }
+}
+
+async function saveHousing() {
+  var title = document.getElementById('h-title').value.trim();
+  var contact = document.getElementById('h-contact').value.trim();
+  if (!title || !contact) { alert('Title and contact email are required.'); return; }
+  var rent = document.getElementById('h-rent').value || '0';
+  var pr = 'rent:' + rent + '|type:' + document.getElementById('h-type').value + '|available:' + document.getElementById('h-from').value + '|until:' + document.getElementById('h-until').value + '|tier:' + document.getElementById('h-tier').value + '|kind:' + document.getElementById('h-kind').value;
+  var data = {
+    name: title, type: 'housing', city: document.getElementById('h-city').value,
+    area: document.getElementById('h-hood').value.trim(), reason: document.getElementById('h-desc').value.trim(),
+    url: contact, price_range: pr, address: document.getElementById('h-img').value.trim(),
+    emoji: '🏠', status: 'active'
+  };
+  try {
+    if (editHousingId) { await sb('local_businesses?id=eq.' + editHousingId, { method: 'PATCH', body: data }); }
+    else { await sb('local_businesses', { method: 'POST', body: data }); }
+    var msg = document.getElementById('h-msg');
+    msg.textContent = editHousingId ? 'Updated!' : 'Saved!';
+    msg.style.display = 'inline';
+    setTimeout(function() { msg.style.display = 'none'; }, 2500);
+    clearHousingForm();
+    loadHousing();
+  } catch(e) { alert('Error: ' + e.message); }
+}
+
+function editHousing(id) {
+  var h = allHousingAdmin.find(function(x) { return x.id === id; });
+  if (!h) return;
+  editHousingId = id;
+  document.getElementById('h-title').value = h.name || '';
+  document.getElementById('h-city').value = h.city || 'Lisbon';
+  document.getElementById('h-hood').value = h.area || '';
+  document.getElementById('h-desc').value = h.reason || '';
+  document.getElementById('h-contact').value = h.url || '';
+  document.getElementById('h-img').value = h.address || '';
+  var pr = {};
+  (h.price_range || '').split('|').forEach(function(p) { var kv = p.split(':'); if(kv.length>=2) pr[kv[0]] = kv.slice(1).join(':'); });
+  document.getElementById('h-rent').value = pr.rent || '';
+  document.getElementById('h-type').value = pr.type || '1bed';
+  document.getElementById('h-from').value = pr.available || '';
+  document.getElementById('h-until').value = pr.until || '';
+  document.getElementById('h-tier').value = pr.tier || 'basic';
+  document.getElementById('h-kind').value = pr.kind || 'available';
+  document.getElementById('h-save-btn').textContent = 'Save changes';
+  document.getElementById('housing-form').scrollIntoView({ behavior: 'smooth' });
+}
+
+async function deleteHousing(id) {
+  if (!confirm('Delete this listing?')) return;
+  await sb('local_businesses?id=eq.' + id, { method: 'DELETE' });
+  loadHousing();
+}
+
+function clearHousingForm() {
+  editHousingId = null;
+  ['h-title','h-hood','h-desc','h-contact','h-img','h-rent','h-from','h-until'].forEach(function(id) { document.getElementById(id).value = ''; });
+  document.getElementById('h-save-btn').textContent = '+ Add listing';
 }
 
 // ── INIT ──────────────────────────────────────────────────

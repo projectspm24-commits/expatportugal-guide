@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Housing Board — Medium-Term Rentals for Expats | ExpatPortugal.guide</title>
+<meta name="description" content="Find or list medium-term rentals in Portugal (1-6 months). Furnished apartments for expats arriving, relocating, or between homes. Expat-to-expat, no agencies." />
+<meta property="og:title" content="Housing Board — Expat Rentals in Portugal" />
+<meta property="og:description" content="Medium-term furnished rentals for expats. 1-6 months. No agencies, no AL required." />
+<meta property="og:image" content="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1200&h=630&fit=crop" />
+<link rel="canonical" href="https://expatportugal-guide.vercel.app/housing.html" />
+<meta name="keywords" content="medium term rental Portugal, furnished apartment Lisbon, expat housing Porto, temporary accommodation Portugal, 3 month rental Lisbon" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+:root{--ink:#1c1917;--ink2:#57534e;--ink3:#a8a29e;--cream:#f7f5f0;--warm:#f5f0e8;--card:#fff;--border:rgba(28,25,23,0.08);--border2:rgba(28,25,23,0.16);--red:#c0381a;--red-l:#fdf0ec;--red-d:#a83015;--green:#15803d;--green-l:#f0fdf4;--blue:#1d4ed8;--blue-l:#eff6ff;--amber:#b45309;--amber-l:#fffbeb;--r:10px;--rl:16px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Outfit",sans-serif;background:var(--cream);color:var(--ink);font-size:15px;line-height:1.6;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0v60M0 30h60M0 0h60v60H0z' fill='none' stroke='%23d4cfc4' stroke-width='.3'/%3E%3Ccircle cx='30' cy='30' r='8' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='0' cy='0' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='60' cy='0' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='0' cy='60' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='60' cy='60' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3C/svg%3E")}
+a{text-decoration:none;color:inherit}
+nav{background:rgba(247,245,240,0.96);border-bottom:0.5px solid var(--border);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;backdrop-filter:blur(10px)}
+.logo{font-family:"Playfair Display",serif;font-size:19px;color:var(--ink)}
+.nav-links{display:flex;gap:2px}
+.nl{font-size:13px;padding:6px 11px;border-radius:var(--r);color:var(--ink2);display:inline-flex;align-items:center}.nl:hover{background:var(--warm);color:var(--ink)}.nl.on{color:var(--ink);font-weight:500}
+.full{max-width:1100px;margin:0 auto;padding:0 2rem}
+.hero{padding:2.5rem 0 1.5rem;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px}
+.hero-t{font-family:"Playfair Display",serif;font-size:clamp(24px,3vw,34px);margin-bottom:4px}
+.hero-sub{font-size:13px;color:var(--ink2);max-width:550px;line-height:1.7}
+.hero-btn{padding:10px 20px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:"Outfit",sans-serif;display:inline-block}
+.hero-btn:hover{background:var(--red-d)}
+
+.filter-row{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
+.fsel{padding:8px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:12px;font-family:"Outfit",sans-serif;background:var(--card);color:var(--ink)}
+.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem;padding-bottom:10px;border-bottom:0.5px solid var(--border)}
+.fb{font-size:11px;padding:4px 12px;border-radius:20px;border:0.5px solid var(--border2);color:var(--ink2);cursor:pointer;background:var(--card);font-family:"Outfit",sans-serif;transition:all .15s}
+.fb:hover{border-color:var(--ink);color:var(--ink)}.fb.on{background:var(--red);color:white;border-color:var(--red)}
+
+.listings{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:2rem}
+.lc{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);overflow:hidden;transition:all .2s;position:relative}
+.lc:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.lc.featured{border:1.5px solid var(--amber);box-shadow:0 2px 12px rgba(180,83,9,0.08)}
+.lc-feat-badge{position:absolute;top:10px;right:10px;background:var(--amber);color:white;font-size:10px;padding:3px 10px;border-radius:20px;font-weight:500;z-index:2}
+.lc-img{width:100%;height:160px;object-fit:cover;background:var(--warm)}
+.lc-body{padding:1rem 1.25rem}
+.lc-price{font-family:"Playfair Display",serif;font-size:20px;margin-bottom:2px}
+.lc-price span{font-size:12px;color:var(--ink3);font-family:"Outfit",sans-serif;font-weight:400}
+.lc-title{font-size:14px;font-weight:500;margin-bottom:4px}
+.lc-meta{font-size:12px;color:var(--ink3);margin-bottom:8px;line-height:1.6}
+.lc-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
+.lc-tag{font-size:10px;padding:2px 8px;border-radius:20px;background:var(--warm);color:var(--ink2)}
+.lc-desc{font-size:12px;color:var(--ink2);line-height:1.65;margin-bottom:10px}
+.lc-contact{display:block;width:100%;padding:8px;text-align:center;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;font-family:"Outfit",sans-serif;transition:background .15s}
+.lc-contact:hover{background:var(--red-d)}
+
+.cta-tiers{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:2rem}
+.tier{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.5rem;text-align:center}
+.tier.pop{border:2px solid var(--amber);position:relative}
+.tier-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--amber);color:white;font-size:10px;padding:3px 12px;border-radius:20px;font-weight:500}
+.tier-name{font-size:14px;font-weight:500;margin-bottom:4px}
+.tier-price{font-family:"Playfair Display",serif;font-size:28px;margin-bottom:2px}
+.tier-per{font-size:11px;color:var(--ink3);margin-bottom:12px}
+.tier-list{font-size:12px;color:var(--ink2);line-height:2;text-align:left;margin-bottom:14px}
+.tier-btn{display:inline-block;padding:10px 24px;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:"Outfit",sans-serif;border:none}
+
+.disc{background:var(--warm);border-radius:var(--r);padding:12px 16px;margin-bottom:2rem;font-size:11px;color:var(--ink3);line-height:1.7}
+
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0);z-index:300;align-items:center;justify-content:center;transition:background .5s}
+.modal-bg.open{display:flex}
+.modal{background:var(--card);border-radius:var(--rl);padding:1.75rem;width:90%;max-width:500px;max-height:85vh;overflow-y:auto;opacity:0;transform:translateY(20px) scale(0.97);transition:opacity .5s,transform .5s}
+.modal-bg.show .modal{opacity:1;transform:translateY(0) scale(1)}
+.modal-bg.show{background:rgba(0,0,0,0.45)}
+
+footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top:3rem}
+.fi{max-width:1100px;margin:0 auto;font-size:12px;text-align:center}
+@media(max-width:700px){.listings{grid-template-columns:1fr}.cta-tiers{grid-template-columns:1fr}.full{padding:0 1rem}nav{padding:0 1rem}.hero{flex-direction:column;align-items:flex-start}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="index.html">&#127477;&#127481; ExpatPortugal<span style="font-weight:300;opacity:.5">.guide</span></a>
+  <div class="nav-links">
+    <a class="nl" href="index.html">Home</a>
+    <a class="nl" href="calendar.html">Events</a>
+    <a class="nl" href="directory.html">Directory</a>
+    <a class="nl" href="lifestyle_services.html">Services</a>
+    <a class="nl on" href="housing.html">Housing</a>
+    <a class="nl" href="news.html">News</a>
+  </div>
+</nav>
+
+<div class="full">
+  <div class="hero">
+    <div>
+      <div class="hero-t">Expat housing board</div>
+      <div class="hero-sub">Medium-term furnished rentals (1&ndash;6 months) posted by expats, for expats. Perfect for when you've just arrived, you're between apartments, or you're traveling and want to rent yours out.</div>
+    </div>
+    <a class="hero-btn" href="#list-your-place">List your place &darr;</a>
+  </div>
+
+  <div class="filter-row">
+    <select class="fsel" id="f-city" onchange="renderListings()">
+      <option value="all">All cities</option>
+      <option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Mafra</option><option>Braga</option><option>Alentejo</option><option>Madeira</option>
+    </select>
+    <select class="fsel" id="f-type" onchange="renderListings()">
+      <option value="all">All types</option>
+      <option value="studio">Studio</option>
+      <option value="1bed">1-bedroom</option>
+      <option value="2bed">2-bedroom</option>
+      <option value="3bed">3+ bedrooms</option>
+      <option value="room">Private room</option>
+    </select>
+    <select class="fsel" id="f-budget" onchange="renderListings()">
+      <option value="all">Any budget</option>
+      <option value="0-800">Under &euro;800</option>
+      <option value="800-1200">&euro;800&ndash;&euro;1,200</option>
+      <option value="1200-1800">&euro;1,200&ndash;&euro;1,800</option>
+      <option value="1800-99999">&euro;1,800+</option>
+    </select>
+  </div>
+
+  <div class="filter-bar">
+    <button class="fb on" onclick="setAvail('all',this)">All listings</button>
+    <button class="fb" onclick="setAvail('available',this)">&#127968; Available now</button>
+    <button class="fb" onclick="setAvail('looking',this)">&#128269; Looking for a place</button>
+  </div>
+
+  <div class="listings" id="listings">
+    <div style="grid-column:1/-1;text-align:center;padding:3rem;background:var(--card);border-radius:var(--rl)">
+      <div style="font-size:28px;margin-bottom:8px">&#127968;</div>
+      <div style="font-size:15px;font-weight:500;margin-bottom:4px">The housing board is launching soon</div>
+      <div style="font-size:13px;color:var(--ink3);margin-bottom:14px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.7">Be among the first to list your place or find your next home. Listings go live as soon as we have our first batch.</div>
+      <a class="hero-btn" href="#list-your-place">List your place now &darr;</a>
+    </div>
+  </div>
+
+  <!-- LISTING TIERS -->
+  <div id="list-your-place" style="padding-top:1rem">
+    <div style="font-family:'Playfair Display',serif;font-size:22px;margin-bottom:4px">List your place</div>
+    <div style="font-size:13px;color:var(--ink2);margin-bottom:1.25rem;line-height:1.7">Reach thousands of expats looking for medium-term housing in Portugal. Two tiers, both affordable.</div>
+  </div>
+
+  <div class="cta-tiers">
+    <div class="tier">
+      <div class="tier-name">Basic listing</div>
+      <div class="tier-price">&euro;9</div>
+      <div class="tier-per">per listing &middot; 30 days</div>
+      <div class="tier-list">
+        &#9989; Title, city, dates, rent, description<br>
+        &#9989; Contact email visible to searchers<br>
+        &#9989; Listed for 30 days<br>
+        &#9989; Appears in search and filters<br>
+        &#10060; No photo<br>
+        &#10060; No highlight
+      </div>
+      <a class="tier-btn" style="background:var(--ink);color:white" href="mailto:hello@expatportugal.guide?subject=Housing listing — Basic (€9)&body=LISTING DETAILS%0A%0ATitle (e.g. 'Sunny 1-bed in Estrela'):%0ACity:%0ANeighbourhood:%0AApartment type (studio/1bed/2bed/3bed/room):%0AMonthly rent (€):%0AAvailable from:%0AAvailable until:%0ADescription:%0AYour contact email:%0A%0ASUBLETTING? If yes, confirm you have written landlord permission: Yes / No%0A%0AWe'll publish within 24 hours after payment.">List for &euro;9 &rarr;</a>
+    </div>
+    <div class="tier pop">
+      <div class="tier-badge">Most popular</div>
+      <div class="tier-name">Featured listing</div>
+      <div class="tier-price">&euro;29</div>
+      <div class="tier-per">per listing &middot; 30 days</div>
+      <div class="tier-list">
+        &#9989; Everything in Basic, plus:<br>
+        &#9989; <b>Photo</b> of the apartment<br>
+        &#9989; <b>Featured badge</b> + gold border<br>
+        &#9989; <b>Pushed to top</b> of search results<br>
+        &#9989; Shared in the <b>Sunday newsletter</b><br>
+        &#9989; <b>60 days</b> listing duration
+      </div>
+      <a class="tier-btn" style="background:var(--amber);color:white" href="mailto:hello@expatportugal.guide?subject=Housing listing — Featured (€29)&body=LISTING DETAILS%0A%0ATitle (e.g. 'Sunny 1-bed in Estrela'):%0ACity:%0ANeighbourhood:%0AApartment type (studio/1bed/2bed/3bed/room):%0AMonthly rent (€):%0AAvailable from:%0AAvailable until:%0ADescription:%0AYour contact email:%0APhoto: (please attach 1 photo)%0A%0ASUBLETTING? If yes, confirm you have written landlord permission: Yes / No%0A%0AWe'll publish within 24 hours after payment.">List for &euro;29 &rarr;</a>
+    </div>
+  </div>
+
+  <div class="disc">
+    <b>&#9888;&#65039; Important:</b> This board is for medium-term rentals (30+ days) only. Short-term tourist rentals require an Alojamento Local (AL) licence. If you are subletting, Portuguese law requires written permission from your landlord, and you may not charge more than 120% of your own rent. ExpatPortugal.guide is a classifieds board only &mdash; we do not verify listings, handle payments, or act as party to any rental agreement. Always sign a written contract and verify the landlord's right to rent the property.
+  </div>
+
+  <!-- LOOKING FOR A PLACE (free) -->
+  <div style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.5rem;margin-bottom:2rem">
+    <div style="font-size:15px;font-weight:500;margin-bottom:4px">&#128269; Looking for a place? Post free</div>
+    <div style="font-size:12px;color:var(--ink2);margin-bottom:12px;line-height:1.6">Let landlords find you. Post what you're looking for &mdash; city, budget, dates &mdash; and people with available places can contact you directly. Always free.</div>
+    <a class="hero-btn" style="font-size:12px;padding:8px 18px" href="mailto:hello@expatportugal.guide?subject=Looking for housing&body=What I'm looking for:%0ACity / area:%0ABudget (per month):%0ADates (from - to):%0AAbout me (couple/solo/family, where from):%0AContact email:">Post your search (free) &rarr;</a>
+  </div>
+</div>
+
+<footer>
+  <div class="fi">
+    <div style="margin-bottom:12px">&#127477;&#127481; ExpatPortugal.guide &middot; <a href="index.html" style="color:rgba(255,255,255,0.7)">Home</a> &middot; <a href="directory.html" style="color:rgba(255,255,255,0.7)">Directory</a> &middot; <a href="calendar.html" style="color:rgba(255,255,255,0.7)">Events</a></div>
+    <div>&copy; 2026 ExpatPortugal.guide &middot; Classifieds board only. We don't verify listings or handle payments.</div>
+  </div>
+</footer>
+
+<script>
+var SB_URL='https://waywvckvyizqkuuaecrp.supabase.co';
+var SB_KEY='sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b';
+var allListings=[];
+var availFilter='all';
+
+function parseHousing(h){
+  var pr={};
+  (h.price_range||'').split('|').forEach(function(p){var idx=p.indexOf(':');if(idx>0)pr[p.slice(0,idx)]=p.slice(idx+1);});
+  return{id:h.id,title:h.name,city:h.city,hood:h.area||'',desc:h.reason||'',rent:parseInt(pr.rent)||0,aptType:pr.type||'1bed',available:pr.available||'',until:pr.until||'',tier:pr.tier||'basic',kind:pr.kind||'available',contact:h.url||'',img:h.address||''};
+}
+
+async function loadListings(){
+  try{
+    var res=await fetch(SB_URL+'/rest/v1/local_businesses?type=eq.housing&status=eq.active&order=name.asc',{headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY}});
+    allListings=(await res.json()).map(parseHousing);
+    renderListings();
+  }catch(e){console.error(e);}
+}
+
+function renderListings(){
+  var city=document.getElementById('f-city').value;
+  var type=document.getElementById('f-type').value;
+  var budget=document.getElementById('f-budget').value;
+  var filtered=allListings.slice();
+
+  if(availFilter!=='all')filtered=filtered.filter(function(l){return l.kind===availFilter;});
+  if(city!=='all')filtered=filtered.filter(function(l){return l.city===city;});
+  if(type!=='all')filtered=filtered.filter(function(l){return l.aptType===type;});
+  if(budget!=='all'){var parts=budget.split('-');var min=parseInt(parts[0]);var max=parseInt(parts[1]);filtered=filtered.filter(function(l){return l.rent>=min&&l.rent<=max;});}
+
+  // Featured first, then by rent
+  filtered.sort(function(a,b){if(a.tier==='featured'&&b.tier!=='featured')return -1;if(b.tier==='featured'&&a.tier!=='featured')return 1;return a.rent-b.rent;});
+
+  var el=document.getElementById('listings');
+  if(!filtered.length){
+    el.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:3rem;background:var(--card);border-radius:var(--rl)"><div style="font-size:28px;margin-bottom:8px">&#127968;</div><div style="font-size:15px;font-weight:500;margin-bottom:4px">The housing board is launching soon</div><div style="font-size:13px;color:var(--ink3);margin-bottom:14px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.7">Be among the first to list your place or find your next home.</div><a class="hero-btn" href="#list-your-place">List your place now &darr;</a></div>';
+    return;
+  }
+
+  el.innerHTML=filtered.map(function(l){
+    var isFeat=l.tier==='featured';
+    var imgHTML=l.img?'<img class="lc-img" src="'+l.img+'" alt="" onerror="this.style.display=\'none\'" />':'';
+    var dates='';
+    if(l.available)dates+='From '+l.available;
+    if(l.until)dates+=' to '+l.until;
+    return '<div class="lc'+(isFeat?' featured':'')+'">'+(isFeat?'<div class="lc-feat-badge">&#11088; Featured</div>':'')+imgHTML+
+      '<div class="lc-body">'+
+      '<div class="lc-price">&euro;'+l.rent.toLocaleString()+' <span>/month</span></div>'+
+      '<div class="lc-title">'+l.title+'</div>'+
+      '<div class="lc-meta">&#128205; '+l.city+(l.hood?', '+l.hood:'')+(dates?' &middot; '+dates:'')+'</div>'+
+      '<div class="lc-tags"><span class="lc-tag">'+l.aptType+'</span>'+(l.kind==='looking'?'<span class="lc-tag" style="background:var(--blue-l);color:var(--blue)">Looking</span>':'<span class="lc-tag" style="background:var(--green-l);color:var(--green)">Available</span>')+'</div>'+
+      (l.desc?'<div class="lc-desc">'+l.desc+'</div>':'')+
+      '<a class="lc-contact" href="mailto:'+l.contact+'?subject=Housing: '+encodeURIComponent(l.title)+'">Contact &rarr;</a>'+
+      '</div></div>';
+  }).join('');
+}
+
+function setAvail(v,el){availFilter=v;document.querySelectorAll('.filter-bar .fb').forEach(function(b){b.classList.remove('on');});el.classList.add('on');renderListings();}
+
+loadListings();
+</script>
+<script src="chat-widget.js" defer></script>
+</body>
+</html>
