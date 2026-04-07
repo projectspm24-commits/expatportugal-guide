@@ -423,8 +423,14 @@ function showDetail(id){
     '&#127968; '+l.aptType+
     '</div>'+
     (l.desc?'<div style="font-size:13px;color:var(--ink2);line-height:1.7;margin-bottom:16px;white-space:pre-line">'+l.desc+'</div>':'')+
-    '<a style="display:block;width:100%;padding:12px;text-align:center;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:14px;font-weight:500;font-family:Outfit,sans-serif" href="mailto:'+l.contact+'?subject='+encodeURIComponent('Housing inquiry: '+l.title)+'&body='+encodeURIComponent('Hi,\n\nI saw your listing \"'+l.title+'\" (€'+l.rent+'/mo in '+l.city+') on ExpatPortugal.guide and I\'m interested.\n\nCould you share more details?\n\nThanks!')+'" target="_blank" rel="noopener">&#128232; Contact via email &rarr;</a>'+
-    '<div style="font-size:11px;color:var(--ink3);text-align:center;margin-top:6px">'+l.contact+'</div>';
+    '<div id="inquiry-form-'+l.id+'" style="border-top:0.5px solid var(--border);padding-top:14px">'+
+    '<div style="font-size:14px;font-weight:500;margin-bottom:8px">&#128172; Send a message to the '+(l.kind==='looking'?'searcher':'owner')+'</div>'+
+    '<input id="inq-name-'+l.id+'" type="text" placeholder="Your name *" style="width:100%;padding:9px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;font-family:Outfit,sans-serif;margin-bottom:6px;outline:none" />'+
+    '<input id="inq-email-'+l.id+'" type="email" placeholder="Your email *" style="width:100%;padding:9px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;font-family:Outfit,sans-serif;margin-bottom:6px;outline:none" />'+
+    '<textarea id="inq-msg-'+l.id+'" placeholder="Hi, I\'m interested in your listing. Could you tell me more?" style="width:100%;padding:9px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;font-family:Outfit,sans-serif;margin-bottom:8px;outline:none;height:80px;resize:vertical"></textarea>'+
+    '<button onclick="sendInquiry('+l.id+',\''+l.title.replace(/'/g,"\\'")+'\',\''+l.contact+'\')" style="width:100%;padding:12px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:14px;font-weight:500;cursor:pointer;font-family:Outfit,sans-serif">Send message &rarr;</button>'+
+    '<div style="font-size:11px;color:var(--ink3);text-align:center;margin-top:6px">Your message will be forwarded to the '+(l.kind==='looking'?'searcher':'owner')+'. They\'ll reply to your email directly.</div>'+
+    '</div>';
 
   var m=document.getElementById('detail-modal');
   m.style.display='flex';
@@ -436,6 +442,33 @@ function closeDetail(){
   var m=document.getElementById('detail-modal');
   m.classList.remove('show');m.classList.remove('open');
   setTimeout(function(){m.style.display='none';document.body.style.overflow='';},500);
+}
+
+async function sendInquiry(id,title,listerEmail){
+  var name=document.getElementById('inq-name-'+id).value.trim();
+  var email=document.getElementById('inq-email-'+id).value.trim();
+  var msg=document.getElementById('inq-msg-'+id).value.trim();
+  if(!name||!email||!msg){alert('Please fill in your name, email, and message.');return;}
+  var btn=document.querySelector('#inquiry-form-'+id+' button');
+  btn.textContent='Sending...';btn.disabled=true;
+  try{
+    await fetch('/api/housing-inquiry',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({listingId:id,listingTitle:title,listerEmail:listerEmail,senderName:name,senderEmail:email,message:msg})
+    });
+    document.getElementById('inquiry-form-'+id).innerHTML=
+      '<div style="text-align:center;padding:1rem">'+
+      '<div style="font-size:24px;margin-bottom:6px">&#9989;</div>'+
+      '<div style="font-size:14px;font-weight:500;margin-bottom:4px">Message sent!</div>'+
+      '<div style="font-size:12px;color:var(--ink2);line-height:1.6">Your message has been forwarded. The owner will reply to '+email+' directly.</div>'+
+      '</div>';
+    /* Subscribe sender to newsletter */
+    fetch('https://api.buttondown.com/v1/subscribers',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Token 0ed48c80-0e4d-4916-a3ab-f2aea603cea1'},body:JSON.stringify({email:email,tags:['housing-inquiry']})}).catch(function(){});
+  }catch(e){
+    btn.textContent='Send message →';btn.disabled=false;
+    alert('Could not send. Please try again.');
+  }
 }
 
 function setAvail(v,el){availFilter=v;document.querySelectorAll('.filter-bar .fb').forEach(function(b){b.classList.remove('on');});el.classList.add('on');renderListings();}

@@ -558,6 +558,10 @@ tr:hover td{background:var(--warm)}
         </div>
         <div id="housing-table"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
       </div>
+      <div class="section-card" style="margin-top:1.25rem">
+        <div class="sc-header"><div class="sc-title">&#128172; Housing inquiries</div></div>
+        <div id="housing-inquiries"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
     </div>
 
     <!-- AUTOMATION LOGS PANEL -->
@@ -1551,6 +1555,26 @@ async function loadHousing() {
       }).join('') + '</tbody></table>';
       }).join('') + '</tbody></table>';
   } catch(e) { document.getElementById('housing-table').innerHTML = '<div class="empty">Could not load.</div>'; }
+  
+  /* Load inquiries */
+  try {
+    var inquiries = await sb('events?category=eq.inquiry&order=created_at.desc&limit=50');
+    var iq = document.getElementById('housing-inquiries');
+    if (!inquiries.length) {
+      iq.innerHTML = '<div class="empty"><div class="empty-icon">&#128172;</div>No inquiries yet.</div>';
+    } else {
+      iq.innerHTML = inquiries.map(function(inq) {
+        var lines = (inq.description || '').split('\n');
+        return '<div style="padding:12px;border-bottom:0.5px solid var(--border);' + (inq.status==='pending'?'background:var(--amber-l)':'') + '">' +
+          '<div style="font-size:13px;font-weight:500">' + inq.title + '</div>' +
+          '<div style="font-size:12px;color:var(--ink2);white-space:pre-line;margin:6px 0;line-height:1.6">' + inq.description + '</div>' +
+          '<div style="display:flex;gap:6px;align-items:center">' +
+          '<span style="font-size:11px;color:var(--ink3)">' + (inq.event_date || '') + '</span>' +
+          (inq.status==='pending' ? '<button onclick="markInquiry('+inq.id+')" style="padding:3px 10px;background:var(--green-l);border:0.5px solid var(--green);border-radius:4px;font-size:10px;cursor:pointer;color:var(--green)">Mark handled</button>' : '<span style="font-size:10px;color:var(--green)">&#9989; Handled</span>') +
+          '</div></div>';
+      }).join('');
+    }
+  } catch(e) {}
 }
 
 async function saveHousing() {
@@ -1612,6 +1636,11 @@ function editHousing(id) {
 async function deleteHousing(id) {
   if (!confirm('Delete this listing?')) return;
   await sb('local_businesses?id=eq.' + id, { method: 'DELETE' });
+  loadHousing();
+}
+
+async function markInquiry(id) {
+  await sb('events?id=eq.' + id, { method: 'PATCH', body: { status: 'handled' } });
   loadHousing();
 }
 
