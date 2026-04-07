@@ -103,6 +103,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
       <option value="all">All cities</option>
       <option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Mafra</option><option>Braga</option><option>Alentejo</option><option>Madeira</option>
     </select>
+    <input class="fsel" id="f-city-other" type="text" placeholder="Search any city..." oninput="renderListings()" style="display:none;width:140px" />
     <select class="fsel" id="f-type" onchange="renderListings()">
       <option value="all">All types</option>
       <option value="studio">Studio</option>
@@ -237,10 +238,36 @@ function parseHousing(h){
   return{id:h.id,title:h.name,city:h.city,hood:h.area||'',desc:h.reason||'',rent:parseInt(pr.rent)||0,aptType:pr.type||'1bed',available:pr.available||'',until:pr.until||'',tier:pr.tier||'basic',kind:pr.kind||'available',contact:h.url||'',img:h.address||''};
 }
 
+var mainCities = ['Lisbon','Porto','Algarve','Cascais','Ericeira','Peniche','Mafra','Braga','Alentejo','Madeira'];
+
 async function loadListings(){
   try{
     var res=await fetch(SB_URL+'/rest/v1/local_businesses?type=eq.housing&status=eq.active&order=name.asc',{headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY}});
     allListings=(await res.json()).map(parseHousing);
+    
+    /* Add other cities to the filter dropdown */
+    var otherCities = [];
+    allListings.forEach(function(l) {
+      if (l.city && mainCities.indexOf(l.city) === -1 && otherCities.indexOf(l.city) === -1) {
+        otherCities.push(l.city);
+      }
+    });
+    var sel = document.getElementById('f-city');
+    /* Remove old "other" options */
+    while (sel.options.length > 11) sel.remove(sel.options.length - 1);
+    if (otherCities.length) {
+      var sep = document.createElement('option');
+      sep.disabled = true;
+      sep.textContent = '── Other cities ──';
+      sel.appendChild(sep);
+      otherCities.sort().forEach(function(c) {
+        var opt = document.createElement('option');
+        opt.value = c;
+        opt.textContent = c;
+        sel.appendChild(opt);
+      });
+    }
+    
     renderListings();
   }catch(e){console.error(e);}
 }

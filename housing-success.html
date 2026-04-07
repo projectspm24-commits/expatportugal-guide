@@ -38,9 +38,10 @@ textarea{height:80px;resize:vertical}
     <input id="s-title" placeholder="e.g. Sunny 1-bed in Estrela with balcony" />
 
     <label>City *</label>
-    <select id="s-city">
-      <option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Mafra</option><option>Braga</option><option>Alentejo</option><option>Madeira</option>
+    <select id="s-city" onchange="toggleOtherCity()">
+      <option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Mafra</option><option>Braga</option><option>Alentejo</option><option>Madeira</option><option value="other">Other city...</option>
     </select>
+    <input id="s-city-other" type="text" placeholder="Type the city or town name" style="display:none;margin-top:6px" />
 
     <label>Neighbourhood</label>
     <input id="s-hood" placeholder="e.g. Estrela, Alfama, Bairro Alto" />
@@ -94,6 +95,13 @@ var maxPhotos = tier === 'featured' ? 10 : 3;
 document.getElementById('tier-label').textContent = (tier === 'featured' ? 'Featured' : 'Basic') + ' listing — now fill in your details below.';
 document.getElementById('photo-note').innerHTML = '&#128247; You can add up to <b>' + maxPhotos + ' photos</b>. Reply to the confirmation email with your images attached.';
 
+function toggleOtherCity() {
+  var sel = document.getElementById('s-city');
+  var other = document.getElementById('s-city-other');
+  other.style.display = sel.value === 'other' ? 'block' : 'none';
+  if (sel.value === 'other') other.focus();
+}
+
 async function submitListing() {
   var title = document.getElementById('s-title').value.trim();
   var email = document.getElementById('s-email').value.trim();
@@ -101,11 +109,13 @@ async function submitListing() {
   var from = document.getElementById('s-from').value;
   var until = document.getElementById('s-until').value;
   var desc = document.getElementById('s-desc').value.trim();
-  if (!title || !email || !rent || !from || !until) { alert('Please fill in all required fields.'); return; }
+  var cityVal = document.getElementById('s-city').value;
+  var city = cityVal === 'other' ? document.getElementById('s-city-other').value.trim() : cityVal;
+  if (!title || !email || !rent || !from || !until || !city) { alert('Please fill in all required fields.'); return; }
 
   var pr = 'rent:' + rent + '|type:' + document.getElementById('s-type').value + '|available:' + from + '|until:' + until + '|tier:' + tier + '|kind:available';
   var data = {
-    name: title, type: 'housing', city: document.getElementById('s-city').value,
+    name: title, type: 'housing', city: city,
     area: document.getElementById('s-hood').value.trim(), reason: desc,
     url: email, price_range: pr, emoji: '🏠', status: 'pending'
   };

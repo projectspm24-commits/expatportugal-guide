@@ -482,9 +482,10 @@ tr:hover td{background:var(--warm)}
           </div>
           <div style="display:flex;flex-direction:column;gap:3px">
             <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">City *</label>
-            <select id="h-city" class="setting-input" style="margin:0">
-              <option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Mafra</option><option>Braga</option><option>Alentejo</option><option>Madeira</option>
+            <select id="h-city" class="setting-input" style="margin:0" onchange="document.getElementById('h-city-other').style.display=this.value==='other'?'block':'none'">
+              <option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Mafra</option><option>Braga</option><option>Alentejo</option><option>Madeira</option><option value="other">Other city...</option>
             </select>
+            <input id="h-city-other" class="setting-input" style="margin:4px 0 0;display:none" placeholder="Type the city or town name" />
           </div>
           <div style="display:flex;flex-direction:column;gap:3px">
             <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Neighbourhood</label>
@@ -1555,11 +1556,13 @@ async function loadHousing() {
 async function saveHousing() {
   var title = document.getElementById('h-title').value.trim();
   var contact = document.getElementById('h-contact').value.trim();
-  if (!title || !contact) { alert('Title and contact email are required.'); return; }
+  var cityVal = document.getElementById('h-city').value;
+  var city = cityVal === 'other' ? document.getElementById('h-city-other').value.trim() : cityVal;
+  if (!title || !contact || !city) { alert('Title, city, and contact email are required.'); return; }
   var rent = document.getElementById('h-rent').value || '0';
   var pr = 'rent:' + rent + '|type:' + document.getElementById('h-type').value + '|available:' + document.getElementById('h-from').value + '|until:' + document.getElementById('h-until').value + '|tier:' + document.getElementById('h-tier').value + '|kind:' + document.getElementById('h-kind').value;
   var data = {
-    name: title, type: 'housing', city: document.getElementById('h-city').value,
+    name: title, type: 'housing', city: city,
     area: document.getElementById('h-hood').value.trim(), reason: document.getElementById('h-desc').value.trim(),
     url: contact, price_range: pr, address: document.getElementById('h-img').value.trim(),
     emoji: '🏠', status: 'active'
@@ -1581,7 +1584,15 @@ function editHousing(id) {
   if (!h) return;
   editHousingId = id;
   document.getElementById('h-title').value = h.name || '';
-  document.getElementById('h-city').value = h.city || 'Lisbon';
+  var mainCities = ['Lisbon','Porto','Algarve','Cascais','Ericeira','Peniche','Mafra','Braga','Alentejo','Madeira'];
+  if (mainCities.indexOf(h.city) !== -1) {
+    document.getElementById('h-city').value = h.city || 'Lisbon';
+    document.getElementById('h-city-other').style.display = 'none';
+  } else {
+    document.getElementById('h-city').value = 'other';
+    document.getElementById('h-city-other').style.display = 'block';
+    document.getElementById('h-city-other').value = h.city || '';
+  }
   document.getElementById('h-hood').value = h.area || '';
   document.getElementById('h-desc').value = h.reason || '';
   document.getElementById('h-contact').value = h.url || '';
