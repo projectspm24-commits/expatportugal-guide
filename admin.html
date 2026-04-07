@@ -1484,16 +1484,24 @@ async function loadHousing() {
       el.innerHTML = '<div class="empty"><div class="empty-icon">&#127968;</div>No housing listings yet.</div>';
       return;
     }
-    el.innerHTML = '<table><thead><tr><th>Listing</th><th>City</th><th>Rent</th><th>Tier</th><th>Status</th><th>Actions</th></tr></thead><tbody>' +
+    el.innerHTML = '<table><thead><tr><th>Listing</th><th>City</th><th>Rent</th><th>Tier</th><th>Status</th><th>Last confirmed</th><th>Actions</th></tr></thead><tbody>' +
       items.map(function(h) {
         var pr = {};
         (h.price_range || '').split('|').forEach(function(p) { var kv = p.split(':'); if(kv.length>=2) pr[kv[0]] = kv.slice(1).join(':'); });
-        return '<tr style="' + (h.status==='paused'?'opacity:0.5':'') + '">' +
-          '<td><div style="font-weight:500">' + h.name + '</div><div style="font-size:11px;color:var(--ink3)">' + (h.reason||'').substring(0,60) + '</div></td>' +
+        var confirmed = pr.confirmed || 'never';
+        var daysSince = confirmed !== 'never' ? Math.floor((Date.now() - new Date(confirmed).getTime()) / 86400000) : 999;
+        var isFree = pr.tier !== 'basic' && pr.tier !== 'featured';
+        var needsAttention = (isFree && daysSince > 7) || (!isFree && daysSince > 30);
+        var confirmBadge = confirmed === 'never' ? '<span style="color:var(--ink3);font-size:11px">Never</span>' :
+          '<span style="font-size:11px;color:' + (needsAttention ? 'var(--red)' : 'var(--green)') + '">' + confirmed + (needsAttention ? ' &#9888;' : ' &#9989;') + '</span>';
+        return '<tr style="' + (h.status==='paused'?'opacity:0.5':'') + (needsAttention&&h.status==='active'?'background:var(--red-l)':'') + '">' +
+          '<td><div style="font-weight:500">' + h.name + '</div><div style="font-size:11px;color:var(--ink3)">' + (h.reason||'').substring(0,50) + '</div>' +
+          (h.url ? '<div style="font-size:10px;color:var(--ink3)">' + h.url + '</div>' : '') + '</td>' +
           '<td>' + (h.city||'') + '</td>' +
           '<td style="font-weight:500">&euro;' + (pr.rent||'?') + '</td>' +
-          '<td><span class="cat-badge" style="' + (pr.tier==='featured'?'background:var(--amber-l);color:var(--amber)':'') + '">' + (pr.tier||'basic') + '</span></td>' +
+          '<td><span class="cat-badge" style="' + (pr.tier==='featured'?'background:var(--amber-l);color:var(--amber)':'') + '">' + (pr.tier||'free') + '</span></td>' +
           '<td><span class="cat-badge" style="' + (h.status==='active'?'background:var(--green-l);color:var(--green)':h.status==='paused'?'background:var(--amber-l);color:var(--amber)':'') + '">' + (h.status||'pending') + '</span></td>' +
+          '<td>' + confirmBadge + '</td>' +
           '<td style="white-space:nowrap">' +
           '<button onclick="editHousing(' + h.id + ')" style="padding:4px 10px;background:var(--blue-l);border:0.5px solid var(--blue);border-radius:4px;font-size:11px;cursor:pointer;color:var(--blue);margin-right:4px">Edit</button>' +
           '<button onclick="deleteHousing(' + h.id + ')" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
