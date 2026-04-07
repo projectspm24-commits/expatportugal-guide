@@ -366,7 +366,7 @@ function renderListings(){
   /* Looking posts — compact list */
   if(looking.length){
     html+='<div style="margin-top:1.5rem;margin-bottom:1.5rem">';
-    html+='<div style="font-size:14px;font-weight:500;margin-bottom:10px;color:var(--ink2)">&#128269; People looking for a place ('+looking.length+')</div>';
+    html+='<div style="font-size:14px;font-weight:500;margin-bottom:10px;color:var(--ink2);display:flex;justify-content:space-between;align-items:center">&#128269; People looking for a place ('+looking.length+')<button onclick="document.getElementById(\'looking-section\').scrollIntoView({behavior:\'smooth\'})" style="padding:5px 14px;background:var(--blue);color:white;border:none;border-radius:var(--r);font-size:11px;font-weight:500;cursor:pointer;font-family:Outfit,sans-serif">Post for free &rarr;</button></div>';
     html+=looking.map(function(l){
       var dates='';
       if(l.available)dates+=l.available;
