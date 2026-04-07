@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Payment Successful — ExpatPortugal.guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+:root{--ink:#1c1917;--ink2:#57534e;--ink3:#a8a29e;--cream:#f7f5f0;--warm:#f5f0e8;--card:#fff;--border:rgba(28,25,23,0.08);--border2:rgba(28,25,23,0.16);--red:#c0381a;--green:#15803d;--green-l:#f0fdf4;--r:10px;--rl:16px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Outfit",sans-serif;background:var(--cream);color:var(--ink);font-size:15px;line-height:1.6;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0v60M0 30h60M0 0h60v60H0z' fill='none' stroke='%23d4cfc4' stroke-width='.3'/%3E%3Ccircle cx='30' cy='30' r='8' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='0' cy='0' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='60' cy='0' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='0' cy='60' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='60' cy='60' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3C/svg%3E")}
+.full{max-width:600px;margin:0 auto;padding:2rem}
+.card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:2rem;margin-top:2rem}
+h1{font-family:"Playfair Display",serif;font-size:24px;margin-bottom:6px}
+label{font-size:12px;color:var(--ink2);display:block;margin-bottom:4px;margin-top:14px;font-weight:500}
+input,select,textarea{width:100%;padding:9px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;font-family:"Outfit",sans-serif;background:var(--card);outline:none}
+textarea{height:80px;resize:vertical}
+.btn{padding:12px 24px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:14px;font-weight:500;cursor:pointer;font-family:"Outfit",sans-serif;width:100%;margin-top:18px}
+.btn:hover{background:#a83015}
+.success{display:none;text-align:center;padding:2rem}
+</style>
+</head>
+<body>
+<div class="full">
+  <div style="text-align:center;padding-top:1rem">
+    <div style="font-size:36px;margin-bottom:8px">&#9989;</div>
+    <h1>Payment successful!</h1>
+    <div style="font-size:13px;color:var(--ink2)" id="tier-label">Now fill in your listing details below.</div>
+  </div>
+
+  <div class="card" id="form-card">
+    <div style="font-size:15px;font-weight:500;margin-bottom:4px">Your listing details</div>
+    <div style="font-size:12px;color:var(--ink3);margin-bottom:8px">We'll publish within 24 hours.</div>
+
+    <label>Listing title *</label>
+    <input id="s-title" placeholder="e.g. Sunny 1-bed in Estrela with balcony" />
+
+    <label>City *</label>
+    <select id="s-city">
+      <option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Mafra</option><option>Braga</option><option>Alentejo</option><option>Madeira</option>
+    </select>
+
+    <label>Neighbourhood</label>
+    <input id="s-hood" placeholder="e.g. Estrela, Alfama, Bairro Alto" />
+
+    <label>Apartment type *</label>
+    <select id="s-type">
+      <option value="studio">Studio</option><option value="1bed">1-bedroom</option><option value="2bed">2-bedroom</option><option value="3bed">3+ bedrooms</option><option value="room">Private room</option>
+    </select>
+
+    <label>Monthly rent (&euro;) *</label>
+    <input id="s-rent" type="number" placeholder="1200" />
+
+    <label>Available from *</label>
+    <input id="s-from" type="date" />
+
+    <label>Available until *</label>
+    <input id="s-until" type="date" />
+
+    <label>Description *</label>
+    <textarea id="s-desc" placeholder="Tell people about the place: furnished? wifi? balcony? close to metro? pets ok?"></textarea>
+
+    <label>Your contact email *</label>
+    <input id="s-email" type="email" placeholder="your@email.com" />
+
+    <div id="photo-note" style="margin-top:14px;padding:10px 14px;background:var(--green-l);border-radius:var(--r);font-size:12px;color:var(--green)">
+      &#128247; To add photos, reply to the confirmation email we'll send you with your images attached.
+    </div>
+
+    <div style="margin-top:14px;padding:10px 14px;background:var(--warm);border-radius:var(--r);font-size:11px;color:var(--ink2)">
+      <label style="display:flex;align-items:flex-start;gap:8px;margin:0;cursor:pointer;font-weight:400">
+        <input type="checkbox" id="s-sublet" style="width:auto;margin-top:3px" />
+        <span>If subletting: I confirm I have written permission from my landlord.</span>
+      </label>
+    </div>
+
+    <button class="btn" onclick="submitListing()">Submit listing &rarr;</button>
+  </div>
+
+  <div class="success" id="success-msg">
+    <div style="font-size:36px;margin-bottom:10px">&#127881;</div>
+    <div style="font-size:18px;font-weight:500;margin-bottom:6px">Listing submitted!</div>
+    <div style="font-size:13px;color:var(--ink2);margin-bottom:16px;line-height:1.7">We'll review and publish within 24 hours. You'll receive a confirmation email.<br>Reply to that email to add your photos.</div>
+    <a href="housing.html" style="color:var(--red);font-size:13px;font-weight:500">Back to housing board &rarr;</a>
+  </div>
+</div>
+
+<script>
+var params = new URLSearchParams(window.location.search);
+var tier = params.get('tier') || 'basic';
+var maxPhotos = tier === 'featured' ? 10 : 3;
+document.getElementById('tier-label').textContent = (tier === 'featured' ? 'Featured' : 'Basic') + ' listing — now fill in your details below.';
+document.getElementById('photo-note').innerHTML = '&#128247; You can add up to <b>' + maxPhotos + ' photos</b>. Reply to the confirmation email with your images attached.';
+
+async function submitListing() {
+  var title = document.getElementById('s-title').value.trim();
+  var email = document.getElementById('s-email').value.trim();
+  var rent = document.getElementById('s-rent').value;
+  var from = document.getElementById('s-from').value;
+  var until = document.getElementById('s-until').value;
+  var desc = document.getElementById('s-desc').value.trim();
+  if (!title || !email || !rent || !from || !until) { alert('Please fill in all required fields.'); return; }
+
+  var pr = 'rent:' + rent + '|type:' + document.getElementById('s-type').value + '|available:' + from + '|until:' + until + '|tier:' + tier + '|kind:available';
+  var data = {
+    name: title, type: 'housing', city: document.getElementById('s-city').value,
+    area: document.getElementById('s-hood').value.trim(), reason: desc,
+    url: email, price_range: pr, emoji: '🏠', status: 'pending'
+  };
+
+  try {
+    await fetch('https://waywvckvyizqkuuaecrp.supabase.co/rest/v1/local_businesses', {
+      method: 'POST',
+      headers: {
+        apikey: 'sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b',
+        Authorization: 'Bearer sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b',
+        'Content-Type': 'application/json',
+        Prefer: 'return=minimal'
+      },
+      body: JSON.stringify(data)
+    });
+    document.getElementById('form-card').style.display = 'none';
+    document.getElementById('success-msg').style.display = 'block';
+  } catch(e) {
+    alert('Something went wrong. Please email your details to hello@expatportugal.guide');
+  }
+}
+</script>
+</body>
+</html>
