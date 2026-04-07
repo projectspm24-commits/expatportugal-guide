@@ -11,8 +11,8 @@
     '.mob-link{display:block;padding:12px 14px;font-size:15px;color:#1c1917;border-radius:10px;font-family:"Outfit",sans-serif;text-decoration:none;transition:background .15s}',
     '.mob-link:hover,.mob-link.on{background:#f5f0e8;font-weight:500}',
     '.mob-close{position:absolute;top:16px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:#a8a29e;padding:4px 8px}',
-    '@media(max-width:700px){.ham{display:block}.nav-links{display:none!important}}',
-    '@media(min-width:701px){.mob-menu{display:none!important}}'
+    '@media(max-width:900px){.ham{display:block}.nav-links{display:none!important}}',
+    '@media(min-width:901px){.mob-menu{display:none!important}}'
   ].join('');
   document.head.appendChild(style);
 
