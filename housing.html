@@ -193,6 +193,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
         </div>
       </div>
       <div style="font-size:11px;color:var(--ink3);text-align:center;line-height:1.6">Secure payment via Stripe. After payment you'll fill in your listing details.</div>
+      <div style="font-size:11px;color:var(--red);text-align:center;margin-top:8px;font-weight:500">&#9888; Minimum rental period: 30 days. Shorter stays require an AL licence.</div>
     </div>
   </div>
 
@@ -350,7 +351,8 @@ function renderListings(){
       '<div class="lc-meta">&#128205; '+l.city+(l.hood?', '+l.hood:'')+(dates?' &middot; '+dates:'')+'</div>'+
       '<div class="lc-tags"><span class="lc-tag">'+l.aptType+'</span>'+(l.kind==='looking'?'<span class="lc-tag" style="background:var(--blue-l);color:var(--blue)">Looking</span>':'<span class="lc-tag" style="background:var(--green-l);color:var(--green)">Available</span>')+'</div>'+
       (l.desc?'<div class="lc-desc">'+l.desc+'</div>':'')+
-      '<a class="lc-contact" href="mailto:'+l.contact+'?subject=Housing: '+encodeURIComponent(l.title)+'">Contact &rarr;</a>'+
+      '<div style="font-size:11px;color:var(--ink3);margin-bottom:6px">&#128232; '+l.contact+'</div>'+
+      '<a class="lc-contact" href="mailto:'+l.contact+'?subject='+encodeURIComponent('Housing inquiry: '+l.title)+'&body='+encodeURIComponent('Hi,\n\nI saw your listing \"'+l.title+'\" on ExpatPortugal.guide and I\'m interested.\n\nCould you share more details?\n\nThanks!')+'" target="_blank" rel="noopener">Contact via email &rarr;</a>'+
       '</div></div>';
   }).join('');
 }
@@ -367,6 +369,8 @@ async function postLooking(){
   var email=document.getElementById('lk-email').value.trim();
   var desc=document.getElementById('lk-desc').value.trim();
   if(!title||!city||!budget||!email){alert('Please fill in title, city, budget, and email.');return;}
+  /* Check 30-day minimum if dates provided */
+  if(from&&until){var diff=Math.round((new Date(until)-new Date(from))/86400000);if(diff<30){alert('Minimum period is 30 days. Your dates are '+diff+' days apart.');return;}}
   var pr='rent:'+budget+'|type:any|available:'+(from||'')+'|until:'+(until||'')+'|tier:free|kind:looking|confirmed:'+new Date().toISOString().slice(0,10);
   try{
     await fetch(SB_URL+'/rest/v1/local_businesses',{
@@ -374,6 +378,9 @@ async function postLooking(){
       headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},
       body:JSON.stringify({name:title,type:'housing',city:city,area:'',reason:desc,url:email,price_range:pr,emoji:'🔍',status:'active'})
     });
+    /* Subscribe to newsletter */
+    fetch('https://api.buttondown.com/v1/subscribers',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Token 0ed48c80-0e4d-4916-a3ab-f2aea603cea1'},body:JSON.stringify({email:email,tags:['housing-searcher']})}).catch(function(){});
+    fetch(SB_URL+'/rest/v1/subscribers',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({email:email,region:city,source:'housing-searcher'})}).catch(function(){});
     document.getElementById('looking-form').innerHTML='<div style="text-align:center;padding:1rem"><div style="font-size:24px;margin-bottom:6px">&#9989;</div><div style="font-size:14px;font-weight:500;margin-bottom:4px">Posted!</div><div style="font-size:12px;color:var(--ink2)">Your post is live. Landlords with matching places can now contact you. We\'ll email you weekly to confirm you\'re still looking.</div></div>';
     loadListings();
   }catch(e){alert('Something went wrong. Please try again.');}

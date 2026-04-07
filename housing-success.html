@@ -55,10 +55,11 @@ textarea{height:80px;resize:vertical}
     <input id="s-rent" type="number" placeholder="1200" />
 
     <label>Available from *</label>
-    <input id="s-from" type="date" />
+    <input id="s-from" type="date" onchange="checkDates()" />
 
     <label>Available until *</label>
-    <input id="s-until" type="date" />
+    <input id="s-until" type="date" onchange="checkDates()" />
+    <div id="date-warning" style="display:none;font-size:12px;color:#c0381a;margin-top:4px;font-weight:500"></div>
 
     <label>Description *</label>
     <textarea id="s-desc" placeholder="Tell people about the place: furnished? wifi? balcony? close to metro? pets ok?"></textarea>
@@ -170,6 +171,24 @@ function removePhoto(url, el) {
   document.querySelector('label[for="photo-input"]').style.display = 'inline-block';
 }
 
+var SB_KEY = 'sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b';
+
+function checkDates() {
+  var from = document.getElementById('s-from').value;
+  var until = document.getElementById('s-until').value;
+  var warn = document.getElementById('date-warning');
+  if (!from || !until) { warn.style.display = 'none'; return; }
+  var diff = Math.round((new Date(until) - new Date(from)) / 86400000);
+  if (diff < 30) {
+    warn.style.display = 'block';
+    warn.innerHTML = '&#9888; ' + diff + ' days is less than 30. Minimum period is 30 days. Shorter rentals require an AL licence.';
+    document.getElementById('s-until').style.borderColor = '#c0381a';
+  } else {
+    warn.style.display = 'none';
+    document.getElementById('s-until').style.borderColor = '';
+  }
+}
+
 function toggleOtherCity() {
   var sel = document.getElementById('s-city');
   var other = document.getElementById('s-city-other');
@@ -188,6 +207,15 @@ async function submitListing() {
   var city = cityVal === 'other' ? document.getElementById('s-city-other').value.trim() : cityVal;
   if (!title || !email || !rent || !from || !until || !city) { alert('Please fill in all required fields.'); return; }
 
+  /* 30-day minimum check */
+  var fromDate = new Date(from);
+  var untilDate = new Date(until);
+  var diffDays = Math.round((untilDate - fromDate) / 86400000);
+  if (diffDays < 30) {
+    alert('Minimum rental period is 30 days. Your dates are only ' + diffDays + ' days apart. Short-term rentals under 30 days require an Alojamento Local (AL) licence.');
+    return;
+  }
+
   var pr = 'rent:' + rent + '|type:' + document.getElementById('s-type').value + '|available:' + from + '|until:' + until + '|tier:' + tier + '|kind:available|confirmed:' + new Date().toISOString().slice(0,10);
   var photos = uploadedPhotoUrls.join(',');
   var data = {
@@ -195,6 +223,18 @@ async function submitListing() {
     area: document.getElementById('s-hood').value.trim(), reason: desc,
     url: email, price_range: pr, address: photos, emoji: '🏠', status: 'active'
   };
+
+  /* Subscribe lister to newsletter for future re-listing */
+  try {
+    fetch('https://api.buttondown.com/v1/subscribers', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Token 0ed48c80-0e4d-4916-a3ab-f2aea603cea1' },
+      body: JSON.stringify({ email: email, tags: ['housing-lister'] })
+    });
+    fetch('https://waywvckvyizqkuuaecrp.supabase.co/rest/v1/subscribers', {
+      method: 'POST', headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ email: email, region: city, source: 'housing-lister' })
+    });
+  } catch(e) {}
 
   try {
     await fetch('https://waywvckvyizqkuuaecrp.supabase.co/rest/v1/local_businesses', {
