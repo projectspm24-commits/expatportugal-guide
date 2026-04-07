@@ -236,6 +236,11 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
   </div>
 </div>
 
+<!-- DETAIL MODAL -->
+<div class="modal-bg" id="detail-modal" onclick="if(event.target===this)closeDetail()">
+  <div class="modal" id="detail-content" style="max-width:560px;position:relative"></div>
+</div>
+
 <footer>
   <div class="fi">
     <div style="margin-bottom:12px">&#127477;&#127481; ExpatPortugal.guide &middot; <a href="index.html" style="color:rgba(255,255,255,0.7)">Home</a> &middot; <a href="directory.html" style="color:rgba(255,255,255,0.7)">Directory</a> &middot; <a href="calendar.html" style="color:rgba(255,255,255,0.7)">Events</a></div>
@@ -333,28 +338,71 @@ function renderListings(){
     if(photos.length>1){
       imgHTML='<div style="display:flex;gap:2px;height:160px;overflow:hidden;border-radius:var(--rl) var(--rl) 0 0">';
       imgHTML+='<img src="'+photos[0]+'" style="flex:2;object-fit:cover;min-width:0" onerror="this.style.display=\'none\'" />';
-      if(photos.length>1)imgHTML+='<div style="flex:1;display:flex;flex-direction:column;gap:2px;min-width:0">';
+      imgHTML+='<div style="flex:1;display:flex;flex-direction:column;gap:2px;min-width:0">';
       photos.slice(1,3).forEach(function(p){imgHTML+='<img src="'+p+'" style="flex:1;object-fit:cover;min-width:0" onerror="this.style.display=\'none\'" />';});
       if(photos.length>3)imgHTML+='<div style="flex:1;background:var(--warm);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink3)">+' + (photos.length-3) + ' more</div>';
-      if(photos.length>1)imgHTML+='</div>';
-      imgHTML+='</div>';
+      imgHTML+='</div></div>';
     } else if(photos.length===1){
       imgHTML='<img class="lc-img" src="'+photos[0]+'" alt="" onerror="this.style.display=\'none\'" />';
     }
     var dates='';
     if(l.available)dates+='From '+l.available;
     if(l.until)dates+=' to '+l.until;
-    return '<div class="lc'+(isFeat?' featured':'')+'">'+(isFeat?'<div class="lc-feat-badge">&#11088; Featured</div>':'')+imgHTML+
+    return '<div class="lc'+(isFeat?' featured':'')+'" onclick="showDetail('+l.id+')" style="cursor:pointer">'+(isFeat?'<div class="lc-feat-badge">&#11088; Featured</div>':'')+imgHTML+
       '<div class="lc-body">'+
       '<div class="lc-price">&euro;'+l.rent.toLocaleString()+' <span>/month</span></div>'+
       '<div class="lc-title">'+l.title+'</div>'+
       '<div class="lc-meta">&#128205; '+l.city+(l.hood?', '+l.hood:'')+(dates?' &middot; '+dates:'')+'</div>'+
       '<div class="lc-tags"><span class="lc-tag">'+l.aptType+'</span>'+(l.kind==='looking'?'<span class="lc-tag" style="background:var(--blue-l);color:var(--blue)">Looking</span>':'<span class="lc-tag" style="background:var(--green-l);color:var(--green)">Available</span>')+'</div>'+
-      (l.desc?'<div class="lc-desc">'+l.desc+'</div>':'')+
-      '<div style="font-size:11px;color:var(--ink3);margin-bottom:6px">&#128232; '+l.contact+'</div>'+
-      '<a class="lc-contact" href="mailto:'+l.contact+'?subject='+encodeURIComponent('Housing inquiry: '+l.title)+'&body='+encodeURIComponent('Hi,\n\nI saw your listing \"'+l.title+'\" on ExpatPortugal.guide and I\'m interested.\n\nCould you share more details?\n\nThanks!')+'" target="_blank" rel="noopener">Contact via email &rarr;</a>'+
+      (l.desc?'<div class="lc-desc" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">'+l.desc+'</div>':'')+
+      '<div style="font-size:12px;color:var(--red);font-weight:500;margin-top:8px">View details &rarr;</div>'+
       '</div></div>';
   }).join('');
+}
+
+function showDetail(id){
+  var l=allListings.find(function(x){return x.id===id;});
+  if(!l)return;
+  var photos=l.img?l.img.split(',').filter(Boolean):[];
+  var dates='';
+  if(l.available)dates+='From '+l.available;
+  if(l.until)dates+=' to '+l.until;
+  var diffDays=l.available&&l.until?Math.round((new Date(l.until)-new Date(l.available))/86400000):0;
+
+  var galleryHTML='';
+  if(photos.length){
+    galleryHTML='<div style="display:flex;gap:4px;overflow-x:auto;margin-bottom:14px;border-radius:var(--r)">';
+    photos.forEach(function(p){
+      galleryHTML+='<img src="'+p+'" style="height:200px;border-radius:var(--r);object-fit:cover;flex-shrink:0" onclick="window.open(\''+p+'\',\'_blank\')" />';
+    });
+    galleryHTML+='</div>';
+  }
+
+  document.getElementById('detail-content').innerHTML=
+    '<button onclick="closeDetail()" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--ink3)">&times;</button>'+
+    galleryHTML+
+    (l.tier==='featured'?'<div style="display:inline-block;background:var(--amber-l);color:var(--amber);font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500;margin-bottom:8px">&#11088; Featured listing</div>':'')+
+    '<div style="font-family:\'Playfair Display\',serif;font-size:24px;margin-bottom:2px">&euro;'+l.rent.toLocaleString()+' <span style="font-size:14px;font-family:Outfit,sans-serif;color:var(--ink3);font-weight:400">/month</span></div>'+
+    '<div style="font-size:16px;font-weight:500;margin-bottom:6px">'+l.title+'</div>'+
+    '<div style="font-size:13px;color:var(--ink3);margin-bottom:14px;line-height:1.7">'+
+    '&#128205; '+l.city+(l.hood?', '+l.hood:'')+'<br>'+
+    '&#128197; '+(dates||'Dates flexible')+(diffDays?' &middot; '+diffDays+' days':'')+'<br>'+
+    '&#127968; '+l.aptType+
+    '</div>'+
+    (l.desc?'<div style="font-size:13px;color:var(--ink2);line-height:1.7;margin-bottom:16px;white-space:pre-line">'+l.desc+'</div>':'')+
+    '<a style="display:block;width:100%;padding:12px;text-align:center;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:14px;font-weight:500;font-family:Outfit,sans-serif" href="mailto:'+l.contact+'?subject='+encodeURIComponent('Housing inquiry: '+l.title)+'&body='+encodeURIComponent('Hi,\n\nI saw your listing \"'+l.title+'\" (€'+l.rent+'/mo in '+l.city+') on ExpatPortugal.guide and I\'m interested.\n\nCould you share more details?\n\nThanks!')+'" target="_blank" rel="noopener">&#128232; Contact via email &rarr;</a>'+
+    '<div style="font-size:11px;color:var(--ink3);text-align:center;margin-top:6px">'+l.contact+'</div>';
+
+  var m=document.getElementById('detail-modal');
+  m.style.display='flex';
+  requestAnimationFrame(function(){requestAnimationFrame(function(){m.classList.add('open');m.classList.add('show');});});
+  document.body.style.overflow='hidden';
+}
+
+function closeDetail(){
+  var m=document.getElementById('detail-modal');
+  m.classList.remove('show');m.classList.remove('open');
+  setTimeout(function(){m.style.display='none';document.body.style.overflow='';},500);
 }
 
 function setAvail(v,el){availFilter=v;document.querySelectorAll('.filter-bar .fb').forEach(function(b){b.classList.remove('on');});el.classList.add('on');renderListings();}
