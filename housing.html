@@ -118,6 +118,21 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
       <option value="1200-1800">&euro;1,200&ndash;&euro;1,800</option>
       <option value="1800-99999">&euro;1,800+</option>
     </select>
+    <select class="fsel" id="f-when" onchange="renderListings()">
+      <option value="all">Any dates</option>
+      <option value="now">Available now</option>
+      <option value="2026-05">May 2026</option>
+      <option value="2026-06">June 2026</option>
+      <option value="2026-07">July 2026</option>
+      <option value="2026-08">August 2026</option>
+      <option value="2026-09">September 2026</option>
+      <option value="2026-10">October 2026</option>
+      <option value="2026-11">November 2026</option>
+      <option value="2026-12">December 2026</option>
+      <option value="2027-01">January 2027</option>
+      <option value="2027-02">February 2027</option>
+      <option value="2027-03">March 2027</option>
+    </select>
   </div>
 
   <div class="filter-bar">
@@ -219,12 +234,29 @@ function renderListings(){
   var city=document.getElementById('f-city').value;
   var type=document.getElementById('f-type').value;
   var budget=document.getElementById('f-budget').value;
+  var when=document.getElementById('f-when').value;
   var filtered=allListings.slice();
 
   if(availFilter!=='all')filtered=filtered.filter(function(l){return l.kind===availFilter;});
   if(city!=='all')filtered=filtered.filter(function(l){return l.city===city;});
   if(type!=='all')filtered=filtered.filter(function(l){return l.aptType===type;});
   if(budget!=='all'){var parts=budget.split('-');var min=parseInt(parts[0]);var max=parseInt(parts[1]);filtered=filtered.filter(function(l){return l.rent>=min&&l.rent<=max;});}
+  if(when!=='all'){
+    if(when==='now'){
+      var today=new Date().toISOString().slice(0,10);
+      filtered=filtered.filter(function(l){return !l.available||l.available<=today;});
+    } else {
+      /* when = '2026-05' etc. Show listings available during that month */
+      var monthStart=when+'-01';
+      var parts2=when.split('-');var y=parseInt(parts2[0]);var m=parseInt(parts2[1]);
+      var monthEnd=y+'-'+String(m).padStart(2,'0')+'-'+new Date(y,m,0).getDate();
+      filtered=filtered.filter(function(l){
+        var from=l.available||'2000-01-01';
+        var to=l.until||'2099-12-31';
+        return from<=monthEnd&&to>=monthStart;
+      });
+    }
+  }
 
   // Featured first, then by rent
   filtered.sort(function(a,b){if(a.tier==='featured'&&b.tier!=='featured')return -1;if(b.tier==='featured'&&a.tier!=='featured')return 1;return a.rent-b.rent;});
