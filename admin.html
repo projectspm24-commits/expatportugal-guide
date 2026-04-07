@@ -1549,6 +1549,7 @@ async function loadHousing() {
           '<td style="font-size:11px"><div>' + listedDate + '</div><div style="color:var(--ink3)">' + listedLabel + '</div></td>' +
           '<td>' + confirmBadge + '</td>' +
           '<td style="white-space:nowrap">' +
+          (h.status!=='active'?'<button onclick="pushLive(' + h.id + ')" style="padding:4px 10px;background:var(--green-l);border:0.5px solid var(--green);border-radius:4px;font-size:11px;cursor:pointer;color:var(--green);margin-right:4px">Push live</button>':'') +
           '<button onclick="editHousing(' + h.id + ')" style="padding:4px 10px;background:var(--blue-l);border:0.5px solid var(--blue);border-radius:4px;font-size:11px;cursor:pointer;color:var(--blue);margin-right:4px">Edit</button>' +
           '<button onclick="deleteHousing(' + h.id + ')" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
           '</td></tr>';
@@ -1635,6 +1636,11 @@ function editHousing(id) {
 async function deleteHousing(id) {
   if (!confirm('Delete this listing?')) return;
   await sb('local_businesses?id=eq.' + id, { method: 'DELETE' });
+  loadHousing();
+}
+
+async function pushLive(id) {
+  await sb('local_businesses?id=eq.' + id, { method: 'PATCH', body: { status: 'active' } });
   loadHousing();
 }
 
