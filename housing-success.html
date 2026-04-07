@@ -66,8 +66,12 @@ textarea{height:80px;resize:vertical}
     <label>Your contact email *</label>
     <input id="s-email" type="email" placeholder="your@email.com" />
 
-    <div id="photo-note" style="margin-top:14px;padding:10px 14px;background:var(--green-l);border-radius:var(--r);font-size:12px;color:var(--green)">
-      &#128247; To add photos, reply to the confirmation email we'll send you with your images attached.
+    <div id="photo-section" style="margin-top:14px">
+      <label>Photos <span id="photo-limit-label">(up to 3)</span></label>
+      <div id="photo-previews" style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0"></div>
+      <label for="photo-input" style="display:inline-block;padding:10px 18px;background:var(--green-l);color:var(--green);border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;border:0.5px solid rgba(21,128,61,0.15)">&#128247; Add photos</label>
+      <input type="file" id="photo-input" accept="image/*" multiple onchange="handlePhotos(this)" style="display:none" />
+      <div style="font-size:11px;color:var(--ink3);margin-top:6px">Max 5MB per photo. JPG or PNG.</div>
     </div>
 
     <div style="margin-top:14px;padding:10px 14px;background:var(--warm);border-radius:var(--r);font-size:11px;color:var(--ink2)">
@@ -83,7 +87,7 @@ textarea{height:80px;resize:vertical}
   <div class="success" id="success-msg">
     <div style="font-size:36px;margin-bottom:10px">&#127881;</div>
     <div style="font-size:18px;font-weight:500;margin-bottom:6px">Listing submitted!</div>
-    <div style="font-size:13px;color:var(--ink2);margin-bottom:16px;line-height:1.7">We'll review and publish within 24 hours. You'll receive a confirmation email.<br>Reply to that email to add your photos.</div>
+    <div style="font-size:13px;color:var(--ink2);margin-bottom:16px;line-height:1.7">Your listing is live on the housing board now!<br>Landlords and expats can see it immediately.</div>
     <a href="housing.html" style="color:var(--red);font-size:13px;font-weight:500">Back to housing board &rarr;</a>
   </div>
 </div>
@@ -93,7 +97,78 @@ var params = new URLSearchParams(window.location.search);
 var tier = params.get('tier') || 'basic';
 var maxPhotos = tier === 'featured' ? 10 : 3;
 document.getElementById('tier-label').textContent = (tier === 'featured' ? 'Featured' : 'Basic') + ' listing — now fill in your details below.';
-document.getElementById('photo-note').innerHTML = '&#128247; You can add up to <b>' + maxPhotos + ' photos</b>. Reply to the confirmation email with your images attached.';
+document.getElementById('photo-limit-label').textContent = '(up to ' + maxPhotos + ')';
+
+var uploadedPhotoUrls = [];
+var SB_URL = 'https://waywvckvyizqkuuaecrp.supabase.co';
+var SB_KEY = 'sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b';
+
+function handlePhotos(input) {
+  var files = Array.from(input.files);
+  if (uploadedPhotoUrls.length + files.length > maxPhotos) {
+    alert('Maximum ' + maxPhotos + ' photos allowed. You have ' + uploadedPhotoUrls.length + ' already.');
+    return;
+  }
+  files.forEach(function(file) {
+    if (file.size > 5 * 1024 * 1024) { alert(file.name + ' is too large (max 5MB)'); return; }
+    if (uploadedPhotoUrls.length >= maxPhotos) return;
+    uploadPhoto(file);
+  });
+  input.value = '';
+}
+
+async function uploadPhoto(file) {
+  var fileName = Date.now() + '-' + Math.random().toString(36).slice(2, 8) + '.' + file.name.split('.').pop();
+  var previews = document.getElementById('photo-previews');
+  
+  /* Show loading preview */
+  var div = document.createElement('div');
+  div.style.cssText = 'width:80px;height:80px;border-radius:8px;background:var(--warm);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--ink3);position:relative;overflow:hidden';
+  div.textContent = 'Uploading...';
+  div.id = 'preview-' + fileName;
+  previews.appendChild(div);
+
+  try {
+    var res = await fetch(SB_URL + '/storage/v1/object/housing-photos/' + fileName, {
+      method: 'POST',
+      headers: {
+        apikey: SB_KEY,
+        Authorization: 'Bearer ' + SB_KEY,
+        'Content-Type': file.type,
+        'x-upsert': 'true'
+      },
+      body: file
+    });
+
+    if (res.ok) {
+      var url = SB_URL + '/storage/v1/object/public/housing-photos/' + fileName;
+      uploadedPhotoUrls.push(url);
+      div.innerHTML = '<img src="' + url + '" style="width:100%;height:100%;object-fit:cover" />' +
+        '<button onclick="removePhoto(\'' + url + '\',this.parentElement)" style="position:absolute;top:2px;right:2px;background:rgba(0,0,0,0.6);color:white;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;line-height:1">&times;</button>';
+    } else {
+      div.textContent = 'Error';
+      div.style.color = 'var(--red)';
+      setTimeout(function() { div.remove(); }, 2000);
+    }
+  } catch(e) {
+    div.textContent = 'Error';
+    div.style.color = 'var(--red)';
+    setTimeout(function() { div.remove(); }, 2000);
+  }
+
+  /* Update label */
+  document.getElementById('photo-limit-label').textContent = '(' + uploadedPhotoUrls.length + '/' + maxPhotos + ')';
+  if (uploadedPhotoUrls.length >= maxPhotos) {
+    document.querySelector('label[for="photo-input"]').style.display = 'none';
+  }
+}
+
+function removePhoto(url, el) {
+  uploadedPhotoUrls = uploadedPhotoUrls.filter(function(u) { return u !== url; });
+  el.remove();
+  document.getElementById('photo-limit-label').textContent = '(' + uploadedPhotoUrls.length + '/' + maxPhotos + ')';
+  document.querySelector('label[for="photo-input"]').style.display = 'inline-block';
+}
 
 function toggleOtherCity() {
   var sel = document.getElementById('s-city');
@@ -113,11 +188,12 @@ async function submitListing() {
   var city = cityVal === 'other' ? document.getElementById('s-city-other').value.trim() : cityVal;
   if (!title || !email || !rent || !from || !until || !city) { alert('Please fill in all required fields.'); return; }
 
-  var pr = 'rent:' + rent + '|type:' + document.getElementById('s-type').value + '|available:' + from + '|until:' + until + '|tier:' + tier + '|kind:available';
+  var pr = 'rent:' + rent + '|type:' + document.getElementById('s-type').value + '|available:' + from + '|until:' + until + '|tier:' + tier + '|kind:available|confirmed:' + new Date().toISOString().slice(0,10);
+  var photos = uploadedPhotoUrls.join(',');
   var data = {
     name: title, type: 'housing', city: city,
     area: document.getElementById('s-hood').value.trim(), reason: desc,
-    url: email, price_range: pr, emoji: '🏠', status: 'active'
+    url: email, price_range: pr, address: photos, emoji: '🏠', status: 'active'
   };
 
   try {
