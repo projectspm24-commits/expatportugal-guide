@@ -142,7 +142,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
     <button class="fb" onclick="setAvail('looking',this)">&#128269; Looking for a place</button>
   </div>
 
-  <div class="listings" id="listings">
+  <div id="listings"></div>
     <div style="grid-column:1/-1;text-align:center;padding:3rem;background:var(--card);border-radius:var(--rl)">
       <div style="font-size:28px;margin-bottom:8px">&#127968;</div>
       <div style="font-size:15px;font-weight:500;margin-bottom:4px">The housing board is launching soon</div>
@@ -326,39 +326,72 @@ function renderListings(){
   filtered.sort(function(a,b){if(a.tier==='featured'&&b.tier!=='featured')return -1;if(b.tier==='featured'&&a.tier!=='featured')return 1;return a.rent-b.rent;});
 
   var el=document.getElementById('listings');
-  if(!filtered.length){
+  
+  var available=filtered.filter(function(l){return l.kind!=='looking';});
+  var looking=filtered.filter(function(l){return l.kind==='looking';});
+  
+  var html='';
+  
+  if(!available.length && !looking.length){
     el.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:3rem;background:var(--card);border-radius:var(--rl)"><div style="font-size:28px;margin-bottom:8px">&#127968;</div><div style="font-size:15px;font-weight:500;margin-bottom:4px">The housing board is launching soon</div><div style="font-size:13px;color:var(--ink3);margin-bottom:14px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.7">Be among the first to list your place or find your next home.</div><button class="hero-btn" onclick="openPricing()">List your place now &darr;</button></div>';
     return;
   }
 
-  el.innerHTML=filtered.map(function(l){
-    var isFeat=l.tier==='featured';
-    var photos=l.img?l.img.split(',').filter(Boolean):[];
-    var imgHTML='';
-    if(photos.length>1){
-      imgHTML='<div style="display:flex;gap:2px;height:160px;overflow:hidden;border-radius:var(--rl) var(--rl) 0 0">';
-      imgHTML+='<img src="'+photos[0]+'" style="flex:2;object-fit:cover;min-width:0" onerror="this.style.display=\'none\'" />';
-      imgHTML+='<div style="flex:1;display:flex;flex-direction:column;gap:2px;min-width:0">';
-      photos.slice(1,3).forEach(function(p){imgHTML+='<img src="'+p+'" style="flex:1;object-fit:cover;min-width:0" onerror="this.style.display=\'none\'" />';});
-      if(photos.length>3)imgHTML+='<div style="flex:1;background:var(--warm);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink3)">+' + (photos.length-3) + ' more</div>';
-      imgHTML+='</div></div>';
-    } else if(photos.length===1){
-      imgHTML='<img class="lc-img" src="'+photos[0]+'" alt="" onerror="this.style.display=\'none\'" />';
-    }
-    var dates='';
-    if(l.available)dates+='From '+l.available;
-    if(l.until)dates+=' to '+l.until;
-    return '<div class="lc'+(isFeat?' featured':'')+'" onclick="showDetail('+l.id+')" style="cursor:pointer">'+(isFeat?'<div class="lc-feat-badge">&#11088; Featured</div>':'')+imgHTML+
-      '<div class="lc-body">'+
-      '<div class="lc-price">&euro;'+l.rent.toLocaleString()+' <span>/month</span></div>'+
-      '<div class="lc-title">'+l.title+'</div>'+
-      '<div class="lc-meta">&#128205; '+l.city+(l.hood?', '+l.hood:'')+(dates?' &middot; '+dates:'')+'</div>'+
-      '<div class="lc-tags"><span class="lc-tag">'+l.aptType+'</span>'+(l.kind==='looking'?'<span class="lc-tag" style="background:var(--blue-l);color:var(--blue)">Looking</span>':'<span class="lc-tag" style="background:var(--green-l);color:var(--green)">Available</span>')+'</div>'+
-      (l.desc?'<div class="lc-desc" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">'+l.desc+'</div>':'')+
-      '<div style="font-size:12px;color:var(--red);font-weight:500;margin-top:8px">View details &rarr;</div>'+
-      '</div></div>';
-  }).join('');
-}
+  /* Available listings — grid cards */
+  if(available.length){
+    html+='<div class="listings">';
+    html+=available.map(function(l){
+      var isFeat=l.tier==='featured';
+      var photos=l.img?l.img.split(',').filter(Boolean):[];
+      var imgHTML='';
+      if(photos.length>1){
+        imgHTML='<div style="display:flex;gap:2px;height:160px;overflow:hidden;border-radius:var(--rl) var(--rl) 0 0">';
+        imgHTML+='<img src="'+photos[0]+'" style="flex:2;object-fit:cover;min-width:0" onerror="this.style.display=\'none\'" />';
+        imgHTML+='<div style="flex:1;display:flex;flex-direction:column;gap:2px;min-width:0">';
+        photos.slice(1,3).forEach(function(p){imgHTML+='<img src="'+p+'" style="flex:1;object-fit:cover;min-width:0" onerror="this.style.display=\'none\'" />';});
+        if(photos.length>3)imgHTML+='<div style="flex:1;background:var(--warm);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink3)">+' + (photos.length-3) + ' more</div>';
+        imgHTML+='</div></div>';
+      } else if(photos.length===1){
+        imgHTML='<img class="lc-img" src="'+photos[0]+'" alt="" onerror="this.style.display=\'none\'" />';
+      }
+      var dates='';
+      if(l.available)dates+='From '+l.available;
+      if(l.until)dates+=' to '+l.until;
+      return '<div class="lc'+(isFeat?' featured':'')+'" onclick="showDetail('+l.id+')" style="cursor:pointer">'+(isFeat?'<div class="lc-feat-badge">&#11088; Featured</div>':'')+imgHTML+
+        '<div class="lc-body">'+
+        '<div class="lc-price">&euro;'+l.rent.toLocaleString()+' <span>/month</span></div>'+
+        '<div class="lc-title">'+l.title+'</div>'+
+        '<div class="lc-meta">&#128205; '+l.city+(l.hood?', '+l.hood:'')+(dates?' &middot; '+dates:'')+'</div>'+
+        '<div class="lc-tags"><span class="lc-tag">'+l.aptType+'</span><span class="lc-tag" style="background:var(--green-l);color:var(--green)">Available</span></div>'+
+        (l.desc?'<div class="lc-desc" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">'+l.desc+'</div>':'')+
+        '<div style="font-size:12px;color:var(--red);font-weight:500;margin-top:8px">View details &rarr;</div>'+
+        '</div></div>';
+    }).join('');
+    html+='</div>';
+  }
+
+  /* Looking posts — compact list */
+  if(looking.length){
+    html+='<div style="margin-top:1.5rem;margin-bottom:1.5rem">';
+    html+='<div style="font-size:14px;font-weight:500;margin-bottom:10px;color:var(--ink2)">&#128269; People looking for a place ('+looking.length+')</div>';
+    html+=looking.map(function(l){
+      var dates='';
+      if(l.available)dates+=l.available;
+      if(l.until)dates+=' to '+l.until;
+      return '<div style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--r);padding:12px 16px;margin-bottom:6px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .15s" onclick="showDetail('+l.id+')" onmouseover="this.style.borderColor=\'var(--border2)\'" onmouseout="this.style.borderColor=\'var(--border)\'">' +
+        '<div style="font-size:20px;flex-shrink:0">&#128269;</div>'+
+        '<div style="flex:1;min-width:0">'+
+        '<div style="font-size:13px;font-weight:500">'+l.title+'</div>'+
+        '<div style="font-size:12px;color:var(--ink3)">&#128205; '+l.city+(dates?' &middot; '+dates:'')+' &middot; Budget: &euro;'+l.rent.toLocaleString()+'/mo</div>'+
+        (l.desc?'<div style="font-size:12px;color:var(--ink2);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+l.desc+'</div>':'')+
+        '</div>'+
+        '<div style="font-size:11px;color:var(--red);font-weight:500;flex-shrink:0">Details &rarr;</div>'+
+        '</div>';
+    }).join('');
+    html+='</div>';
+  }
+
+  el.innerHTML=html;
 
 function showDetail(id){
   var l=allListings.find(function(x){return x.id===id;});
