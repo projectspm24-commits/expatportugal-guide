@@ -233,13 +233,6 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
   <div class="disc">
     <b>&#9888;&#65039; Important:</b> This board is for medium-term rentals (30+ days) only. Short-term tourist rentals require an Alojamento Local (AL) licence. If you are subletting, Portuguese law requires written permission from your landlord, and you may not charge more than 120% of your own rent. ExpatPortugal.guide is a classifieds board only &mdash; we do not verify listings, handle payments, or act as party to any rental agreement. Always sign a written contract and verify the landlord's right to rent the property.
   </div>
-
-  <!-- LOOKING FOR A PLACE (free) -->
-  <div style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.5rem;margin-bottom:2rem">
-    <div style="font-size:15px;font-weight:500;margin-bottom:4px">&#128269; Looking for a place? Post free</div>
-    <div style="font-size:12px;color:var(--ink2);margin-bottom:12px;line-height:1.6">Let landlords find you. Post what you're looking for &mdash; city, budget, dates &mdash; and people with available places can contact you directly. Always free.</div>
-    <a class="hero-btn" style="font-size:12px;padding:8px 18px" href="mailto:hello@expatportugal.guide?subject=Looking for housing&body=What I'm looking for:%0ACity / area:%0ABudget (per month):%0ADates (from - to):%0AAbout me (couple/solo/family, where from):%0AContact email:">Post your search (free) &rarr;</a>
-  </div>
 </div>
 
 <footer>
@@ -328,7 +321,7 @@ function renderListings(){
 
   var el=document.getElementById('listings');
   if(!filtered.length){
-    el.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:3rem;background:var(--card);border-radius:var(--rl)"><div style="font-size:28px;margin-bottom:8px">&#127968;</div><div style="font-size:15px;font-weight:500;margin-bottom:4px">The housing board is launching soon</div><div style="font-size:13px;color:var(--ink3);margin-bottom:14px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.7">Be among the first to list your place or find your next home.</div><a class="hero-btn" href="#list-your-place">List your place now &darr;</a></div>';
+    el.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:3rem;background:var(--card);border-radius:var(--rl)"><div style="font-size:28px;margin-bottom:8px">&#127968;</div><div style="font-size:15px;font-weight:500;margin-bottom:4px">The housing board is launching soon</div><div style="font-size:13px;color:var(--ink3);margin-bottom:14px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.7">Be among the first to list your place or find your next home.</div><button class="hero-btn" onclick="openPricing()">List your place now &darr;</button></div>';
     return;
   }
 
