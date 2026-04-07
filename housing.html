@@ -196,8 +196,31 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
     </div>
   </div>
 
-  <!-- LOOKING FOR A PLACE (free) — still visible on page -->
-  <div id="list-your-place" style="padding-top:1rem">
+  <!-- LOOKING FOR A PLACE (free) -->
+  <div style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.5rem;margin-bottom:1.5rem" id="looking-section">
+    <div style="font-size:15px;font-weight:500;margin-bottom:4px">&#128269; Looking for a place? Post free</div>
+    <div style="font-size:12px;color:var(--ink2);margin-bottom:14px;line-height:1.6">Let landlords find you. Describe what you need and people with available places can contact you. Free, goes live instantly. Auto-refreshes weekly.</div>
+    <div id="looking-form">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+        <input id="lk-title" type="text" placeholder="e.g. Couple looking for 2-bed *" style="padding:9px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+        <select id="lk-city" style="padding:9px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;font-family:'Outfit',sans-serif;background:var(--cream)" onchange="document.getElementById('lk-city-other').style.display=this.value==='other'?'block':'none'">
+          <option value="">City *</option><option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Mafra</option><option>Braga</option><option>Alentejo</option><option>Madeira</option><option value="other">Other...</option>
+        </select>
+      </div>
+      <input id="lk-city-other" type="text" placeholder="City name" style="display:none;width:100%;padding:9px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream);margin-bottom:8px" />
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">
+        <input id="lk-budget" type="number" placeholder="Budget €/mo *" style="padding:9px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+        <input id="lk-from" type="date" title="From date" style="padding:9px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+        <input id="lk-until" type="date" title="Until date" style="padding:9px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+      </div>
+      <input id="lk-email" type="email" placeholder="Your contact email *" style="width:100%;padding:9px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream);margin-bottom:8px" />
+      <input id="lk-desc" type="text" placeholder="About you & what you need (couple, solo, family, pets, etc.)" style="width:100%;padding:9px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream);margin-bottom:10px" />
+      <button onclick="postLooking()" style="padding:10px 20px;background:var(--blue);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif">Post for free &rarr;</button>
+    </div>
+  </div>
+
+  <!-- Have a place CTA -->
+  <div id="list-your-place" style="padding-top:0">
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:1rem">
       <div>
         <div style="font-family:'Playfair Display',serif;font-size:18px;margin-bottom:2px">Have a place to list?</div>
@@ -328,6 +351,28 @@ function renderListings(){
 }
 
 function setAvail(v,el){availFilter=v;document.querySelectorAll('.filter-bar .fb').forEach(function(b){b.classList.remove('on');});el.classList.add('on');renderListings();}
+
+async function postLooking(){
+  var title=document.getElementById('lk-title').value.trim();
+  var cityVal=document.getElementById('lk-city').value;
+  var city=cityVal==='other'?document.getElementById('lk-city-other').value.trim():cityVal;
+  var budget=document.getElementById('lk-budget').value;
+  var from=document.getElementById('lk-from').value;
+  var until=document.getElementById('lk-until').value;
+  var email=document.getElementById('lk-email').value.trim();
+  var desc=document.getElementById('lk-desc').value.trim();
+  if(!title||!city||!budget||!email){alert('Please fill in title, city, budget, and email.');return;}
+  var pr='rent:'+budget+'|type:any|available:'+(from||'')+'|until:'+(until||'')+'|tier:free|kind:looking|confirmed:'+new Date().toISOString().slice(0,10);
+  try{
+    await fetch(SB_URL+'/rest/v1/local_businesses',{
+      method:'POST',
+      headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},
+      body:JSON.stringify({name:title,type:'housing',city:city,area:'',reason:desc,url:email,price_range:pr,emoji:'🔍',status:'active'})
+    });
+    document.getElementById('looking-form').innerHTML='<div style="text-align:center;padding:1rem"><div style="font-size:24px;margin-bottom:6px">&#9989;</div><div style="font-size:14px;font-weight:500;margin-bottom:4px">Posted!</div><div style="font-size:12px;color:var(--ink2)">Your post is live. Landlords with matching places can now contact you. We\'ll email you weekly to confirm you\'re still looking.</div></div>';
+    loadListings();
+  }catch(e){alert('Something went wrong. Please try again.');}
+}
 
 function openPricing(){
   var m=document.getElementById('pricing-modal');
