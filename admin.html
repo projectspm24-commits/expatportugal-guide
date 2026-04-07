@@ -540,7 +540,21 @@ tr:hover td{background:var(--warm)}
         </div>
       </div>
       <div class="section-card">
-        <div class="sc-header"><div class="sc-title">All housing listings</div></div>
+        <div class="sc-header">
+          <div class="sc-title">All housing listings</div>
+          <div class="sc-actions" style="display:flex;gap:6px">
+            <select id="h-filter-tier" class="btn" style="border:0.5px solid var(--border2);font-size:11px;padding:4px 10px" onchange="loadHousing()">
+              <option value="">All tiers</option>
+              <option value="featured">Featured</option>
+              <option value="basic">Basic</option>
+              <option value="free">Free (looking)</option>
+            </select>
+            <select id="h-filter-sort" class="btn" style="border:0.5px solid var(--border2);font-size:11px;padding:4px 10px" onchange="loadHousing()">
+              <option value="newest">Newest first</option>
+              <option value="oldest">Oldest first</option>
+            </select>
+          </div>
+        </div>
         <div id="housing-table"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
       </div>
     </div>
@@ -1477,35 +1491,63 @@ var editHousingId = null;
 
 async function loadHousing() {
   try {
-    var items = await sb('local_businesses?type=eq.housing&order=name.asc&limit=100');
+    var items = await sb('local_businesses?type=eq.housing&order=created_at.desc&limit=100');
     allHousingAdmin = items;
+    
+    /* Apply tier filter */
+    var tierFilter = document.getElementById('h-filter-tier').value;
+    var filtered = items;
+    if (tierFilter) {
+      filtered = items.filter(function(h) {
+        var pr = {};
+        (h.price_range || '').split('|').forEach(function(p) { var kv = p.split(':'); if(kv.length>=2) pr[kv[0]] = kv.slice(1).join(':'); });
+        var tier = pr.tier || 'free';
+        if (tierFilter === 'free') return tier !== 'basic' && tier !== 'featured';
+        return tier === tierFilter;
+      });
+    }
+    
+    /* Apply sort */
+    var sortOrder = document.getElementById('h-filter-sort').value;
+    filtered.sort(function(a, b) {
+      var da = new Date(a.created_at || 0).getTime();
+      var db = new Date(b.created_at || 0).getTime();
+      return sortOrder === 'oldest' ? da - db : db - da;
+    });
+    
     var el = document.getElementById('housing-table');
-    if (!items.length) {
-      el.innerHTML = '<div class="empty"><div class="empty-icon">&#127968;</div>No housing listings yet.</div>';
+    if (!filtered.length) {
+      el.innerHTML = '<div class="empty"><div class="empty-icon">&#127968;</div>No housing listings' + (tierFilter ? ' for this filter' : ' yet') + '.</div>';
       return;
     }
-    el.innerHTML = '<table><thead><tr><th>Listing</th><th>City</th><th>Rent</th><th>Tier</th><th>Status</th><th>Last confirmed</th><th>Actions</th></tr></thead><tbody>' +
-      items.map(function(h) {
+    el.innerHTML = '<table><thead><tr><th>Listing</th><th>City</th><th>Rent</th><th>Tier</th><th>Status</th><th>Listed</th><th>Last confirmed</th><th>Actions</th></tr></thead><tbody>' +
+      filtered.map(function(h) {
         var pr = {};
         (h.price_range || '').split('|').forEach(function(p) { var kv = p.split(':'); if(kv.length>=2) pr[kv[0]] = kv.slice(1).join(':'); });
         var confirmed = pr.confirmed || 'never';
         var daysSince = confirmed !== 'never' ? Math.floor((Date.now() - new Date(confirmed).getTime()) / 86400000) : 999;
-        var isFree = pr.tier !== 'basic' && pr.tier !== 'featured';
+        var tier = pr.tier || 'free';
+        var isFree = tier !== 'basic' && tier !== 'featured';
         var needsAttention = (isFree && daysSince > 7) || (!isFree && daysSince > 30);
         var confirmBadge = confirmed === 'never' ? '<span style="color:var(--ink3);font-size:11px">Never</span>' :
           '<span style="font-size:11px;color:' + (needsAttention ? 'var(--red)' : 'var(--green)') + '">' + confirmed + (needsAttention ? ' &#9888;' : ' &#9989;') + '</span>';
-        return '<tr style="' + (h.status==='paused'?'opacity:0.5':'') + (needsAttention&&h.status==='active'?'background:var(--red-l)':'') + '">' +
+        var listedDate = h.created_at ? new Date(h.created_at).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}) : '?';
+        var daysAgo = h.created_at ? Math.floor((Date.now() - new Date(h.created_at).getTime()) / 86400000) : 0;
+        var listedLabel = daysAgo === 0 ? 'Today' : daysAgo === 1 ? 'Yesterday' : daysAgo + 'd ago';
+        return '<tr style="' + (h.status==='paused'?'opacity:0.5;':'') + (needsAttention&&h.status==='active'?'background:var(--red-l)':'') + '">' +
           '<td><div style="font-weight:500">' + h.name + '</div><div style="font-size:11px;color:var(--ink3)">' + (h.reason||'').substring(0,50) + '</div>' +
           (h.url ? '<div style="font-size:10px;color:var(--ink3)">' + h.url + '</div>' : '') + '</td>' +
           '<td>' + (h.city||'') + '</td>' +
           '<td style="font-weight:500">&euro;' + (pr.rent||'?') + '</td>' +
-          '<td><span class="cat-badge" style="' + (pr.tier==='featured'?'background:var(--amber-l);color:var(--amber)':'') + '">' + (pr.tier||'free') + '</span></td>' +
+          '<td><span class="cat-badge" style="' + (tier==='featured'?'background:var(--amber-l);color:var(--amber)':'') + '">' + tier + '</span></td>' +
           '<td><span class="cat-badge" style="' + (h.status==='active'?'background:var(--green-l);color:var(--green)':h.status==='paused'?'background:var(--amber-l);color:var(--amber)':'') + '">' + (h.status||'pending') + '</span></td>' +
+          '<td style="font-size:11px"><div>' + listedDate + '</div><div style="color:var(--ink3)">' + listedLabel + '</div></td>' +
           '<td>' + confirmBadge + '</td>' +
           '<td style="white-space:nowrap">' +
           '<button onclick="editHousing(' + h.id + ')" style="padding:4px 10px;background:var(--blue-l);border:0.5px solid var(--blue);border-radius:4px;font-size:11px;cursor:pointer;color:var(--blue);margin-right:4px">Edit</button>' +
           '<button onclick="deleteHousing(' + h.id + ')" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
           '</td></tr>';
+      }).join('') + '</tbody></table>';
       }).join('') + '</tbody></table>';
   } catch(e) { document.getElementById('housing-table').innerHTML = '<div class="empty">Could not load.</div>'; }
 }
