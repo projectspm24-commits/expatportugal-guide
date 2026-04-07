@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Manage Your Listing — ExpatPortugal.guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+:root{--ink:#1c1917;--ink2:#57534e;--ink3:#a8a29e;--cream:#f7f5f0;--warm:#f5f0e8;--card:#fff;--border:rgba(28,25,23,0.08);--border2:rgba(28,25,23,0.16);--red:#c0381a;--green:#15803d;--green-l:#f0fdf4;--amber:#b45309;--amber-l:#fffbeb;--r:10px;--rl:16px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Outfit",sans-serif;background:var(--cream);color:var(--ink);font-size:15px;line-height:1.6;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0v60M0 30h60M0 0h60v60H0z' fill='none' stroke='%23d4cfc4' stroke-width='.3'/%3E%3Ccircle cx='30' cy='30' r='8' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='0' cy='0' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='60' cy='0' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='0' cy='60' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3Ccircle cx='60' cy='60' r='4' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3C/svg%3E")}
+.full{max-width:500px;margin:0 auto;padding:2rem}
+.card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:2rem;text-align:center}
+h1{font-family:"Playfair Display",serif;font-size:22px;margin-bottom:8px}
+.btn{padding:12px 24px;border:none;border-radius:var(--r);font-size:14px;font-weight:500;cursor:pointer;font-family:"Outfit",sans-serif;margin:6px}
+</style>
+</head>
+<body>
+<div class="full">
+  <div class="card" id="manage-card">
+    <div style="font-size:28px;margin-bottom:10px">&#127968;</div>
+    <h1>Manage your listing</h1>
+    <div id="status-msg" style="font-size:13px;color:var(--ink2);margin-bottom:1.5rem">Loading...</div>
+    <div id="actions"></div>
+  </div>
+</div>
+
+<script>
+var SB_URL='https://waywvckvyizqkuuaecrp.supabase.co';
+var SB_KEY='sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b';
+
+var params = new URLSearchParams(window.location.search);
+var listingId = params.get('id');
+var action = params.get('action');
+var email = params.get('email');
+
+async function init() {
+  if (!listingId) {
+    document.getElementById('status-msg').textContent = 'No listing found. Check your email link.';
+    return;
+  }
+
+  /* If action is specified, handle it directly */
+  if (action === 'confirm') {
+    await confirmListing();
+    return;
+  }
+  if (action === 'close') {
+    await closeListing();
+    return;
+  }
+  if (action === 'reopen') {
+    await reopenListing();
+    return;
+  }
+
+  /* Otherwise show management options */
+  try {
+    var res = await fetch(SB_URL + '/rest/v1/local_businesses?id=eq.' + listingId + '&select=name,status,price_range,url', {
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
+    });
+    var data = await res.json();
+    if (!data.length) {
+      document.getElementById('status-msg').textContent = 'Listing not found.';
+      return;
+    }
+    var listing = data[0];
+    var pr = {};
+    (listing.price_range || '').split('|').forEach(function(p) { var kv = p.split(':'); if(kv.length>=2) pr[kv[0]] = kv.slice(1).join(':'); });
+
+    var isActive = listing.status === 'active';
+    var isPaused = listing.status === 'paused';
+    
+    document.getElementById('status-msg').innerHTML = 
+      '<div style="font-size:15px;font-weight:500;margin-bottom:4px">' + listing.name + '</div>' +
+      '<div style="margin-bottom:12px">Status: <span style="color:' + (isActive ? 'var(--green)' : isPaused ? 'var(--amber)' : 'var(--ink3)') + ';font-weight:500">' + (isActive ? 'Active' : isPaused ? 'Paused (place rented)' : listing.status) + '</span></div>' +
+      '<div style="font-size:12px;color:var(--ink3);line-height:1.7;max-width:350px;margin:0 auto">By managing your listing, you help keep the housing board clean and useful for the whole expat community. Thank you!</div>';
+
+    var actionsHTML = '';
+    if (isActive) {
+      actionsHTML = '<button class="btn" style="background:var(--green);color:white" onclick="confirmListing()">&#9989; Still available — keep it live</button><br>' +
+        '<button class="btn" style="background:var(--amber);color:white" onclick="closeListing()">&#127968; Rented — close listing</button>';
+    } else if (isPaused) {
+      actionsHTML = '<button class="btn" style="background:var(--green);color:white" onclick="reopenListing()">&#128260; Available again — reopen</button><br>' +
+        '<div style="font-size:11px;color:var(--ink3);margin-top:8px">You can reopen anytime within your listing period.</div>';
+    }
+    document.getElementById('actions').innerHTML = actionsHTML;
+  } catch(e) {
+    document.getElementById('status-msg').textContent = 'Could not load listing. Please try again.';
+  }
+}
+
+async function confirmListing() {
+  try {
+    await fetch(SB_URL + '/rest/v1/local_businesses?id=eq.' + listingId, {
+      method: 'PATCH',
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ status: 'active' })
+    });
+    document.getElementById('status-msg').innerHTML = '<div style="color:var(--green);font-size:16px;font-weight:500">&#9989; Listing confirmed as active!</div><div style="font-size:13px;color:var(--ink2);margin-top:6px">Thanks for keeping the board up to date.</div>';
+    document.getElementById('actions').innerHTML = '<a href="housing.html" style="color:var(--red);font-size:13px">Back to housing board &rarr;</a>';
+  } catch(e) { alert('Error. Please try again.'); }
+}
+
+async function closeListing() {
+  try {
+    await fetch(SB_URL + '/rest/v1/local_businesses?id=eq.' + listingId, {
+      method: 'PATCH',
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ status: 'paused' })
+    });
+    document.getElementById('status-msg').innerHTML = '<div style="color:var(--amber);font-size:16px;font-weight:500">&#127968; Listing paused!</div><div style="font-size:13px;color:var(--ink2);margin-top:6px">Congrats on renting your place! You can reopen anytime within your listing period if it becomes available again.</div>';
+    document.getElementById('actions').innerHTML = '<button class="btn" style="background:var(--green);color:white" onclick="reopenListing()">Reopen listing</button><br><a href="housing.html" style="color:var(--red);font-size:13px;display:inline-block;margin-top:10px">Back to housing board &rarr;</a>';
+  } catch(e) { alert('Error. Please try again.'); }
+}
+
+async function reopenListing() {
+  try {
+    await fetch(SB_URL + '/rest/v1/local_businesses?id=eq.' + listingId, {
+      method: 'PATCH',
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ status: 'active' })
+    });
+    document.getElementById('status-msg').innerHTML = '<div style="color:var(--green);font-size:16px;font-weight:500">&#9989; Listing is live again!</div><div style="font-size:13px;color:var(--ink2);margin-top:6px">Your place is back on the housing board.</div>';
+    document.getElementById('actions').innerHTML = '<a href="housing.html" style="color:var(--red);font-size:13px">Back to housing board &rarr;</a>';
+  } catch(e) { alert('Error. Please try again.'); }
+}
+
+init();
+</script>
+</body>
+</html>
