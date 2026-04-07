@@ -205,7 +205,7 @@ async function submitListing() {
   var desc = document.getElementById('s-desc').value.trim();
   var cityVal = document.getElementById('s-city').value;
   var city = cityVal === 'other' ? document.getElementById('s-city-other').value.trim() : cityVal;
-  if (!title || !email || !rent || !from || !until || !city) { alert('Please fill in all required fields.'); return; }
+  if (!title || !email || !rent || !from || !until || !city || !desc) { alert('Please fill in all required fields including description.'); return; }
 
   /* 30-day minimum check */
   var fromDate = new Date(from);
