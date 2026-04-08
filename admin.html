@@ -155,6 +155,7 @@ tr:hover td{background:var(--warm)}
     <div class="s-nav-item" onclick="showPanel('businesses',this)">&#128203; Directory</div>
     <div class="s-nav-item" onclick="showPanel('communities',this)">&#128101; Communities</div>
     <div class="s-nav-item" onclick="showPanel('housing',this)">&#127968; Housing</div>
+    <div class="s-nav-item" onclick="showPanel('inbox',this)">&#128172; Community inbox</div>
 
     <div class="s-section">System</div>
     <div class="s-nav-item" onclick="showPanel('logs',this)">⚙️ Automation logs</div>
@@ -214,11 +215,6 @@ tr:hover td{background:var(--warm)}
           <button class="btn btn-primary" onclick="showAddEvent()">+ Add event</button>
         </div>
         <div id="events-table"><div class="loading"><div class="spinner"></div><br>Loading events...</div></div>
-      </div>
-      <div class="section-card" style="margin-top:1.25rem">
-        <div class="sc-header"><div class="sc-title">&#128172; Community submissions</div></div>
-        <div style="font-size:12px;color:var(--ink3);padding:0 1.25rem;margin-bottom:8px">Tips, corrections, event submissions, and place suggestions from visitors.</div>
-        <div id="community-submissions"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
       </div>
     </div>
 
@@ -569,6 +565,34 @@ tr:hover td{background:var(--warm)}
       </div>
     </div>
 
+    <!-- COMMUNITY INBOX PANEL -->
+    <div class="panel" id="panel-inbox">
+      <div class="section-card" style="margin-bottom:1.25rem">
+        <div class="sc-header">
+          <div class="sc-title">&#128161; Expat tips</div>
+        </div>
+        <div id="inbox-tips"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+      <div class="section-card" style="margin-bottom:1.25rem">
+        <div class="sc-header">
+          <div class="sc-title">&#128221; Corrections</div>
+        </div>
+        <div id="inbox-corrections"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+      <div class="section-card" style="margin-bottom:1.25rem">
+        <div class="sc-header">
+          <div class="sc-title">&#128172; Housing inquiries</div>
+        </div>
+        <div id="inbox-inquiries"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+      <div class="section-card">
+        <div class="sc-header">
+          <div class="sc-title">&#128205; Place suggestions</div>
+        </div>
+        <div id="inbox-places"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+    </div>
+
     <!-- AUTOMATION LOGS PANEL -->
     <div class="panel" id="panel-logs">
       <div class="section-card">
@@ -699,6 +723,7 @@ const PANELS = {
   businesses:  { title: 'Directory',               sub: 'Add, edit, and manage all business listings. Ratings, reviews, and details.' },
   communities: { title: 'Communities',             sub: 'Add, edit, and manage expat community listings.' },
   housing:     { title: 'Housing board',           sub: 'Manage medium-term rental listings. Featured and basic tiers.' },
+  inbox:       { title: 'Community inbox',         sub: 'Tips, corrections, place suggestions, and messages from visitors.' },
   logs:        { title: 'Automation logs',        sub: 'Check what ran, when, and whether it succeeded' },
   settings:    { title: 'Settings',               sub: 'Configure database connection, passwords, and automation options' }
 };
@@ -715,7 +740,7 @@ function showPanel(name, el) {
 }
 
 function loadCurrentPanel() {
-  const loaders = { articles: loadArticles, events: loadEvents, digest: loadDigest, subscribers: loadSubscribers, exchange: loadExchange, directory: loadDirectory, businesses: loadBusinesses, communities: loadCommunities, housing: loadHousing, logs: loadLogs };
+  const loaders = { articles: loadArticles, events: loadEvents, digest: loadDigest, subscribers: loadSubscribers, exchange: loadExchange, directory: loadDirectory, businesses: loadBusinesses, communities: loadCommunities, housing: loadHousing, inbox: loadInbox, logs: loadLogs };
   if (loaders[currentPanel]) loaders[currentPanel]();
   loadMetrics();
 }
@@ -866,7 +891,6 @@ async function loadEvents() {
     </tbody></table>`;
     
     el.innerHTML = html;
-    loadCommunitySubmissions();
   } catch(e) { document.getElementById('events-table').innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div>Connection error</div>'; }
 }
 
@@ -899,40 +923,80 @@ async function deleteEvent(id) {
   loadEvents();
 }
 
-async function loadCommunitySubmissions() {
+async function loadInbox() {
   try {
-    var items = await sb('events?category=in.(tip,correction,inquiry)&order=created_at.desc&limit=30');
-    var el = document.getElementById('community-submissions');
-    if (!items.length) {
-      el.innerHTML = '<div class="empty"><div class="empty-icon">&#128172;</div>No submissions yet. Tips, corrections, and inquiries will appear here.</div>';
+    var items = await sb('events?category=in.(tip,correction,inquiry)&order=created_at.desc&limit=50');
+    var tips = items.filter(function(s) { return s.category === 'tip'; });
+    var corrections = items.filter(function(s) { return s.category === 'correction'; });
+    var inquiries = items.filter(function(s) { return s.category === 'inquiry'; });
+
+    renderInboxSection('inbox-tips', tips, '&#128161;', 'No tips yet. They\'ll appear when visitors share tips on the homepage.');
+    renderInboxSection('inbox-corrections', corrections, '&#128221;', 'No corrections yet.');
+    renderInboxSection('inbox-inquiries', inquiries, '&#128172;', 'No housing inquiries yet.');
+  } catch(e) {}
+
+  /* Also load pending place/community suggestions */
+  try {
+    var pending = await sb('local_businesses?status=eq.pending&order=created_at.desc&limit=30');
+    var el = document.getElementById('inbox-places');
+    if (!pending.length) {
+      el.innerHTML = '<div class="empty"><div class="empty-icon">&#128205;</div>No pending suggestions.</div>';
       return;
     }
-    el.innerHTML = '<table><thead><tr><th>Type</th><th>Content</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody>' +
-      items.map(function(s) {
-        var catLabel = s.category === 'tip' ? '&#128161; Tip' : s.category === 'correction' ? '&#128221; Correction' : '&#128172; Inquiry';
-        var catColor = s.category === 'tip' ? 'background:var(--blue-l);color:var(--blue)' : s.category === 'correction' ? 'background:var(--amber-l);color:var(--amber)' : 'background:var(--green-l);color:var(--green)';
-        return '<tr style="' + (s.status==='pending'?'background:var(--amber-l)':'') + '">' +
-          '<td><span class="cat-badge" style="' + catColor + '">' + catLabel + '</span></td>' +
-          '<td><div style="font-weight:500;font-size:13px">' + (s.title || '') + '</div><div style="font-size:12px;color:var(--ink2);white-space:pre-line;max-width:400px">' + (s.description || '').substring(0, 200) + '</div></td>' +
-          '<td style="font-size:11px;color:var(--ink3)">' + (s.event_date || '') + '</td>' +
-          '<td><span class="cat-badge" style="' + (s.status==='pending'?'background:var(--amber-l);color:var(--amber)':'background:var(--green-l);color:var(--green)') + '">' + (s.status || 'pending') + '</span></td>' +
+    el.innerHTML = '<table><thead><tr><th>Name</th><th>Type</th><th>City</th><th>Submitted</th><th>Actions</th></tr></thead><tbody>' +
+      pending.map(function(p) {
+        var date = p.created_at ? new Date(p.created_at).toLocaleDateString('en-GB', {day:'numeric',month:'short'}) : '?';
+        return '<tr>' +
+          '<td><div style="font-weight:500">' + p.name + '</div><div style="font-size:11px;color:var(--ink3)">' + (p.reason || '').substring(0, 80) + '</div>' +
+          (p.url ? '<div style="font-size:10px;color:var(--blue)"><a href="' + p.url + '" target="_blank">' + p.url.substring(0, 40) + '</a></div>' : '') + '</td>' +
+          '<td><span class="cat-badge">' + (p.type || '?') + '</span></td>' +
+          '<td>' + (p.city || '?') + '</td>' +
+          '<td style="font-size:11px">' + date + '</td>' +
           '<td style="white-space:nowrap">' +
-          (s.status==='pending'?'<button onclick="handleSubmission('+s.id+')" style="padding:4px 10px;background:var(--green-l);border:0.5px solid var(--green);border-radius:4px;font-size:11px;cursor:pointer;color:var(--green);margin-right:4px">Mark done</button>':'') +
-          '<button onclick="deleteSubmission('+s.id+')" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
+          '<button onclick="approvePlace(' + p.id + ')" style="padding:4px 10px;background:var(--green-l);border:0.5px solid var(--green);border-radius:4px;font-size:11px;cursor:pointer;color:var(--green);margin-right:4px">Approve</button>' +
+          '<button onclick="deleteSubmission(' + p.id + ',\'place\')" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
           '</td></tr>';
       }).join('') + '</tbody></table>';
-  } catch(e) { document.getElementById('community-submissions').innerHTML = '<div class="empty">Could not load.</div>'; }
+  } catch(e) { document.getElementById('inbox-places').innerHTML = '<div class="empty">Could not load.</div>'; }
+}
+
+function renderInboxSection(elId, items, icon, emptyMsg) {
+  var el = document.getElementById(elId);
+  if (!items.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">' + icon + '</div>' + emptyMsg + '</div>';
+    return;
+  }
+  el.innerHTML = '<table><thead><tr><th>Content</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody>' +
+    items.map(function(s) {
+      return '<tr style="' + (s.status==='pending'?'background:var(--amber-l)':'') + '">' +
+        '<td><div style="font-weight:500;font-size:13px">' + (s.title || '') + '</div><div style="font-size:12px;color:var(--ink2);white-space:pre-line;max-width:400px">' + (s.description || '').substring(0, 250) + '</div></td>' +
+        '<td style="font-size:11px;color:var(--ink3);white-space:nowrap">' + (s.event_date || '') + '</td>' +
+        '<td><span class="cat-badge" style="' + (s.status==='pending'?'background:var(--amber-l);color:var(--amber)':'background:var(--green-l);color:var(--green)') + '">' + (s.status || 'pending') + '</span></td>' +
+        '<td style="white-space:nowrap">' +
+        (s.status==='pending'?'<button onclick="handleSubmission('+s.id+')" style="padding:4px 10px;background:var(--green-l);border:0.5px solid var(--green);border-radius:4px;font-size:11px;cursor:pointer;color:var(--green);margin-right:4px">Mark done</button>':'') +
+        '<button onclick="deleteSubmission('+s.id+',\'event\')" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
+        '</td></tr>';
+    }).join('') + '</tbody></table>';
+}
+
+async function approvePlace(id) {
+  await sb('local_businesses?id=eq.' + id, { method: 'PATCH', body: { status: 'active' } });
+  loadInbox();
 }
 
 async function handleSubmission(id) {
   await sb('events?id=eq.' + id, { method: 'PATCH', body: { status: 'handled' } });
-  loadCommunitySubmissions();
+  loadInbox();
 }
 
-async function deleteSubmission(id) {
+async function deleteSubmission(id, table) {
   if (!confirm('Delete this submission?')) return;
-  await sb('events?id=eq.' + id, { method: 'DELETE' });
-  loadCommunitySubmissions();
+  if (table === 'place') {
+    await sb('local_businesses?id=eq.' + id, { method: 'DELETE' });
+  } else {
+    await sb('events?id=eq.' + id, { method: 'DELETE' });
+  }
+  loadInbox();
 }
 
 // ── DIGEST ────────────────────────────────────────────────
