@@ -502,10 +502,61 @@ async function submitEvent() {
   }
 }
 
+/* ── HOUSING PREVIEW (homepage) ── */
+async function loadHomeHousing() {
+  var el = document.getElementById('home-housing');
+  if (!el) return;
+  try {
+    var res = await fetch(SB_URL + '/rest/v1/local_businesses?type=eq.housing&status=eq.active&order=created_at.desc&limit=6', {
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
+    });
+    var items = await res.json();
+    if (!items.length) {
+      el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2rem;background:var(--card);border-radius:var(--rl)"><div style="font-size:24px;margin-bottom:6px">&#127968;</div><div style="font-size:14px;font-weight:500;margin-bottom:4px">Housing board launching soon</div><div style="font-size:12px;color:var(--ink3)">List your place or find your next home.</div></div>';
+      return;
+    }
+    /* Split: available listings as cards, looking posts as compact list */
+    var available = [];
+    var looking = [];
+    items.forEach(function(h) {
+      var pr = {};
+      (h.price_range || '').split('|').forEach(function(p) { var idx = p.indexOf(':'); if (idx > 0) pr[p.slice(0, idx)] = p.slice(idx + 1); });
+      var item = { name: h.name, city: h.city, rent: parseInt(pr.rent) || 0, type: pr.type || '', kind: pr.kind || 'available', tier: pr.tier || 'free', img: h.address || '' };
+      if (item.kind === 'looking') looking.push(item);
+      else available.push(item);
+    });
+
+    var html = '';
+    available.slice(0, 3).forEach(function(l) {
+      var photo = l.img ? l.img.split(',')[0] : '';
+      var isFeat = l.tier === 'featured';
+      html += '<a href="housing.html" style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);overflow:hidden;display:block;transition:all .2s' + (isFeat ? ';border-color:var(--amber)' : '') + '">' +
+        (photo ? '<div style="height:120px;background:url(' + photo + ') center/cover"></div>' : '<div style="height:60px;background:var(--warm);display:flex;align-items:center;justify-content:center;font-size:24px">&#127968;</div>') +
+        '<div style="padding:12px">' +
+        (isFeat ? '<div style="font-size:9px;background:var(--amber-l);color:var(--amber);padding:2px 6px;border-radius:10px;display:inline-block;margin-bottom:4px">Featured</div>' : '') +
+        '<div style="font-family:Playfair Display,serif;font-size:16px;margin-bottom:2px">&euro;' + l.rent.toLocaleString() + '<span style="font-size:11px;font-family:Outfit,sans-serif;color:var(--ink3)"> /mo</span></div>' +
+        '<div style="font-size:12px;font-weight:500;margin-bottom:2px">' + l.name + '</div>' +
+        '<div style="font-size:11px;color:var(--ink3)">&#128205; ' + l.city + ' &middot; ' + l.type + '</div>' +
+        '</div></a>';
+    });
+
+    if (looking.length) {
+      html += '<div style="grid-column:1/-1;margin-top:4px"><div style="font-size:12px;color:var(--ink2);font-weight:500;margin-bottom:6px">&#128269; People looking (' + looking.length + ')</div>';
+      looking.slice(0, 2).forEach(function(l) {
+        html += '<div style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--r);padding:8px 12px;margin-bottom:4px;font-size:12px"><span style="font-weight:500">' + l.name + '</span> <span style="color:var(--ink3)">&middot; ' + l.city + ' &middot; &euro;' + l.rent.toLocaleString() + '/mo</span></div>';
+      });
+      html += '</div>';
+    }
+
+    el.innerHTML = html;
+  } catch (e) { console.error(e); }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   loadLiveNews();
   loadHero();
   loadWeather('all');
   loadHolidays();
   loadEvents();
+  loadHomeHousing();
 });
