@@ -161,6 +161,11 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
 .fl{display:block;font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:8px}.fl:hover{color:white}
 .fb{border-top:0.5px solid rgba(255,255,255,0.1);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;font-size:12px;flex-wrap:wrap;gap:8px}
 .fbadge{font-size:10px;background:rgba(255,255,255,0.07);padding:4px 12px;border-radius:20px}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0);z-index:300;align-items:center;justify-content:center;transition:background .5s}
+.modal-bg.open{display:flex}
+.modal-bg.show{background:rgba(0,0,0,0.45)}
+.modal{background:var(--card);border-radius:16px;padding:1.75rem;width:90%;max-width:480px;max-height:85vh;overflow-y:auto;opacity:0;transform:translateY(20px) scale(0.97);transition:opacity .5s,transform .5s}
+.modal-bg.show .modal{opacity:1;transform:translateY(0) scale(1)}
 
 @media(max-width:900px){.vp-hero{padding:1.5rem 1rem 0}.vp-content{padding:2rem}.evw-grid{grid-template-columns:1fr}.tg{grid-template-columns:repeat(2,1fr)}.sp-grid{grid-template-columns:repeat(2,1fr)}.lb-grid{grid-template-columns:repeat(2,1fr)}.places-grid{grid-template-columns:repeat(2,1fr)}.comm-grid{grid-template-columns:1fr}.llp{grid-template-columns:1fr}.sub-sec{grid-template-columns:1fr}.ft{grid-template-columns:1fr 1fr}.full{padding:0 1rem}nav{padding:0 1rem}.region-bar{padding:0 1rem}#home-housing{grid-template-columns:1fr!important}#contribute-grid{grid-template-columns:1fr!important}}
 @media(max-width:600px){.tg{grid-template-columns:1fr}.sp-grid{grid-template-columns:1fr}.ft{grid-template-columns:1fr}.vp-stats{flex-wrap:wrap;gap:1.5rem}}
@@ -528,8 +533,8 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
 </div>
 
 <!-- CONTRIBUTE POPUP -->
-<div class="modal-bg" id="contribute-modal" onclick="if(event.target===this)closeContribute()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0);z-index:300;align-items:center;justify-content:center;transition:background .5s">
-  <div class="modal" id="contribute-content" style="max-width:480px;position:relative;opacity:0;transform:translateY(20px) scale(0.97);transition:opacity .5s,transform .5s"></div>
+<div class="modal-bg" id="contribute-modal" onclick="if(event.target===this)closeContribute()">
+  <div class="modal" id="contribute-content" style="position:relative"></div>
 </div>
 
 <!-- 7. SUBSCRIBE -->

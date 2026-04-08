@@ -579,25 +579,25 @@ function openContribute(type) {
     '<div style="font-size:13px;color:#57534e;margin-bottom:14px">' + f.sub + '</div>' +
     '<div id="cf-form">' + f.fields + '</div>' +
     '<button onclick="' + f.submit + '()" style="width:100%;padding:12px;background:#c0381a;color:white;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:Outfit,sans-serif;margin-top:4px">Submit &rarr;</button>';
-  /* Apply consistent styling to all inputs/selects in the form */
   el.querySelectorAll('#cf-form input, #cf-form select').forEach(function(inp) { inp.style.cssText = inputStyle; });
-  el.querySelectorAll('#cf-form div[style*="grid"]').forEach(function(g) { g.style.marginBottom = '0'; });
 
   var m = document.getElementById('contribute-modal');
   m.style.display = 'flex';
   requestAnimationFrame(function() { requestAnimationFrame(function() {
-    m.style.background = 'rgba(0,0,0,0.45)';
-    el.style.opacity = '1'; el.style.transform = 'translateY(0) scale(1)';
+    m.classList.add('open');
+    m.classList.add('show');
   }); });
   document.body.style.overflow = 'hidden';
 }
 
 function closeContribute() {
   var m = document.getElementById('contribute-modal');
-  var el = document.getElementById('contribute-content');
-  m.style.background = 'rgba(0,0,0,0)';
-  el.style.opacity = '0'; el.style.transform = 'translateY(20px) scale(0.97)';
-  setTimeout(function() { m.style.display = 'none'; document.body.style.overflow = ''; }, 500);
+  m.classList.remove('show');
+  setTimeout(function() {
+    m.classList.remove('open');
+    m.style.display = 'none';
+    document.body.style.overflow = '';
+  }, 500);
 }
 
 function showContributeSuccess(msg) {
