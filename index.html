@@ -497,21 +497,21 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
   <div class="sh"><span class="sh-t">Help build this guide</span></div>
   <div style="font-size:13px;color:var(--ink2);margin-bottom:1rem;line-height:1.6">This site is built by expats, for expats. Share your knowledge and help newcomers feel at home.</div>
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px" id="contribute-grid">
-    <a href="directory.html#submit-place-section" style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;display:block;transition:all .2s;text-decoration:none;color:inherit">
+    <div onclick="openContribute('place')" style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='rgba(28,25,23,0.25)'" onmouseout="this.style.borderColor='rgba(28,25,23,0.08)'">
       <div style="font-size:24px;margin-bottom:8px">&#128205;</div>
       <div style="font-size:14px;font-weight:500;margin-bottom:4px">Add a place</div>
       <div style="font-size:12px;color:var(--ink3);line-height:1.5">Know a great café, beach, or hidden gem? Add it to the guide.</div>
-    </a>
-    <a href="calendar.html" style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;display:block;transition:all .2s;text-decoration:none;color:inherit">
+    </div>
+    <div onclick="openContribute('event')" style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='rgba(28,25,23,0.25)'" onmouseout="this.style.borderColor='rgba(28,25,23,0.08)'">
       <div style="font-size:24px;margin-bottom:8px">&#128197;</div>
       <div style="font-size:14px;font-weight:500;margin-bottom:4px">Submit an event</div>
       <div style="font-size:12px;color:var(--ink3);line-height:1.5">Hosting a meetup, workshop, or dinner? Get it on the calendar.</div>
-    </a>
-    <a href="communities.html#submit-comm-section" style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;display:block;transition:all .2s;text-decoration:none;color:inherit">
+    </div>
+    <div onclick="openContribute('community')" style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='rgba(28,25,23,0.25)'" onmouseout="this.style.borderColor='rgba(28,25,23,0.08)'">
       <div style="font-size:24px;margin-bottom:8px">&#128101;</div>
       <div style="font-size:14px;font-weight:500;margin-bottom:4px">List a community</div>
       <div style="font-size:12px;color:var(--ink3);line-height:1.5">Run a group? Get it in front of thousands of expats.</div>
-    </a>
+    </div>
   </div>
 
   <div style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;margin-top:12px" id="tip-section">
@@ -525,6 +525,11 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
       <button onclick="submitTip()" style="padding:9px 18px;background:#c0381a;color:white;border:none;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:Outfit,sans-serif;white-space:nowrap">Share tip &rarr;</button>
     </div>
   </div>
+</div>
+
+<!-- CONTRIBUTE POPUP -->
+<div class="modal-bg" id="contribute-modal" onclick="if(event.target===this)closeContribute()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0);z-index:300;align-items:center;justify-content:center;transition:background .5s">
+  <div class="modal" id="contribute-content" style="max-width:480px;position:relative;opacity:0;transform:translateY(20px) scale(0.97);transition:opacity .5s,transform .5s"></div>
 </div>
 
 <!-- 7. SUBSCRIBE -->

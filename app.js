@@ -524,6 +524,136 @@ async function submitTip() {
   } catch(e) { alert('Something went wrong. Please try again.'); }
 }
 
+/* ── CONTRIBUTE POPUPS (homepage) ── */
+var contributeForms = {
+  place: {
+    title: '&#128205; Add a place',
+    sub: 'Help fellow expats discover the best of Portugal.',
+    fields: '<input id="cf-name" placeholder="Place name *" />' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">' +
+      '<select id="cf-type"><option value="">Type *</option><option value="cafe">Café / Coffee</option><option value="restaurant">Restaurant</option><option value="bar">Bar</option><option value="shop">Shop</option><option value="cowork">Co-working</option><option value="gym">Gym / Fitness</option><option value="beach">Beach</option><option value="park">Park / Garden</option><option value="museum">Museum</option><option value="viewpoint">Viewpoint</option><option value="historic">Historic site</option><option value="entertainment">Entertainment</option></select>' +
+      '<select id="cf-city"><option value="">City *</option><option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Braga</option><option>Alentejo</option><option>Madeira</option></select></div>' +
+      '<input id="cf-area" placeholder="Neighbourhood (e.g. Estrela, Foz)" />' +
+      '<input id="cf-why" placeholder="Why do you recommend it? *" />' +
+      '<input id="cf-url" placeholder="Website or Google Maps link (optional)" />',
+    submit: 'submitContributePlace'
+  },
+  event: {
+    title: '&#128197; Submit an event',
+    sub: 'Get your event in front of thousands of expats.',
+    fields: '<input id="cf-ename" placeholder="Event name *" />' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">' +
+      '<input id="cf-edate" type="date" title="Event date *" />' +
+      '<input id="cf-etime" type="time" title="Start time" /></div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">' +
+      '<select id="cf-ecat"><option value="">Category *</option><option value="social">Social / Meetup</option><option value="music">Music / Fado</option><option value="market">Market / Fair</option><option value="food">Food / Drink</option><option value="sport">Sport / Outdoor</option><option value="culture">Culture / Art</option><option value="family">Family</option><option value="dancing">Dancing</option></select>' +
+      '<select id="cf-ecity"><option value="">City *</option><option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Braga</option><option>Alentejo</option><option>Madeira</option></select></div>' +
+      '<input id="cf-evenue" placeholder="Venue name or address" />' +
+      '<input id="cf-edesc" placeholder="Short description *" />' +
+      '<input id="cf-eurl" placeholder="Link to event page or tickets (optional)" />' +
+      '<input id="cf-eemail" placeholder="Your email (so we can reach you)" />',
+    submit: 'submitContributeEvent'
+  },
+  community: {
+    title: '&#128101; List a community',
+    sub: 'Get your group in front of thousands of expats. Free, always.',
+    fields: '<input id="cf-cname" placeholder="Community name *" />' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">' +
+      '<select id="cf-ctype"><option value="">Type *</option><option value="social">Social / Meetups</option><option value="nomad">Digital nomads</option><option value="family">Families</option><option value="sport">Sports / Outdoor</option><option value="professional">Professional</option><option value="culture">Culture / Language</option><option value="women">Women</option><option value="lgbtq">LGBTQ+</option></select>' +
+      '<select id="cf-ccity"><option value="">City *</option><option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Braga</option><option>Alentejo</option><option>Madeira</option><option value="Online">Online / All Portugal</option></select></div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">' +
+      '<select id="cf-cplatform"><option value="">Platform *</option><option>Meetup</option><option>Facebook</option><option>WhatsApp</option><option>Telegram</option><option>Discord</option><option>Instagram</option><option>Website</option></select>' +
+      '<input id="cf-cmembers" placeholder="Approx. members" /></div>' +
+      '<input id="cf-curl" placeholder="Join link (URL) *" />' +
+      '<input id="cf-cdesc" placeholder="Short description — what\u0027s the vibe?" />',
+    submit: 'submitContributeCommunity'
+  }
+};
+
+function openContribute(type) {
+  var f = contributeForms[type];
+  var el = document.getElementById('contribute-content');
+  var inputStyle = 'width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:6px';
+  el.innerHTML = '<button onclick="closeContribute()" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:#a8a29e">&times;</button>' +
+    '<div style="font-size:18px;font-weight:500;margin-bottom:4px">' + f.title + '</div>' +
+    '<div style="font-size:13px;color:#57534e;margin-bottom:14px">' + f.sub + '</div>' +
+    '<div id="cf-form">' + f.fields + '</div>' +
+    '<button onclick="' + f.submit + '()" style="width:100%;padding:12px;background:#c0381a;color:white;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:Outfit,sans-serif;margin-top:4px">Submit &rarr;</button>';
+  /* Apply consistent styling to all inputs/selects in the form */
+  el.querySelectorAll('#cf-form input, #cf-form select').forEach(function(inp) { inp.style.cssText = inputStyle; });
+  el.querySelectorAll('#cf-form div[style*="grid"]').forEach(function(g) { g.style.marginBottom = '0'; });
+
+  var m = document.getElementById('contribute-modal');
+  m.style.display = 'flex';
+  requestAnimationFrame(function() { requestAnimationFrame(function() {
+    m.style.background = 'rgba(0,0,0,0.45)';
+    el.style.opacity = '1'; el.style.transform = 'translateY(0) scale(1)';
+  }); });
+  document.body.style.overflow = 'hidden';
+}
+
+function closeContribute() {
+  var m = document.getElementById('contribute-modal');
+  var el = document.getElementById('contribute-content');
+  m.style.background = 'rgba(0,0,0,0)';
+  el.style.opacity = '0'; el.style.transform = 'translateY(20px) scale(0.97)';
+  setTimeout(function() { m.style.display = 'none'; document.body.style.overflow = ''; }, 500);
+}
+
+function showContributeSuccess(msg) {
+  document.getElementById('cf-form').parentElement.innerHTML =
+    '<div style="text-align:center;padding:1.5rem"><div style="font-size:32px;margin-bottom:8px">&#9989;</div>' +
+    '<div style="font-size:16px;font-weight:500;margin-bottom:4px">Thanks!</div>' +
+    '<div style="font-size:13px;color:#57534e;line-height:1.6">' + msg + '</div></div>';
+}
+
+async function submitContributePlace() {
+  var name = document.getElementById('cf-name').value.trim();
+  var type = document.getElementById('cf-type').value;
+  var city = document.getElementById('cf-city').value;
+  var why = document.getElementById('cf-why').value.trim();
+  if (!name || !type || !city || !why) { alert('Please fill in name, type, city, and why you recommend it.'); return; }
+  try {
+    await fetch(SB_URL + '/rest/v1/local_businesses', {
+      method: 'POST', headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ name: name, type: type, city: city, area: document.getElementById('cf-area').value.trim(), reason: why, url: document.getElementById('cf-url').value.trim(), emoji: '📍', status: 'pending', price_range: 'rating:0|reviews:0' })
+    });
+    showContributeSuccess('We\'ll review and publish your recommendation within 24 hours.');
+  } catch(e) { alert('Something went wrong. Please try again.'); }
+}
+
+async function submitContributeEvent() {
+  var name = document.getElementById('cf-ename').value.trim();
+  var date = document.getElementById('cf-edate').value;
+  var cat = document.getElementById('cf-ecat').value;
+  var city = document.getElementById('cf-ecity').value;
+  var desc = document.getElementById('cf-edesc').value.trim();
+  if (!name || !date || !cat || !city || !desc) { alert('Please fill in event name, date, category, city, and description.'); return; }
+  try {
+    await fetch(SB_URL + '/rest/v1/events', {
+      method: 'POST', headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ title: name, event_date: date, event_time: document.getElementById('cf-etime').value || null, category: cat, city: city, venue: document.getElementById('cf-evenue').value.trim(), description: desc, url: document.getElementById('cf-eurl').value.trim(), source: document.getElementById('cf-eemail').value.trim() || 'community-submit', status: 'pending' })
+    });
+    showContributeSuccess('We\'ll review and add your event to the calendar within 24 hours.');
+  } catch(e) { alert('Something went wrong. Please try again.'); }
+}
+
+async function submitContributeCommunity() {
+  var name = document.getElementById('cf-cname').value.trim();
+  var type = document.getElementById('cf-ctype').value;
+  var city = document.getElementById('cf-ccity').value;
+  var platform = document.getElementById('cf-cplatform').value;
+  var url = document.getElementById('cf-curl').value.trim();
+  if (!name || !type || !city || !platform || !url) { alert('Please fill in all required fields.'); return; }
+  try {
+    await fetch(SB_URL + '/rest/v1/local_businesses', {
+      method: 'POST', headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ name: name, type: 'community', city: city, area: type, reason: document.getElementById('cf-cdesc').value.trim(), url: url, emoji: platform, price_range: 'members:' + (document.getElementById('cf-cmembers').value || '?'), status: 'pending' })
+    });
+    showContributeSuccess('We\'ll review and list your community within 24 hours.');
+  } catch(e) { alert('Something went wrong. Please try again.'); }
+}
+
 /* ── HOUSING PREVIEW (homepage) ── */
 async function loadHomeHousing() {
   var el = document.getElementById('home-housing');
