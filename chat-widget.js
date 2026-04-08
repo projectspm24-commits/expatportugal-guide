@@ -7,12 +7,13 @@
 
   /* HTML */
   var chatHTML = '<button class="chat-fab" id="chat-fab" onclick="toggleChat()">&#128172;</button>' +
+    '<div id="chat-label" style="position:fixed;bottom:28px;right:78px;background:var(--card,#fff);padding:4px 10px;border-radius:8px;font-size:11px;font-weight:500;font-family:Outfit,sans-serif;box-shadow:0 2px 8px rgba(0,0,0,.1);z-index:250;color:#1c1917;pointer-events:none">Ask Pedro!</div>' +
     '<div class="chat-box" id="chat-box">' +
-    '<div class="chat-hd"><span class="chat-hd-t">&#127477;&#127481; Expat concierge</span><button class="chat-hd-x" onclick="toggleChat()">&times;</button></div>' +
+    '<div class="chat-hd"><span class="chat-hd-t">&#127477;&#127481; Ask Pedro</span><button class="chat-hd-x" onclick="toggleChat()">&times;</button></div>' +
     '<div class="chat-msgs" id="chat-msgs"><div class="chat-msg bot">Hi! I can help you plan your day, find services, navigate bureaucracy, or discover events. What do you need? &#128578;</div></div>' +
     '<div class="chat-quick"><button class="chat-qb" onclick="chatSend(\'Plan my day\')">Plan my day</button><button class="chat-qb" onclick="chatSend(\'Find a dentist\')">Find a dentist</button><button class="chat-qb" onclick="chatSend(\'How to get a NIF\')">Get a NIF</button><button class="chat-qb" onclick="chatSend(\'Events this week\')">Events this week</button></div>' +
     '<div class="chat-typing" id="chat-typing">Thinking...</div>' +
-    '<div class="chat-input"><input id="chat-in" placeholder="Ask me anything..." onkeydown="if(event.key===\'Enter\')chatSend()" /><button onclick="chatSend()">Send</button></div></div>';
+    '<div class="chat-input"><input id="chat-in" placeholder="Ask Pedro anything..." onkeydown="if(event.key===\'Enter\')chatSend()" /><button onclick="chatSend()">Send</button></div></div>';
   
   var div = document.createElement('div');
   div.innerHTML = chatHTML;
@@ -31,6 +32,8 @@
     chatOpen = !chatOpen;
     document.getElementById('chat-box').classList.toggle('open', chatOpen);
     document.getElementById('chat-fab').innerHTML = chatOpen ? '&times;' : '&#128172;';
+    var label = document.getElementById('chat-label');
+    if (label) label.style.display = chatOpen ? 'none' : 'block';
   };
 
   window.chatSend = function(text) {
@@ -47,7 +50,7 @@
     document.getElementById('chat-typing').style.display = 'block';
     document.querySelector('.chat-quick').style.display = 'none';
 
-    var systemPrompt = 'You are the ExpatPortugal.guide AI assistant. Be warm, concise (max 150 words). Help with: day planning, finding services, bureaucracy (NIF, visas, tax), events, local recommendations. Use real place names. Link to site pages: calendar.html (events), directory.html (directory), lifestyle_services.html (services), expat_tools_v4_fixed.html (tools), communities.html (communities), news.html (news). Today is ' + new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    var systemPrompt = 'You are Pedro, the friendly ExpatPortugal.guide assistant. Be warm, concise (max 150 words). Help with: day planning, finding services, bureaucracy (NIF, visas, tax), events, local recommendations. Use real place names. Link to site pages: calendar.html (events), directory.html (directory), lifestyle_services.html (services), expat_tools_v4_fixed.html (tools), communities.html (communities), news.html (news). Today is ' + new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
     var apiMessages = [{ role: 'user', content: systemPrompt + '\n\nConversation:\n' + chatHistory.map(function(m) { return m.role + ': ' + m.content; }).join('\n') }];
 
