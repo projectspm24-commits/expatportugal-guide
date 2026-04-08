@@ -388,7 +388,7 @@ function renderBiz() {
     var url = (isClaimed && b.url) ? '<a href="' + b.url + '" target="_blank" class="biz-link">Visit &rarr;</a>' : '';
     var badge = isFeatured ? '<span style="font-size:9px;background:#fffbeb;color:#b45309;padding:2px 8px;border-radius:10px;font-weight:500">&#11088; Featured</span>' :
                 isClaimed ? '<span style="font-size:9px;background:#f0fdf4;color:#15803d;padding:2px 8px;border-radius:10px;font-weight:500">&#9989; Verified</span>' : '';
-    var reviewLabel = b._source === 'google' ? '<span style="font-size:9px;color:var(--ink3);display:block;margin-top:1px">Google · Apr 2026</span>' : '';
+    var reviewLabel = b._source === 'google' ? '<span style="font-size:9px;color:var(--ink3);display:block;margin-top:1px">Google rating · last updated Apr 2026</span>' : '';
     var reviewCount = b._reviews >= 1000 ? (b._reviews / 1000).toFixed(1) + 'k' : b._reviews;
     var photos = (isClaimed && b.address) ? b.address.split(',').filter(Boolean) : [];
     var photoHTML = photos.length ? '<div style="display:flex;gap:3px;margin:8px 0;overflow:hidden;border-radius:8px;height:60px">' + photos.slice(0, isFeatured ? 5 : 3).map(function(p) { return '<img src="' + p.trim() + '" style="height:60px;object-fit:cover;flex:1;min-width:0" onerror="this.remove()" />'; }).join('') + '</div>' : '';
