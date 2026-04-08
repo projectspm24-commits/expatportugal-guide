@@ -540,13 +540,7 @@ async function loadHomeHousing() {
         '</div></a>';
     });
 
-    if (looking.length) {
-      html += '<div style="grid-column:1/-1;margin-top:4px"><div style="font-size:12px;color:var(--ink2);font-weight:500;margin-bottom:6px">&#128269; People looking (' + looking.length + ')</div>';
-      looking.slice(0, 2).forEach(function(l) {
-        html += '<div style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--r);padding:8px 12px;margin-bottom:4px;font-size:12px"><span style="font-weight:500">' + l.name + '</span> <span style="color:var(--ink3)">&middot; ' + l.city + ' &middot; &euro;' + l.rent.toLocaleString() + '/mo</span></div>';
-      });
-      html += '</div>';
-    }
+
 
     el.innerHTML = html;
   } catch (e) { console.error(e); }
