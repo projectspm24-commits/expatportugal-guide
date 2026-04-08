@@ -162,13 +162,23 @@ var communities = [];
 
 var platformColors = {Meetup:'#f64060',Facebook:'#1877f2',WhatsApp:'#25d366',Slack:'#4a154b',Instagram:'#e4405f',LinkedIn:'#0077b5',Strava:'#fc4c02',Website:'#57534e',App:'#15803d'};
 var categoryImages = {
-  social:'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=500&h=300&fit=crop',
-  nomad:'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=500&h=300&fit=crop',
-  family:'https://images.unsplash.com/photo-1536640712-4d998f60b42c?w=500&h=300&fit=crop',
-  sport:'https://images.unsplash.com/photo-1551632811-561732d1e306?w=500&h=300&fit=crop',
-  professional:'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=500&h=300&fit=crop',
-  culture:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500&h=300&fit=crop'
+  social:['https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=500&h=300&fit=crop','https://images.unsplash.com/photo-1543269865-cbf427effbad?w=500&h=300&fit=crop','https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500&h=300&fit=crop','https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=500&h=300&fit=crop'],
+  nomad:['https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=500&h=300&fit=crop','https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=500&h=300&fit=crop','https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=500&h=300&fit=crop'],
+  family:['https://images.unsplash.com/photo-1536640712-4d998f60b42c?w=500&h=300&fit=crop','https://images.unsplash.com/photo-1475503572774-15a45e5d60b9?w=500&h=300&fit=crop','https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?w=500&h=300&fit=crop'],
+  sport:['https://images.unsplash.com/photo-1551632811-561732d1e306?w=500&h=300&fit=crop','https://images.unsplash.com/photo-1461896836934-bd45ba688bab?w=500&h=300&fit=crop','https://images.unsplash.com/photo-1544298621-a21e4e4cb0a3?w=500&h=300&fit=crop'],
+  professional:['https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=500&h=300&fit=crop','https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop','https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=500&h=300&fit=crop'],
+  culture:['https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=500&h=300&fit=crop','https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=500&h=300&fit=crop','https://images.unsplash.com/photo-1506157786151-b8491531f063?w=500&h=300&fit=crop'],
+  women:['https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=500&h=300&fit=crop','https://images.unsplash.com/photo-1609748340878-eaa075e2aa54?w=500&h=300&fit=crop'],
+  lgbtq:['https://images.unsplash.com/photo-1562887250-9a52d844ad30?w=500&h=300&fit=crop','https://images.unsplash.com/photo-1513543603143-51e3ad3d2421?w=500&h=300&fit=crop']
 };
+var usedCommImages = {};
+function getCommImage(cat, id) {
+  var pool = categoryImages[cat] || categoryImages.social;
+  for (var i = 0; i < pool.length; i++) {
+    if (!usedCommImages[pool[i]]) { usedCommImages[pool[i]] = true; return pool[i]; }
+  }
+  return pool[(id || 0) % pool.length];
+}
 
 function parseCommunity(b) {
   var pr = {};
@@ -180,7 +190,7 @@ function parseCommunity(b) {
     region: pr.region || b.city.toLowerCase(),
     members: memberStr, platform: pr.platform || 'Website',
     url: b.url || '', desc: b.reason || '',
-    img: categoryImages[b.area] || categoryImages.social
+    _id: b.id, _area: b.area || 'social'
   };
 }
 
@@ -203,6 +213,7 @@ function filterComm(f, el) {
 }
 
 function renderComms() {
+  usedCommImages = {};
   var filtered = communities;
   if (activeFilter !== 'all') {
     filtered = communities.filter(function(c) {
@@ -216,8 +227,9 @@ function renderComms() {
   }
   el.innerHTML = filtered.map(function(c) {
     var pColor = platformColors[c.platform] || '#57534e';
+    var img = getCommImage(c._area, c._id);
     return '<a class="cc" href="' + c.url + '" target="_blank" rel="noopener">' +
-      '<img class="cc-img" src="' + c.img + '" alt="" />' +
+      '<img class="cc-img" src="' + img + '" alt="" />' +
       '<div class="cc-body">' +
       '<div class="cc-name">' + c.name + '</div>' +
       '<div class="cc-meta">' +
