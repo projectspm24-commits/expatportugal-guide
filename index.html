@@ -317,7 +317,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
 
 <!-- 4. LOCAL SERVICES -->
 <div class="full fade-in" style="margin-top:2.5rem">
-  <div class="sh"><span class="sh-t">Find local services</span><a class="sh-btn" href="lifestyle_services.html">All providers &rarr;</a></div>
+  <div class="sh"><span class="sh-t">Expat services</span><a class="sh-btn" href="lifestyle_services.html">All providers &rarr;</a></div>
   <div class="sp-grid">
     <a class="sp" href="lifestyle_services.html"><span class="sp-icon">&#127947;</span><div class="sp-cat">Fitness &amp; sport</div><div class="sp-title">Personal trainers</div><div class="sp-n">5 providers</div></a>
     <a class="sp" href="lifestyle_services.html"><span class="sp-icon">&#129463;</span><div class="sp-cat">Health &amp; dental</div><div class="sp-title">English-speaking dentists</div><div class="sp-n">5 providers</div></a>
@@ -336,7 +336,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
 
 <!-- 4a. SUPPORT LOCAL BUSINESSES -->
 <div class="full fade-in" style="margin-top:2.5rem">
-  <div class="sh"><span class="sh-t">Support local businesses</span><a class="sh-btn" href="directory.html">Browse all &rarr;</a></div>
+  <div class="sh"><span class="sh-t">Local businesses</span><a class="sh-btn" href="directory.html">Browse all &rarr;</a></div>
   <div style="font-size:13px;color:var(--ink2);margin-bottom:1rem;line-height:1.6">Independent, locally owned businesses in Portugal &mdash; recommended by the expat community. No chains, no franchises.</div>
   <div class="lb-grid">
     <a class="lb" href="directory.html">
@@ -649,14 +649,14 @@ setTimeout(function() {
 
 <button class="chat-fab" id="chat-fab" onclick="toggleChat()">
   &#128172;
-  <span class="chat-fab-badge">Ask me!</span>
+  <span class="chat-fab-badge">Ask Pedro!</span>
 </button>
 
 <div class="chat-panel" id="chat-panel">
   <div class="chat-header">
     <div>
       <div class="chat-header-t">&#127477;&#127481; ExpatPortugal assistant</div>
-      <div class="chat-header-sub">Ask me anything about expat life</div>
+      <div class="chat-header-sub">Ask Pedro anything about expat life</div>
     </div>
     <button class="chat-close" onclick="toggleChat()">&times;</button>
   </div>
@@ -670,7 +670,7 @@ setTimeout(function() {
     <button class="chat-qb" onclick="sendQuick('What events are happening this week?')">Events this week</button>
   </div>
   <div class="chat-input-row">
-    <input class="chat-input" id="chat-input" type="text" placeholder="Ask me anything..." onkeydown="if(event.key==='Enter')sendChat()" />
+    <input class="chat-input" id="chat-input" type="text" placeholder="Ask Pedro anything..." onkeydown="if(event.key==='Enter')sendChat()" />
     <button class="chat-send" onclick="sendChat()">Send</button>
   </div>
 </div>
@@ -760,7 +760,7 @@ async function sendChat() {
   showTyping();
 
   try {
-    var systemPrompt = 'You are the ExpatPortugal.guide AI assistant — a friendly, knowledgeable concierge for English-speaking expats in Portugal. You help with:\n\n' +
+    var systemPrompt = 'You are Pedro, the friendly ExpatPortugal.guide assistant for English-speaking expats in Portugal. You help with:\n\n' +
       '1. DAY PLANNING: When someone tells you who they are (family with kids, solo person, couple, retiree, digital nomad, etc.) and where they are, curate a perfect day with specific places, times, and activities. Use real venue names in Portugal. Include breakfast, morning activity, lunch spot, afternoon, and evening suggestions.\n\n' +
       '2. FINDING SERVICES: Direct them to the services page (lifestyle_services.html) for dentists, lawyers, trainers, vets, etc. Mention we have 33+ providers listed.\n\n' +
       '3. BUREAUCRACY HELP: Guide on NIF, D7/D8 visas, AIMA, NHR/IFICI tax regimes, citizenship. Direct to our free tools (expat_tools_v4_fixed.html) for visa finder, tax calculator, document checklist.\n\n' +
