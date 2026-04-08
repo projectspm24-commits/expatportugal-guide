@@ -416,7 +416,8 @@ function showEventDetail(id) {
     (e.price && e.price !== 'Free' ? '<br>&#128176; ' + e.price : '<br>&#127381; Free entry') +
     '</div>' +
     (e.description ? '<div style="font-size:13px;color:var(--ink2);line-height:1.7;margin-bottom:14px">' + e.description + '</div>' : '') +
-    (e.url ? '<a href="' + e.url + '" target="_blank" rel="noopener" style="display:inline-block;padding:8px 18px;background:var(--red);color:white;border-radius:var(--r);font-size:13px;font-weight:500">More info &rarr;</a>' : '');
+    (e.url ? '<a href="' + e.url + '" target="_blank" rel="noopener" style="display:block;width:100%;padding:12px;background:var(--red);color:white;border-radius:var(--r);font-size:14px;font-weight:500;text-align:center;text-decoration:none">' + (e.price && e.price !== 'Free' ? '&#127915; Get tickets / Sign up &rarr;' : '&#128279; Event page &rarr;') + '</a>' : '') +
+    (!e.url ? '<div style="font-size:12px;color:var(--ink3);text-align:center;padding:8px">No event link available. Check the venue directly.</div>' : '');
   document.getElementById('ev-modal').classList.add('open');
 }
 
