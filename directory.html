@@ -104,6 +104,11 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
 
 @media(max-width:900px){.dir-layout{grid-template-columns:1fr}.dir-map-col{position:relative;top:0}.full{padding:0 1rem}nav{padding:0 1rem}}
 @media(max-width:700px){.full{padding:0 1rem}nav{padding:0 1rem}}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0);z-index:300;align-items:center;justify-content:center;transition:background .5s}
+.modal-bg.open{display:flex}
+.modal-bg.show{background:rgba(0,0,0,0.45)}
+.modal{background:var(--card);border-radius:16px;padding:1.75rem;width:90%;max-width:480px;max-height:85vh;overflow-y:auto;opacity:0;transform:translateY(20px) scale(0.97);transition:opacity .5s,transform .5s}
+.modal-bg.show .modal{opacity:1;transform:translateY(0) scale(1)}
 </style>
 </head>
 <body>
@@ -289,6 +294,11 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
   </div>
 </div>
 
+<!-- CLAIM BUSINESS MODAL -->
+<div class="modal-bg" id="claim-modal" onclick="if(event.target===this)closeClaim()">
+  <div class="modal" id="claim-content" style="max-width:480px;position:relative"></div>
+</div>
+
 <footer>
   <div class="fi">
     <div style="margin-bottom:12px">&#127477;&#127481; ExpatPortugal.guide &middot; <a href="index.html" style="color:rgba(255,255,255,0.7)">Home</a> &middot; <a href="lifestyle_services.html" style="color:rgba(255,255,255,0.7)">Services</a> &middot; <a href="news.html" style="color:rgba(255,255,255,0.7)">News</a></div>
@@ -304,13 +314,15 @@ var allBiz = [];
 var reviewStars = 0;
 
 function parseRating(pr) {
-  if (!pr) return { rating: 0, reviews: 0, source: '' };
-  var r = { rating: 0, reviews: 0, source: '' };
+  if (!pr) return { rating: 0, reviews: 0, source: '', tier: 'free', photos: '' };
+  var r = { rating: 0, reviews: 0, source: '', tier: 'free', photos: '' };
   (pr || '').split('|').forEach(function(p) {
     var kv = p.split(':');
     if (kv[0] === 'rating') r.rating = parseFloat(kv[1]) || 0;
     if (kv[0] === 'reviews') r.reviews = parseInt(kv[1]) || 0;
     if (kv[0] === 'source') r.source = kv[1] || '';
+    if (kv[0] === 'tier') r.tier = kv[1] || 'free';
+    if (kv[0] === 'photos') r.photos = kv.slice(1).join(':') || '';
   });
   return r;
 }
@@ -347,39 +359,51 @@ function renderBiz() {
     b._rating = r.rating;
     b._reviews = r.reviews;
     b._source = r.source;
+    b._tier = r.tier;
+    b._photos = r.photos;
     return b;
   });
   
-  if (sort === 'rating') {
-    filtered.sort(function(a, b) { return b._rating - a._rating || b._reviews - a._reviews; });
-  } else if (sort === 'reviews') {
-    filtered.sort(function(a, b) { return b._reviews - a._reviews || b._rating - a._rating; });
-  } else {
-    filtered.sort(function(a, b) { return a.name.localeCompare(b.name); });
-  }
+  /* Featured always first, then sort within tiers */
+  filtered.sort(function(a, b) {
+    if (a._tier === 'featured' && b._tier !== 'featured') return -1;
+    if (b._tier === 'featured' && a._tier !== 'featured') return 1;
+    if (a._tier === 'claimed' && b._tier === 'free') return -1;
+    if (b._tier === 'claimed' && a._tier === 'free') return 1;
+    if (sort === 'rating') return b._rating - a._rating || b._reviews - a._reviews;
+    if (sort === 'reviews') return b._reviews - a._reviews || b._rating - a._rating;
+    return a.name.localeCompare(b.name);
+  });
   
-  document.getElementById('result-count').textContent = filtered.length + ' business' + (filtered.length !== 1 ? 'es' : '') + (activeCat !== 'all' ? ' in ' + activeCat : '');
+  document.getElementById('result-count').textContent = filtered.length + ' listing' + (filtered.length !== 1 ? 's' : '') + (activeCat !== 'all' ? ' in ' + activeCat : '');
   
   if (!filtered.length) {
-    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--ink3)">No businesses found in this category yet.<br><a href="mailto:hello@expatportugal.guide?subject=Suggest a business" style="color:var(--red)">Suggest one &rarr;</a></div>';
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--ink3)">No listings found in this category yet.<br><a onclick="openContribute&&openContribute(\'place\')" style="color:var(--red);cursor:pointer">Add one &rarr;</a></div>';
     return;
   }
   
   grid.innerHTML = filtered.map(function(b, i) {
-    var url = b.url ? '<a href="' + b.url + '" target="_blank" class="biz-link">Visit &rarr;</a>' : '';
-    var verified = b.status === 'featured' ? '<span class="biz-verified">&#10003; Verified</span>' : '';
+    var isClaimed = b._tier === 'claimed' || b._tier === 'featured';
+    var isFeatured = b._tier === 'featured';
+    var url = (isClaimed && b.url) ? '<a href="' + b.url + '" target="_blank" class="biz-link">Visit &rarr;</a>' : '';
+    var badge = isFeatured ? '<span style="font-size:9px;background:#fffbeb;color:#b45309;padding:2px 8px;border-radius:10px;font-weight:500">&#11088; Featured</span>' :
+                isClaimed ? '<span style="font-size:9px;background:#f0fdf4;color:#15803d;padding:2px 8px;border-radius:10px;font-weight:500">&#9989; Verified</span>' : '';
     var reviewLabel = b._source === 'google' ? '<span style="font-size:9px;color:var(--ink3);display:block;margin-top:1px">Google · Apr 2026</span>' : '';
     var reviewCount = b._reviews >= 1000 ? (b._reviews / 1000).toFixed(1) + 'k' : b._reviews;
-    return '<div class="biz" data-id="' + b.id + '" onclick="if(event.target.tagName!==\'A\'&&!event.target.classList.contains(\'review-btn\'))showOnMap(this)">' +
-      '<div class="biz-top"><div style="display:flex;align-items:flex-start"><span class="biz-emoji">' + b.emoji + '</span><div><div class="biz-name">' + b.name + '</div><div class="biz-loc">' + [b.area, b.city].filter(Boolean).join(', ') + '</div></div></div>' +
+    var photos = (isClaimed && b.address) ? b.address.split(',').filter(Boolean) : [];
+    var photoHTML = photos.length ? '<div style="display:flex;gap:3px;margin:8px 0;overflow:hidden;border-radius:8px;height:60px">' + photos.slice(0, isFeatured ? 5 : 3).map(function(p) { return '<img src="' + p.trim() + '" style="height:60px;object-fit:cover;flex:1;min-width:0" onerror="this.remove()" />'; }).join('') + '</div>' : '';
+    var borderStyle = isFeatured ? 'border:1.5px solid #b45309;' : '';
+    return '<div class="biz" data-id="' + b.id + '" style="' + borderStyle + '" onclick="if(event.target.tagName!==\'A\'&&!event.target.classList.contains(\'review-btn\'))showOnMap(this)">' +
+      '<div class="biz-top"><div style="display:flex;align-items:flex-start"><span class="biz-emoji">' + b.emoji + '</span><div><div class="biz-name">' + b.name + ' ' + badge + '</div><div class="biz-loc">' + [b.area, b.city].filter(Boolean).join(', ') + '</div></div></div>' +
       '<div class="biz-rating"><div class="biz-stars">' + starsHTML(b._rating) + '</div><span class="biz-score">' + b._rating.toFixed(1) + '</span><span class="biz-reviews">(' + reviewCount + ')' + reviewLabel + '</span></div></div>' +
+      photoHTML +
       '<div class="biz-desc">' + (b.reason || '') + '</div>' +
-      '<div class="biz-tags">' + '<span class="biz-tag">' + b.type + '</span><span class="biz-tag">' + b.city + '</span>' + verified + ' ' + url + '</div>' +
+      '<div class="biz-tags">' + '<span class="biz-tag">' + b.type + '</span><span class="biz-tag">' + b.city + '</span> ' + url + '</div>' +
       '<button class="review-btn" onclick="openReview(' + b.id + ',\'' + b.name.replace(/'/g, "\\'") + '\')">Leave a review</button>' +
+      (!isClaimed ? '<div style="margin-top:6px;text-align:center"><a onclick="openClaim(' + b.id + ',\'' + b.name.replace(/'/g, "\\'") + '\')" style="font-size:11px;color:var(--ink3);cursor:pointer;text-decoration:underline">Is this your business? Claim it &rarr;</a></div>' : '') +
       '</div>';
   }).join('');
   
-  // Auto-show first business on map
   var first = grid.querySelector('.biz');
   if (first) showOnMap(first);
 }
@@ -600,6 +624,59 @@ async function submitCorrection() {
     });
     document.getElementById('correction-form').innerHTML = '<div style="text-align:center;padding:1rem"><div style="font-size:24px;margin-bottom:6px">&#9989;</div><div style="font-size:14px;font-weight:500">Thanks!</div><div style="font-size:12px;color:var(--ink2)">We\'ll review and update the listing.</div></div>';
   } catch(e) { alert('Something went wrong. Please try again.'); }
+}
+
+/* ── CLAIM BUSINESS ── */
+function openClaim(bizId, bizName) {
+  var el = document.getElementById('claim-content');
+  el.innerHTML = '<button onclick="closeClaim()" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:#a8a29e">&times;</button>' +
+    '<div style="font-size:18px;font-weight:500;margin-bottom:4px">Is this your business?</div>' +
+    '<div style="font-size:14px;color:var(--ink2);margin-bottom:16px">Claim <b>' + bizName + '</b> to control your listing and reach more expats.</div>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">' +
+    '<div style="background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:1.25rem;text-align:center">' +
+      '<div style="font-size:13px;font-weight:500;margin-bottom:2px">Claimed</div>' +
+      '<div style="font-family:Playfair Display,serif;font-size:24px;margin-bottom:2px">&euro;99</div>' +
+      '<div style="font-size:11px;color:var(--ink3);margin-bottom:10px">per year</div>' +
+      '<div style="font-size:11px;color:var(--ink2);text-align:left;line-height:1.8">' +
+      '&#9989; Verified badge<br>&#9989; Website link visible<br>&#9989; Contact info shown<br>&#9989; Up to 3 photos<br>&#9989; Update your listing<br>&#9989; Ranked above free listings</div>' +
+      '<button onclick="startClaimCheckout('+bizId+',\'claimed\')" style="width:100%;padding:10px;background:var(--ink);color:white;border:none;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:Outfit,sans-serif;margin-top:12px">Claim for &euro;99/yr &rarr;</button>' +
+    '</div>' +
+    '<div style="background:var(--card);border:2px solid #b45309;border-radius:12px;padding:1.25rem;text-align:center;position:relative">' +
+      '<div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#b45309;color:white;font-size:10px;padding:2px 10px;border-radius:10px;font-weight:500">Best value</div>' +
+      '<div style="font-size:13px;font-weight:500;margin-bottom:2px">Featured</div>' +
+      '<div style="font-family:Playfair Display,serif;font-size:24px;margin-bottom:2px">&euro;149</div>' +
+      '<div style="font-size:11px;color:var(--ink3);margin-bottom:10px">per year</div>' +
+      '<div style="font-size:11px;color:var(--ink2);text-align:left;line-height:1.8">' +
+      '&#9989; Everything in Claimed<br>&#9989; &#11088; Featured badge + gold<br>&#9989; Up to 5 photos<br>&#9989; Top of category results<br>&#9989; Homepage rotation<br>&#9989; Sunday newsletter mention</div>' +
+      '<button onclick="startClaimCheckout('+bizId+',\'featured\')" style="width:100%;padding:10px;background:#b45309;color:white;border:none;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:Outfit,sans-serif;margin-top:12px">Feature for &euro;149/yr &rarr;</button>' +
+    '</div></div>' +
+    '<div style="font-size:11px;color:var(--ink3);text-align:center">Secure payment via Stripe. You\'ll get an email to complete your listing details.</div>';
+
+  var m = document.getElementById('claim-modal');
+  m.style.display = 'flex';
+  requestAnimationFrame(function() { requestAnimationFrame(function() { m.classList.add('open'); m.classList.add('show'); }); });
+  document.body.style.overflow = 'hidden';
+}
+
+function closeClaim() {
+  var m = document.getElementById('claim-modal');
+  m.classList.remove('show');
+  setTimeout(function() { m.classList.remove('open'); m.style.display = 'none'; document.body.style.overflow = ''; }, 500);
+}
+
+async function startClaimCheckout(bizId, tier) {
+  try {
+    var res = await fetch('/api/claim-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bizId: bizId, tier: tier })
+    });
+    var data = await res.json();
+    if (data.url) { window.location.href = data.url; }
+    else { window.location.href = 'mailto:hello@expatportugal.guide?subject=Claim business (ID:'+bizId+') - '+(tier==='featured'?'Featured €149':'Claimed €99'); }
+  } catch(e) {
+    window.location.href = 'mailto:hello@expatportugal.guide?subject=Claim business (ID:'+bizId+') - '+(tier==='featured'?'Featured €149':'Claimed €99');
+  }
 }
 </script>
 <script src="chat-widget.js?v=3" defer></script>
