@@ -126,16 +126,27 @@ var activeRegion = 'all';
 var allLoaded = false;
 
 var categoryImages = {
-  'bureaucracy': 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&h=400&fit=crop',
-  'housing': 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&h=400&fit=crop',
-  'lifestyle': 'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=600&h=400&fit=crop',
-  'transport': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600&h=400&fit=crop',
-  'food': 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=400&fit=crop',
-  'economy': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=400&fit=crop',
-  'community': 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=400&fit=crop',
-  'news': 'https://images.unsplash.com/photo-1585208798174-6cedd86e019a?w=600&h=400&fit=crop'
+  'bureaucracy': ['https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&h=400&fit=crop'],
+  'housing': ['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&h=400&fit=crop'],
+  'lifestyle': ['https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=400&fit=crop'],
+  'transport': ['https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=600&h=400&fit=crop'],
+  'food': ['https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=600&h=400&fit=crop'],
+  'economy': ['https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?w=600&h=400&fit=crop'],
+  'community': ['https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=600&h=400&fit=crop'],
+  'news': ['https://images.unsplash.com/photo-1585208798174-6cedd86e019a?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1495562569060-2eec283d3391?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1555990538-1e15a2d6d3c5?w=600&h=400&fit=crop']
 };
-function getCategoryImage(cat) { return categoryImages[cat] || categoryImages['news']; }
+var usedFallbacks = {};
+function getCategoryImage(cat, articleId) {
+  var pool = categoryImages[cat] || categoryImages['news'];
+  if (!articleId) return pool[0];
+  /* Pick one that hasn't been used recently */
+  for (var i = 0; i < pool.length; i++) {
+    if (!usedFallbacks[pool[i]]) { usedFallbacks[pool[i]] = true; return pool[i]; }
+  }
+  /* All used, reset and pick based on articleId */
+  var idx = (articleId || 0) % pool.length;
+  return pool[idx];
+}
 
 function setFilter(type, val, el) {
   if (type === 'cat') {
@@ -177,10 +188,13 @@ async function loadNews(reset) {
       return;
     }
 
-    var html = articles.map(function(a) {
+    var html = '';
+    usedFallbacks = {};
+    html = articles.map(function(a) {
       var date = a.published_at ? new Date(a.published_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
-      var imgSrc = a.image_url || getCategoryImage(a.category);
-      var img = '<img src="' + imgSrc + '" style="width:60px;height:60px;object-fit:cover;border-radius:var(--r);flex-shrink:0" onerror="this.src=\'' + getCategoryImage(a.category) + '\'" />';
+      var imgSrc = a.image_url || getCategoryImage(a.category, a.id);
+      var fallbackSrc = getCategoryImage(a.category, (a.id||0) + 999);
+      var img = '<img src="' + imgSrc + '" style="width:60px;height:60px;object-fit:cover;border-radius:var(--r);flex-shrink:0" onerror="this.src=\'' + fallbackSrc + '\'" />';
       return '<a class="ni" href="' + (a.source_url||'#') + '" target="_blank" rel="noopener">' +
         img +
         '<div style="flex:1">' +

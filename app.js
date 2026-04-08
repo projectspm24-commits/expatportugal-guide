@@ -6,18 +6,25 @@ var activeNewsCat = 'all';
 /* ── OG Image fetching with category fallbacks ── */
 var ogCache = {};
 var categoryImages = {
-  'bureaucracy': 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&h=400&fit=crop',
-  'housing': 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&h=400&fit=crop',
-  'lifestyle': 'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=600&h=400&fit=crop',
-  'transport': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600&h=400&fit=crop',
-  'food': 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=400&fit=crop',
-  'economy': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=400&fit=crop',
-  'community': 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=400&fit=crop',
-  'news': 'https://images.unsplash.com/photo-1585208798174-6cedd86e019a?w=600&h=400&fit=crop'
+  'bureaucracy': ['https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&h=400&fit=crop'],
+  'housing': ['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&h=400&fit=crop'],
+  'lifestyle': ['https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=400&fit=crop'],
+  'transport': ['https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=600&h=400&fit=crop'],
+  'food': ['https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=600&h=400&fit=crop'],
+  'economy': ['https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?w=600&h=400&fit=crop'],
+  'community': ['https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=600&h=400&fit=crop'],
+  'news': ['https://images.unsplash.com/photo-1585208798174-6cedd86e019a?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1495562569060-2eec283d3391?w=600&h=400&fit=crop','https://images.unsplash.com/photo-1555990538-1e15a2d6d3c5?w=600&h=400&fit=crop']
 };
+var usedFallbacks = {};
 
-function getCategoryImage(cat) {
-  return categoryImages[cat] || categoryImages['news'];
+function getCategoryImage(cat, articleId) {
+  var pool = categoryImages[cat] || categoryImages['news'];
+  if (!articleId) return pool[0];
+  for (var i = 0; i < pool.length; i++) {
+    if (!usedFallbacks[pool[i]]) { usedFallbacks[pool[i]] = true; return pool[i]; }
+  }
+  var idx = (articleId || 0) % pool.length;
+  return pool[idx];
 }
 
 async function fetchOgImage(articleId, sourceUrl, category) {
@@ -86,7 +93,7 @@ async function loadLiveNews() {
       var src = a.source_name || 'Google News';
       var hasImg = !!a.image_url;
       var thumbId = 'ni-thumb-' + a.id;
-      var fb = getCategoryImage(a.category);
+      var fb = getCategoryImage(a.category, a.id);
       var thumb = hasImg
         ? '<div class="ni-img" id="' + thumbId + '"><img src="' + a.image_url + '" alt="" onerror="this.src=\'' + fb + '\'" /></div>'
         : '<div class="ni-img" id="' + thumbId + '"><img src="' + fb + '" alt="" style="width:100%;height:100%;object-fit:cover" /></div>';
@@ -146,7 +153,7 @@ async function loadHero() {
       applyHeroBg(main.image_url);
     } else {
       // Immediately show category fallback, then try OG image
-      applyHeroBg(getCategoryImage(main.category));
+      applyHeroBg(getCategoryImage(main.category, main.id));
       fetchOgImage(main.id, main.source_url, main.category).then(function(url) {
         if (url && !url.includes('unsplash.com')) applyHeroBg(url);
       });
@@ -160,7 +167,7 @@ async function loadHero() {
         if (el) el.addEventListener('click', function() { window.open(a.source_url || '#', '_blank'); });
         // Load OG image for side card
         if (!a.image_url && el) {
-          var sideFb = getCategoryImage(a.category);
+          var sideFb = getCategoryImage(a.category, a.id);
           el.style.backgroundImage = 'url(' + sideFb + ')';
           el.style.backgroundSize = 'cover';
           el.style.backgroundPosition = 'center';
@@ -177,7 +184,7 @@ async function loadHero() {
           });
         }
       }, 100);
-      var sideBg = a.image_url || getCategoryImage(a.category);
+      var sideBg = a.image_url || getCategoryImage(a.category, a.id);
       var bgStyle = 'background-image:url(' + sideBg + ');background-size:cover;background-position:center';
       var overlayHtml = '<div class="hsc-overlay" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.15) 100%);border-radius:inherit"></div>';
       return '<div class="hsc" id="' + id + '" style="cursor:pointer;' + bgStyle + '">' +
