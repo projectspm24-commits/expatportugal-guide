@@ -58,7 +58,7 @@ nav{background:rgba(247,245,240,0.96);border-bottom:0.5px solid var(--border);pa
 .d-ev-day{font-family:"Playfair Display",serif;font-size:16px;line-height:1}
 .d-ev-mon{font-size:9px;color:var(--ink3);text-transform:uppercase}
 
-.biz-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:2rem}
+.biz-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:2rem;max-height:70vh;overflow-y:auto;padding-right:4px}
 .biz{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;transition:all .2s;cursor:pointer;position:relative}
 .biz:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,.06)}
 .biz.active{border-color:var(--red);border-width:1.5px;box-shadow:0 4px 20px rgba(192,56,26,.1)}
@@ -224,11 +224,11 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
   </div>
 
   <div class="cta-box">
-    <div class="cta-box-t">Know a great place or business?</div>
-    <div class="cta-box-sub">Help the expat community discover the best of Portugal. Suggest a local business or a place to explore.</div>
+    <div class="cta-box-t">Know a great place?</div>
+    <div class="cta-box-sub">Help the expat community discover the best of Portugal.</div>
     <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-      <a class="cta-box-btn" href="mailto:hello@expatportugal.guide?subject=List my local business&body=Business name:%0ACategory:%0ACity / neighbourhood:%0AWebsite or Instagram:%0AShort description:">List a business (free)</a>
-      <a class="cta-box-btn" style="background:rgba(255,255,255,0.1);border:0.5px solid rgba(255,255,255,0.2)" href="mailto:hello@expatportugal.guide?subject=Suggest a place to explore&body=Place name:%0AType (museum, park, beach, viewpoint, historic site):%0ACity:%0AWhy expats should visit:">Suggest a place</a>
+      <a class="cta-box-btn" onclick="document.getElementById('submit-place-section').scrollIntoView({behavior:'smooth'})" style="cursor:pointer">Suggest a place (free)</a>
+      <a class="cta-box-btn" style="background:rgba(255,255,255,0.1);border:0.5px solid rgba(255,255,255,0.2);cursor:pointer" onclick="openClaim(0,'your business')">Own a business? Claim it &rarr;</a>
     </div>
   </div>
 </div>
