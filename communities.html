@@ -121,10 +121,29 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
     </div>
   </div>
 
-  <div class="cta-box">
+  <div class="cta-box" id="submit-comm-section">
     <div class="cta-t">Run a community in Portugal?</div>
-    <div class="cta-sub">Get listed for free. We feature genuine communities that help expats &amp; locals connect &mdash; no fees, ever.</div>
-    <a class="cta-btn" href="mailto:hello@expatportugal.guide?subject=List our community&body=Community name:%0ACity / region:%0AType (social, nomad, family, sport, professional, culture):%0APlatform (Meetup, Facebook, WhatsApp, etc.):%0AApprox. members:%0ALink:%0AShort description:">Get listed for free &rarr;</a>
+    <div class="cta-sub" style="margin-bottom:14px">Get listed for free. We feature genuine communities that help expats &amp; locals connect &mdash; no fees, ever.</div>
+    <div id="submit-comm-form" style="max-width:500px;margin:0 auto">
+      <input id="sc-name" placeholder="Community name *" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:6px;background:white" />
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px">
+        <select id="sc-type" style="padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;background:white">
+          <option value="">Type *</option><option value="social">Social / Meetups</option><option value="nomad">Digital nomads</option><option value="family">Families</option><option value="sport">Sports / Outdoor</option><option value="professional">Professional</option><option value="culture">Culture / Language</option><option value="women">Women</option><option value="lgbtq">LGBTQ+</option>
+        </select>
+        <select id="sc-city" style="padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;background:white">
+          <option value="">City / Region *</option><option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Braga</option><option>Alentejo</option><option>Madeira</option><option value="Online">Online / All Portugal</option>
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px">
+        <select id="sc-platform" style="padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;background:white">
+          <option value="">Platform *</option><option>Meetup</option><option>Facebook</option><option>WhatsApp</option><option>Telegram</option><option>Discord</option><option>Instagram</option><option>Website</option>
+        </select>
+        <input id="sc-members" placeholder="Approx. members" style="padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;background:white" />
+      </div>
+      <input id="sc-url" placeholder="Join link (Meetup/Facebook/WhatsApp URL) *" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:6px;background:white" />
+      <input id="sc-desc" placeholder="Short description — what's the vibe?" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:8px;background:white" />
+      <button onclick="submitCommunity()" class="cta-btn" style="border:none;cursor:pointer;font-family:Outfit,sans-serif">Submit community &rarr;</button>
+    </div>
   </div>
 </div>
 
@@ -212,6 +231,23 @@ function renderComms() {
 }
 
 loadCommunities();
+
+async function submitCommunity() {
+  var name = document.getElementById('sc-name').value.trim();
+  var type = document.getElementById('sc-type').value;
+  var city = document.getElementById('sc-city').value;
+  var platform = document.getElementById('sc-platform').value;
+  var url = document.getElementById('sc-url').value.trim();
+  if (!name || !type || !city || !platform || !url) { alert('Please fill in all required fields.'); return; }
+  try {
+    await fetch(SB_URL + '/rest/v1/local_businesses', {
+      method: 'POST',
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ name: name, type: 'community', city: city, area: type, reason: document.getElementById('sc-desc').value.trim(), url: url, emoji: platform, price_range: 'members:' + (document.getElementById('sc-members').value || '?'), status: 'pending' })
+    });
+    document.getElementById('submit-comm-form').innerHTML = '<div style="text-align:center;padding:1rem"><div style="font-size:24px;margin-bottom:6px">&#9989;</div><div style="font-size:14px;font-weight:500">Thanks!</div><div style="font-size:12px;color:var(--ink2)">We\'ll review and publish your community within 24 hours.</div></div>';
+  } catch(e) { alert('Something went wrong. Please try again.'); }
+}
 </script>
 <script src="chat-widget.js?v=3" defer></script>
 <script src="mobile-menu.js?v=2" defer></script>

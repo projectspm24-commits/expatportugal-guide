@@ -162,7 +162,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
 .fb{border-top:0.5px solid rgba(255,255,255,0.1);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;font-size:12px;flex-wrap:wrap;gap:8px}
 .fbadge{font-size:10px;background:rgba(255,255,255,0.07);padding:4px 12px;border-radius:20px}
 
-@media(max-width:900px){.vp-hero{padding:1.5rem 1rem 0}.vp-content{padding:2rem}.evw-grid{grid-template-columns:1fr}.tg{grid-template-columns:repeat(2,1fr)}.sp-grid{grid-template-columns:repeat(2,1fr)}.lb-grid{grid-template-columns:repeat(2,1fr)}.places-grid{grid-template-columns:repeat(2,1fr)}.comm-grid{grid-template-columns:1fr}.llp{grid-template-columns:1fr}.sub-sec{grid-template-columns:1fr}.ft{grid-template-columns:1fr 1fr}.full{padding:0 1rem}nav{padding:0 1rem}.region-bar{padding:0 1rem}#home-housing{grid-template-columns:1fr!important}}
+@media(max-width:900px){.vp-hero{padding:1.5rem 1rem 0}.vp-content{padding:2rem}.evw-grid{grid-template-columns:1fr}.tg{grid-template-columns:repeat(2,1fr)}.sp-grid{grid-template-columns:repeat(2,1fr)}.lb-grid{grid-template-columns:repeat(2,1fr)}.places-grid{grid-template-columns:repeat(2,1fr)}.comm-grid{grid-template-columns:1fr}.llp{grid-template-columns:1fr}.sub-sec{grid-template-columns:1fr}.ft{grid-template-columns:1fr 1fr}.full{padding:0 1rem}nav{padding:0 1rem}.region-bar{padding:0 1rem}#home-housing{grid-template-columns:1fr!important}#contribute-grid{grid-template-columns:1fr!important}}
 @media(max-width:600px){.tg{grid-template-columns:1fr}.sp-grid{grid-template-columns:1fr}.ft{grid-template-columns:1fr}.vp-stats{flex-wrap:wrap;gap:1.5rem}}
 </style>
 </head>
@@ -488,6 +488,41 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
       <div class="llp-f"><span class="llp-fi">&#128218;</span><div><div class="llp-ft">Portuguese phrases</div><div class="llp-fd">20 phrases that actually matter in daily life, with pronunciation.</div></div></div>
       <div class="llp-f"><span class="llp-fi">&#127754;</span><div><div class="llp-ft">Volunteering</div><div class="llp-fd">Beach clean-ups, animal shelters, food banks, English tutoring.</div></div></div>
       <div class="llp-f"><span class="llp-fi">&#128197;</span><div><div class="llp-ft">Cultural calendar</div><div class="llp-fd">Santos Populares, Magusto, Carnaval &mdash; be part of it.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 6b. HELP BUILD THIS GUIDE -->
+<div class="full fade-in" style="margin-top:2.5rem">
+  <div class="sh"><span class="sh-t">Help build this guide</span></div>
+  <div style="font-size:13px;color:var(--ink2);margin-bottom:1rem;line-height:1.6">This site is built by expats, for expats. Share your knowledge and help newcomers feel at home.</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px" id="contribute-grid">
+    <a href="directory.html#submit-place-section" style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;display:block;transition:all .2s;text-decoration:none;color:inherit">
+      <div style="font-size:24px;margin-bottom:8px">&#128205;</div>
+      <div style="font-size:14px;font-weight:500;margin-bottom:4px">Add a place</div>
+      <div style="font-size:12px;color:var(--ink3);line-height:1.5">Know a great café, beach, or hidden gem? Add it to the guide.</div>
+    </a>
+    <a href="calendar.html" style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;display:block;transition:all .2s;text-decoration:none;color:inherit">
+      <div style="font-size:24px;margin-bottom:8px">&#128197;</div>
+      <div style="font-size:14px;font-weight:500;margin-bottom:4px">Submit an event</div>
+      <div style="font-size:12px;color:var(--ink3);line-height:1.5">Hosting a meetup, workshop, or dinner? Get it on the calendar.</div>
+    </a>
+    <a href="communities.html#submit-comm-section" style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;display:block;transition:all .2s;text-decoration:none;color:inherit">
+      <div style="font-size:24px;margin-bottom:8px">&#128101;</div>
+      <div style="font-size:14px;font-weight:500;margin-bottom:4px">List a community</div>
+      <div style="font-size:12px;color:var(--ink3);line-height:1.5">Run a group? Get it in front of thousands of expats.</div>
+    </a>
+  </div>
+
+  <div style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;margin-top:12px" id="tip-section">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+      <div style="font-size:15px;font-weight:500">&#128161; Share an expat tip</div>
+      <div style="font-size:11px;color:var(--ink3)">Best tips featured in our Sunday newsletter</div>
+    </div>
+    <div id="tip-form" style="display:flex;gap:8px;flex-wrap:wrap">
+      <input id="tip-text" placeholder="e.g. Always carry your NIF number — you need it for everything from pharmacy to furniture" style="flex:1;min-width:250px;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none" />
+      <input id="tip-name" placeholder="Your name" style="width:120px;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none" />
+      <button onclick="submitTip()" style="padding:9px 18px;background:#c0381a;color:white;border:none;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:Outfit,sans-serif;white-space:nowrap">Share tip &rarr;</button>
     </div>
   </div>
 </div>

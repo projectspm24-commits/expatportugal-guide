@@ -502,6 +502,21 @@ async function submitEvent() {
   }
 }
 
+/* ── SUBMIT EXPAT TIP (homepage) ── */
+async function submitTip() {
+  var text = document.getElementById('tip-text').value.trim();
+  var name = document.getElementById('tip-name').value.trim() || 'Anonymous';
+  if (!text) { alert('Please share your tip!'); return; }
+  try {
+    await fetch(SB_URL + '/rest/v1/events', {
+      method: 'POST',
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ title: 'Expat tip from ' + name, description: text, category: 'tip', status: 'pending', event_date: new Date().toISOString().slice(0, 10) })
+    });
+    document.getElementById('tip-form').innerHTML = '<div style="text-align:center;padding:6px;font-size:13px"><span style="font-size:18px">&#9989;</span> Thanks ' + name + '! Your tip may be featured in our Sunday newsletter.</div>';
+  } catch(e) { alert('Something went wrong. Please try again.'); }
+}
+
 /* ── HOUSING PREVIEW (homepage) ── */
 async function loadHomeHousing() {
   var el = document.getElementById('home-housing');

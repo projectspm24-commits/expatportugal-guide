@@ -248,6 +248,47 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
   </div>
 </div>
 
+<!-- COMMUNITY SUBMISSIONS -->
+<div class="full" style="margin-top:2.5rem;margin-bottom:2rem">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <!-- Submit a place -->
+    <div style="background:var(--card);border:0.5px solid var(--border);border-radius:16px;padding:1.5rem" id="submit-place-section">
+      <div style="font-size:15px;font-weight:500;margin-bottom:4px">&#128205; Know a great place? Add it!</div>
+      <div style="font-size:12px;color:var(--ink2);margin-bottom:14px;line-height:1.6">Help fellow expats discover the best of Portugal. Your favourite café, beach, park, restaurant — anything worth knowing about.</div>
+      <div id="submit-place-form">
+        <input id="sp-name" placeholder="Place name *" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:6px" />
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px">
+          <select id="sp-type" style="padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif">
+            <option value="">Type *</option>
+            <option value="cafe">Café / Coffee</option><option value="restaurant">Restaurant</option><option value="bar">Bar</option>
+            <option value="shop">Shop</option><option value="cowork">Co-working</option><option value="gym">Gym / Fitness</option>
+            <option value="beach">Beach</option><option value="park">Park / Garden</option><option value="museum">Museum</option>
+            <option value="viewpoint">Viewpoint</option><option value="historic">Historic site</option><option value="entertainment">Entertainment</option>
+          </select>
+          <select id="sp-city" style="padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif">
+            <option value="">City *</option><option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Braga</option><option>Alentejo</option><option>Madeira</option>
+          </select>
+        </div>
+        <input id="sp-area" placeholder="Neighbourhood (e.g. Estrela, Foz)" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:6px" />
+        <input id="sp-why" placeholder="Why do you recommend it? *" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:6px" />
+        <input id="sp-url" placeholder="Website or Google Maps link" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:8px" />
+        <button onclick="submitPlace()" style="padding:10px 20px;background:#c0381a;color:white;border:none;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:Outfit,sans-serif">Submit place &rarr;</button>
+      </div>
+    </div>
+    <!-- Suggest a correction -->
+    <div style="background:var(--card);border:0.5px solid var(--border);border-radius:16px;padding:1.5rem">
+      <div style="font-size:15px;font-weight:500;margin-bottom:4px">&#128221; Suggest a correction</div>
+      <div style="font-size:12px;color:var(--ink2);margin-bottom:14px;line-height:1.6">Spotted wrong info? A place that closed? Help keep the directory accurate for everyone.</div>
+      <div id="correction-form">
+        <input id="cor-place" placeholder="Which listing? *" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:6px" />
+        <input id="cor-issue" placeholder="What needs fixing? *" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:6px" />
+        <input id="cor-email" placeholder="Your email (optional)" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:8px" />
+        <button onclick="submitCorrection()" style="padding:10px 20px;background:#1c1917;color:white;border:none;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:Outfit,sans-serif">Send correction &rarr;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer>
   <div class="fi">
     <div style="margin-bottom:12px">&#127477;&#127481; ExpatPortugal.guide &middot; <a href="index.html" style="color:rgba(255,255,255,0.7)">Home</a> &middot; <a href="lifestyle_services.html" style="color:rgba(255,255,255,0.7)">Services</a> &middot; <a href="news.html" style="color:rgba(255,255,255,0.7)">News</a></div>
@@ -530,6 +571,36 @@ if (urlCat && urlCat !== 'all') {
 }
 
 loadDirectory();
+
+async function submitPlace() {
+  var name = document.getElementById('sp-name').value.trim();
+  var type = document.getElementById('sp-type').value;
+  var city = document.getElementById('sp-city').value;
+  var why = document.getElementById('sp-why').value.trim();
+  if (!name || !type || !city || !why) { alert('Please fill in name, type, city, and why you recommend it.'); return; }
+  try {
+    await fetch(SB_URL + '/rest/v1/local_businesses', {
+      method: 'POST',
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ name: name, type: type, city: city, area: document.getElementById('sp-area').value.trim(), reason: why, url: document.getElementById('sp-url').value.trim(), emoji: '📍', status: 'pending', price_range: 'rating:0|reviews:0' })
+    });
+    document.getElementById('submit-place-form').innerHTML = '<div style="text-align:center;padding:1rem"><div style="font-size:24px;margin-bottom:6px">&#9989;</div><div style="font-size:14px;font-weight:500">Thanks!</div><div style="font-size:12px;color:var(--ink2)">We\'ll review and publish within 24 hours.</div></div>';
+  } catch(e) { alert('Something went wrong. Please try again.'); }
+}
+
+async function submitCorrection() {
+  var place = document.getElementById('cor-place').value.trim();
+  var issue = document.getElementById('cor-issue').value.trim();
+  if (!place || !issue) { alert('Please fill in the listing name and what needs fixing.'); return; }
+  try {
+    await fetch(SB_URL + '/rest/v1/events', {
+      method: 'POST',
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ title: 'Correction: ' + place, description: issue + (document.getElementById('cor-email').value ? '\n\nFrom: ' + document.getElementById('cor-email').value : ''), category: 'correction', status: 'pending', event_date: new Date().toISOString().slice(0, 10) })
+    });
+    document.getElementById('correction-form').innerHTML = '<div style="text-align:center;padding:1rem"><div style="font-size:24px;margin-bottom:6px">&#9989;</div><div style="font-size:14px;font-weight:500">Thanks!</div><div style="font-size:12px;color:var(--ink2)">We\'ll review and update the listing.</div></div>';
+  } catch(e) { alert('Something went wrong. Please try again.'); }
+}
 </script>
 <script src="chat-widget.js?v=3" defer></script>
 <script src="mobile-menu.js?v=2" defer></script>
