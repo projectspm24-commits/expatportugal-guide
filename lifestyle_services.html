@@ -58,6 +58,11 @@ nav{background:rgba(247,245,240,0.96);border-bottom:0.5px solid var(--border);pa
 .cta-sub{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6}
 .cta-btn{padding:11px 24px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:14px;font-weight:500;cursor:pointer;font-family:"Outfit",sans-serif;white-space:nowrap;display:inline-block}
 .cta-btn:hover{background:var(--red-d)}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0);z-index:300;align-items:center;justify-content:center;transition:background .5s}
+.modal-bg.open{display:flex}
+.modal-bg.show{background:rgba(0,0,0,0.45)}
+.modal{background:var(--card);border-radius:16px;padding:1.75rem;width:90%;max-width:480px;max-height:85vh;overflow-y:auto;opacity:0;transform:translateY(20px) scale(0.97);transition:opacity .5s,transform .5s}
+.modal-bg.show .modal{opacity:1;transform:translateY(0) scale(1)}
 footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top:3rem}
 .fi{max-width:1100px;margin:0 auto;font-size:12px;text-align:center}
 @media(max-width:700px){.grid{grid-template-columns:1fr}.search-row{flex-direction:column}.cta-box{flex-direction:column;align-items:flex-start}.full{padding:0 1rem}nav{padding:0 1rem}}
@@ -115,12 +120,36 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
   <div class="grid" id="grid"></div>
   <div class="cta-box">
     <div>
-      <div class="cta-t">List your service</div>
-      <div class="cta-sub">Reach thousands of expats in Portugal. English-speaking providers only. Manually reviewed.</div>
+      <div class="cta-t">Are you a service provider?</div>
+      <div class="cta-sub">Claim your listing to show your website, contact info, and photos. Get in front of thousands of expats.</div>
     </div>
-    <a class="cta-btn" href="mailto:hello@expatportugal.guide?subject=List my service&body=Your name / business:%0AService type:%0ACity / region:%0AWebsite or social:%0ABrief description:">Get listed &rarr;</a>
+    <a class="cta-btn" style="cursor:pointer" onclick="openServiceClaim()">Claim or get featured &rarr;</a>
+  </div>
+
+  <div style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.5rem;margin-bottom:2rem" id="suggest-service-section">
+    <div style="font-size:15px;font-weight:500;margin-bottom:4px">&#128205; Know a great service provider?</div>
+    <div style="font-size:12px;color:var(--ink2);margin-bottom:14px;line-height:1.6">Help fellow expats find quality English-speaking providers in Portugal.</div>
+    <div id="suggest-service-form">
+      <input id="ss-name" placeholder="Provider or business name *" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:6px" />
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px">
+        <select id="ss-cat" style="padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif">
+          <option value="">Category *</option><option value="fitness">Fitness</option><option value="health">Health</option><option value="legal">Legal</option><option value="finance">Finance</option><option value="education">Education</option><option value="beauty">Beauty</option><option value="home">Home services</option><option value="pets">Pets</option><option value="tech">Tech</option><option value="other">Other</option>
+        </select>
+        <select id="ss-city" style="padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif">
+          <option value="">City *</option><option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Braga</option><option>Alentejo</option><option>Madeira</option><option value="Online">Online</option>
+        </select>
+      </div>
+      <input id="ss-why" placeholder="Why do you recommend them? *" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:8px" />
+      <button onclick="suggestService()" style="padding:10px 20px;background:#c0381a;color:white;border:none;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:Outfit,sans-serif">Suggest provider &rarr;</button>
+    </div>
   </div>
 </div>
+
+<!-- CLAIM SERVICE MODAL -->
+<div class="modal-bg" id="service-claim-modal" onclick="if(event.target===this)closeServiceClaim()">
+  <div class="modal" id="service-claim-content" style="max-width:480px;position:relative"></div>
+</div>
+
 <footer>
   <div class="fi">
     <div style="margin-bottom:12px">&#127477;&#127481; ExpatPortugal.guide &middot; <a href="index.html" style="color:rgba(255,255,255,0.7)">Home</a> &middot; <a href="directory.html" style="color:rgba(255,255,255,0.7)">Directory</a> &middot; <a href="calendar.html" style="color:rgba(255,255,255,0.7)">Events</a></div>
@@ -185,6 +214,59 @@ function renderServices(){
 function setCat(c,el){activeCat=c;document.querySelectorAll('.filter-bar .fb').forEach(function(b){b.classList.remove('on');});el.classList.add('on');renderServices();}
 function resetFilters(){activeCat='all';document.getElementById('search').value='';document.getElementById('city-filter').value='all';document.querySelectorAll('.filter-bar .fb').forEach(function(b){b.classList.remove('on');});document.querySelector('.filter-bar .fb').classList.add('on');renderServices();}
 loadServices();
+
+function openServiceClaim() {
+  var el = document.getElementById('service-claim-content');
+  el.innerHTML = '<button onclick="closeServiceClaim()" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:#a8a29e">&times;</button>' +
+    '<div style="font-size:18px;font-weight:500;margin-bottom:4px">Claim your service listing</div>' +
+    '<div style="font-size:13px;color:#57534e;margin-bottom:16px">Get in front of thousands of expats looking for English-speaking providers in Portugal.</div>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">' +
+    '<div style="background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:1.25rem;text-align:center">' +
+      '<div style="font-size:13px;font-weight:500;margin-bottom:2px">Claimed</div>' +
+      '<div style="font-family:Playfair Display,serif;font-size:24px;margin-bottom:2px">&euro;99</div>' +
+      '<div style="font-size:11px;color:var(--ink3);margin-bottom:10px">per year</div>' +
+      '<div style="font-size:11px;color:var(--ink2);text-align:left;line-height:1.8">' +
+      '&#9989; Verified badge<br>&#9989; Website link visible<br>&#9989; Contact info shown<br>&#9989; Up to 3 photos<br>&#9989; Update your listing<br>&#9989; Ranked above free</div>' +
+      '<a href="mailto:hello@expatportugal.guide?subject=Claim service listing (€99/yr)&body=Service/business name:%0AYour name:%0AEmail:%0AWebsite:%0ACategory:%0ACity:" style="display:block;width:100%;padding:10px;background:var(--ink);color:white;border:none;border-radius:8px;font-size:13px;font-weight:500;text-align:center;font-family:Outfit,sans-serif;margin-top:12px;text-decoration:none">Claim for &euro;99/yr &rarr;</a>' +
+    '</div>' +
+    '<div style="background:var(--card);border:2px solid #b45309;border-radius:12px;padding:1.25rem;text-align:center;position:relative">' +
+      '<div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#b45309;color:white;font-size:10px;padding:2px 10px;border-radius:10px;font-weight:500">Best value</div>' +
+      '<div style="font-size:13px;font-weight:500;margin-bottom:2px">Featured</div>' +
+      '<div style="font-family:Playfair Display,serif;font-size:24px;margin-bottom:2px">&euro;149</div>' +
+      '<div style="font-size:11px;color:var(--ink3);margin-bottom:10px">per year</div>' +
+      '<div style="font-size:11px;color:var(--ink2);text-align:left;line-height:1.8">' +
+      '&#9989; Everything in Claimed<br>&#9989; &#11088; Featured badge + gold<br>&#9989; Up to 5 photos<br>&#9989; Top of category results<br>&#9989; Homepage rotation<br>&#9989; Sunday newsletter</div>' +
+      '<a href="mailto:hello@expatportugal.guide?subject=Feature service listing (€149/yr)&body=Service/business name:%0AYour name:%0AEmail:%0AWebsite:%0ACategory:%0ACity:" style="display:block;width:100%;padding:10px;background:#b45309;color:white;border:none;border-radius:8px;font-size:13px;font-weight:500;text-align:center;font-family:Outfit,sans-serif;margin-top:12px;text-decoration:none">Feature for &euro;149/yr &rarr;</a>' +
+    '</div></div>' +
+    '<div style="font-size:11px;color:var(--ink3);text-align:center">Already listed? Email us with your business name and we\'ll set up the upgrade.</div>';
+
+  var m = document.getElementById('service-claim-modal');
+  m.style.display = 'flex';
+  requestAnimationFrame(function() { requestAnimationFrame(function() { m.classList.add('open'); m.classList.add('show'); }); });
+  document.body.style.overflow = 'hidden';
+}
+
+function closeServiceClaim() {
+  var m = document.getElementById('service-claim-modal');
+  m.classList.remove('show');
+  setTimeout(function() { m.classList.remove('open'); m.style.display = 'none'; document.body.style.overflow = ''; }, 500);
+}
+
+async function suggestService() {
+  var name = document.getElementById('ss-name').value.trim();
+  var cat = document.getElementById('ss-cat').value;
+  var city = document.getElementById('ss-city').value;
+  var why = document.getElementById('ss-why').value.trim();
+  if (!name || !cat || !city || !why) { alert('Please fill in all required fields.'); return; }
+  try {
+    await fetch(SB_URL + '/rest/v1/local_businesses', {
+      method: 'POST',
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ name: name, type: 'service', city: city, area: cat, reason: why, emoji: '📍', status: 'pending', price_range: 'rating:0|reviews:0' })
+    });
+    document.getElementById('suggest-service-form').innerHTML = '<div style="text-align:center;padding:1rem"><div style="font-size:24px;margin-bottom:6px">&#9989;</div><div style="font-size:14px;font-weight:500">Thanks!</div><div style="font-size:12px;color:var(--ink2)">We\'ll review and publish within 24 hours.</div></div>';
+  } catch(e) { alert('Something went wrong. Please try again.'); }
+}
 </script>
 <script src="chat-widget.js?v=3" defer></script>
 <script src="mobile-menu.js?v=2" defer></script>
