@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Local Services — ExpatPortugal.guide</title>
-<meta name="description" content="Find English-speaking services in Portugal — personal trainers, dentists, vets, tutors, hairdressers, handymen. Recommended by expats, ranked by reviews." />
+<title>Expat Services — Professionals in Portugal | ExpatPortugal.guide</title>
+<meta name="description" content="Find English-speaking doctors, lawyers, accountants, nannies, pet sitters, osteopaths and more in Portugal. Recommended by expats, for expats." />
 <meta property="og:title" content="English-Speaking Services in Portugal" />
 <meta property="og:description" content="33+ English-speaking service providers in Portugal. Dentists, trainers, vets, tutors — ranked by reviews." />
 <meta property="og:image" content="https://images.unsplash.com/photo-1513735492246-483525079686?w=1200&h=630&fit=crop" />
@@ -85,8 +85,8 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
 </nav>
 <div class="full">
   <div class="hero">
-    <div class="hero-t">Find English-speaking services</div>
-    <div class="hero-sub">Personal trainers, dentists, vets, tutors, hairdressers, handymen &mdash; recommended by expats, for expats across Portugal.</div>
+    <div class="hero-t">Expat services</div>
+    <div class="hero-sub">Doctors, lawyers, accountants, nannies, pet sitters, osteopaths &mdash; English-speaking professionals recommended by expats across Portugal.</div>
   </div>
   <div class="search-row">
     <input class="search-input" type="text" id="search" placeholder="Search by name, service, or keyword..." oninput="renderServices()" />
@@ -97,13 +97,15 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
   </div>
   <div class="filter-bar">
     <button class="fb on" onclick="setCat('all',this)">All</button>
-    <button class="fb" onclick="setCat('fitness',this)">&#127947; Fitness</button>
-    <button class="fb" onclick="setCat('health',this)">&#129463; Health</button>
-    <button class="fb" onclick="setCat('pets',this)">&#128062; Pets</button>
+    <button class="fb" onclick="setCat('health',this)">&#129657; Health &amp; Medical</button>
+    <button class="fb" onclick="setCat('legal',this)">&#9878; Legal</button>
+    <button class="fb" onclick="setCat('finance',this)">&#128200; Finance &amp; Tax</button>
+    <button class="fb" onclick="setCat('childcare',this)">&#128118; Childcare &amp; Nannies</button>
+    <button class="fb" onclick="setCat('pets',this)">&#128062; Pet care</button>
+    <button class="fb" onclick="setCat('fitness',this)">&#127947; Fitness &amp; Wellness</button>
     <button class="fb" onclick="setCat('beauty',this)">&#128135; Beauty</button>
-    <button class="fb" onclick="setCat('home',this)">&#128736; Home</button>
-    <button class="fb" onclick="setCat('tutoring',this)">&#128218; Tutoring</button>
-    <button class="fb" onclick="setCat('childcare',this)">&#128118; Childcare</button>
+    <button class="fb" onclick="setCat('home',this)">&#128736; Home services</button>
+    <button class="fb" onclick="setCat('tutoring',this)">&#128218; Tutoring &amp; Education</button>
     <button class="fb" onclick="setCat('other',this)">&#128188; Other</button>
   </div>
   <div class="res-bar">
@@ -120,20 +122,20 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
   <div class="grid" id="grid"></div>
   <div class="cta-box">
     <div>
-      <div class="cta-t">Are you a service provider?</div>
-      <div class="cta-sub">Claim your listing to show your website, contact info, and photos. Get in front of thousands of expats.</div>
+      <div class="cta-t">Are you a professional serving expats?</div>
+      <div class="cta-sub">Doctors, lawyers, accountants, therapists, nannies — claim your listing to reach thousands of expats in Portugal.</div>
     </div>
     <a class="cta-btn" style="cursor:pointer" onclick="openServiceClaim()">Claim or get featured &rarr;</a>
   </div>
 
   <div style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.5rem;margin-bottom:2rem" id="suggest-service-section">
-    <div style="font-size:15px;font-weight:500;margin-bottom:4px">&#128205; Know a great service provider?</div>
-    <div style="font-size:12px;color:var(--ink2);margin-bottom:14px;line-height:1.6">Help fellow expats find quality English-speaking providers in Portugal.</div>
+    <div style="font-size:15px;font-weight:500;margin-bottom:4px">&#128205; Know a great professional?</div>
+    <div style="font-size:12px;color:var(--ink2);margin-bottom:14px;line-height:1.6">Help fellow expats find trusted English-speaking professionals in Portugal.</div>
     <div id="suggest-service-form">
       <input id="ss-name" placeholder="Provider or business name *" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:6px" />
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px">
         <select id="ss-cat" style="padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif">
-          <option value="">Category *</option><option value="fitness">Fitness</option><option value="health">Health</option><option value="legal">Legal</option><option value="finance">Finance</option><option value="education">Education</option><option value="beauty">Beauty</option><option value="home">Home services</option><option value="pets">Pets</option><option value="tech">Tech</option><option value="other">Other</option>
+          <option value="">Category *</option><option value="health">Health &amp; Medical</option><option value="legal">Legal</option><option value="finance">Finance &amp; Tax</option><option value="childcare">Childcare &amp; Nannies</option><option value="pets">Pet care</option><option value="fitness">Fitness &amp; Wellness</option><option value="beauty">Beauty</option><option value="home">Home services</option><option value="tutoring">Tutoring &amp; Education</option><option value="other">Other</option>
         </select>
         <select id="ss-city" style="padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif">
           <option value="">City *</option><option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Braga</option><option>Alentejo</option><option>Madeira</option><option value="Online">Online</option>
@@ -161,7 +163,7 @@ var SB_URL='https://waywvckvyizqkuuaecrp.supabase.co';
 var SB_KEY='sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b';
 var activeCat='all';
 var allServices=[];
-var catStyles={fitness:{bg:'var(--amber-l)',color:'var(--amber)'},health:{bg:'#f0fdfa',color:'#0f766e'},pets:{bg:'var(--green-l)',color:'var(--green)'},beauty:{bg:'var(--rose-l)',color:'var(--rose)'},home:{bg:'var(--blue-l)',color:'var(--blue)'},tutoring:{bg:'var(--purple-l)',color:'var(--purple)'},childcare:{bg:'var(--red-l)',color:'var(--red)'},other:{bg:'var(--warm)',color:'var(--ink2)'}};
+var catStyles={fitness:{bg:'var(--amber-l)',color:'var(--amber)'},health:{bg:'#f0fdfa',color:'#0f766e'},pets:{bg:'var(--green-l)',color:'var(--green)'},beauty:{bg:'var(--rose-l)',color:'var(--rose)'},home:{bg:'var(--blue-l)',color:'var(--blue)'},tutoring:{bg:'var(--purple-l)',color:'var(--purple)'},childcare:{bg:'var(--red-l)',color:'var(--red)'},legal:{bg:'#f5f3ff',color:'#6d28d9'},finance:{bg:'#fef3c7',color:'#92400e'},other:{bg:'var(--warm)',color:'var(--ink2)'}};
 
 function parseService(s){
   var pr={};
@@ -236,8 +238,8 @@ loadServices();
 function openServiceClaim() {
   var el = document.getElementById('service-claim-content');
   el.innerHTML = '<button onclick="closeServiceClaim()" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:#a8a29e">&times;</button>' +
-    '<div style="font-size:18px;font-weight:500;margin-bottom:4px">Claim your service listing</div>' +
-    '<div style="font-size:13px;color:#57534e;margin-bottom:16px">Get in front of thousands of expats looking for English-speaking providers in Portugal.</div>' +
+    '<div style="font-size:18px;font-weight:500;margin-bottom:4px">Claim your professional listing</div>' +
+    '<div style="font-size:13px;color:#57534e;margin-bottom:16px">Reach thousands of expats looking for English-speaking professionals in Portugal.</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">' +
     '<div style="background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:1.25rem;text-align:center">' +
       '<div style="font-size:13px;font-weight:500;margin-bottom:2px">Claimed</div>' +
