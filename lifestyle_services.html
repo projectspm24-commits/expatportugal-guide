@@ -168,7 +168,8 @@ function parseService(s){
   (s.price_range||'').split('|').forEach(function(p){var idx=p.indexOf(':');if(idx>0)pr[p.slice(0,idx)]=p.slice(idx+1);});
   var rating=parseFloat(pr.rating)||0;
   var reviews=parseInt(pr.reviews)||0;
-  return{id:s.id,name:s.name,cat:s.area||'other',city:s.city,role:pr.role||'',tags:(pr.tags||'').split(',').filter(Boolean),desc:s.reason||'',emoji:s.emoji||'',url:s.url||'',rating:rating,reviews:reviews,source:pr.source||'',_raw:(s.name+' '+s.area+' '+(pr.role||'')+' '+(pr.tags||'')+' '+(s.reason||'')+' '+s.city).toLowerCase()};
+  var tier=pr.tier||'free';
+  return{id:s.id,name:s.name,cat:s.area||'other',city:s.city,role:pr.role||'',tags:(pr.tags||'').split(',').filter(Boolean),desc:s.reason||'',emoji:s.emoji||'',url:s.url||'',address:s.address||'',rating:rating,reviews:reviews,source:pr.source||'',tier:tier,_raw:(s.name+' '+s.area+' '+(pr.role||'')+' '+(pr.tags||'')+' '+(s.reason||'')+' '+s.city).toLowerCase()};
 }
 
 async function loadServices(){
@@ -190,24 +191,41 @@ function renderServices(){
   if(city!=='all')filtered=filtered.filter(function(s){return s.city===city||s.city==='Online';});
   if(q)filtered=filtered.filter(function(s){return s._raw.indexOf(q)!==-1;});
   
-  if(sort==='rating')filtered.sort(function(a,b){return b.rating-a.rating||b.reviews-a.reviews;});
-  else if(sort==='reviews')filtered.sort(function(a,b){return b.reviews-a.reviews||b.rating-a.rating;});
-  else filtered.sort(function(a,b){return a.name.localeCompare(b.name);});
+  /* Featured first, then claimed, then free — within each tier sort by selected */
+  filtered.sort(function(a,b){
+    if(a.tier==='featured'&&b.tier!=='featured')return -1;
+    if(b.tier==='featured'&&a.tier!=='featured')return 1;
+    if(a.tier==='claimed'&&b.tier==='free')return -1;
+    if(b.tier==='claimed'&&a.tier==='free')return 1;
+    if(sort==='rating')return b.rating-a.rating||b.reviews-a.reviews;
+    if(sort==='reviews')return b.reviews-a.reviews||b.rating-a.rating;
+    return a.name.localeCompare(b.name);
+  });
   
   document.getElementById('res-count').textContent=filtered.length+' service'+(filtered.length!==1?'s':'')+(activeCat!=='all'?' in '+activeCat:'');
   var grid=document.getElementById('grid');
-  if(!filtered.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:3rem;background:var(--card);border-radius:var(--rl);color:var(--ink3)">No services found. <a href="mailto:hello@expatportugal.guide?subject=Suggest a service" style="color:var(--red)">Suggest one!</a></div>';return;}
+  if(!filtered.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:3rem;background:var(--card);border-radius:var(--rl);color:var(--ink3)">No services found. <a onclick="document.getElementById(\'suggest-service-section\').scrollIntoView({behavior:\'smooth\'})" style="color:var(--red);cursor:pointer">Suggest one!</a></div>';return;}
   grid.innerHTML=filtered.map(function(s){
     var cs=catStyles[s.cat]||catStyles.other;
-    var href=s.url?s.url:'mailto:hello@expatportugal.guide?subject=Contact '+encodeURIComponent(s.name);
-    var tgt=s.url?' target="_blank" rel="noopener"':'';
+    var isClaimed=s.tier==='claimed'||s.tier==='featured';
+    var isFeatured=s.tier==='featured';
+    var href=isClaimed&&s.url?s.url:'mailto:hello@expatportugal.guide?subject=Contact '+encodeURIComponent(s.name);
+    var tgt=isClaimed&&s.url?' target="_blank" rel="noopener"':'';
+    var badge=isFeatured?'<span style="font-size:9px;background:#fffbeb;color:#b45309;padding:2px 8px;border-radius:10px;font-weight:500;margin-left:6px">&#11088; Featured</span>':
+              isClaimed?'<span style="font-size:9px;background:#f0fdf4;color:#15803d;padding:2px 8px;border-radius:10px;font-weight:500;margin-left:6px">&#9989; Verified</span>':'';
     var ratingHTML=s.rating?'<div style="display:flex;align-items:center;gap:4px;margin-bottom:8px"><span style="color:#f59e0b;font-size:12px">'+starsHTML(s.rating)+'</span><span style="font-size:12px;font-weight:500">'+s.rating.toFixed(1)+'</span><span style="font-size:11px;color:var(--ink3)">('+s.reviews+')</span>'+(s.source==='google'?'<span style="font-size:9px;color:var(--ink3)">Google rating · last updated Apr 2026</span>':'')+'</div>':'';
-    return '<div class="sc"><div class="sc-top"><div class="sc-icon" style="background:'+cs.bg+'">'+s.emoji+'</div><div><div class="sc-name">'+s.name+'</div><div class="sc-role">'+s.role+'</div></div></div>'+
-    ratingHTML+
+    var photos=isClaimed&&s.address?s.address.split(',').filter(Boolean):[];
+    var photoHTML=photos.length?'<div style="display:flex;gap:3px;margin:8px 0;overflow:hidden;border-radius:8px;height:60px">'+photos.slice(0,isFeatured?5:3).map(function(p){return '<img src="'+p.trim()+'" style="height:60px;object-fit:cover;flex:1;min-width:0" onerror="this.remove()" />';}).join('')+'</div>':'';
+    var borderStyle=isFeatured?'border:1.5px solid #b45309;':'';
+    var contactLabel=isClaimed?'Visit website &rarr;':'Contact &rarr;';
+    return '<div class="sc" style="'+borderStyle+'"><div class="sc-top"><div class="sc-icon" style="background:'+cs.bg+'">'+s.emoji+'</div><div><div class="sc-name">'+s.name+badge+'</div><div class="sc-role">'+s.role+'</div></div></div>'+
+    ratingHTML+photoHTML+
     '<div class="sc-tags">'+s.tags.map(function(t){return '<span class="sc-tag" style="background:'+cs.bg+';color:'+cs.color+'">'+t+'</span>';}).join('')+'</div>'+
     '<div class="sc-desc">'+s.desc+'</div>'+
-    '<div class="sc-footer"><span class="sc-city">&#128205; '+s.city+'</span><span class="sc-badge">&#9733; Listed</span></div>'+
-    '<a class="sc-contact" href="'+href+'"'+tgt+'>Contact &rarr;</a></div>';
+    '<div class="sc-footer"><span class="sc-city">&#128205; '+s.city+'</span>'+(isClaimed?'<span class="sc-badge" style="color:var(--green)">&#9989; Verified</span>':'<span class="sc-badge">&#9733; Community listed</span>')+'</div>'+
+    (isClaimed?'<a class="sc-contact" href="'+href+'"'+tgt+'>'+contactLabel+'</a>':'')+
+    (!isClaimed?'<div style="text-align:center;margin-top:6px"><a onclick="openServiceClaim()" style="font-size:11px;color:var(--ink3);cursor:pointer;text-decoration:underline">Is this you? Claim your listing &rarr;</a></div>':'')+
+    '</div>';
   }).join('');
 }
 
