@@ -55,6 +55,17 @@ nav{background:rgba(250,249,247,0.96);border-bottom:0.5px solid var(--border);pa
 /* FOOTER */
 footer{border-top:0.5px solid var(--border);padding:1.5rem 2rem;background:var(--card);text-align:center;font-size:12px;color:var(--ink3)}
 @media(max-width:600px){nav{padding:0 1rem}.filters,.main{padding-left:1rem;padding-right:1rem}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.skeleton{background:linear-gradient(90deg,var(--warm) 25%,#ece7dd 50%,var(--warm) 75%);background-size:800px 100%;animation:shimmer 1.5s infinite;border-radius:var(--r)}
+.skel-news{height:80px;border-radius:var(--rl);margin-bottom:10px}
+.error-state{text-align:center;padding:3rem 1.5rem;color:var(--ink3);background:var(--card);border-radius:var(--rl);border:0.5px solid var(--border)}
+.error-state .err-icon{font-size:28px;margin-bottom:8px}
+.error-state .err-msg{font-size:14px;margin-bottom:12px;color:var(--ink2)}
+.error-state .err-retry{display:inline-block;padding:8px 20px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;cursor:pointer;font-family:"Outfit",sans-serif}
+.error-state .err-retry:hover{background:var(--red-d)}
+.proof-bar{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1rem;font-size:12px;color:var(--ink3)}
+.proof-item{display:flex;align-items:center;gap:4px}
+.proof-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
 </style>
 <meta property="og:title" content="Latest News — ExpatPortugal.guide" />
 <meta property="og:description" content="Daily translated Portuguese news for expats. Politics, housing, economy, lifestyle." />
@@ -107,11 +118,14 @@ footer{border-top:0.5px solid var(--border);padding:1.5rem 2rem;background:var(-
 </div>
 
 <div class="main">
+  <div class="proof-bar" id="proof-bar">
+    <span class="proof-item"><span class="proof-dot"></span> Auto-updated daily from Portuguese press</span>
+  </div>
   <div class="results-bar">
     <span id="results-count">Loading...</span>
   </div>
   <div id="news-grid" class="news-grid">
-    <div class="loading-msg">Loading latest news...</div>
+    <div class="skeleton skel-news"></div><div class="skeleton skel-news"></div><div class="skeleton skel-news"></div><div class="skeleton skel-news"></div><div class="skeleton skel-news"></div>
   </div>
   <div class="load-more" id="load-more" style="display:none">
     <button class="load-btn" onclick="loadMore()">Load more articles</button>
@@ -173,7 +187,7 @@ function setFilter(type, val, el) {
 
 async function loadNews(reset) {
   if (reset) {
-    document.getElementById('news-grid').innerHTML = '<div class="loading-msg">Loading...</div>';
+    document.getElementById('news-grid').innerHTML = '<div class="skeleton skel-news"></div><div class="skeleton skel-news"></div><div class="skeleton skel-news"></div><div class="skeleton skel-news"></div>';
     document.getElementById('load-more').style.display = 'none';
   }
   try {
@@ -187,10 +201,14 @@ async function loadNews(reset) {
         'Prefer': 'count=exact'
       }
     });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     var total = parseInt(res.headers.get('Content-Range')?.split('/')[1] || '0');
     var articles = await res.json();
 
     document.getElementById('results-count').textContent = total + ' articles found';
+    /* Update proof bar with live count */
+    var pb = document.getElementById('proof-bar');
+    if (pb && total > 0) pb.innerHTML = '<span class="proof-item"><span class="proof-dot"></span> Auto-updated daily from Portuguese press</span><span class="proof-item">' + total + ' articles translated</span>';
 
     if (!articles.length && currentOffset === 0) {
       document.getElementById('news-grid').innerHTML = '<div class="empty">No articles found for this filter. Try a different category or region.</div>';
@@ -230,7 +248,8 @@ async function loadNews(reset) {
     document.getElementById('load-more').style.display = allLoaded ? 'none' : 'block';
 
   } catch(e) {
-    document.getElementById('news-grid').innerHTML = '<div class="empty">Could not load articles. Please try again.</div>';
+    console.error(e);
+    document.getElementById('news-grid').innerHTML = '<div class="error-state"><div class="err-icon">&#128268;</div><div class="err-msg">Couldn\'t load articles right now. This is usually temporary.</div><button class="err-retry" onclick="currentOffset=0;loadNews(true)">Try again</button></div>';
   }
 }
 
