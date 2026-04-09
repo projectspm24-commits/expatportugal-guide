@@ -546,11 +546,11 @@ async function startCheckout(tier){
       window.location.href=data.url;
     } else {
       /* Fallback to email if Stripe not configured yet */
-      window.location.href='mailto:hello@expatportugal.guide?subject=Housing listing — '+(tier==='featured'?'Featured (€29)':'Basic (€9)')+'&body=LISTING DETAILS%0A%0ATitle:%0ACity:%0ANeighbourhood:%0AApartment type:%0AMonthly rent (€):%0AAvailable from:%0AAvailable until:%0ADescription:%0AContact email:%0APhotos: attach up to '+(tier==='featured'?'10':'3')+' photos%0A%0ASUBLETTING? Landlord permission confirmed: Yes/No';
+      window.location.href='mailto:housing@expatportugal.guide?subject=Housing listing — '+(tier==='featured'?'Featured (€29)':'Basic (€9)')+'&body=LISTING DETAILS%0A%0ATitle:%0ACity:%0ANeighbourhood:%0AApartment type:%0AMonthly rent (€):%0AAvailable from:%0AAvailable until:%0ADescription:%0AContact email:%0APhotos: attach up to '+(tier==='featured'?'10':'3')+' photos%0A%0ASUBLETTING? Landlord permission confirmed: Yes/No';
     }
   }catch(e){
     /* Fallback to email */
-    window.location.href='mailto:hello@expatportugal.guide?subject=Housing listing — '+(tier==='featured'?'Featured (€29)':'Basic (€9)')+'&body=LISTING DETAILS%0A%0ATitle:%0ACity:%0ANeighbourhood:%0AApartment type:%0AMonthly rent (€):%0AAvailable from:%0AAvailable until:%0ADescription:%0AContact email:%0APhotos: attach up to '+(tier==='featured'?'10':'3')+' photos%0A%0ASUBLETTING? Landlord permission confirmed: Yes/No';
+    window.location.href='mailto:housing@expatportugal.guide?subject=Housing listing — '+(tier==='featured'?'Featured (€29)':'Basic (€9)')+'&body=LISTING DETAILS%0A%0ATitle:%0ACity:%0ANeighbourhood:%0AApartment type:%0AMonthly rent (€):%0AAvailable from:%0AAvailable until:%0ADescription:%0AContact email:%0APhotos: attach up to '+(tier==='featured'?'10':'3')+' photos%0A%0ASUBLETTING? Landlord permission confirmed: Yes/No';
   }
   btn.textContent=tier==='featured'?'Pay €29 & list →':'Pay €9 & list →';
   btn.disabled=false;
