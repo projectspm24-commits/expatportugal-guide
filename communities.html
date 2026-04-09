@@ -62,6 +62,18 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
 .fi{max-width:1100px;margin:0 auto;font-size:12px;text-align:center}
 
 @media(max-width:700px){.comm-list{grid-template-columns:1fr}.full{padding:0 1rem}nav{padding:0 1rem}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.skeleton{background:linear-gradient(90deg,var(--warm) 25%,#ece7dd 50%,var(--warm) 75%);background-size:800px 100%;animation:shimmer 1.5s infinite;border-radius:var(--r)}
+.skel-card{height:100px;border-radius:var(--rl);margin-bottom:10px}
+.skel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.error-state{text-align:center;padding:3rem 1.5rem;color:var(--ink3);background:var(--card);border-radius:var(--rl);border:0.5px solid var(--border)}
+.error-state .err-icon{font-size:28px;margin-bottom:8px}
+.error-state .err-msg{font-size:14px;margin-bottom:12px;color:var(--ink2)}
+.error-state .err-retry{display:inline-block;padding:8px 20px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;cursor:pointer;font-family:"Outfit",sans-serif}
+.error-state .err-retry:hover{background:var(--red-d)}
+.proof-bar{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1rem;font-size:12px;color:var(--ink3)}
+.proof-item{display:flex;align-items:center;gap:4px}
+.proof-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
 </style>
 </head>
 <body>
@@ -110,7 +122,10 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
     <button class="fb" onclick="filterComm('azores',this)">Azores</button>
   </div>
 
-  <div class="comm-list" id="comm-list"></div>
+  <div class="proof-bar" id="proof-bar">
+    <span class="proof-item"><span class="proof-dot"></span> Updated daily</span>
+  </div>
+  <div class="comm-list" id="comm-list"><div class="skel-grid"><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div></div></div>
 
   <div class="tip-box">
     <div class="tip-t">&#128161; Tips for joining expat communities</div>
@@ -201,10 +216,16 @@ async function loadCommunities() {
     var res = await fetch(SB_URL + '/rest/v1/local_businesses?type=eq.community&status=eq.active&order=name.asc', {
       headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
     });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     var data = await res.json();
     communities = data.map(parseCommunity);
+    var pb = document.getElementById('proof-bar');
+    if (pb && communities.length) pb.innerHTML = '<span class="proof-item"><span class="proof-dot"></span> Updated daily</span><span class="proof-item">' + communities.length + ' communities listed</span>';
     renderComms();
-  } catch(e) { console.error(e); }
+  } catch(e) {
+    console.error(e);
+    document.getElementById('comm-list').innerHTML = '<div class="error-state"><div class="err-icon">&#128268;</div><div class="err-msg">Couldn\'t load communities right now. This is usually temporary.</div><button class="err-retry" onclick="loadCommunities()">Try again</button></div>';
+  }
 }
 
 function filterComm(f, el) {
