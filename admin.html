@@ -1098,7 +1098,7 @@ async function loadInbox() {
 
   /* Tips, corrections, inquiries */
   try {
-    var items = await sb('events?category=in.(tip,correction,inquiry)&order=created_at.desc&limit=50');
+    var items = await sb('events?category=in.(tip,correction,inquiry)&status=eq.pending&order=created_at.desc&limit=50');
     var tips = items.filter(function(s) { return s.category === 'tip'; });
     var corrections = items.filter(function(s) { return s.category === 'correction'; });
     var inquiries = items.filter(function(s) { return s.category === 'inquiry'; });
