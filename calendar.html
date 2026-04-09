@@ -93,6 +93,17 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
 .fi{max-width:1100px;margin:0 auto;font-size:12px;text-align:center}
 
 @media(max-width:700px){.cal-grid{display:none}.list-view{display:block!important}.cal-view-toggle{display:none}.full{padding:0 1rem}nav{padding:0 1rem}.cal-cell{min-height:70px}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.skeleton{background:linear-gradient(90deg,var(--warm) 25%,#ece7dd 50%,var(--warm) 75%);background-size:800px 100%;animation:shimmer 1.5s infinite;border-radius:var(--r)}
+.skel-cal{height:300px;border-radius:var(--rl)}
+.error-state{text-align:center;padding:3rem 1.5rem;color:var(--ink3);background:var(--card);border-radius:var(--rl);border:0.5px solid var(--border)}
+.error-state .err-icon{font-size:28px;margin-bottom:8px}
+.error-state .err-msg{font-size:14px;margin-bottom:12px;color:var(--ink2)}
+.error-state .err-retry{display:inline-block;padding:8px 20px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;cursor:pointer;font-family:"Outfit",sans-serif}
+.error-state .err-retry:hover{background:var(--red-d)}
+.proof-bar{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1rem;font-size:12px;color:var(--ink3)}
+.proof-item{display:flex;align-items:center;gap:4px}
+.proof-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
 </style>
 </head>
 <body>
@@ -158,7 +169,10 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
     <button class="fb" onclick="setRegFilter('Azores',this)">Azores</button>
   </div>
 
-  <div class="cal-grid" id="cal-grid"></div>
+  <div class="proof-bar" id="proof-bar">
+    <span class="proof-item"><span class="proof-dot"></span> Updated weekly</span>
+  </div>
+  <div class="cal-grid" id="cal-grid"><div class="skeleton skel-cal"></div></div>
   <div class="list-view" id="list-view"></div>
 </div>
 
@@ -292,9 +306,16 @@ async function loadAllEvents() {
     var res = await fetch(SB_URL + '/rest/v1/events?status=eq.approved&category=neq.review&event_date=gte.' + start + '&event_date=lt.' + end + '&order=event_date.asc,event_time.asc&limit=200', {
       headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
     });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     allEvents = await res.json();
+    var pb = document.getElementById('proof-bar');
+    if (pb) pb.innerHTML = '<span class="proof-item"><span class="proof-dot"></span> Updated weekly</span>' + (allEvents.length ? '<span class="proof-item">' + allEvents.length + ' events this month</span>' : '');
     render();
-  } catch(e) { console.error(e); }
+  } catch(e) {
+    console.error(e);
+    document.getElementById('cal-grid').innerHTML = '<div class="error-state"><div class="err-icon">&#128268;</div><div class="err-msg">Couldn\'t load events right now. This is usually temporary.</div><button class="err-retry" onclick="loadAllEvents()">Try again</button></div>';
+    document.getElementById('list-view').innerHTML = '';
+  }
 }
 
 function getFiltered() {
