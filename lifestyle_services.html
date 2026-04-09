@@ -102,9 +102,12 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
   </div>
 </nav>
 <div class="full">
-  <div class="hero">
-    <div class="hero-t">Expat services</div>
-    <div class="hero-sub">Doctors, lawyers, accountants, nannies, pet sitters, osteopaths &mdash; English-speaking professionals recommended by expats across Portugal.</div>
+  <div class="hero" style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+    <div>
+      <div class="hero-t">Expat services</div>
+      <div class="hero-sub">Doctors, lawyers, accountants, nannies, pet sitters, osteopaths &mdash; English-speaking professionals recommended by expats across Portugal.</div>
+    </div>
+    <button onclick="openServiceClaim()" style="flex-shrink:0;padding:10px 20px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif;margin-top:4px;transition:background .15s;white-space:nowrap">+ Submit a service</button>
   </div>
   <div class="search-row">
     <input class="search-input" type="text" id="search" placeholder="Search by name, service, or keyword..." oninput="renderServices()" />
