@@ -155,9 +155,12 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
 </nav>
 
 <div class="full">
-  <div class="dir-hero">
-    <div class="dir-hero-t">Explore Portugal</div>
-    <div class="dir-hero-sub">Businesses and places in Portugal &mdash; curated for expats, ranked by community reviews. No paid rankings.</div>
+  <div class="dir-hero" style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+    <div>
+      <div class="dir-hero-t">Explore Portugal</div>
+      <div class="dir-hero-sub">Businesses and places in Portugal &mdash; curated for expats, ranked by community reviews. No paid rankings.</div>
+    </div>
+    <button onclick="document.getElementById('submit-place-section').scrollIntoView({behavior:'smooth'})" style="flex-shrink:0;padding:10px 20px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif;margin-top:4px;transition:background .15s;white-space:nowrap">+ Submit a place</button>
   </div>
 
   <div class="filter-bar" id="filter-bar">
