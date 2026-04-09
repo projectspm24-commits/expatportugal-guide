@@ -139,26 +139,28 @@ tr:hover td{background:var(--warm)}
 
   <!-- SIDEBAR -->
   <div class="sidebar">
-    <div class="s-logo">ExpatPortugal<span>Admin dashboard</span></div>
+    <div class="s-logo">ExpatPortugal<span>Admin</span></div>
 
-    <div class="s-section">Content</div>
+    <div class="s-section">&#128308; Action needed</div>
     <div class="s-nav-item on" onclick="showPanel('articles',this)">
-      📰 Articles
+      📰 News articles
       <span class="s-badge" id="pending-count">...</span>
     </div>
-    <div class="s-nav-item" onclick="showPanel('events',this)">📅 Events</div>
-    <div class="s-nav-item" onclick="showPanel('digest',this)">📧 Weekly digest</div>
+    <div class="s-nav-item" onclick="showPanel('events',this)">📅 Events <span class="s-badge" id="pending-events-count" style="display:none">0</span></div>
+    <div class="s-nav-item" onclick="showPanel('inbox',this)">&#128172; Inbox <span class="s-badge" id="pending-inbox-count" style="display:none">0</span></div>
 
-    <div class="s-section">Community</div>
-    <div class="s-nav-item" onclick="showPanel('subscribers',this)">👥 Subscribers</div>
-    <div class="s-nav-item" onclick="showPanel('exchange',this)">🤝 Language exchange</div>
-    <div class="s-nav-item" onclick="showPanel('businesses',this)">&#128203; Directory</div>
+    <div class="s-section">&#128221; Manage listings</div>
+    <div class="s-nav-item" onclick="showPanel('businesses',this)">&#128205; Explore</div>
     <div class="s-nav-item" onclick="showPanel('communities',this)">&#128101; Communities</div>
     <div class="s-nav-item" onclick="showPanel('housing',this)">&#127968; Housing</div>
-    <div class="s-nav-item" onclick="showPanel('inbox',this)">&#128172; Community inbox</div>
 
-    <div class="s-section">System</div>
-    <div class="s-nav-item" onclick="showPanel('logs',this)">⚙️ Automation logs</div>
+    <div class="s-section">&#128200; Growth</div>
+    <div class="s-nav-item" onclick="showPanel('subscribers',this)">👥 Subscribers</div>
+    <div class="s-nav-item" onclick="showPanel('digest',this)">📧 Sunday digest</div>
+
+    <div class="s-section">&#9881; System</div>
+    <div class="s-nav-item" onclick="showPanel('exchange',this)">🤝 Language exchange</div>
+    <div class="s-nav-item" onclick="showPanel('logs',this)">⚙️ Automations</div>
     <div class="s-nav-item" onclick="showPanel('settings',this)">🔧 Settings</div>
 
     <div class="s-logout" onclick="logout()">← Sign out</div>
@@ -182,9 +184,11 @@ tr:hover td{background:var(--warm)}
     <!-- METRICS ROW -->
     <div class="metrics" id="metrics-row">
       <div class="metric"><div class="m-val" id="m-pending">—</div><div class="m-lbl">Pending review</div></div>
-      <div class="metric"><div class="m-val" id="m-published">—</div><div class="m-lbl">Published today</div></div>
+      <div class="metric"><div class="m-val" id="m-published">—</div><div class="m-lbl">Published articles</div></div>
+      <div class="metric"><div class="m-val" id="m-events">—</div><div class="m-lbl">Active events</div></div>
+      <div class="metric"><div class="m-val" id="m-listings">—</div><div class="m-lbl">Explore listings</div></div>
+      <div class="metric"><div class="m-val" id="m-housing">—</div><div class="m-lbl">Housing listings</div></div>
       <div class="metric"><div class="m-val" id="m-subscribers">—</div><div class="m-lbl">Subscribers</div></div>
-      <div class="metric"><div class="m-val" id="m-exchanges">—</div><div class="m-lbl">Exchange signups</div></div>
     </div>
 
     <!-- ARTICLES PANEL -->
@@ -695,18 +699,34 @@ async function sb(path, opts = {}) {
 // ── METRICS ──────────────────────────────────────────────
 async function loadMetrics() {
   try {
-    const [pending, published, subs, exchange] = await Promise.all([
+    const [pending, published, subs, events, listings, housing, pendingEvents, pendingInbox] = await Promise.all([
       sb('articles?status=eq.pending&select=id'),
-      sb('articles?status=in.(approved,auto_approved)&published_at=gte.' + new Date().toISOString().slice(0,10) + '&select=id'),
-      sb('subscribers?status=eq.active&select=id'),
-      sb('language_exchange?select=id')
+      sb('articles?status=in.(approved,auto_approved)&select=id'),
+      sb('subscribers?select=id'),
+      sb('events?status=eq.approved&select=id'),
+      sb('local_businesses?status=eq.active&type=neq.housing&type=neq.community&select=id'),
+      sb('local_businesses?status=eq.active&type=eq.housing&select=id'),
+      sb('events?status=in.(pending,submitted)&select=id'),
+      sb('events?category=in.(tip,correction,inquiry)&status=eq.pending&select=id')
     ]);
     document.getElementById('m-pending').textContent = pending.length;
     document.getElementById('m-published').textContent = published.length;
+    document.getElementById('m-events').textContent = events.length;
+    document.getElementById('m-listings').textContent = listings.length;
+    document.getElementById('m-housing').textContent = housing.length;
     document.getElementById('m-subscribers').textContent = subs.length;
-    document.getElementById('m-exchanges').textContent = exchange.length;
+    
+    /* Sidebar badges */
     document.getElementById('pending-count').textContent = pending.length;
     document.getElementById('pending-count').style.display = pending.length > 0 ? '' : 'none';
+    
+    var pe = document.getElementById('pending-events-count');
+    pe.textContent = pendingEvents.length;
+    pe.style.display = pendingEvents.length > 0 ? '' : 'none';
+    
+    var pi = document.getElementById('pending-inbox-count');
+    pi.textContent = pendingInbox.length;
+    pi.style.display = pendingInbox.length > 0 ? '' : 'none';
   } catch(e) {
     console.error('Metrics error:', e);
   }
@@ -714,16 +734,16 @@ async function loadMetrics() {
 
 // ── NAVIGATION ────────────────────────────────────────────
 const PANELS = {
-  articles:    { title: 'Article review',         sub: 'Approve or reject AI-generated articles before they go live' },
-  events:      { title: 'Events',                 sub: 'Manage upcoming events across Portugal' },
-  digest:      { title: 'Weekly digest',          sub: 'Review this week\'s auto-generated newsletter before it sends' },
-  subscribers: { title: 'Subscribers',            sub: 'Newsletter subscriber list and stats by region' },
-  exchange:    { title: 'Language exchange',       sub: 'Match expats with Portuguese locals for language exchange' },
-  directory:   { title: 'Directory',              sub: 'Manage professional and lifestyle service listings' },
-  businesses:  { title: 'Directory',               sub: 'Add, edit, and manage all business listings. Ratings, reviews, and details.' },
-  communities: { title: 'Communities',             sub: 'Add, edit, and manage expat community listings.' },
-  housing:     { title: 'Housing board',           sub: 'Manage medium-term rental listings. Featured and basic tiers.' },
-  inbox:       { title: 'Community inbox',         sub: 'Tips, corrections, place suggestions, and messages from visitors.' },
+  articles:    { title: 'News articles',            sub: 'Approve, reject, or depublish AI-generated articles' },
+  events:      { title: 'Events',                   sub: 'Approve submissions and manage the events calendar' },
+  digest:      { title: 'Sunday digest',             sub: 'Preview this week\'s newsletter before it sends' },
+  subscribers: { title: 'Subscribers',              sub: 'Newsletter subscribers by region and source' },
+  exchange:    { title: 'Language exchange',         sub: 'Expats matched with Portuguese locals' },
+  directory:   { title: 'Explore listings',          sub: 'Businesses, places, and things to discover' },
+  businesses:  { title: 'Explore listings',          sub: 'Add, edit, and manage all business and place listings' },
+  communities: { title: 'Communities',               sub: 'Expat groups, meetups, and social communities' },
+  housing:     { title: 'Housing board',             sub: 'Rental listings, tiers, confirmations, and inquiries' },
+  inbox:       { title: 'Inbox',                     sub: 'Tips, corrections, suggestions, and messages from visitors' },
   logs:        { title: 'Automation logs',        sub: 'Check what ran, when, and whether it succeeded' },
   settings:    { title: 'Settings',               sub: 'Configure database connection, passwords, and automation options' }
 };
