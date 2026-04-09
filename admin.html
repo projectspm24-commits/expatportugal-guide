@@ -967,12 +967,13 @@ async function loadInbox() {
       pending.map(function(p) {
         var date = p.created_at ? new Date(p.created_at).toLocaleDateString('en-GB', {day:'numeric',month:'short'}) : '?';
         return '<tr>' +
-          '<td><div style="font-weight:500">' + p.name + '</div><div style="font-size:11px;color:var(--ink3)">' + (p.reason || '').substring(0, 80) + '</div>' +
+          '<td><div id="place-name-'+p.id+'" style="font-weight:500">' + p.name + '</div><div id="place-desc-'+p.id+'" style="font-size:11px;color:var(--ink3)">' + (p.reason || '').substring(0, 80) + '</div>' +
           (p.url ? '<div style="font-size:10px;color:var(--blue)"><a href="' + p.url + '" target="_blank">' + p.url.substring(0, 40) + '</a></div>' : '') + '</td>' +
           '<td><span class="cat-badge">' + (p.type || '?') + '</span></td>' +
           '<td>' + (p.city || '?') + '</td>' +
           '<td style="font-size:11px">' + date + '</td>' +
           '<td style="white-space:nowrap">' +
+          '<button onclick="editPlace(' + p.id + ')" style="padding:4px 10px;background:var(--blue-l);border:0.5px solid var(--blue);border-radius:4px;font-size:11px;cursor:pointer;color:var(--blue);margin-right:4px">Edit</button>' +
           '<button onclick="approvePlace(' + p.id + ')" style="padding:4px 10px;background:var(--green-l);border:0.5px solid var(--green);border-radius:4px;font-size:11px;cursor:pointer;color:var(--green);margin-right:4px">Approve</button>' +
           '<button onclick="deleteSubmission(' + p.id + ',\'place\')" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
           '</td></tr>';
@@ -989,18 +990,57 @@ function renderInboxSection(elId, items, icon, emptyMsg) {
   el.innerHTML = '<table><thead><tr><th>Content</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody>' +
     items.map(function(s) {
       return '<tr style="' + (s.status==='pending'?'background:var(--amber-l)':'') + '">' +
-        '<td><div style="font-weight:500;font-size:13px">' + (s.title || '') + '</div><div style="font-size:12px;color:var(--ink2);white-space:pre-line;max-width:400px">' + (s.description || '').substring(0, 250) + '</div></td>' +
+        '<td><div id="inbox-title-'+s.id+'" style="font-weight:500;font-size:13px">' + (s.title || '') + '</div><div id="inbox-desc-'+s.id+'" style="font-size:12px;color:var(--ink2);white-space:pre-line;max-width:400px">' + (s.description || '').substring(0, 250) + '</div></td>' +
         '<td style="font-size:11px;color:var(--ink3);white-space:nowrap">' + (s.event_date || '') + '</td>' +
         '<td><span class="cat-badge" style="' + (s.status==='pending'?'background:var(--amber-l);color:var(--amber)':'background:var(--green-l);color:var(--green)') + '">' + (s.status || 'pending') + '</span></td>' +
         '<td style="white-space:nowrap">' +
+        '<button onclick="editInboxItem('+s.id+')" style="padding:4px 10px;background:var(--blue-l);border:0.5px solid var(--blue);border-radius:4px;font-size:11px;cursor:pointer;color:var(--blue);margin-right:4px">Edit</button>' +
         (s.status==='pending'?'<button onclick="handleSubmission('+s.id+')" style="padding:4px 10px;background:var(--green-l);border:0.5px solid var(--green);border-radius:4px;font-size:11px;cursor:pointer;color:var(--green);margin-right:4px">Mark done</button>':'') +
         '<button onclick="deleteSubmission('+s.id+',\'event\')" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
         '</td></tr>';
     }).join('') + '</tbody></table>';
 }
 
+async function editInboxItem(id) {
+  var titleEl = document.getElementById('inbox-title-'+id);
+  var descEl = document.getElementById('inbox-desc-'+id);
+  if (!titleEl) return;
+  var currentTitle = titleEl.textContent;
+  var currentDesc = descEl.textContent;
+  titleEl.innerHTML = '<input id="edit-title-'+id+'" value="'+currentTitle.replace(/"/g,'&quot;')+'" style="width:100%;padding:6px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:13px;font-family:Outfit,sans-serif;font-weight:500" />';
+  descEl.innerHTML = '<textarea id="edit-desc-'+id+'" style="width:100%;padding:6px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:12px;font-family:Outfit,sans-serif;height:60px;resize:vertical">'+currentDesc+'</textarea>' +
+    '<div style="margin-top:4px"><button onclick="saveInboxItem('+id+')" style="padding:4px 12px;background:var(--green);color:white;border:none;border-radius:4px;font-size:11px;cursor:pointer;margin-right:4px">Save</button><button onclick="loadInbox()" style="padding:4px 12px;background:var(--warm);border:0.5px solid var(--border);border-radius:4px;font-size:11px;cursor:pointer">Cancel</button></div>';
+  document.getElementById('edit-title-'+id).focus();
+}
+
+async function saveInboxItem(id) {
+  var title = document.getElementById('edit-title-'+id).value.trim();
+  var desc = document.getElementById('edit-desc-'+id).value.trim();
+  await sb('events?id=eq.'+id, { method: 'PATCH', body: { title: title, description: desc } });
+  loadInbox();
+}
+
 async function approvePlace(id) {
   await sb('local_businesses?id=eq.' + id, { method: 'PATCH', body: { status: 'active' } });
+  loadInbox();
+}
+
+async function editPlace(id) {
+  var nameEl = document.getElementById('place-name-'+id);
+  var descEl = document.getElementById('place-desc-'+id);
+  if (!nameEl) return;
+  var currentName = nameEl.textContent;
+  var currentDesc = descEl.textContent;
+  nameEl.innerHTML = '<input id="edit-pname-'+id+'" value="'+currentName.replace(/"/g,'&quot;')+'" style="width:100%;padding:6px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:13px;font-family:Outfit,sans-serif;font-weight:500" />';
+  descEl.innerHTML = '<textarea id="edit-pdesc-'+id+'" style="width:100%;padding:6px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:12px;font-family:Outfit,sans-serif;height:50px;resize:vertical">'+currentDesc+'</textarea>' +
+    '<div style="margin-top:4px"><button onclick="savePlace('+id+')" style="padding:4px 12px;background:var(--green);color:white;border:none;border-radius:4px;font-size:11px;cursor:pointer;margin-right:4px">Save</button><button onclick="loadInbox()" style="padding:4px 12px;background:var(--warm);border:0.5px solid var(--border);border-radius:4px;font-size:11px;cursor:pointer">Cancel</button></div>';
+  document.getElementById('edit-pname-'+id).focus();
+}
+
+async function savePlace(id) {
+  var name = document.getElementById('edit-pname-'+id).value.trim();
+  var reason = document.getElementById('edit-pdesc-'+id).value.trim();
+  await sb('local_businesses?id=eq.'+id, { method: 'PATCH', body: { name: name, reason: reason } });
   loadInbox();
 }
 
