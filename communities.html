@@ -94,9 +94,12 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
 </nav>
 
 <div class="full">
-  <div class="hero">
-    <div class="hero-t">Find your people in Portugal</div>
-    <div class="hero-sub">Expat communities, meetup groups, digital nomad circles, family networks, and sports clubs. All free to join &mdash; because building connections shouldn't cost money.</div>
+  <div class="hero" style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+    <div>
+      <div class="hero-t">Find your people in Portugal</div>
+      <div class="hero-sub">Expat communities, meetup groups, digital nomad circles, family networks, and sports clubs. All free to join &mdash; because building connections shouldn't cost money.</div>
+    </div>
+    <button onclick="document.getElementById('submit-comm-section').scrollIntoView({behavior:'smooth'})" style="flex-shrink:0;padding:10px 20px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif;margin-top:4px;transition:background .15s;white-space:nowrap">+ Submit a community</button>
   </div>
 
   <div class="filter-bar" id="filter-bar">
