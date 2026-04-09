@@ -95,6 +95,35 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
 .more-link{display:block;padding:9px 14px;font-size:13px;color:#57534e;border-radius:8px;text-decoration:none;transition:background .1s}
 .more-link:hover{background:#f5f0e8;color:#1c1917}
 .more-link.on{color:#1c1917;font-weight:500}
+
+/* === MOBILE UX IMPROVEMENTS === */
+@media(max-width:480px){
+  /* Bigger touch targets on filter pills */
+  .fb,.fp{padding:8px 16px;font-size:12px}
+  /* Filter bars horizontal scroll on very small screens */
+  .filter-bar{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:12px;gap:6px;scrollbar-width:none}
+  .filter-bar::-webkit-scrollbar{display:none}
+  /* Heroes stack with submit button full-width */
+  .dir-hero,.hero{flex-direction:column!important}
+  .dir-hero button,.hero button{width:100%;white-space:normal!important;margin-top:8px!important;flex-shrink:1!important}
+  /* Cross-link banners stack */
+  .cross-link{flex-direction:column;text-align:center;padding:14px 16px;gap:8px}
+  .cross-link-arrow{align-self:center}
+  /* Proof bar compact */
+  .proof-bar{gap:1rem;font-size:11px}
+  /* Better modal sizing */
+  .modal{width:95%!important;padding:1.25rem!important;max-height:90vh!important}
+  /* Sort/search bars stack */
+  .sort-bar{flex-direction:column;gap:8px;align-items:flex-start}
+  .search-row{flex-direction:column}
+  .res-bar{flex-direction:column;gap:6px;align-items:flex-start}
+  /* Info cards stack */
+  .info-cards{grid-template-columns:1fr}
+  /* Footer padding */
+  footer{padding:1.5rem 1rem}
+  /* CTA boxes stack */
+  .cta-box{flex-direction:column!important;align-items:stretch!important;gap:12px!important;padding:1.25rem!important}
+}
 </style>
 </head>
 <body>
