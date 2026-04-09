@@ -2,24 +2,31 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Page not found — ExpatPortugal.guide</title>
+<title>Page Not Found — ExpatPortugal.guide</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"Outfit",sans-serif;background:#f7f5f0;color:#1c1917;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:2rem}
-h1{font-family:"Playfair Display",serif;font-size:48px;margin-bottom:8px}
-p{color:#57534e;font-size:15px;margin-bottom:20px;line-height:1.6}
-a{display:inline-block;padding:10px 24px;background:#c0381a;color:white;border-radius:10px;text-decoration:none;font-weight:500;font-size:14px}
-a:hover{background:#a83015}
+body{font-family:"Outfit",sans-serif;background:#f7f5f0;color:#1c1917;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0v60M0 30h60M0 0h60v60H0z' fill='none' stroke='%23d4cfc4' stroke-width='.3'/%3E%3Ccircle cx='30' cy='30' r='8' fill='none' stroke='%23c8c0b0' stroke-width='.3'/%3E%3C/svg%3E")}
+h1{font-family:"Playfair Display",serif;font-size:clamp(28px,5vw,48px);margin-bottom:8px}
+.sub{font-size:15px;color:#57534e;margin-bottom:24px;line-height:1.6;max-width:400px}
+.links{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.link{padding:10px 20px;border-radius:10px;font-size:13px;font-weight:500;text-decoration:none;font-family:"Outfit",sans-serif}
+.link-primary{background:#c0381a;color:white}
+.link-secondary{background:white;color:#1c1917;border:0.5px solid rgba(28,25,23,0.16)}
 </style>
 </head>
 <body>
-<div>
-  <div style="font-size:64px;margin-bottom:16px">&#127477;&#127481;</div>
-  <h1>Lost in Portugal?</h1>
-  <p>This page doesn't exist. But don't worry — there's plenty to explore.</p>
-  <a href="index.html">Back to ExpatPortugal.guide &rarr;</a>
+<div style="font-size:48px;margin-bottom:16px">&#127477;&#127481;</div>
+<h1>Page not found</h1>
+<div class="sub">Looks like this page took a detour through the Alfama streets. Let's get you back on track.</div>
+<div class="links">
+  <a class="link link-primary" href="index.html">Go home &rarr;</a>
+  <a class="link link-secondary" href="calendar.html">Events</a>
+  <a class="link link-secondary" href="directory.html">Explore</a>
+  <a class="link link-secondary" href="housing.html">Housing</a>
+  <a class="link link-secondary" href="tools.html">Free tools</a>
 </div>
 </body>
 </html>

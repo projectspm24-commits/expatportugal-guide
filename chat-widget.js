@@ -50,7 +50,7 @@
     document.getElementById('chat-typing').style.display = 'block';
     document.querySelector('.chat-quick').style.display = 'none';
 
-    var systemPrompt = 'You are Pedro, the friendly ExpatPortugal.guide assistant. Be warm, concise (max 150 words). Help with: day planning, finding services, bureaucracy (NIF, visas, tax), events, local recommendations. Use real place names. Link to site pages: calendar.html (events), directory.html (directory), lifestyle_services.html (services), expat_tools_v4_fixed.html (tools), communities.html (communities), news.html (news). Today is ' + new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    var systemPrompt = 'You are Pedro, the friendly ExpatPortugal.guide assistant. Be warm, concise (max 150 words). Help with: day planning, finding services, bureaucracy (NIF, visas, tax), events, local recommendations. Use real place names. Link to site pages: calendar.html (events), directory.html (directory), lifestyle_services.html (services), tools.html (tools), communities.html (communities), news.html (news). Today is ' + new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
     var apiMessages = [{ role: 'user', content: systemPrompt + '\n\nConversation:\n' + chatHistory.map(function(m) { return m.role + ': ' + m.content; }).join('\n') }];
 
