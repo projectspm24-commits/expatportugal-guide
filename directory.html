@@ -111,6 +111,30 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
 .modal-bg.show{background:rgba(0,0,0,0.45)}
 .modal{background:var(--card);border-radius:16px;padding:1.75rem;width:90%;max-width:480px;max-height:85vh;overflow-y:auto;opacity:0;transform:translateY(20px) scale(0.97);transition:opacity .5s,transform .5s}
 .modal-bg.show .modal{opacity:1;transform:translateY(0) scale(1)}
+
+/* Skeleton loaders */
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.skeleton{background:linear-gradient(90deg,var(--warm) 25%,#ece7dd 50%,var(--warm) 75%);background-size:800px 100%;animation:shimmer 1.5s infinite;border-radius:var(--r)}
+.skel-card{height:120px;border-radius:var(--rl);margin-bottom:10px}
+.skel-grid{display:grid;grid-template-columns:1fr;gap:10px}
+
+/* Error state */
+.error-state{text-align:center;padding:3rem 1.5rem;color:var(--ink3);background:var(--card);border-radius:var(--rl);border:0.5px solid var(--border)}
+.error-state .err-icon{font-size:28px;margin-bottom:8px}
+.error-state .err-msg{font-size:14px;margin-bottom:12px;color:var(--ink2)}
+.error-state .err-retry{display:inline-block;padding:8px 20px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;cursor:pointer;font-family:"Outfit",sans-serif}
+.error-state .err-retry:hover{background:var(--red-d)}
+
+/* Cross-link banner */
+.cross-link{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;gap:12px;transition:border-color .2s}
+.cross-link:hover{border-color:var(--border2)}
+.cross-link-text{font-size:13px;color:var(--ink2)}.cross-link-text b{color:var(--ink);font-weight:500}
+.cross-link-arrow{font-size:13px;color:var(--red);font-weight:500;white-space:nowrap}
+
+/* Social proof bar */
+.proof-bar{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1rem;font-size:12px;color:var(--ink3)}
+.proof-item{display:flex;align-items:center;gap:4px}
+.proof-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
 </style>
 </head>
 <body>
@@ -155,13 +179,17 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
     <button class="fb" onclick="filterCat('entertainment',this)">&#127914; Entertainment</button>
     <button class="fb" onclick="filterCat('viewpoint',this)">&#127748; Viewpoints</button>
     <button class="fb" onclick="filterCat('historic',this)">&#127984; Historic sites</button>
-    <button class="fb" onclick="filterCat('cowork',this)">&#128187; Co-work</button>
-    <button class="fb" onclick="filterCat('kids',this)">&#128103; Kids &amp; families</button>
-    <button class="fb" onclick="filterCat('other',this)">&#128204; Other</button>
   </div>
 
   <div class="dir-layout">
     <div class="dir-main">
+      <a href="lifestyle_services.html" class="cross-link">
+        <span class="cross-link-text"><b>Need a dentist, lawyer, or accountant?</b> Professional services for expats are on our Services page.</span>
+        <span class="cross-link-arrow">Services &rarr;</span>
+      </a>
+      <div class="proof-bar" id="proof-bar">
+        <span class="proof-item"><span class="proof-dot"></span> Updated daily</span>
+      </div>
       <div class="sort-bar">
         <span id="result-count">Loading...</span>
         <select class="sort-sel" id="sort-sel" onchange="loadDirectory()">
@@ -172,7 +200,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
       </div>
 
       <div class="biz-grid" id="biz-grid">
-        <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--ink3)">Loading businesses...</div>
+        <div class="skel-grid"><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div></div>
       </div>
     </div>
 
@@ -357,9 +385,16 @@ async function loadDirectory() {
     var res = await fetch(SB_URL + '/rest/v1/local_businesses?status=eq.active&order=name.asc', {
       headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
     });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     allBiz = await res.json();
+    /* Social proof */
+    var pb = document.getElementById('proof-bar');
+    if (pb) pb.innerHTML = '<span class="proof-item"><span class="proof-dot"></span> Updated daily</span><span class="proof-item">' + allBiz.length + ' places listed</span><span class="proof-item">' + new Set(allBiz.map(function(b){return b.city})).size + ' cities covered</span>';
     renderBiz();
-  } catch (e) { console.error(e); }
+  } catch (e) {
+    console.error(e);
+    document.getElementById('biz-grid').innerHTML = '<div class="error-state"><div class="err-icon">&#128268;</div><div class="err-msg">Couldn\'t load listings right now. This is usually temporary.</div><button class="err-retry" onclick="loadDirectory()">Try again</button></div>';
+  }
 }
 
 function renderBiz() {
@@ -392,7 +427,7 @@ function renderBiz() {
   document.getElementById('result-count').textContent = filtered.length + ' listing' + (filtered.length !== 1 ? 's' : '') + (activeCat !== 'all' ? ' in ' + activeCat : '');
   
   if (!filtered.length) {
-    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--ink3)">No listings found in this category yet.<br><a onclick="document.getElementById(\'submit-place-section\').scrollIntoView({behavior:\'smooth\'})" style="color:var(--red);cursor:pointer">Add one &rarr;</a></div>';
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--ink3)">No listings found in this category yet.<br><a onclick="openContribute&&openContribute(\'place\')" style="color:var(--red);cursor:pointer">Add one &rarr;</a></div>';
     return;
   }
   
