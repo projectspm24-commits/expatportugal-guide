@@ -1827,6 +1827,7 @@ async function loadServices() {
           '<button onclick="deleteService(' + s.id + ')" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
           '</td></tr>';
       }).join('') + '</tbody></table>';
+    el.innerHTML = html;
   } catch(e) { document.getElementById('services-table').innerHTML = '<div class="empty">Could not load.</div>'; }
 }
 
