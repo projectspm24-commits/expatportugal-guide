@@ -1089,22 +1089,57 @@ async function approvePlace(id) {
   loadInbox();
 }
 
+async function quickApprove(id) {
+  await sb('local_businesses?id=eq.' + id, { method: 'PATCH', body: { status: 'active' } });
+  loadCurrentPanel();
+}
+
 async function editPlace(id) {
+  var item = null;
+  try { var res = await sb('local_businesses?id=eq.'+id); item = res[0]; } catch(e) { return; }
+  if (!item) return;
   var nameEl = document.getElementById('place-name-'+id);
   var descEl = document.getElementById('place-desc-'+id);
   if (!nameEl) return;
-  var currentName = nameEl.textContent;
-  var currentDesc = descEl.textContent;
-  nameEl.innerHTML = '<input id="edit-pname-'+id+'" value="'+currentName.replace(/"/g,'&quot;')+'" style="width:100%;padding:6px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:13px;font-family:Outfit,sans-serif;font-weight:500" />';
-  descEl.innerHTML = '<textarea id="edit-pdesc-'+id+'" style="width:100%;padding:6px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:12px;font-family:Outfit,sans-serif;height:50px;resize:vertical">'+currentDesc+'</textarea>' +
-    '<div style="margin-top:4px"><button onclick="savePlace('+id+')" style="padding:4px 12px;background:var(--green);color:white;border:none;border-radius:4px;font-size:11px;cursor:pointer;margin-right:4px">Save</button><button onclick="loadInbox()" style="padding:4px 12px;background:var(--warm);border:0.5px solid var(--border);border-radius:4px;font-size:11px;cursor:pointer">Cancel</button></div>';
-  document.getElementById('edit-pname-'+id).focus();
+  var pr = {};
+  (item.price_range || '').split('|').forEach(function(p) { var kv = p.split(':'); if(kv.length>=2) pr[kv[0]] = kv.slice(1).join(':'); });
+  
+  nameEl.innerHTML = '<input id="ep-name-'+id+'" value="'+(item.name||'').replace(/"/g,'&quot;')+'" style="width:100%;padding:6px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:13px;font-family:Outfit,sans-serif;font-weight:500;margin-bottom:4px" />';
+  descEl.innerHTML = 
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:4px">' +
+    '<select id="ep-type-'+id+'" style="padding:5px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:11px;font-family:Outfit,sans-serif"><option value="">Type</option><option value="cafe">Café</option><option value="restaurant">Restaurant</option><option value="bar">Bar</option><option value="shop">Shop</option><option value="cowork">Co-work</option><option value="gym">Gym</option><option value="beach">Beach</option><option value="park">Park</option><option value="museum">Museum</option><option value="viewpoint">Viewpoint</option><option value="historic">Historic</option><option value="entertainment">Entertainment</option><option value="kids">Kids</option><option value="service">Service</option><option value="community">Community</option></select>' +
+    '<select id="ep-city-'+id+'" style="padding:5px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:11px;font-family:Outfit,sans-serif"><option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Braga</option><option>Alentejo</option><option>Madeira</option></select>' +
+    '</div>' +
+    '<input id="ep-area-'+id+'" value="'+(item.area||'').replace(/"/g,'&quot;')+'" placeholder="Neighbourhood" style="width:100%;padding:5px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:11px;font-family:Outfit,sans-serif;margin-bottom:4px" />' +
+    '<textarea id="ep-desc-'+id+'" style="width:100%;padding:5px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:11px;font-family:Outfit,sans-serif;height:40px;resize:vertical">'+(item.reason||'')+'</textarea>' +
+    '<input id="ep-url-'+id+'" value="'+(item.url||'').replace(/"/g,'&quot;')+'" placeholder="Website URL" style="width:100%;padding:5px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:11px;font-family:Outfit,sans-serif;margin-top:4px" />' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px">' +
+    '<input id="ep-rating-'+id+'" value="'+(pr.rating||'')+'" placeholder="Rating (e.g. 4.5)" style="padding:5px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:11px;font-family:Outfit,sans-serif" />' +
+    '<input id="ep-reviews-'+id+'" value="'+(pr.reviews||'')+'" placeholder="Reviews count" style="padding:5px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:11px;font-family:Outfit,sans-serif" />' +
+    '</div>' +
+    '<div style="margin-top:6px"><button onclick="savePlace('+id+')" style="padding:4px 12px;background:var(--green);color:white;border:none;border-radius:4px;font-size:11px;cursor:pointer;margin-right:4px">Save</button><button onclick="savePlace('+id+',true)" style="padding:4px 12px;background:var(--blue);color:white;border:none;border-radius:4px;font-size:11px;cursor:pointer;margin-right:4px">Save & Approve</button><button onclick="loadInbox()" style="padding:4px 12px;background:var(--warm);border:0.5px solid var(--border);border-radius:4px;font-size:11px;cursor:pointer">Cancel</button></div>';
+  
+  /* Set current values */
+  var typeEl = document.getElementById('ep-type-'+id);
+  if (typeEl) typeEl.value = item.type || '';
+  var cityEl = document.getElementById('ep-city-'+id);
+  if (cityEl) cityEl.value = item.city || 'Lisbon';
+  document.getElementById('ep-name-'+id).focus();
 }
 
-async function savePlace(id) {
-  var name = document.getElementById('edit-pname-'+id).value.trim();
-  var reason = document.getElementById('edit-pdesc-'+id).value.trim();
-  await sb('local_businesses?id=eq.'+id, { method: 'PATCH', body: { name: name, reason: reason } });
+async function savePlace(id, andApprove) {
+  var name = document.getElementById('ep-name-'+id).value.trim();
+  var type = document.getElementById('ep-type-'+id).value;
+  var city = document.getElementById('ep-city-'+id).value;
+  var area = document.getElementById('ep-area-'+id).value.trim();
+  var reason = document.getElementById('ep-desc-'+id).value.trim();
+  var url = document.getElementById('ep-url-'+id).value.trim();
+  var rating = document.getElementById('ep-rating-'+id).value;
+  var reviews = document.getElementById('ep-reviews-'+id).value;
+  var prStr = 'rating:' + (rating||'0') + '|reviews:' + (reviews||'0') + '|source:google';
+  var body = { name: name, type: type, city: city, area: area, reason: reason, url: url, price_range: prStr };
+  if (andApprove) body.status = 'active';
+  await sb('local_businesses?id=eq.'+id, { method: 'PATCH', body: body });
   loadInbox();
 }
 
@@ -1459,8 +1494,29 @@ async function loadBusinesses() {
     if (typeF) query += '&type=eq.' + encodeURIComponent(typeF);
     var items = await sb(query);
     var el = document.getElementById('businesses-table');
-    if (!items.length) {
-      el.innerHTML = '<div class="empty"><div class="empty-icon">&#127978;</div>No businesses added yet. Use the form above to add the first one.</div>';
+    
+    var pending = items.filter(function(b) { return b.status === 'pending'; });
+    var active = items.filter(function(b) { return b.status === 'active'; });
+    
+    var html = '';
+    if (pending.length) {
+      html += '<div style="margin-bottom:1.5rem"><div style="font-size:14px;font-weight:500;margin-bottom:8px;color:var(--amber)">&#9201; ' + pending.length + ' pending approval</div>' +
+        '<table><thead><tr><th>Name</th><th>Type</th><th>City</th><th>Actions</th></tr></thead><tbody>' +
+        pending.map(function(p) {
+          return '<tr style="background:var(--amber-l)">' +
+            '<td><div style="font-weight:500">' + p.name + '</div><div style="font-size:11px;color:var(--ink3)">' + (p.reason || '').substring(0, 60) + '</div></td>' +
+            '<td><span class="cat-badge">' + (p.type || '?') + '</span></td>' +
+            '<td>' + (p.city || '') + '</td>' +
+            '<td style="white-space:nowrap">' +
+            '<button onclick="quickApprove(' + p.id + ')" style="padding:4px 10px;background:var(--green-l);border:0.5px solid var(--green);border-radius:4px;font-size:11px;cursor:pointer;color:var(--green);margin-right:4px">Approve</button>' +
+            '<button onclick="editBusiness(' + p.id + ')" style="padding:4px 10px;background:var(--blue-l);border:0.5px solid var(--blue);border-radius:4px;font-size:11px;cursor:pointer;color:var(--blue);margin-right:4px">Edit</button>' +
+            '<button onclick="deleteBusiness(' + p.id + ')" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
+            '</td></tr>';
+        }).join('') + '</tbody></table></div>';
+    }
+    
+    if (!active.length && !pending.length) {
+      el.innerHTML = '<div class="empty"><div class="empty-icon">&#127978;</div>No businesses added yet.</div>';
       return;
     }
     
@@ -1729,12 +1785,34 @@ async function loadServices() {
     var items = await sb('local_businesses?type=eq.service&order=name.asc&limit=100');
     allSvcAdmin = items;
     var el = document.getElementById('services-table');
-    if (!items.length) {
+    
+    var pending = items.filter(function(s) { return s.status === 'pending'; });
+    var active = items.filter(function(s) { return s.status !== 'pending'; });
+    
+    var html = '';
+    if (pending.length) {
+      html += '<div style="margin-bottom:1.5rem"><div style="font-size:14px;font-weight:500;margin-bottom:8px;color:var(--amber)">&#9201; ' + pending.length + ' pending approval</div>' +
+        '<table><thead><tr><th>Provider</th><th>Category</th><th>City</th><th>Actions</th></tr></thead><tbody>' +
+        pending.map(function(s) {
+          return '<tr style="background:var(--amber-l)">' +
+            '<td><div style="font-weight:500">' + (s.emoji||'') + ' ' + s.name + '</div><div style="font-size:11px;color:var(--ink3)">' + (s.reason || '').substring(0, 60) + '</div></td>' +
+            '<td><span class="cat-badge">' + (s.area || '?') + '</span></td>' +
+            '<td>' + (s.city || '') + '</td>' +
+            '<td style="white-space:nowrap">' +
+            '<button onclick="quickApprove(' + s.id + ')" style="padding:4px 10px;background:var(--green-l);border:0.5px solid var(--green);border-radius:4px;font-size:11px;cursor:pointer;color:var(--green);margin-right:4px">Approve</button>' +
+            '<button onclick="editService(' + s.id + ')" style="padding:4px 10px;background:var(--blue-l);border:0.5px solid var(--blue);border-radius:4px;font-size:11px;cursor:pointer;color:var(--blue);margin-right:4px">Edit</button>' +
+            '<button onclick="deleteService(' + s.id + ')" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
+            '</td></tr>';
+        }).join('') + '</tbody></table></div>';
+    }
+    
+    if (!active.length && !pending.length) {
       el.innerHTML = '<div class="empty"><div class="empty-icon">&#129657;</div>No services yet.</div>';
       return;
     }
-    el.innerHTML = '<table><thead><tr><th>Provider</th><th>Category</th><th>City</th><th>Rating</th><th>Status</th><th>Actions</th></tr></thead><tbody>' +
-      items.map(function(s) {
+    
+    html += '<table><thead><tr><th>Provider</th><th>Category</th><th>City</th><th>Rating</th><th>Status</th><th>Actions</th></tr></thead><tbody>' +
+      active.map(function(s) {
         var pr = {};
         (s.price_range || '').split('|').forEach(function(p) { var kv = p.split(':'); if(kv.length>=2) pr[kv[0]] = kv.slice(1).join(':'); });
         return '<tr>' +
