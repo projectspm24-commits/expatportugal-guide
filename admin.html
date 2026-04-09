@@ -635,28 +635,28 @@ tr:hover td{background:var(--warm)}
     <!-- COMMUNITY INBOX PANEL -->
     <div class="panel" id="panel-inbox">
       <div class="section-card" style="margin-bottom:1.25rem">
-        <div class="sc-header">
-          <div class="sc-title">&#128161; Expat tips</div>
-        </div>
+        <div class="sc-header"><div class="sc-title">&#128240; Pending articles</div></div>
+        <div id="inbox-articles"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+      <div class="section-card" style="margin-bottom:1.25rem">
+        <div class="sc-header"><div class="sc-title">&#128197; Pending events</div></div>
+        <div id="inbox-events"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+      <div class="section-card" style="margin-bottom:1.25rem">
+        <div class="sc-header"><div class="sc-title">&#128205; Pending places &amp; services</div></div>
+        <div id="inbox-places"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+      <div class="section-card" style="margin-bottom:1.25rem">
+        <div class="sc-header"><div class="sc-title">&#128161; Expat tips</div></div>
         <div id="inbox-tips"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
       </div>
       <div class="section-card" style="margin-bottom:1.25rem">
-        <div class="sc-header">
-          <div class="sc-title">&#128221; Corrections</div>
-        </div>
+        <div class="sc-header"><div class="sc-title">&#128221; Corrections</div></div>
         <div id="inbox-corrections"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
       </div>
-      <div class="section-card" style="margin-bottom:1.25rem">
-        <div class="sc-header">
-          <div class="sc-title">&#128172; Housing inquiries</div>
-        </div>
-        <div id="inbox-inquiries"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
-      </div>
       <div class="section-card">
-        <div class="sc-header">
-          <div class="sc-title">&#128205; Place suggestions</div>
-        </div>
-        <div id="inbox-places"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+        <div class="sc-header"><div class="sc-title">&#128172; Housing inquiries</div></div>
+        <div id="inbox-inquiries"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
       </div>
     </div>
 
@@ -847,8 +847,16 @@ function renderArticlesTable(elId, articles, showActions) {
     el.innerHTML = '<div class="empty"><div class="empty-icon">' + (showActions ? '✅' : '📭') + '</div>' + (showActions ? 'No articles pending — you\'re all caught up!' : 'No published articles yet') + '</div>';
     return;
   }
-  el.innerHTML = `<table>
+  var bulkBar = showActions ? `<div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;padding:8px 12px;background:var(--warm);border-radius:8px">
+    <label style="font-size:12px;cursor:pointer;display:flex;align-items:center;gap:4px"><input type="checkbox" onchange="toggleAllArticles(this,'${elId}')" /> Select all</label>
+    <button class="btn btn-sm btn-green" onclick="bulkAction('approve','${elId}')">✓ Approve selected</button>
+    <button class="btn btn-sm" style="background:var(--amber-l);color:var(--amber)" onclick="bulkAction('depublish','${elId}')">⊘ Depublish selected</button>
+    <button class="btn btn-sm btn-red" onclick="bulkAction('delete','${elId}')">🗑 Delete selected</button>
+    <span id="${elId}-sel-count" style="font-size:11px;color:var(--ink3)">0 selected</span>
+  </div>` : '';
+  el.innerHTML = bulkBar + `<table>
     <thead><tr>
+      ${showActions ? '<th style="width:30px"></th>' : ''}
       <th style="width:38%">Article</th>
       <th>Category</th>
       <th>Region</th>
@@ -857,6 +865,7 @@ function renderArticlesTable(elId, articles, showActions) {
     </tr></thead>
     <tbody>
       ${articles.map(a => `<tr>
+        ${showActions ? `<td><input type="checkbox" class="art-chk" data-id="${a.id}" data-table="${elId}" onchange="updateSelCount('${elId}')" /></td>` : ''}
         <td>
           <div class="article-title">${a.image_emoji || '📰'} <a href="${a.source_url}" target="_blank" style="color:var(--ink);text-decoration:none">${a.title}</a></div>
           ${a.source_name ? `<div style="font-size:10px;color:var(--ink3);margin-top:3px">via ${a.source_name}</div>` : ''}
@@ -872,6 +881,42 @@ function renderArticlesTable(elId, articles, showActions) {
       </tr>`).join('')}
     </tbody>
   </table>`;
+}
+
+function toggleAllArticles(masterCb, tableId) {
+  var el = document.getElementById(tableId);
+  el.querySelectorAll('.art-chk').forEach(function(cb) { cb.checked = masterCb.checked; });
+  updateSelCount(tableId);
+}
+
+function updateSelCount(tableId) {
+  var el = document.getElementById(tableId);
+  var count = el.querySelectorAll('.art-chk:checked').length;
+  var span = document.getElementById(tableId + '-sel-count');
+  if (span) span.textContent = count + ' selected';
+}
+
+function getSelectedIds(tableId) {
+  var el = document.getElementById(tableId);
+  return Array.from(el.querySelectorAll('.art-chk:checked')).map(function(cb) { return parseInt(cb.getAttribute('data-id')); });
+}
+
+async function bulkAction(action, tableId) {
+  var ids = getSelectedIds(tableId);
+  if (!ids.length) { alert('Select at least one article.'); return; }
+  if (action === 'delete' && !confirm('Permanently delete ' + ids.length + ' article(s)?')) return;
+  if (action === 'depublish' && !confirm('Depublish ' + ids.length + ' article(s)?')) return;
+  for (var i = 0; i < ids.length; i++) {
+    if (action === 'approve') {
+      await sb('articles?id=eq.' + ids[i], { method: 'PATCH', body: { status: 'approved', published_at: new Date().toISOString() } });
+    } else if (action === 'depublish') {
+      await sb('articles?id=eq.' + ids[i], { method: 'PATCH', body: { status: 'rejected' } });
+    } else if (action === 'delete') {
+      await sb('articles?id=eq.' + ids[i], { method: 'DELETE' });
+    }
+  }
+  loadArticles();
+  loadMetrics();
 }
 
 async function approveArticle(id) {
@@ -1008,29 +1053,74 @@ async function deleteEvent(id) {
 }
 
 async function loadInbox() {
+  /* Pending articles */
+  try {
+    var pendingArticles = await sb('articles?status=eq.pending&order=created_at.desc&limit=20');
+    var aEl = document.getElementById('inbox-articles');
+    if (!pendingArticles.length) {
+      aEl.innerHTML = '<div class="empty"><div class="empty-icon">&#9989;</div>No pending articles.</div>';
+    } else {
+      aEl.innerHTML = '<div style="font-size:12px;color:var(--amber);margin-bottom:6px">' + pendingArticles.length + ' waiting for review</div>' +
+        '<table><thead><tr><th>Article</th><th>Category</th><th>Actions</th></tr></thead><tbody>' +
+        pendingArticles.map(function(a) {
+          return '<tr style="background:var(--amber-l)">' +
+            '<td><div style="font-weight:500">' + (a.image_emoji||'📰') + ' ' + a.title + '</div><div style="font-size:10px;color:var(--ink3)">' + (a.source_name||'') + '</div></td>' +
+            '<td><span class="cat-badge">' + (a.category||'') + '</span></td>' +
+            '<td style="white-space:nowrap">' +
+            '<button onclick="approveArticle(' + a.id + ');setTimeout(loadInbox,500)" style="padding:4px 10px;background:var(--green-l);border:0.5px solid var(--green);border-radius:4px;font-size:11px;cursor:pointer;color:var(--green);margin-right:4px">Approve</button>' +
+            '<button onclick="deleteArticle(' + a.id + ');setTimeout(loadInbox,500)" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
+            '</td></tr>';
+        }).join('') + '</tbody></table>';
+    }
+  } catch(e) { document.getElementById('inbox-articles').innerHTML = '<div class="empty">Could not load.</div>'; }
+
+  /* Pending events */
+  try {
+    var pendingEvents = await sb('events?status=in.(pending,submitted)&category=not.in.(tip,correction,inquiry,review,claim)&order=created_at.desc&limit=20');
+    var eEl = document.getElementById('inbox-events');
+    if (!pendingEvents.length) {
+      eEl.innerHTML = '<div class="empty"><div class="empty-icon">&#9989;</div>No pending events.</div>';
+    } else {
+      eEl.innerHTML = '<div style="font-size:12px;color:var(--amber);margin-bottom:6px">' + pendingEvents.length + ' waiting for review</div>' +
+        '<table><thead><tr><th>Event</th><th>City</th><th>Date</th><th>Actions</th></tr></thead><tbody>' +
+        pendingEvents.map(function(e) {
+          return '<tr style="background:var(--amber-l)">' +
+            '<td><div style="font-weight:500">' + e.title + '</div><div style="font-size:11px;color:var(--ink3)">' + (e.description||'').substring(0,60) + '</div></td>' +
+            '<td>' + (e.city||'') + '</td>' +
+            '<td style="font-size:12px">' + (e.event_date||'') + '</td>' +
+            '<td style="white-space:nowrap">' +
+            '<button onclick="approveEvent(' + e.id + ');setTimeout(loadInbox,500)" style="padding:4px 10px;background:var(--green-l);border:0.5px solid var(--green);border-radius:4px;font-size:11px;cursor:pointer;color:var(--green);margin-right:4px">Approve</button>' +
+            '<button onclick="rejectEvent(' + e.id + ');setTimeout(loadInbox,500)" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Reject</button>' +
+            '</td></tr>';
+        }).join('') + '</tbody></table>';
+    }
+  } catch(e) { document.getElementById('inbox-events').innerHTML = '<div class="empty">Could not load.</div>'; }
+
+  /* Tips, corrections, inquiries */
   try {
     var items = await sb('events?category=in.(tip,correction,inquiry)&order=created_at.desc&limit=50');
     var tips = items.filter(function(s) { return s.category === 'tip'; });
     var corrections = items.filter(function(s) { return s.category === 'correction'; });
     var inquiries = items.filter(function(s) { return s.category === 'inquiry'; });
 
-    renderInboxSection('inbox-tips', tips, '&#128161;', 'No tips yet. They\'ll appear when visitors share tips on the homepage.');
+    renderInboxSection('inbox-tips', tips, '&#128161;', 'No tips yet.');
     renderInboxSection('inbox-corrections', corrections, '&#128221;', 'No corrections yet.');
     renderInboxSection('inbox-inquiries', inquiries, '&#128172;', 'No housing inquiries yet.');
   } catch(e) {}
 
-  /* Also load pending place/community suggestions */
+  /* Pending place/service/community suggestions */
   try {
     var pending = await sb('local_businesses?status=eq.pending&order=created_at.desc&limit=30');
     var el = document.getElementById('inbox-places');
     if (!pending.length) {
-      el.innerHTML = '<div class="empty"><div class="empty-icon">&#128205;</div>No pending suggestions.</div>';
+      el.innerHTML = '<div class="empty"><div class="empty-icon">&#9989;</div>No pending suggestions.</div>';
       return;
     }
-    el.innerHTML = '<table><thead><tr><th>Name</th><th>Type</th><th>City</th><th>Submitted</th><th>Actions</th></tr></thead><tbody>' +
+    el.innerHTML = '<div style="font-size:12px;color:var(--amber);margin-bottom:6px">' + pending.length + ' waiting for review</div>' +
+      '<table><thead><tr><th>Name</th><th>Type</th><th>City</th><th>Submitted</th><th>Actions</th></tr></thead><tbody>' +
       pending.map(function(p) {
         var date = p.created_at ? new Date(p.created_at).toLocaleDateString('en-GB', {day:'numeric',month:'short'}) : '?';
-        return '<tr>' +
+        return '<tr style="background:var(--amber-l)">' +
           '<td><div id="place-name-'+p.id+'" style="font-weight:500">' + p.name + '</div><div id="place-desc-'+p.id+'" style="font-size:11px;color:var(--ink3)">' + (p.reason || '').substring(0, 80) + '</div>' +
           (p.url ? '<div style="font-size:10px;color:var(--blue)"><a href="' + p.url + '" target="_blank">' + p.url.substring(0, 40) + '</a></div>' : '') + '</td>' +
           '<td><span class="cat-badge">' + (p.type || '?') + '</span></td>' +
