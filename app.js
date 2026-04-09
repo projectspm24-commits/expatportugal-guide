@@ -87,7 +87,8 @@ async function loadLiveNews() {
     }
     var ptArts = arts.filter(function(a) { return isPT(a.source_name); });
     var enArts = arts.filter(function(a) { return !isPT(a.source_name); });
-    var sorted = ptArts.slice(0, 2).concat(enArts).slice(0, 5);
+    var maxNews = window.innerWidth <= 600 ? 3 : 5;
+    var sorted = ptArts.slice(0, 2).concat(enArts).slice(0, maxNews);
     list.innerHTML = sorted.map(function(a) {
       var date = a.published_at ? new Date(a.published_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : 'Today';
       var src = a.source_name || 'Google News';
