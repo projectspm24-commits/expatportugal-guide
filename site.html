@@ -171,6 +171,27 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
 
 @media(max-width:900px){.vp-hero{padding:1.5rem 1rem 0}.vp-content{padding:2rem}.evw-grid{grid-template-columns:1fr}.tg{grid-template-columns:repeat(2,1fr)}.sp-grid{grid-template-columns:repeat(2,1fr)}.lb-grid{grid-template-columns:repeat(2,1fr)}.places-grid{grid-template-columns:repeat(2,1fr)}.comm-grid{grid-template-columns:1fr}.llp{grid-template-columns:1fr}.sub-sec{grid-template-columns:1fr}.ft{grid-template-columns:1fr 1fr}.full{padding:0 1rem}nav{padding:0 1rem}.region-bar{padding:0 1rem}#home-housing{grid-template-columns:1fr!important}#contribute-grid{grid-template-columns:1fr!important}}
 @media(max-width:600px){.tg{grid-template-columns:1fr}.sp-grid{grid-template-columns:1fr}.ft{grid-template-columns:1fr}.vp-stats{flex-wrap:wrap;gap:1.5rem}}
+
+/* Collapsible sections on mobile */
+.fold-toggle{display:none;align-items:center;justify-content:space-between;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.fold-toggle .fold-arrow{font-size:12px;color:var(--ink3);transition:transform .3s}
+.fold-toggle.open .fold-arrow{transform:rotate(180deg)}
+.fold-body{max-height:2000px;overflow:hidden;transition:max-height .4s ease}
+.fold-body.collapsed{max-height:0;overflow:hidden}
+@media(max-width:600px){
+  .fold-toggle{display:flex}
+  /* News: hide hero-main on mobile, show only list */
+  .hero-main{display:none!important}
+  /* Contribute grid: 3 columns on mobile too (compact) */
+  #contribute-grid{grid-template-columns:repeat(3,1fr)!important;gap:8px!important}
+  #contribute-grid>div{padding:1rem!important}
+  #contribute-grid>div>div:first-child{font-size:20px!important;margin-bottom:4px!important}
+  #contribute-grid>div>div:nth-child(2){font-size:12px!important}
+  #contribute-grid>div>div:nth-child(3){display:none}
+  /* Tip form stack */
+  #tip-form{flex-direction:column}
+  #tip-form input{width:100%!important;min-width:0!important}
+}
 </style>
 </head>
 <body>
@@ -292,8 +313,8 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
 
 <!-- 3. FREE TOOLS -->
 <div class="full fade-in" style="margin-top:2.5rem">
-  <div class="sh"><span class="sh-t">Free expat tools</span><a class="sh-btn" href="tools.html">All tools &rarr;</a></div>
-  <div class="tg">
+  <div class="sh fold-toggle" onclick="toggleFold(this)"><span class="sh-t">Free expat tools</span><span class="fold-arrow">&#9660;</span><a class="sh-btn" href="tools.html" onclick="event.stopPropagation()">All tools &rarr;</a></div>
+  <div class="tg fold-body collapsed">
     <a class="tc" href="tools.html#visa"><div class="tc-i">&#128205;</div><div class="tc-t">Visa finder</div><div class="tc-d">Find the right visa in 60 seconds.</div></a>
     <a class="tc" href="tools.html#cost"><div class="tc-i">&#128178;</div><div class="tc-t">Cost of living calculator</div><div class="tc-d">Compare cities, estimate budgets.</div></a>
     <a class="tc" href="tools.html#tax"><div class="tc-i">&#128200;</div><div class="tc-t">Tax comparison</div><div class="tc-d">NHR vs IFICI vs standard — side by side.</div></a>
@@ -319,8 +340,8 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
 
 <!-- 4. LOCAL SERVICES -->
 <div class="full fade-in" style="margin-top:2.5rem">
-  <div class="sh"><span class="sh-t">Expat services</span><a class="sh-btn" href="lifestyle_services.html">All services &rarr;</a></div>
-  <div class="sp-grid">
+  <div class="sh fold-toggle" onclick="toggleFold(this)"><span class="sh-t">Expat services</span><span class="fold-arrow">&#9660;</span><a class="sh-btn" href="lifestyle_services.html" onclick="event.stopPropagation()">All services &rarr;</a></div>
+  <div class="sp-grid fold-body collapsed">
     <a class="sp" href="lifestyle_services.html"><span class="sp-icon">&#127947;</span><div class="sp-cat">Fitness &amp; sport</div><div class="sp-title">Personal trainers</div><div class="sp-n">5 providers</div></a>
     <a class="sp" href="lifestyle_services.html"><span class="sp-icon">&#129463;</span><div class="sp-cat">Health &amp; dental</div><div class="sp-title">English-speaking dentists</div><div class="sp-n">5 providers</div></a>
     <a class="sp" href="lifestyle_services.html"><span class="sp-icon">&#128062;</span><div class="sp-cat">Pets &amp; vets</div><div class="sp-title">Vets &amp; pet care</div><div class="sp-n">4 providers</div></a>
@@ -370,6 +391,16 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
       <div class="place-img" style="background-image:url('https://images.unsplash.com/photo-1548707309-dcebeab426c8?w=500&h=280&fit=crop')"></div>
       <div class="place-overlay"></div>
       <div class="place-body"><div class="place-cat">&#127748; Viewpoints</div></div>
+    </a>
+    <a class="place-card" href="directory.html?cat=cowork">
+      <div class="place-img" style="background-image:url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=500&h=280&fit=crop')"></div>
+      <div class="place-overlay"></div>
+      <div class="place-body"><div class="place-cat">&#128187; Co-work spaces</div></div>
+    </a>
+    <a class="place-card" href="directory.html?cat=vintage">
+      <div class="place-img" style="background-image:url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500&h=280&fit=crop')"></div>
+      <div class="place-overlay"></div>
+      <div class="place-body"><div class="place-cat">&#128717; Vintage shops</div></div>
     </a>
   </div>
 </div>
@@ -522,6 +553,19 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
 </footer>
 
 <script>
+/* Collapsible sections */
+function toggleFold(el) {
+  var body = el.nextElementSibling;
+  if (!body) return;
+  el.classList.toggle('open');
+  body.classList.toggle('collapsed');
+}
+/* On desktop, auto-open all fold sections */
+if (window.innerWidth > 600) {
+  document.querySelectorAll('.fold-body.collapsed').forEach(function(el) { el.classList.remove('collapsed'); });
+  document.querySelectorAll('.fold-toggle').forEach(function(el) { el.classList.add('open'); });
+}
+
 /* Scroll fade-in observer */
 var fadeObs = new IntersectionObserver(function(entries) {
   entries.forEach(function(e) {
