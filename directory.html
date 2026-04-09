@@ -392,7 +392,7 @@ function renderBiz() {
   document.getElementById('result-count').textContent = filtered.length + ' listing' + (filtered.length !== 1 ? 's' : '') + (activeCat !== 'all' ? ' in ' + activeCat : '');
   
   if (!filtered.length) {
-    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--ink3)">No listings found in this category yet.<br><a onclick="openContribute&&openContribute(\'place\')" style="color:var(--red);cursor:pointer">Add one &rarr;</a></div>';
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--ink3)">No listings found in this category yet.<br><a onclick="document.getElementById(\'submit-place-section\').scrollIntoView({behavior:\'smooth\'})" style="color:var(--red);cursor:pointer">Add one &rarr;</a></div>';
     return;
   }
   
