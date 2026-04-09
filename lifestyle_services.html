@@ -68,6 +68,22 @@ nav{background:rgba(247,245,240,0.96);border-bottom:0.5px solid var(--border);pa
 footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top:3rem}
 .fi{max-width:1100px;margin:0 auto;font-size:12px;text-align:center}
 @media(max-width:700px){.grid{grid-template-columns:1fr}.search-row{flex-direction:column}.cta-box{flex-direction:column;align-items:flex-start}.full{padding:0 1rem}nav{padding:0 1rem}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.skeleton{background:linear-gradient(90deg,var(--warm) 25%,#ece7dd 50%,var(--warm) 75%);background-size:800px 100%;animation:shimmer 1.5s infinite;border-radius:var(--r)}
+.skel-card{height:110px;border-radius:var(--rl);margin-bottom:10px}
+.skel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.error-state{text-align:center;padding:3rem 1.5rem;color:var(--ink3);background:var(--card);border-radius:var(--rl);border:0.5px solid var(--border)}
+.error-state .err-icon{font-size:28px;margin-bottom:8px}
+.error-state .err-msg{font-size:14px;margin-bottom:12px;color:var(--ink2)}
+.error-state .err-retry{display:inline-block;padding:8px 20px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:13px;cursor:pointer;font-family:"Outfit",sans-serif}
+.error-state .err-retry:hover{background:var(--red-d)}
+.cross-link{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;gap:12px;transition:border-color .2s}
+.cross-link:hover{border-color:var(--border2)}
+.cross-link-text{font-size:13px;color:var(--ink2)}.cross-link-text b{color:var(--ink);font-weight:500}
+.cross-link-arrow{font-size:13px;color:var(--red);font-weight:500;white-space:nowrap}
+.proof-bar{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1rem;font-size:12px;color:var(--ink3)}
+.proof-item{display:flex;align-items:center;gap:4px}
+.proof-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
 </style>
 </head>
 <body>
@@ -121,7 +137,14 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
       <button class="res-clear" onclick="resetFilters()">Clear filters</button>
     </div>
   </div>
-  <div class="grid" id="grid"></div>
+  <a href="directory.html" class="cross-link">
+    <span class="cross-link-text"><b>Looking for a cafe, restaurant, or beach?</b> Explore local places on our Explore page.</span>
+    <span class="cross-link-arrow">Explore &rarr;</span>
+  </a>
+  <div class="proof-bar" id="proof-bar">
+    <span class="proof-item"><span class="proof-dot"></span> Updated daily</span>
+  </div>
+  <div class="grid" id="grid"><div class="skel-grid"><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div></div></div>
   <div class="cta-box">
     <div>
       <div class="cta-t">Are you a professional serving expats?</div>
@@ -188,9 +211,15 @@ function parseService(s){
 async function loadServices(){
   try{
     var res=await fetch(SB_URL+'/rest/v1/local_businesses?type=eq.service&status=eq.active&order=name.asc',{headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY}});
+    if(!res.ok)throw new Error('HTTP '+res.status);
     allServices=(await res.json()).map(parseService);
+    var pb=document.getElementById('proof-bar');
+    if(pb){var cats=new Set(allServices.map(function(s){return s.cat}));pb.innerHTML='<span class="proof-item"><span class="proof-dot"></span> Updated daily</span><span class="proof-item">'+allServices.length+' professionals listed</span><span class="proof-item">'+cats.size+' categories</span>';}
     renderServices();
-  }catch(e){console.error(e);}
+  }catch(e){
+    console.error(e);
+    document.getElementById('grid').innerHTML='<div class="error-state"><div class="err-icon">&#128268;</div><div class="err-msg">Couldn\'t load services right now. This is usually temporary.</div><button class="err-retry" onclick="loadServices()">Try again</button></div>';
+  }
 }
 
 function starsHTML(r){var f=Math.floor(r);var h=r-f>=0.3?1:0;var e=5-f-h;var s='';for(var i=0;i<f;i++)s+='\u2605';if(h)s+='\u2606';for(var i=0;i<e;i++)s+='\u2606';return s;}
