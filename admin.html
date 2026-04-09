@@ -151,6 +151,7 @@ tr:hover td{background:var(--warm)}
 
     <div class="s-section">&#128221; Manage listings</div>
     <div class="s-nav-item" onclick="showPanel('businesses',this)">&#128205; Explore</div>
+    <div class="s-nav-item" onclick="showPanel('services',this)">&#129657; Services</div>
     <div class="s-nav-item" onclick="showPanel('communities',this)">&#128101; Communities</div>
     <div class="s-nav-item" onclick="showPanel('housing',this)">&#127968; Housing</div>
 
@@ -416,6 +417,68 @@ tr:hover td{background:var(--warm)}
           </div>
         </div>
         <div id="businesses-table"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- SERVICES PANEL -->
+    <div class="panel" id="panel-services">
+      <div class="section-card" style="margin-bottom:1.25rem">
+        <div class="sc-header">
+          <div class="sc-title">Add / edit service</div>
+        </div>
+        <div style="padding:1.25rem;display:grid;grid-template-columns:1fr 1fr;gap:10px" id="svc-form">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Provider name *</label>
+            <input id="svc-name" class="setting-input" style="margin:0" placeholder="e.g. Dr. Claire Hendricks" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Category *</label>
+            <select id="svc-cat" class="setting-input" style="margin:0">
+              <option value="health">Health & Medical</option><option value="legal">Legal</option><option value="finance">Finance & Tax</option><option value="childcare">Childcare & Nannies</option><option value="pets">Pet care</option><option value="fitness">Fitness & Wellness</option><option value="beauty">Beauty</option><option value="home">Home services</option><option value="tutoring">Tutoring & Education</option><option value="other">Other</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">City</label>
+            <select id="svc-city" class="setting-input" style="margin:0">
+              <option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Braga</option><option>Alentejo</option><option>Madeira</option><option>Online</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Website</label>
+            <input id="svc-url" class="setting-input" style="margin:0" placeholder="https://..." />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Role / specialty</label>
+            <input id="svc-role" class="setting-input" style="margin:0" placeholder="e.g. English-speaking dentist" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Emoji</label>
+            <input id="svc-emoji" class="setting-input" style="margin:0" value="🩺" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px;grid-column:1/-1">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Description</label>
+            <input id="svc-desc" class="setting-input" style="margin:0" placeholder="Short description of the service" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Google rating</label>
+            <input id="svc-rating" class="setting-input" style="margin:0" type="number" step="0.1" placeholder="4.5" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Reviews count</label>
+            <input id="svc-reviews" class="setting-input" style="margin:0" type="number" placeholder="89" />
+          </div>
+          <div style="grid-column:1/-1;display:flex;gap:8px;align-items:center;margin-top:4px">
+            <button class="btn btn-green" id="svc-save-btn" onclick="saveService()">+ Add service</button>
+            <button class="btn" onclick="clearSvcForm()">Clear</button>
+            <span id="svc-msg" style="font-size:12px;color:var(--green);display:none">Saved!</span>
+          </div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="sc-header">
+          <div class="sc-title">All services</div>
+        </div>
+        <div id="services-table"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
       </div>
     </div>
 
@@ -740,7 +803,8 @@ const PANELS = {
   subscribers: { title: 'Subscribers',              sub: 'Newsletter subscribers by region and source' },
   exchange:    { title: 'Language exchange',         sub: 'Expats matched with Portuguese locals' },
   directory:   { title: 'Explore listings',          sub: 'Businesses, places, and things to discover' },
-  businesses:  { title: 'Explore listings',          sub: 'Add, edit, and manage all business and place listings' },
+  businesses:  { title: 'Explore listings',          sub: 'Cafés, restaurants, beaches, museums, parks — places to explore' },
+  services:    { title: 'Services',                  sub: 'Doctors, lawyers, accountants, trainers — professional services' },
   communities: { title: 'Communities',               sub: 'Expat groups, meetups, and social communities' },
   housing:     { title: 'Housing board',             sub: 'Rental listings, tiers, confirmations, and inquiries' },
   inbox:       { title: 'Inbox',                     sub: 'Tips, corrections, suggestions, and messages from visitors' },
@@ -760,7 +824,7 @@ function showPanel(name, el) {
 }
 
 function loadCurrentPanel() {
-  const loaders = { articles: loadArticles, events: loadEvents, digest: loadDigest, subscribers: loadSubscribers, exchange: loadExchange, directory: loadDirectory, businesses: loadBusinesses, communities: loadCommunities, housing: loadHousing, inbox: loadInbox, logs: loadLogs };
+  const loaders = { articles: loadArticles, events: loadEvents, digest: loadDigest, subscribers: loadSubscribers, exchange: loadExchange, directory: loadDirectory, businesses: loadBusinesses, services: loadServices, communities: loadCommunities, housing: loadHousing, inbox: loadInbox, logs: loadLogs };
   if (loaders[currentPanel]) loaders[currentPanel]();
   loadMetrics();
 }
@@ -1390,7 +1454,7 @@ async function loadBusinesses() {
   try {
     var cityF = document.getElementById('biz-filter-city').value;
     var typeF = document.getElementById('biz-filter-type').value;
-    var query = 'local_businesses?order=created_at.desc&limit=100';
+    var query = 'local_businesses?type=neq.housing&type=neq.community&type=neq.service&order=created_at.desc&limit=100';
     if (cityF) query += '&city=eq.' + encodeURIComponent(cityF);
     if (typeF) query += '&type=eq.' + encodeURIComponent(typeF);
     var items = await sb(query);
@@ -1654,6 +1718,98 @@ function clearCommForm() {
     document.getElementById(id).value = '';
   });
   document.getElementById('comm-save-btn').textContent = '+ Add community';
+}
+
+// ── SERVICES ──────────────────────────────────────────
+var allSvcAdmin = [];
+var editSvcId = null;
+
+async function loadServices() {
+  try {
+    var items = await sb('local_businesses?type=eq.service&order=name.asc&limit=100');
+    allSvcAdmin = items;
+    var el = document.getElementById('services-table');
+    if (!items.length) {
+      el.innerHTML = '<div class="empty"><div class="empty-icon">&#129657;</div>No services yet.</div>';
+      return;
+    }
+    el.innerHTML = '<table><thead><tr><th>Provider</th><th>Category</th><th>City</th><th>Rating</th><th>Status</th><th>Actions</th></tr></thead><tbody>' +
+      items.map(function(s) {
+        var pr = {};
+        (s.price_range || '').split('|').forEach(function(p) { var kv = p.split(':'); if(kv.length>=2) pr[kv[0]] = kv.slice(1).join(':'); });
+        return '<tr>' +
+          '<td><div style="font-weight:500">' + s.emoji + ' ' + s.name + '</div><div style="font-size:11px;color:var(--ink3)">' + (s.reason || '').substring(0, 60) + '</div>' +
+          (s.url ? '<div style="font-size:10px;color:var(--blue)"><a href="' + s.url + '" target="_blank">' + s.url.substring(0, 35) + '</a></div>' : '') + '</td>' +
+          '<td><span class="cat-badge">' + (s.area || '?') + '</span></td>' +
+          '<td>' + (s.city || '') + '</td>' +
+          '<td style="font-size:12px">' + (pr.rating || '—') + ' &#9733; (' + (pr.reviews || '0') + ')</td>' +
+          '<td><span class="cat-badge" style="' + (s.status==='active'?'background:var(--green-l);color:var(--green)':'') + '">' + (s.status || 'pending') + '</span></td>' +
+          '<td style="white-space:nowrap">' +
+          '<button onclick="editService(' + s.id + ')" style="padding:4px 10px;background:var(--blue-l);border:0.5px solid var(--blue);border-radius:4px;font-size:11px;cursor:pointer;color:var(--blue);margin-right:4px">Edit</button>' +
+          '<button onclick="deleteService(' + s.id + ')" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
+          '</td></tr>';
+      }).join('') + '</tbody></table>';
+  } catch(e) { document.getElementById('services-table').innerHTML = '<div class="empty">Could not load.</div>'; }
+}
+
+async function saveService(existingId) {
+  var id = existingId || editSvcId;
+  var name = document.getElementById('svc-name').value.trim();
+  var cat = document.getElementById('svc-cat').value;
+  if (!name) { alert('Provider name is required.'); return; }
+  var rating = document.getElementById('svc-rating').value || '0';
+  var reviews = document.getElementById('svc-reviews').value || '0';
+  var role = document.getElementById('svc-role').value.trim();
+  var pr = 'rating:' + rating + '|reviews:' + reviews + '|source:google|role:' + role;
+  var data = {
+    name: name, type: 'service', city: document.getElementById('svc-city').value,
+    area: cat, reason: document.getElementById('svc-desc').value.trim(),
+    url: document.getElementById('svc-url').value.trim(),
+    emoji: document.getElementById('svc-emoji').value.trim() || '🩺',
+    price_range: pr, status: 'active'
+  };
+  try {
+    if (id) { await sb('local_businesses?id=eq.' + id, { method: 'PATCH', body: data }); }
+    else { await sb('local_businesses', { method: 'POST', body: data }); }
+    var msg = document.getElementById('svc-msg');
+    msg.textContent = id ? 'Updated!' : 'Saved!';
+    msg.style.display = 'inline';
+    setTimeout(function() { msg.style.display = 'none'; }, 2500);
+    clearSvcForm();
+    loadServices();
+  } catch(e) { alert('Error: ' + e.message); }
+}
+
+function editService(id) {
+  var s = allSvcAdmin.find(function(x) { return x.id === id; });
+  if (!s) return;
+  editSvcId = id;
+  document.getElementById('svc-name').value = s.name || '';
+  document.getElementById('svc-cat').value = s.area || 'health';
+  document.getElementById('svc-city').value = s.city || 'Lisbon';
+  document.getElementById('svc-url').value = s.url || '';
+  document.getElementById('svc-desc').value = s.reason || '';
+  document.getElementById('svc-emoji').value = s.emoji || '🩺';
+  var pr = {};
+  (s.price_range || '').split('|').forEach(function(p) { var kv = p.split(':'); if(kv.length>=2) pr[kv[0]] = kv.slice(1).join(':'); });
+  document.getElementById('svc-rating').value = pr.rating || '';
+  document.getElementById('svc-reviews').value = pr.reviews || '';
+  document.getElementById('svc-role').value = pr.role || '';
+  document.getElementById('svc-save-btn').textContent = 'Save changes';
+  document.getElementById('svc-form').scrollIntoView({ behavior: 'smooth' });
+}
+
+async function deleteService(id) {
+  if (!confirm('Delete this service?')) return;
+  await sb('local_businesses?id=eq.' + id, { method: 'DELETE' });
+  loadServices();
+}
+
+function clearSvcForm() {
+  editSvcId = null;
+  ['svc-name','svc-url','svc-desc','svc-role','svc-rating','svc-reviews'].forEach(function(id) { document.getElementById(id).value = ''; });
+  document.getElementById('svc-emoji').value = '🩺';
+  document.getElementById('svc-save-btn').textContent = '+ Add service';
 }
 
 // ── HOUSING ──────────────────────────────────────────
