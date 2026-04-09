@@ -1201,6 +1201,7 @@ async function editPlace(id) {
     '<select id="ep-city-'+id+'" style="padding:5px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:11px;font-family:Outfit,sans-serif"><option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Braga</option><option>Alentejo</option><option>Madeira</option></select>' +
     '</div>' +
     '<input id="ep-area-'+id+'" value="'+(item.area||'').replace(/"/g,'&quot;')+'" placeholder="Neighbourhood" style="width:100%;padding:5px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:11px;font-family:Outfit,sans-serif;margin-bottom:4px" />' +
+    '<input id="ep-address-'+id+'" value="'+(item.address||'').replace(/"/g,'&quot;')+'" placeholder="Full address (e.g. Rua Augusta 123, Lisbon)" style="width:100%;padding:5px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:11px;font-family:Outfit,sans-serif;margin-bottom:4px" />' +
     '<textarea id="ep-desc-'+id+'" style="width:100%;padding:5px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:11px;font-family:Outfit,sans-serif;height:40px;resize:vertical">'+(item.reason||'')+'</textarea>' +
     '<input id="ep-url-'+id+'" value="'+(item.url||'').replace(/"/g,'&quot;')+'" placeholder="Website URL" style="width:100%;padding:5px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:11px;font-family:Outfit,sans-serif;margin-top:4px" />' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px">' +
@@ -1222,12 +1223,13 @@ async function savePlace(id, andApprove) {
   var type = document.getElementById('ep-type-'+id).value;
   var city = document.getElementById('ep-city-'+id).value;
   var area = document.getElementById('ep-area-'+id).value.trim();
+  var address = document.getElementById('ep-address-'+id).value.trim();
   var reason = document.getElementById('ep-desc-'+id).value.trim();
   var url = document.getElementById('ep-url-'+id).value.trim();
   var rating = document.getElementById('ep-rating-'+id).value;
   var reviews = document.getElementById('ep-reviews-'+id).value;
   var prStr = 'rating:' + (rating||'0') + '|reviews:' + (reviews||'0') + '|source:google';
-  var body = { name: name, type: type, city: city, area: area, reason: reason, url: url, price_range: prStr };
+  var body = { name: name, type: type, city: city, area: area, address: address, reason: reason, url: url, price_range: prStr };
   if (andApprove) body.status = 'active';
   await sb('local_businesses?id=eq.'+id, { method: 'PATCH', body: body });
   loadInbox();
