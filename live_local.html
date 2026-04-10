@@ -153,7 +153,7 @@ footer{border-top:0.5px solid var(--border);padding:2rem 1.5rem;background:var(-
 footer a{color:var(--ink3);text-decoration:none}
 
 /* RESPONSIVE */
-@media(max-width:700px){
+@media(max-width:700px){.three-col{grid-template-columns:1fr}.four-col{grid-template-columns:repeat(2,1fr)}
   nav{padding:0 1rem}
 
   .two-col,.three-col,.four-col{grid-template-columns:1fr}
@@ -676,6 +676,7 @@ footer a{color:var(--ink3);text-decoration:none}
 </footer>
 
 <script>
+window.scrollTo(0,0);
 function submitExchange() {
   const name = document.getElementById('ex-name').value.trim();
   const email = document.getElementById('ex-email').value.trim();
