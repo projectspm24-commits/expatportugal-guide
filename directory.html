@@ -105,7 +105,23 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
 .fi{max-width:1100px;margin:0 auto;font-size:12px;text-align:center}
 
 @media(max-width:900px){.dir-layout{grid-template-columns:1fr}.dir-map-col{position:relative;top:0}.full{padding:0 1rem}nav{padding:0 1rem}}
-@media(max-width:700px){.full{padding:0 1rem}nav{padding:0 1rem}}
+@media(max-width:700px){.full{padding:0 1rem}nav{padding:0 1rem}
+  /* Directory mobile layout */
+  .dir-hero{padding:1.5rem 0 0.75rem!important}
+  .dir-hero-t{font-size:22px}
+  .dir-hero-sub{font-size:12px}
+  .filter-bar{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:8px;gap:6px;scrollbar-width:none;margin-bottom:1rem}
+  .filter-bar::-webkit-scrollbar{display:none}
+  .fb{padding:7px 14px;font-size:11px;white-space:nowrap;flex-shrink:0}
+  .biz-grid{max-height:none!important;overflow-y:visible!important}
+  .biz{padding:1rem}
+  .biz-name{font-size:14px}
+  .dir-map-col{margin-top:0.5rem}
+  .cross-link{flex-direction:column;text-align:center;padding:12px 14px;gap:6px}
+  .cross-link-arrow{align-self:center}
+  .sort-bar{flex-direction:column;gap:6px;align-items:flex-start}
+  .proof-bar{font-size:11px;margin-bottom:0.5rem}
+}
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0);z-index:300;align-items:center;justify-content:center;transition:background .5s}
 .modal-bg.open{display:flex}
 .modal-bg.show{background:rgba(0,0,0,0.45)}
@@ -696,6 +712,7 @@ async function submitReview() {
 }
 
 // Handle ?cat= URL parameter
+window.scrollTo(0, 0);
 var urlCat = new URLSearchParams(window.location.search).get('cat');
 if (urlCat && urlCat !== 'all') {
   activeCat = urlCat;
