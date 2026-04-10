@@ -176,11 +176,16 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
 .fold-toggle{display:flex;align-items:center;justify-content:space-between;cursor:default;-webkit-tap-highlight-color:transparent}
 .fold-toggle .fold-arrow{font-size:12px;color:var(--ink3);transition:transform .3s;display:none}
 .fold-toggle.open .fold-arrow{transform:rotate(180deg)}
-.fold-body{max-height:2000px;overflow:hidden;transition:max-height .4s ease}
-.fold-body.collapsed{max-height:0;overflow:hidden}
+.fold-body.collapsed{display:none}
 @media(max-width:600px){
   .fold-toggle{cursor:pointer}
   .fold-toggle .fold-arrow{display:inline}
+  /* Tools: 2 columns on mobile */
+  .tg{grid-template-columns:repeat(2,1fr)!important;gap:8px}
+  .tc{padding:0.9rem}
+  .tc-i{font-size:18px!important;margin-bottom:4px!important}
+  .tc-t{font-size:12px!important}
+  .tc-d{font-size:10px!important}
   /* Services: compact cards for 2-col */
   .sp{padding:0.9rem}
   .sp-icon{font-size:20px!important}
@@ -564,8 +569,14 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
 function toggleFold(el) {
   var body = el.nextElementSibling;
   if (!body) return;
-  el.classList.toggle('open');
-  body.classList.toggle('collapsed');
+  var isOpen = el.classList.contains('open');
+  if (isOpen) {
+    el.classList.remove('open');
+    body.classList.add('collapsed');
+  } else {
+    el.classList.add('open');
+    body.classList.remove('collapsed');
+  }
 }
 /* On desktop, auto-open all fold sections */
 if (window.innerWidth > 600) {
