@@ -471,6 +471,7 @@ async function loadDirectory() {
     var pb = document.getElementById('proof-bar');
     if (pb) pb.innerHTML = '<span class="proof-item"><span class="proof-dot"></span> Updated daily</span><span class="proof-item">' + allBiz.length + ' places listed</span><span class="proof-item">' + new Set(allBiz.map(function(b){return b.city})).size + ' cities covered</span>';
     renderBiz();
+    setTimeout(function() { window.scrollTo(0, 0); }, 50);
   } catch (e) {
     console.error(e);
     document.getElementById('biz-grid').innerHTML = '<div class="error-state"><div class="err-icon">&#128268;</div><div class="err-msg">Couldn\'t load listings right now. This is usually temporary.</div><button class="err-retry" onclick="loadDirectory()">Try again</button></div>';
@@ -534,7 +535,7 @@ function renderBiz() {
   }).join('');
   
   var first = grid.querySelector('.biz');
-  if (first) showOnMap(first);
+  if (first && window.innerWidth > 900) showOnMap(first);
 }
 
 function showOnMap(el) {
@@ -715,6 +716,7 @@ async function submitReview() {
 }
 
 // Handle ?cat= URL parameter
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 window.scrollTo(0, 0);
 var urlCat = new URLSearchParams(window.location.search).get('cat');
 if (urlCat && urlCat !== 'all') {
