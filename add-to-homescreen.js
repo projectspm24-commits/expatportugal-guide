@@ -11,6 +11,7 @@
 
   var deferredPrompt = null;
   var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  var isAndroid = /Android/.test(navigator.userAgent);
 
   window.addEventListener('beforeinstallprompt', function(e) {
     e.preventDefault();
@@ -18,8 +19,8 @@
     showBanner();
   });
 
-  /* On iOS show after delay since no beforeinstallprompt */
-  if (isIOS) setTimeout(showBanner, 3000);
+  /* Always show banner after 3s on mobile — don't wait for beforeinstallprompt */
+  setTimeout(showBanner, 3000);
 
   function showBanner() {
     if (document.getElementById('aths-banner')) return;
@@ -38,12 +39,20 @@
 
     document.getElementById('aths-btn').onclick = function() {
       if (deferredPrompt) {
+        /* Android/Chrome — native install */
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then(function() { deferredPrompt = null; dismissATHS(); });
       } else if (isIOS) {
+        /* iOS — show share instruction */
         var t = b.querySelector('.aths-t');
         b.querySelector('.aths-btn').style.display = 'none';
         t.innerHTML = '<b>Tap <span style="font-size:16px">⎙</span> Share → "Add to Home Screen"</b>';
+        setTimeout(dismissATHS, 6000);
+      } else if (isAndroid) {
+        /* Android but no prompt yet — show menu instruction */
+        var t = b.querySelector('.aths-t');
+        b.querySelector('.aths-btn').style.display = 'none';
+        t.innerHTML = '<b>Tap ⋮ menu → "Add to Home screen"</b>';
         setTimeout(dismissATHS, 6000);
       }
     };
