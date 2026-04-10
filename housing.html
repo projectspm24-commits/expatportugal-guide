@@ -314,6 +314,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
 </footer>
 
 <script>
+function formatDate(d){if(!d)return'';var p=d.split('-');return p[2]+'/'+p[1]+'/'+p[0];}
 var SB_URL='https://waywvckvyizqkuuaecrp.supabase.co';
 var SB_KEY='sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b';
 var allListings=[];
@@ -426,8 +427,8 @@ function renderListings(){
         imgHTML='<img class="lc-img" src="'+photos[0]+'" alt="" onerror="this.style.display=\'none\'" />';
       }
       var dates='';
-      if(l.available)dates+='From '+l.available;
-      if(l.until)dates+=' to '+l.until;
+      if(l.available)dates+='From '+formatDate(l.available);
+      if(l.until)dates+=' to '+formatDate(l.until);
       return '<div class="lc'+(isFeat?' featured':'')+'" onclick="showDetail('+l.id+')" style="cursor:pointer">'+(isFeat?'<div class="lc-feat-badge">&#11088; Featured</div>':'')+imgHTML+
         '<div class="lc-body">'+
         '<div class="lc-price">&euro;'+l.rent.toLocaleString()+' <span>/month</span></div>'+
@@ -447,8 +448,8 @@ function renderListings(){
     html+='<div style="font-size:14px;font-weight:500;margin-bottom:10px;color:var(--ink2);display:flex;justify-content:space-between;align-items:center">&#128269; People looking for a place ('+looking.length+')<button onclick="document.getElementById(\'looking-section\').scrollIntoView({behavior:\'smooth\'})" style="padding:5px 14px;background:var(--blue);color:white;border:none;border-radius:var(--r);font-size:11px;font-weight:500;cursor:pointer;font-family:Outfit,sans-serif">Post for free &rarr;</button></div>';
     html+=looking.map(function(l){
       var dates='';
-      if(l.available)dates+=l.available;
-      if(l.until)dates+=' to '+l.until;
+      if(l.available)dates+=formatDate(l.available);
+      if(l.until)dates+=' to '+formatDate(l.until);
       return '<div style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--r);padding:12px 16px;margin-bottom:6px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .15s" onclick="showDetail('+l.id+')" onmouseover="this.style.borderColor=\'var(--border2)\'" onmouseout="this.style.borderColor=\'var(--border)\'">' +
         '<div style="font-size:20px;flex-shrink:0">&#128269;</div>'+
         '<div style="flex:1;min-width:0">'+
@@ -470,8 +471,8 @@ function showDetail(id){
   if(!l)return;
   var photos=l.img?l.img.split(',').filter(Boolean):[];
   var dates='';
-  if(l.available)dates+='From '+l.available;
-  if(l.until)dates+=' to '+l.until;
+  if(l.available)dates+='From '+formatDate(l.available);
+  if(l.until)dates+=' to '+formatDate(l.until);
   var diffDays=l.available&&l.until?Math.round((new Date(l.until)-new Date(l.available))/86400000):0;
 
   var galleryHTML='';
