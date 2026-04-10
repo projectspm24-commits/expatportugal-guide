@@ -132,18 +132,27 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
   .biz-rating{font-size:12px}
   .biz-tags{gap:4px}
   .biz-tag{font-size:10px;padding:2px 8px}
-  /* Detail panel: bottom sheet style on mobile */
-  .dir-map-col{margin-top:0;position:fixed;bottom:0;left:0;right:0;z-index:250;transform:translateY(100%);transition:transform .4s ease;max-height:75vh;overflow-y:auto;background:var(--cream);border-radius:20px 20px 0 0;box-shadow:0 -8px 30px rgba(0,0,0,.12);padding:0 1rem 1rem}
-  .dir-map-col.open{transform:translateY(0)}
-  #detail-placeholder{display:none!important}
-  .map-container{height:180px!important;border-radius:var(--rl);overflow:hidden;margin-top:12px}
+  /* Detail panel: hidden on mobile entirely */
+  .dir-map-col{display:none!important}
+  /* Business cards: expand on tap */
+  .biz{padding:0.9rem;position:relative}
+  .biz-name{font-size:14px}
+  .biz-desc{font-size:12px;-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
+  .biz.expanded .biz-desc{-webkit-line-clamp:unset;display:block}
+  .biz-loc{font-size:11px}
+  .biz-rating{font-size:12px}
+  .biz-tags{gap:4px}
+  .biz-tag{font-size:10px;padding:2px 8px}
+  .biz-expand{display:none;margin-top:10px;padding-top:10px;border-top:0.5px solid var(--border)}
+  .biz.expanded .biz-expand{display:block}
+  .review-btn{position:static!important;margin-top:8px}
   /* Submit sections stack */
   .submit-grid-2col{grid-template-columns:1fr!important;gap:10px!important}
   /* CTA box */
   .cta-box{padding:1.25rem!important}
   /* Modal */
   .modal{width:95%!important;padding:1.25rem!important}
-  .sheet-handle{display:block!important}
+  .sheet-handle{display:none!important}
 }
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0);z-index:300;align-items:center;justify-content:center;transition:background .5s}
 .modal-bg.open{display:flex}
@@ -508,12 +517,16 @@ function renderBiz() {
     var photos = (isClaimed && b.address) ? b.address.split(',').filter(Boolean) : [];
     var photoHTML = photos.length ? '<div style="display:flex;gap:3px;margin:8px 0;overflow:hidden;border-radius:8px;height:60px">' + photos.slice(0, isFeatured ? 5 : 3).map(function(p) { return '<img src="' + p.trim() + '" style="height:60px;object-fit:cover;flex:1;min-width:0" onerror="this.remove()" />'; }).join('') + '</div>' : '';
     var borderStyle = isFeatured ? 'border:1.5px solid #b45309;' : '';
-    return '<div class="biz" data-id="' + b.id + '" style="' + borderStyle + '" onclick="if(event.target.tagName!==\'A\'&&!event.target.classList.contains(\'review-btn\'))showOnMap(this)">' +
+    return '<div class="biz" data-id="' + b.id + '" style="' + borderStyle + '" onclick="if(event.target.tagName!==\'A\'&&!event.target.classList.contains(\'review-btn\')){if(window.innerWidth<=700){this.classList.toggle(\'expanded\')}else{showOnMap(this)}}">' +
       '<div class="biz-top"><div style="display:flex;align-items:flex-start"><span class="biz-emoji">' + b.emoji + '</span><div><div class="biz-name">' + b.name + ' ' + badge + '</div><div class="biz-loc">' + [b.area, b.city].filter(Boolean).join(', ') + '</div></div></div>' +
       '<div class="biz-rating"><div class="biz-stars">' + starsHTML(b._rating) + '</div><span class="biz-score">' + b._rating.toFixed(1) + '</span><span class="biz-reviews">(' + reviewCount + ')' + reviewLabel + '</span></div></div>' +
       photoHTML +
       '<div class="biz-desc">' + (b.reason || '') + '</div>' +
       '<div class="biz-tags">' + '<span class="biz-tag">' + b.type + '</span><span class="biz-tag">' + b.city + '</span> ' + url + '</div>' +
+      '<div class="biz-expand">' +
+      (b.url ? '<a href="' + b.url + '" target="_blank" rel="noopener" style="display:block;text-align:center;padding:10px;background:var(--red);color:white;border-radius:var(--r);font-size:13px;font-weight:500;text-decoration:none;margin-bottom:8px">Visit website &rarr;</a>' : '') +
+      '<a href="https://www.google.com/maps/search/' + encodeURIComponent(b.name + ', ' + (b.address || b.area + ', ' + b.city + ', Portugal')) + '" target="_blank" rel="noopener" style="display:block;text-align:center;padding:10px;background:var(--card);border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;color:var(--ink);text-decoration:none;margin-bottom:8px">&#128205; Open in Google Maps</a>' +
+      '</div>' +
       '<button class="review-btn" onclick="openReview(' + b.id + ',\'' + b.name.replace(/'/g, "\\'") + '\')">Leave a review</button>' +
       (!isClaimed ? '<div style="margin-top:6px;text-align:center"><a onclick="openClaim(' + b.id + ',\'' + b.name.replace(/'/g, "\\'") + '\')" style="font-size:11px;color:var(--ink3);cursor:pointer;text-decoration:underline">Is this your business? Claim it &rarr;</a></div>' : '') +
       '</div>';
