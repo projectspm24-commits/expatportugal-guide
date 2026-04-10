@@ -173,13 +173,14 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
 @media(max-width:600px){.tg{grid-template-columns:1fr}.sp-grid{grid-template-columns:1fr}.ft{grid-template-columns:1fr}.vp-stats{flex-wrap:wrap;gap:1.5rem}}
 
 /* Collapsible sections on mobile */
-.fold-toggle{display:none;align-items:center;justify-content:space-between;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.fold-toggle .fold-arrow{font-size:12px;color:var(--ink3);transition:transform .3s}
+.fold-toggle{display:flex;align-items:center;justify-content:space-between;cursor:default;-webkit-tap-highlight-color:transparent}
+.fold-toggle .fold-arrow{font-size:12px;color:var(--ink3);transition:transform .3s;display:none}
 .fold-toggle.open .fold-arrow{transform:rotate(180deg)}
 .fold-body{max-height:2000px;overflow:hidden;transition:max-height .4s ease}
 .fold-body.collapsed{max-height:0;overflow:hidden}
 @media(max-width:600px){
-  .fold-toggle{display:flex}
+  .fold-toggle{cursor:pointer}
+  .fold-toggle .fold-arrow{display:inline}
   /* News: hide hero-main on mobile, show only list */
   .hero-main{display:none!important}
   /* Contribute grid: 3 columns on mobile too (compact) */
