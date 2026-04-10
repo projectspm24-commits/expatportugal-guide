@@ -92,7 +92,35 @@ nav{background:rgba(247,245,240,0.96);border-bottom:0.5px solid var(--border);pa
 footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top:3rem}
 .fi{max-width:1100px;margin:0 auto;font-size:12px;text-align:center}
 
-@media(max-width:700px){.cal-grid{display:none}.list-view{display:block!important}.cal-view-toggle{display:none}.full{padding:0 1rem}nav{padding:0 1rem}.cal-cell{min-height:70px}}
+@media(max-width:700px){.cal-grid{display:none}.list-view{display:block!important}.cal-view-toggle{display:none}.full{padding:0 1rem}nav{padding:0 1rem}.cal-cell{min-height:70px}
+  /* Calendar mobile layout */
+  .cal-hero{padding:1.5rem 0 0.75rem}
+  .cal-hero-t{font-size:22px}
+  .cal-hero-sub{font-size:12px}
+  .submit-btn{font-size:12px;padding:8px 14px}
+  /* Controls compact */
+  .cal-controls{gap:6px;margin-bottom:0.75rem;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+  .cal-controls::-webkit-scrollbar{display:none}
+  .cal-nav-btn{padding:6px 10px;font-size:11px;white-space:nowrap}
+  .cal-month{font-size:16px;min-width:auto}
+  .cal-today-btn{padding:6px 10px;font-size:11px;white-space:nowrap}
+  /* Split category and region filters */
+  .filter-bar{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:8px;gap:6px;scrollbar-width:none;margin-bottom:0.75rem}
+  .filter-bar::-webkit-scrollbar{display:none}
+  .fb{padding:7px 14px;font-size:11px;white-space:nowrap;flex-shrink:0}
+  /* Event cards compact */
+  .list-day{margin-bottom:1rem}
+  .list-day-date{font-size:14px}
+  .list-ev{padding:10px 12px;gap:10px}
+  .list-ev-title{font-size:13px}
+  .list-ev-meta{font-size:11px}
+  /* Proof bar compact */
+  .proof-bar{margin-bottom:0.5rem;font-size:11px}
+  /* Event detail modal */
+  .ev-detail{width:95%!important;padding:1.25rem!important;max-height:85vh;overflow-y:auto}
+  /* Skeleton smaller */
+  .skel-cal{height:150px}
+}
 @keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
 .skeleton{background:linear-gradient(90deg,var(--warm) 25%,#ece7dd 50%,var(--warm) 75%);background-size:800px 100%;animation:shimmer 1.5s infinite;border-radius:var(--r)}
 .skel-cal{height:300px;border-radius:var(--rl)}
@@ -117,15 +145,6 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
 .more-link.on{color:#1c1917;font-weight:500}
 
 /* === MOBILE UX IMPROVEMENTS === */
-
-@media(max-width:480px){
-  /* Calendar-specific mobile */
-  .cal-header{flex-direction:column;gap:8px;align-items:flex-start}
-  .cal-nav{width:100%;justify-content:space-between}
-  .list-ev{padding:10px 12px}
-  .list-ev-img{width:44px!important;height:44px!important}
-  .ev-detail{width:95%!important;padding:1.25rem!important}
-}
 
 @media(max-width:480px){
   /* Bigger touch targets on filter pills */
@@ -364,6 +383,7 @@ async function submitEvent() {
 }
 
 function init() {
+  window.scrollTo(0, 0);
   var now = new Date();
   currentYear = now.getFullYear();
   currentMonth = now.getMonth();
