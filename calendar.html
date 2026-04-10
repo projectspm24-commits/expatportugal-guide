@@ -385,8 +385,8 @@ function getFiltered() {
 
 function render() {
   document.getElementById('cal-month').textContent = monthNames[currentMonth] + ' ' + currentYear;
-  if (currentView === 'calendar') renderCalendar();
-  else renderList();
+  renderCalendar();
+  renderList();
 }
 
 function renderCalendar() {
