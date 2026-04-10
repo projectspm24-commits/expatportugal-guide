@@ -106,21 +106,44 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
 
 @media(max-width:900px){.dir-layout{grid-template-columns:1fr}.dir-map-col{position:relative;top:0}.full{padding:0 1rem}nav{padding:0 1rem}}
 @media(max-width:700px){.full{padding:0 1rem}nav{padding:0 1rem}
-  /* Directory mobile layout */
-  .dir-hero{padding:1.5rem 0 0.75rem!important}
+  /* Hero */
+  .dir-hero{padding:1.25rem 0 0.75rem!important;gap:8px!important}
   .dir-hero-t{font-size:22px}
-  .dir-hero-sub{font-size:12px}
+  .dir-hero-sub{font-size:12px;line-height:1.5}
+  .dir-hero button{width:100%;padding:10px!important;font-size:13px!important}
+  /* Filter bar: horizontal scroll */
   .filter-bar{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:8px;gap:6px;scrollbar-width:none;margin-bottom:1rem}
   .filter-bar::-webkit-scrollbar{display:none}
+  .filter-bar span{display:none}
   .fb{padding:7px 14px;font-size:11px;white-space:nowrap;flex-shrink:0}
-  .biz-grid{max-height:none!important;overflow-y:visible!important}
-  .biz{padding:1rem}
-  .biz-name{font-size:14px}
-  .dir-map-col{margin-top:0.5rem}
-  .cross-link{flex-direction:column;text-align:center;padding:12px 14px;gap:6px}
-  .cross-link-arrow{align-self:center}
-  .sort-bar{flex-direction:column;gap:6px;align-items:flex-start}
+  /* Hide cross-link on mobile — saves space */
+  .cross-link{display:none}
+  /* Sort bar */
+  .sort-bar{gap:6px;margin-bottom:0.5rem}
+  .sort-bar span{font-size:12px}
+  /* Proof bar */
   .proof-bar{font-size:11px;margin-bottom:0.5rem}
+  /* Business cards */
+  .biz-grid{max-height:none!important;overflow-y:visible!important;gap:8px}
+  .biz{padding:0.9rem}
+  .biz-name{font-size:14px}
+  .biz-desc{font-size:12px;-webkit-line-clamp:2}
+  .biz-loc{font-size:11px}
+  .biz-rating{font-size:12px}
+  .biz-tags{gap:4px}
+  .biz-tag{font-size:10px;padding:2px 8px}
+  /* Detail panel: bottom sheet style on mobile */
+  .dir-map-col{margin-top:0;position:fixed;bottom:0;left:0;right:0;z-index:250;transform:translateY(100%);transition:transform .4s ease;max-height:75vh;overflow-y:auto;background:var(--cream);border-radius:20px 20px 0 0;box-shadow:0 -8px 30px rgba(0,0,0,.12);padding:0 1rem 1rem}
+  .dir-map-col.open{transform:translateY(0)}
+  #detail-placeholder{display:none!important}
+  .map-container{height:180px!important;border-radius:var(--rl);overflow:hidden;margin-top:12px}
+  /* Submit sections stack */
+  .submit-grid-2col{grid-template-columns:1fr!important;gap:10px!important}
+  /* CTA box */
+  .cta-box{padding:1.25rem!important}
+  /* Modal */
+  .modal{width:95%!important;padding:1.25rem!important}
+  .sheet-handle{display:block!important}
 }
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0);z-index:300;align-items:center;justify-content:center;transition:background .5s}
 .modal-bg.open{display:flex}
@@ -163,47 +186,6 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
 .more-link:hover{background:#f5f0e8;color:#1c1917}
 .more-link.on{color:#1c1917;font-weight:500}
 
-/* === MOBILE UX IMPROVEMENTS === */
-
-@media(max-width:480px){
-  /* Directory-specific mobile */
-  .biz-grid{max-height:none!important;overflow-y:visible!important}
-  .biz{padding:1rem}
-  .biz-name{font-size:14px}
-  .biz-desc{font-size:12px;-webkit-line-clamp:2}
-  .dir-hero-sub{font-size:13px}
-  /* Detail panel below grid on mobile */
-  .dir-map-col{margin-top:1rem}
-  #detail-panel{border-radius:var(--rl)}
-}
-
-@media(max-width:480px){
-  /* Bigger touch targets on filter pills */
-  .fb,.fp{padding:8px 16px;font-size:12px}
-  /* Filter bars horizontal scroll on very small screens */
-  .filter-bar{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:12px;gap:6px;scrollbar-width:none}
-  .filter-bar::-webkit-scrollbar{display:none}
-  /* Heroes stack with submit button full-width */
-  .dir-hero,.hero{flex-direction:column!important}
-  .dir-hero button,.hero button{width:100%;white-space:normal!important;margin-top:8px!important;flex-shrink:1!important}
-  /* Cross-link banners stack */
-  .cross-link{flex-direction:column;text-align:center;padding:14px 16px;gap:8px}
-  .cross-link-arrow{align-self:center}
-  /* Proof bar compact */
-  .proof-bar{gap:1rem;font-size:11px}
-  /* Better modal sizing */
-  .modal{width:95%!important;padding:1.25rem!important;max-height:90vh!important}
-  /* Sort/search bars stack */
-  .sort-bar{flex-direction:column;gap:8px;align-items:flex-start}
-  .search-row{flex-direction:column}
-  .res-bar{flex-direction:column;gap:6px;align-items:flex-start}
-  /* Info cards stack */
-  .info-cards{grid-template-columns:1fr}
-  /* Footer padding */
-  footer{padding:1.5rem 1rem}
-  /* CTA boxes stack */
-  .cta-box{flex-direction:column!important;align-items:stretch!important;gap:12px!important;padding:1.25rem!important}
-}
 </style>
 </head>
 <body>
@@ -282,6 +264,9 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
     </div>
 
     <div class="dir-map-col">
+      <div style="text-align:center;padding:10px 0 4px;cursor:pointer;display:none" class="sheet-handle" onclick="closeDetail()">
+        <div style="width:40px;height:4px;background:var(--ink3);border-radius:4px;margin:0 auto;opacity:.4"></div>
+      </div>
       <div id="detail-panel">
         <div id="detail-placeholder" class="widget" style="text-align:center;padding:2.5rem 1.5rem;color:var(--ink3)">
           <div style="font-size:28px;margin-bottom:10px">&#128072;</div>
@@ -374,7 +359,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
 
 <!-- COMMUNITY SUBMISSIONS -->
 <div class="full" style="margin-top:2.5rem;margin-bottom:2rem">
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+  <div class="submit-grid-2col" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
     <!-- Submit a place -->
     <div style="background:var(--card);border:0.5px solid var(--border);border-radius:16px;padding:1.5rem" id="submit-place-section">
       <div style="font-size:15px;font-weight:500;margin-bottom:4px">&#128205; Know a great place? Add it!</div>
@@ -539,6 +524,12 @@ function renderBiz() {
 }
 
 function showOnMap(el) {
+  // Close detail function for mobile
+  window.closeDetail = function() {
+    var col = document.querySelector('.dir-map-col');
+    col.classList.remove('open');
+    document.body.style.overflow = '';
+  };
   var bizId = parseInt(el.getAttribute('data-id'));
   var biz = allBiz.find(function(b) { return b.id === bizId; });
   if (!biz) return;
@@ -598,9 +589,11 @@ function showOnMap(el) {
   // Nearby events this week
   loadNearbyEvents(biz.city, biz.area);
   
-  // Scroll detail into view on mobile
+  // Scroll detail into view on mobile — open bottom sheet
   if (window.innerWidth <= 900) {
-    document.getElementById('detail-content').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    var col = document.querySelector('.dir-map-col');
+    col.classList.add('open');
+    document.body.style.overflow = 'hidden';
   }
 }
 
