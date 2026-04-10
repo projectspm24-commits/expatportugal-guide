@@ -4,22 +4,21 @@
   if (window.navigator.standalone === true) return;
   if (window.innerWidth > 900) return;
 
-  /* Register service worker for PWA install */
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').catch(function(){});
   }
 
   var deferredPrompt = null;
   var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-  var isAndroid = /Android/.test(navigator.userAgent);
 
   window.addEventListener('beforeinstallprompt', function(e) {
     e.preventDefault();
     deferredPrompt = e;
-    showBanner();
+    /* If banner already showing, update the button behavior */
+    var btn = document.getElementById('aths-btn');
+    if (btn) btn.setAttribute('data-ready', 'true');
   });
 
-  /* Always show banner after 3s on mobile — don't wait for beforeinstallprompt */
   setTimeout(showBanner, 3000);
 
   function showBanner() {
@@ -39,20 +38,18 @@
 
     document.getElementById('aths-btn').onclick = function() {
       if (deferredPrompt) {
-        /* Android/Chrome — native install */
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then(function() { deferredPrompt = null; dismissATHS(); });
       } else if (isIOS) {
-        /* iOS — show share instruction */
         var t = b.querySelector('.aths-t');
         b.querySelector('.aths-btn').style.display = 'none';
-        t.innerHTML = '<b>Tap <span style="font-size:16px">⎙</span> Share → "Add to Home Screen"</b>';
+        t.innerHTML = '<b>Tap <span style="font-size:16px">⎙</span> Share → Add to Home Screen</b>';
         setTimeout(dismissATHS, 6000);
-      } else if (isAndroid) {
-        /* Android but no prompt yet — show menu instruction */
+      } else {
+        /* Android — beforeinstallprompt not yet fired. Use Chrome's menu method */
         var t = b.querySelector('.aths-t');
         b.querySelector('.aths-btn').style.display = 'none';
-        t.innerHTML = '<b>Tap ⋮ menu → "Add to Home screen"</b>';
+        t.innerHTML = '<b>Tap ⋮ → Install app</b>';
         setTimeout(dismissATHS, 6000);
       }
     };
