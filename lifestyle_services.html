@@ -67,7 +67,7 @@ nav{background:rgba(247,245,240,0.96);border-bottom:0.5px solid var(--border);pa
 .modal-bg.show .modal{opacity:1;transform:translateY(0) scale(1)}
 footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top:3rem}
 .fi{max-width:1100px;margin:0 auto;font-size:12px;text-align:center}
-@media(max-width:700px){.grid{grid-template-columns:1fr}.search-row{flex-direction:column}.cta-box{flex-direction:column;align-items:flex-start}.full{padding:0 1rem}nav{padding:0 1rem}}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.search-row{flex-direction:column}.cta-box{flex-direction:column;align-items:flex-start;gap:12px}.full{padding:0 1rem}nav{padding:0 1rem}.hero{flex-direction:column!important;padding:1.5rem 0 0.75rem}.hero button{width:100%}.hero-t{font-size:22px}.hero-sub{font-size:12px}.filter-bar{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:8px;gap:6px;scrollbar-width:none}.filter-bar::-webkit-scrollbar{display:none}.fb{padding:7px 14px;font-size:11px;white-space:nowrap;flex-shrink:0}.res-bar{flex-direction:column;gap:6px;align-items:flex-start}.cross-link{flex-direction:column;text-align:center;padding:12px 14px;gap:6px}.proof-bar{font-size:11px}}
 @keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
 .skeleton{background:linear-gradient(90deg,var(--warm) 25%,#ece7dd 50%,var(--warm) 75%);background-size:800px 100%;animation:shimmer 1.5s infinite;border-radius:var(--r)}
 .skel-card{height:110px;border-radius:var(--rl);margin-bottom:10px}
@@ -319,6 +319,7 @@ function renderServices(){
 
 function setCat(c,el){activeCat=c;document.querySelectorAll('.filter-bar .fb').forEach(function(b){b.classList.remove('on');});el.classList.add('on');renderServices();}
 function resetFilters(){activeCat='all';document.getElementById('search').value='';document.getElementById('city-filter').value='all';document.querySelectorAll('.filter-bar .fb').forEach(function(b){b.classList.remove('on');});document.querySelector('.filter-bar .fb').classList.add('on');renderServices();}
+window.scrollTo(0,0);
 loadServices();
 
 function openServiceClaim() {
