@@ -394,16 +394,19 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
           </select>
         </div>
         <input id="sp-area" placeholder="Neighbourhood (e.g. Estrela, Foz)" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:6px" />
+        <input id="sp-address" placeholder="Street address (for map pin accuracy)" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:6px" />
         <input id="sp-why" placeholder="Why do you recommend it? *" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:6px" />
         <input id="sp-url" placeholder="Website or Google Maps link" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:8px" />
         <button onclick="submitPlace()" style="padding:10px 20px;background:#c0381a;color:white;border:none;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:Outfit,sans-serif">Submit place &rarr;</button>
       </div>
     </div>
-    <!-- Suggest a correction -->
-    <div style="background:var(--card);border:0.5px solid var(--border);border-radius:16px;padding:1.5rem">
-      <div style="font-size:15px;font-weight:500;margin-bottom:4px">&#128221; Suggest a correction</div>
-      <div style="font-size:12px;color:var(--ink2);margin-bottom:14px;line-height:1.6">Spotted wrong info? A place that closed? Help keep the directory accurate for everyone.</div>
-      <div id="correction-form">
+    <!-- Suggest a correction - collapsed by default -->
+    <div style="background:var(--card);border:0.5px solid var(--border);border-radius:16px;padding:1.25rem">
+      <div onclick="var f=document.getElementById('correction-form');f.style.display=f.style.display==='none'?'block':'none'" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:14px;font-weight:500">&#128221; Suggest a correction</div>
+        <span style="font-size:11px;color:var(--ink3)">&#9660;</span>
+      </div>
+      <div id="correction-form" style="display:none;margin-top:12px">
         <input id="cor-place" placeholder="Which listing? *" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:6px" />
         <input id="cor-issue" placeholder="What needs fixing? *" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:6px" />
         <input id="cor-email" placeholder="Your email (optional)" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:8px" />
@@ -733,7 +736,7 @@ async function submitPlace() {
     await fetch(SB_URL + '/rest/v1/local_businesses', {
       method: 'POST',
       headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
-      body: JSON.stringify({ name: name, type: type, city: city, area: document.getElementById('sp-area').value.trim(), reason: why, url: document.getElementById('sp-url').value.trim(), emoji: '📍', status: 'pending', price_range: 'rating:0|reviews:0' })
+      body: JSON.stringify({ name: name, type: type, city: city, area: document.getElementById('sp-area').value.trim(), reason: why, url: document.getElementById('sp-url').value.trim(), address: document.getElementById('sp-address').value.trim(), emoji: '📍', status: 'pending', price_range: 'rating:0|reviews:0' })
     });
     document.getElementById('submit-place-form').innerHTML = '<div style="text-align:center;padding:1rem"><div style="font-size:24px;margin-bottom:6px">&#9989;</div><div style="font-size:14px;font-weight:500">Thanks!</div><div style="font-size:12px;color:var(--ink2)">We\'ll review and publish within 24 hours.</div></div>';
   } catch(e) { alert('Something went wrong. Please try again.'); }
