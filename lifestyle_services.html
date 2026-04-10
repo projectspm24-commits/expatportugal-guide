@@ -262,6 +262,7 @@ async function loadServices(){
     var pb=document.getElementById('proof-bar');
     if(pb){var cats=new Set(allServices.map(function(s){return s.cat}));pb.innerHTML='<span class="proof-item"><span class="proof-dot"></span> Updated daily</span><span class="proof-item">'+allServices.length+' professionals listed</span><span class="proof-item">'+cats.size+' categories</span>';}
     renderServices();
+    window.scrollTo(0,0);
   }catch(e){
     console.error(e);
     document.getElementById('grid').innerHTML='<div class="error-state"><div class="err-icon">&#128268;</div><div class="err-msg">Couldn\'t load services right now. This is usually temporary.</div><button class="err-retry" onclick="loadServices()">Try again</button></div>';
@@ -319,6 +320,7 @@ function renderServices(){
 
 function setCat(c,el){activeCat=c;document.querySelectorAll('.filter-bar .fb').forEach(function(b){b.classList.remove('on');});el.classList.add('on');renderServices();}
 function resetFilters(){activeCat='all';document.getElementById('search').value='';document.getElementById('city-filter').value='all';document.querySelectorAll('.filter-bar .fb').forEach(function(b){b.classList.remove('on');});document.querySelector('.filter-bar .fb').classList.add('on');renderServices();}
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 window.scrollTo(0,0);
 loadServices();
 
