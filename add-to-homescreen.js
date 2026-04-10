@@ -1,15 +1,9 @@
 /* ExpatPortugal.guide — Add to Home Screen prompt (compact banner) */
 (function() {
-  /* Don't show if: already installed, already dismissed, or desktop */
   if (window.matchMedia('(display-mode: standalone)').matches) return;
   if (window.navigator.standalone === true) return;
   if (window.innerWidth > 900) return;
-  if (localStorage.getItem('aths_dismissed')) {
-    var dismissed = parseInt(localStorage.getItem('aths_dismissed'));
-    if (Date.now() - dismissed < 7 * 24 * 60 * 60 * 1000) return;
-  }
 
-  /* Capture the beforeinstallprompt event (Chrome/Android) */
   var deferredPrompt = null;
   window.addEventListener('beforeinstallprompt', function(e) {
     e.preventDefault();
@@ -17,7 +11,6 @@
     showBanner();
   });
 
-  /* On iOS, show after a delay since there's no install event */
   var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   if (isIOS) {
     setTimeout(showBanner, 3000);
@@ -45,21 +38,25 @@
       });
     });
 
+    /* Auto-hide after 6 seconds */
+    setTimeout(function() {
+      var b = document.getElementById('aths-banner');
+      if (b) { b.classList.remove('show'); setTimeout(function() { b.remove(); }, 400); }
+    }, 6000);
+
     document.getElementById('aths-install-btn').addEventListener('click', function() {
       if (deferredPrompt) {
-        /* Android/Chrome — trigger native install */
         deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(function(result) {
+        deferredPrompt.userChoice.then(function() {
           deferredPrompt = null;
           dismissATHS();
         });
       } else if (isIOS) {
-        /* iOS — show a small tip since we can't auto-install */
         var btn = document.getElementById('aths-install-btn');
         btn.style.display = 'none';
         var info = banner.querySelector('.aths-info');
         info.innerHTML = '<div class="aths-info-t">Tap <span style="font-size:16px">⎙</span> Share, then "Add to Home Screen"</div>';
-        setTimeout(dismissATHS, 6000);
+        setTimeout(dismissATHS, 5000);
       }
     });
   }
@@ -68,7 +65,6 @@
     var b = document.getElementById('aths-banner');
     if (!b) return;
     b.classList.remove('show');
-    localStorage.setItem('aths_dismissed', Date.now().toString());
     setTimeout(function() { b.remove(); }, 400);
   };
 })();
