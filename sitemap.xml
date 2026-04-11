@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://expatportugal-guide.vercel.app/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
-  <url><loc>https://expatportugal-guide.vercel.app/calendar.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
-  <url><loc>https://expatportugal-guide.vercel.app/directory.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://expatportugal-guide.vercel.app/lifestyle_services.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://expatportugal-guide.vercel.app/housing.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
-  <url><loc>https://expatportugal-guide.vercel.app/communities.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://expatportugal-guide.vercel.app/tools.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://expatportugal-guide.vercel.app/news.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://expatportugal-guide.vercel.app/live_local.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://expatportugal.guide/site.html</loc><priority>1.0</priority><changefreq>daily</changefreq></url>
+  <url><loc>https://expatportugal.guide/directory.html</loc><priority>0.9</priority><changefreq>daily</changefreq></url>
+  <url><loc>https://expatportugal.guide/lifestyle_services.html</loc><priority>0.9</priority><changefreq>daily</changefreq></url>
+  <url><loc>https://expatportugal.guide/calendar.html</loc><priority>0.9</priority><changefreq>daily</changefreq></url>
+  <url><loc>https://expatportugal.guide/housing.html</loc><priority>0.9</priority><changefreq>daily</changefreq></url>
+  <url><loc>https://expatportugal.guide/news.html</loc><priority>0.8</priority><changefreq>daily</changefreq></url>
+  <url><loc>https://expatportugal.guide/communities.html</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://expatportugal.guide/live_local.html</loc><priority>0.7</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://expatportugal.guide/tools.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://expatportugal.guide/contact.html</loc><priority>0.5</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://expatportugal.guide/privacy.html</loc><priority>0.3</priority><changefreq>yearly</changefreq></url>
 </urlset>
