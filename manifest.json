@@ -2,7 +2,7 @@
   "name": "ExpatPortugal.guide",
   "short_name": "ExpatPT",
   "description": "Events, services, housing, and community for expats in Portugal",
-  "start_url": "/site.html",
+  "start_url": "/index.html",
   "display": "browser",
   "background_color": "#f7f5f0",
   "theme_color": "#1c1917",
