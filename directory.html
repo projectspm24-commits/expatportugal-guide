@@ -62,6 +62,9 @@ nav{background:rgba(247,245,240,0.96);border-bottom:0.5px solid var(--border);pa
 .d-ev-mon{font-size:9px;color:var(--ink3);text-transform:uppercase}
 
 .biz-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:2rem;max-height:70vh;overflow-y:auto;padding-right:4px}
+.biz-grid::-webkit-scrollbar{width:4px}
+.biz-grid::-webkit-scrollbar-track{background:transparent}
+.biz-grid::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
 .biz{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;transition:all .2s;cursor:pointer;position:relative}
 .biz:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,.06)}
 .biz.active{border-color:var(--red);border-width:1.5px;box-shadow:0 4px 20px rgba(192,56,26,.1)}
