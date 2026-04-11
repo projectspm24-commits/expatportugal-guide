@@ -1,0 +1,2202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin — ExpatPortugal.guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+/* ── CONFIG: paste your Supabase URL and anon key below ── */
+:root {
+  --ink:#1c1917;--ink2:#57534e;--ink3:#a8a29e;
+  --cream:#faf9f7;--warm:#f5f0e8;--card:#fff;
+  --border:rgba(28,25,23,0.1);--border2:rgba(28,25,23,0.18);
+  --red:#c0381a;--red-l:#fdf0ec;
+  --green:#15803d;--green-l:#f0fdf4;
+  --amber:#b45309;--amber-l:#fffbeb;
+  --blue:#1d4ed8;--blue-l:#eff6ff;
+  --r:8px;--rl:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--ink);font-size:14px}
+
+.emoji-opt{display:flex;align-items:center;gap:10px;padding:9px 14px;cursor:pointer;font-size:13px;color:var(--ink)}
+.emoji-opt:hover{background:var(--warm)}
+.emoji-opt.selected{background:var(--red-l);color:var(--red);font-weight:500}
+.emoji-cat-header{padding:6px 14px 3px;font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink3);font-weight:500;background:var(--warm);border-top:0.5px solid var(--border)}
+
+/* LOGIN */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--ink)}
+.login-box{background:var(--card);border-radius:var(--rl);padding:2rem;width:360px;text-align:center}
+.login-logo{font-size:28px;margin-bottom:10px}
+.login-title{font-size:18px;font-weight:500;margin-bottom:6px}
+.login-sub{font-size:12px;color:var(--ink3);margin-bottom:1.5rem}
+.login-box input{width:100%;padding:10px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:14px;background:var(--card);color:var(--ink);outline:none;font-family:'Outfit',sans-serif;margin-bottom:8px}
+.login-box input:focus{border-color:var(--ink)}
+.login-btn{width:100%;padding:10px;background:var(--ink);color:white;border:none;border-radius:var(--r);font-size:14px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif}
+.login-btn:hover{background:#2c2825}
+.login-err{font-size:12px;color:var(--red);margin-top:8px;display:none}
+/* LAYOUT */
+.app{display:none;min-height:100vh;flex-direction:row}
+.sidebar{width:220px;background:var(--ink);padding:1.25rem;display:flex;flex-direction:column;gap:4px;position:fixed;top:0;bottom:0;left:0}
+.s-logo{font-size:15px;color:white;font-weight:500;padding:0.5rem 0;margin-bottom:1rem;border-bottom:0.5px solid rgba(255,255,255,0.1);padding-bottom:1rem}
+.s-logo span{font-size:11px;opacity:.4;display:block;margin-top:2px}
+.s-nav-item{padding:8px 10px;border-radius:var(--r);cursor:pointer;color:rgba(255,255,255,0.55);font-size:13px;display:flex;align-items:center;gap:8px}
+.s-nav-item:hover,.s-nav-item.on{background:rgba(255,255,255,0.1);color:white}
+.s-badge{margin-left:auto;font-size:10px;background:var(--red);color:white;padding:2px 7px;border-radius:20px;font-weight:500}
+.s-section{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,0.25);margin:12px 0 4px;padding:0 10px}
+.s-logout{margin-top:auto;padding:8px 10px;border-radius:var(--r);cursor:pointer;color:rgba(255,255,255,0.35);font-size:12px}
+.s-logout:hover{color:rgba(255,255,255,0.7)}
+.main{margin-left:220px;padding:1.5rem;flex:1;min-height:100vh}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.page-title{font-size:20px;font-weight:500}
+.page-sub{font-size:12px;color:var(--ink3);margin-top:2px}
+/* PANELS */
+.panel{display:none}
+.panel.on{display:block}
+/* METRICS */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
+.metric{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1rem}
+.m-val{font-size:26px;font-weight:500;font-family:'Outfit',sans-serif;margin-bottom:2px}
+.m-lbl{font-size:11px;color:var(--ink3)}
+.m-trend{font-size:11px;margin-top:4px}
+.up{color:var(--green)}.dn{color:var(--red)}.fl{color:var(--ink3)}
+/* TABLE */
+.section-card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:1.25rem}
+.sc-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:0.5px solid var(--border)}
+.sc-title{font-size:14px;font-weight:500}
+.sc-actions{display:flex;gap:6px}
+.btn{padding:6px 14px;font-size:12px;border-radius:var(--r);cursor:pointer;font-family:'Outfit',sans-serif;border:0.5px solid var(--border2);background:var(--card);color:var(--ink)}
+.btn:hover{background:var(--warm)}
+.btn-primary{background:var(--ink);color:white;border-color:var(--ink)}
+.btn-primary:hover{background:#2c2825}
+.btn-green{background:var(--green);color:white;border-color:var(--green)}
+.btn-green:hover{background:#14532d}
+.btn-red{background:var(--red);color:white;border-color:var(--red)}
+.btn-red:hover{background:#9a2d15}
+.btn-sm{padding:4px 10px;font-size:11px}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:8px 14px;font-size:11px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em;background:var(--warm);border-bottom:0.5px solid var(--border)}
+td{padding:10px 14px;border-bottom:0.5px solid var(--border);font-size:13px;vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--warm)}
+.status-badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:500}
+.status-pending{background:var(--amber-l);color:var(--amber)}
+.status-approved{background:var(--green-l);color:var(--green)}
+.status-auto_approved{background:#e0f2fe;color:#0369a1}
+.status-rejected{background:var(--red-l);color:var(--red)}
+.cat-badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;background:var(--blue-l);color:var(--blue)}
+.region-badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;background:var(--warm);color:var(--ink2);margin-left:4px}
+.article-title{font-weight:500;margin-bottom:3px;line-height:1.4}
+.article-summary{font-size:12px;color:var(--ink2);line-height:1.5}
+.action-btns{display:flex;gap:4px;white-space:nowrap}
+/* LOGS */
+.log-row{display:flex;gap:12px;padding:8px 14px;border-bottom:0.5px solid var(--border);align-items:center;font-size:12px}
+.log-row:last-child{border-bottom:none}
+.log-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.log-ok{background:var(--green)}.log-err{background:var(--red)}.log-warn{background:var(--amber)}
+.log-time{color:var(--ink3);white-space:nowrap;min-width:140px}
+.log-wf{font-weight:500;min-width:120px}
+/* DIGEST PREVIEW */
+.digest-preview{background:var(--warm);border-radius:var(--rl);padding:1.5rem;font-size:13px;line-height:1.8;color:var(--ink2);max-height:400px;overflow-y:auto;border:0.5px solid var(--border)}
+/* EMPTY */
+.empty{text-align:center;padding:2.5rem;color:var(--ink3);font-size:13px}
+.empty-icon{font-size:28px;margin-bottom:8px}
+/* LOADING */
+.loading{text-align:center;padding:2rem;color:var(--ink3);font-size:13px}
+.spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--ink);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* SETTINGS */
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.setting-card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem}
+.setting-title{font-size:13px;font-weight:500;margin-bottom:4px}
+.setting-desc{font-size:12px;color:var(--ink3);margin-bottom:12px;line-height:1.6}
+.setting-input{width:100%;padding:8px 10px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;font-family:'Outfit',sans-serif;background:var(--card);color:var(--ink);outline:none;margin-bottom:8px}
+.setting-input:focus{border-color:var(--ink)}
+.setting-toggle{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.toggle{width:36px;height:20px;background:var(--border2);border-radius:10px;cursor:pointer;position:relative;transition:background .2s}
+.toggle.on{background:var(--green)}
+.toggle::after{content:'';position:absolute;width:16px;height:16px;background:white;border-radius:50%;top:2px;left:2px;transition:left .2s}
+.toggle.on::after{left:18px}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-wrap" id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">🇵🇹</div>
+    <div class="login-title">ExpatPortugal Admin</div>
+    <div class="login-sub">Your daily 5-minute content review dashboard</div>
+    <input type="password" id="login-pass" placeholder="Admin password" onkeydown="if(event.key==='Enter')document.getElementById('login-totp').focus()" />
+    <input type="text" id="login-totp" placeholder="Authenticator code" maxlength="6" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" onkeydown="if(event.key==='Enter')doLogin()" style="text-align:center;letter-spacing:6px;font-size:18px" />
+    <button class="login-btn" onclick="doLogin()">Sign in</button>
+    <div class="login-err" id="login-err">Incorrect password or code</div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="app" id="app">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="s-logo">ExpatPortugal<span>Admin</span></div>
+
+    <div class="s-section">&#128308; Action needed</div>
+    <div class="s-nav-item on" onclick="showPanel('articles',this)">
+      📰 News articles
+      <span class="s-badge" id="pending-count">...</span>
+    </div>
+    <div class="s-nav-item" onclick="showPanel('events',this)">📅 Events <span class="s-badge" id="pending-events-count" style="display:none">0</span></div>
+    <div class="s-nav-item" onclick="showPanel('inbox',this)">&#128172; Inbox <span class="s-badge" id="pending-inbox-count" style="display:none">0</span></div>
+
+    <div class="s-section">&#128221; Manage listings</div>
+    <div class="s-nav-item" onclick="showPanel('businesses',this)">&#128205; Explore</div>
+    <div class="s-nav-item" onclick="showPanel('services',this)">&#129657; Services</div>
+    <div class="s-nav-item" onclick="showPanel('communities',this)">&#128101; Communities</div>
+    <div class="s-nav-item" onclick="showPanel('housing',this)">&#127968; Housing</div>
+
+    <div class="s-section">&#128200; Growth</div>
+    <div class="s-nav-item" onclick="showPanel('subscribers',this)">👥 Subscribers</div>
+    <div class="s-nav-item" onclick="showPanel('digest',this)">📧 Sunday digest</div>
+
+    <div class="s-section">&#9881; System</div>
+    <div class="s-nav-item" onclick="showPanel('exchange',this)">🤝 Language exchange</div>
+    <div class="s-nav-item" onclick="showPanel('logs',this)">⚙️ Automations</div>
+    <div class="s-nav-item" onclick="showPanel('settings',this)">🔧 Settings</div>
+
+    <div class="s-logout" onclick="logout()">← Sign out</div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <div>
+        <div class="page-title" id="page-title">Article review</div>
+        <div class="page-sub" id="page-sub">Approve or reject AI-generated articles before they go live</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span id="last-run" style="font-size:11px;color:var(--ink3)"></span>
+        <button class="btn btn-primary" onclick="loadCurrentPanel()">↻ Refresh</button>
+      </div>
+    </div>
+
+    <!-- METRICS ROW -->
+    <div class="metrics" id="metrics-row">
+      <div class="metric"><div class="m-val" id="m-pending">—</div><div class="m-lbl">Pending review</div></div>
+      <div class="metric"><div class="m-val" id="m-published">—</div><div class="m-lbl">Published articles</div></div>
+      <div class="metric"><div class="m-val" id="m-events">—</div><div class="m-lbl">Active events</div></div>
+      <div class="metric"><div class="m-val" id="m-listings">—</div><div class="m-lbl">Explore listings</div></div>
+      <div class="metric"><div class="m-val" id="m-housing">—</div><div class="m-lbl">Housing listings</div></div>
+      <div class="metric"><div class="m-val" id="m-subscribers">—</div><div class="m-lbl">Subscribers</div></div>
+    </div>
+
+    <!-- ARTICLES PANEL -->
+    <div class="panel on" id="panel-articles">
+      <div class="section-card">
+        <div class="sc-header">
+          <div class="sc-title">Pending articles — waiting for your approval</div>
+          <div class="sc-actions">
+            <button class="btn btn-green" onclick="approveAll()">✓ Approve all</button>
+          </div>
+        </div>
+        <div id="articles-table"><div class="loading"><div class="spinner"></div><br>Loading articles...</div></div>
+      </div>
+
+      <div class="section-card">
+        <div class="sc-header">
+          <div class="sc-title">Recently published</div>
+        </div>
+        <div id="published-table"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- EVENTS PANEL -->
+    <div class="panel" id="panel-events">
+      <div class="section-card">
+        <div class="sc-header">
+          <div class="sc-title">Upcoming events</div>
+          <button class="btn btn-primary" onclick="showAddEvent()">+ Add event</button>
+        </div>
+        <div id="events-table"><div class="loading"><div class="spinner"></div><br>Loading events...</div></div>
+      </div>
+    </div>
+
+    <!-- DIGEST PANEL -->
+    <div class="panel" id="panel-digest">
+      <div class="section-card">
+        <div class="sc-header">
+          <div class="sc-title">Weekly digest</div>
+          <div class="sc-actions">
+            <button class="btn" onclick="loadDigest()">↻ Reload draft</button>
+            <button class="btn btn-green" onclick="openButtondown()">Send in Buttondown →</button>
+          </div>
+        </div>
+        <div style="padding:1.25rem">
+          <div style="font-size:12px;color:var(--ink3);margin-bottom:10px;background:var(--amber-l);color:var(--amber);padding:8px 12px;border-radius:var(--r)">
+            ⚠️ This digest is auto-generated every Sunday night and saved as a draft in Buttondown. Review it here, then open Buttondown to send — takes 5 minutes.
+          </div>
+          <div id="digest-subject" style="font-size:14px;font-weight:500;margin-bottom:10px"></div>
+          <div class="digest-preview" id="digest-body">
+            <div class="loading"><div class="spinner"></div><br>Loading latest draft...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUBSCRIBERS PANEL -->
+    <div class="panel" id="panel-subscribers">
+      <div class="metrics" style="margin-bottom:1rem">
+        <div class="metric"><div class="m-val" id="sub-total">—</div><div class="m-lbl">Total subscribers</div></div>
+        <div class="metric"><div class="m-val" id="sub-lisbon">—</div><div class="m-lbl">Lisbon region</div></div>
+        <div class="metric"><div class="m-val" id="sub-porto">—</div><div class="m-lbl">Porto region</div></div>
+        <div class="metric"><div class="m-val" id="sub-algarve">—</div><div class="m-lbl">Algarve region</div></div>
+      </div>
+      <div class="section-card">
+        <div class="sc-header"><div class="sc-title">Recent subscribers</div></div>
+        <div id="subscribers-table"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- LANGUAGE EXCHANGE PANEL -->
+    <div class="panel" id="panel-exchange">
+      <div class="section-card">
+        <div class="sc-header">
+          <div class="sc-title">Language exchange signups — match expats with locals</div>
+          <button class="btn btn-green" onclick="matchAll()">🤝 Auto-match unmatched</button>
+        </div>
+        <div id="exchange-table"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- DIRECTORY PANEL -->
+    <div class="panel" id="panel-directory">
+      <div class="section-card">
+        <div class="sc-header">
+          <div class="sc-title">Directory listings</div>
+          <button class="btn btn-primary" onclick="showAddListing()">+ Add listing</button>
+        </div>
+        <div id="directory-table"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+    </div>
+
+
+    <!-- LOCAL BUSINESSES PANEL -->
+    <div class="panel" id="panel-businesses">
+      <!-- ADD FORM -->
+      <div class="section-card" style="margin-bottom:1.25rem">
+        <div class="sc-header">
+          <div class="sc-title">Add a local business</div>
+        </div>
+        <div style="padding:1.25rem;display:grid;grid-template-columns:1fr 1fr;gap:10px" id="biz-form">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Business name *</label>
+            <input id="biz-name" class="setting-input" style="margin:0" placeholder="e.g. Tasca do Ze" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Type *</label>
+            <select id="biz-type" class="setting-input" style="margin:0">
+              <optgroup label="Local businesses">
+              <option value="cafe">Cafe / Coffee</option>
+              <option value="restaurant">Restaurant / Tasca</option>
+              <option value="pottery">Pottery / Ceramics</option>
+              <option value="gallery">Gallery / Art</option>
+              <option value="yoga">Yoga / Pilates</option>
+              <option value="organic">Organic / Farm shop</option>
+              <option value="flowers">Flower shop</option>
+              <option value="gym">Local gym</option>
+              <option value="vintage">Vintage / Second-hand</option>
+              <option value="furniture">Furniture repair</option>
+              <option value="fabric">Fabric / Sewing</option>
+              <option value="clothing">Clothing maker</option>
+              <option value="market">Market / Shop</option>
+              <option value="bakery">Bakery / Pastelaria</option>
+              <option value="bar">Bar / Wine bar</option>
+              <option value="services">Local services</option>
+              </optgroup>
+              <optgroup label="Places to explore">
+              <option value="museum">Museum</option>
+              <option value="park">Park / Garden</option>
+              <option value="beach">Beach</option>
+              <option value="entertainment">Entertainment</option>
+              <option value="viewpoint">Viewpoint / Miradouro</option>
+              <option value="historic">Historic site</option>
+              </optgroup>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">City *</label>
+            <select id="biz-city" class="setting-input" style="margin:0">
+              <option>Lisbon</option><option>Porto</option><option>Algarve</option>
+              <option>Cascais</option><option>Ericeira</option><option>Peniche</option>
+              <option>Mafra</option><option>Sintra</option><option>Braga</option>
+              <option>Coimbra</option><option>Alentejo</option><option>Madeira</option><option>Azores</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Neighbourhood / Area</label>
+            <input id="biz-area" class="setting-input" style="margin:0" placeholder="e.g. Mouraria, Bairro Alto" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px;grid-column:1/-1">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Why recommended *</label>
+            <input id="biz-reason" class="setting-input" style="margin:0" placeholder="e.g. Family-run tasca, unchanged since 1978, daily lunch special for €8, locals only" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Address</label>
+            <input id="biz-address" class="setting-input" style="margin:0" placeholder="e.g. Rua dos Correeiros 12" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Google Maps / Website URL</label>
+            <input id="biz-url" class="setting-input" style="margin:0" placeholder="https://..." />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Google rating (e.g. 4.6)</label>
+            <input id="biz-rating" class="setting-input" style="margin:0" type="number" step="0.1" min="0" max="5" placeholder="4.6" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Google reviews count</label>
+            <input id="biz-reviews" class="setting-input" style="margin:0" type="number" min="0" placeholder="77" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px;grid-column:1/-1">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Emoji icon</label>
+            <input id="biz-emoji" type="hidden" value="&#127978;" />
+            <div style="position:relative">
+              <button type="button" id="emoji-trigger" onclick="toggleEmojiDrop()" style="display:flex;align-items:center;gap:10px;width:100%;padding:9px 12px;border:0.5px solid var(--border2);border-radius:var(--r);background:var(--card);cursor:pointer;font-family:Outfit,sans-serif;font-size:13px;color:var(--ink);text-align:left">
+                <span id="emoji-preview" style="font-size:20px;line-height:1">&#127978;</span>
+                <span id="emoji-label" style="flex:1">Shop / business (default)</span>
+                <span style="color:var(--ink3);font-size:11px">&#9660;</span>
+              </button>
+              <div id="emoji-drop" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:50;background:var(--card);border:0.5px solid var(--border2);border-radius:var(--r);box-shadow:0 4px 20px rgba(0,0,0,0.12);max-height:320px;overflow-y:auto;margin-top:3px">
+                <div id="emoji-search-wrap" style="padding:8px;border-bottom:0.5px solid var(--border)">
+                  <input type="text" id="emoji-search" placeholder="Search emojis..." oninput="filterEmojis()" style="width:100%;padding:7px 10px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;font-family:Outfit,sans-serif;outline:none;background:var(--warm)" />
+                </div>
+                <div id="emoji-list"></div>
+              </div>
+            </div>
+          </div>
+          <div style="grid-column:1/-1;display:flex;gap:8px;align-items:center;margin-top:4px">
+            <button class="btn btn-green" onclick="saveBusiness()">+ Add business</button>
+            <button class="btn" onclick="clearBizForm()">Clear</button>
+            <span id="biz-msg" style="font-size:12px;color:var(--green);display:none">Saved!</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIST -->
+      <div class="section-card">
+        <div class="sc-header">
+          <div class="sc-title">All local businesses</div>
+          <div class="sc-actions">
+            <select id="biz-filter-city" class="btn" style="border:0.5px solid var(--border2)" onchange="loadBusinesses()">
+              <option value="">All cities</option>
+              <option>Lisbon</option><option>Porto</option><option>Algarve</option>
+              <option>Cascais</option><option>Ericeira</option><option>Peniche</option>
+              <option>Mafra</option><option>Braga</option><option>Alentejo</option><option>Madeira</option>
+            </select>
+            <select id="biz-filter-type" class="btn" style="border:0.5px solid var(--border2)" onchange="loadBusinesses()">
+              <option value="">All types</option>
+              <option value="cafe">Cafe</option>
+              <option value="restaurant">Restaurant</option>
+              <option value="pottery">Pottery</option>
+              <option value="gallery">Gallery</option>
+              <option value="yoga">Yoga / Pilates</option>
+              <option value="organic">Organic</option>
+              <option value="flowers">Flowers</option>
+              <option value="gym">Gym</option>
+              <option value="vintage">Vintage</option>
+              <option value="furniture">Furniture</option>
+              <option value="fabric">Fabric</option>
+              <option value="clothing">Clothing</option>
+              <option value="market">Market</option>
+              <option value="bar">Bar</option>
+              <option value="services">Services</option>
+            </select>
+            </select>
+          </div>
+        </div>
+        <div id="businesses-table"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- SERVICES PANEL -->
+    <div class="panel" id="panel-services">
+      <div class="section-card" style="margin-bottom:1.25rem">
+        <div class="sc-header">
+          <div class="sc-title">Add / edit service</div>
+        </div>
+        <div style="padding:1.25rem;display:grid;grid-template-columns:1fr 1fr;gap:10px" id="svc-form">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Provider name *</label>
+            <input id="svc-name" class="setting-input" style="margin:0" placeholder="e.g. Dr. Claire Hendricks" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Category *</label>
+            <select id="svc-cat" class="setting-input" style="margin:0">
+              <option value="health">Health & Medical</option><option value="legal">Legal</option><option value="finance">Finance & Tax</option><option value="childcare">Childcare & Nannies</option><option value="pets">Pet care</option><option value="fitness">Fitness & Wellness</option><option value="beauty">Beauty</option><option value="home">Home services</option><option value="tutoring">Tutoring & Education</option><option value="other">Other</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">City</label>
+            <select id="svc-city" class="setting-input" style="margin:0">
+              <option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Braga</option><option>Alentejo</option><option>Madeira</option><option>Online</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Website</label>
+            <input id="svc-url" class="setting-input" style="margin:0" placeholder="https://..." />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Role / specialty</label>
+            <input id="svc-role" class="setting-input" style="margin:0" placeholder="e.g. English-speaking dentist" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Emoji</label>
+            <input id="svc-emoji" class="setting-input" style="margin:0" value="🩺" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px;grid-column:1/-1">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Description</label>
+            <input id="svc-desc" class="setting-input" style="margin:0" placeholder="Short description of the service" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Google rating</label>
+            <input id="svc-rating" class="setting-input" style="margin:0" type="number" step="0.1" placeholder="4.5" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Reviews count</label>
+            <input id="svc-reviews" class="setting-input" style="margin:0" type="number" placeholder="89" />
+          </div>
+          <div style="grid-column:1/-1;display:flex;gap:8px;align-items:center;margin-top:4px">
+            <button class="btn btn-green" id="svc-save-btn" onclick="saveService()">+ Add service</button>
+            <button class="btn" onclick="clearSvcForm()">Clear</button>
+            <span id="svc-msg" style="font-size:12px;color:var(--green);display:none">Saved!</span>
+          </div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="sc-header">
+          <div class="sc-title">All services</div>
+        </div>
+        <div id="services-table"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- COMMUNITIES PANEL -->
+    <div class="panel" id="panel-communities">
+      <div class="section-card" style="margin-bottom:1.25rem">
+        <div class="sc-header"><div class="sc-title">Add / edit community</div></div>
+        <div style="padding:1.25rem;display:grid;grid-template-columns:1fr 1fr;gap:10px" id="comm-form">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Community name *</label>
+            <input id="comm-name" class="setting-input" style="margin:0" placeholder="e.g. Lisbon Digital Nomads" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Type *</label>
+            <select id="comm-type" class="setting-input" style="margin:0">
+              <option value="social">Social & meetups</option>
+              <option value="nomad">Digital nomads</option>
+              <option value="family">Families & kids</option>
+              <option value="sport">Sports & outdoor</option>
+              <option value="professional">Professional</option>
+              <option value="culture">Culture & language</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">City / region *</label>
+            <select id="comm-city" class="setting-input" style="margin:0">
+              <option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Mafra</option><option>Braga</option><option>Alentejo</option><option>Madeira</option><option>Azores</option><option>All Portugal</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Platform *</label>
+            <select id="comm-platform" class="setting-input" style="margin:0">
+              <option>Meetup</option><option>Facebook</option><option>WhatsApp</option><option>Slack</option><option>Instagram</option><option>LinkedIn</option><option>Website</option><option>App</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Join link (URL) *</label>
+            <input id="comm-url" class="setting-input" style="margin:0" placeholder="https://www.meetup.com/..." />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Approx. members</label>
+            <input id="comm-members" class="setting-input" style="margin:0" type="number" placeholder="5000" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px;grid-column:1/-1">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Description *</label>
+            <input id="comm-desc" class="setting-input" style="margin:0" placeholder="What makes this community great? What do they organise?" />
+          </div>
+          <div style="grid-column:1/-1;display:flex;gap:8px;align-items:center;margin-top:4px">
+            <button class="btn btn-green" id="comm-save-btn" onclick="saveCommunity()">+ Add community</button>
+            <button class="btn" onclick="clearCommForm()">Clear</button>
+            <span id="comm-msg" style="font-size:12px;color:var(--green);display:none">Saved!</span>
+          </div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="sc-header"><div class="sc-title">All communities</div></div>
+        <div id="communities-table"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- HOUSING PANEL -->
+    <div class="panel" id="panel-housing">
+      <div class="section-card" style="margin-bottom:1.25rem">
+        <div class="sc-header"><div class="sc-title">Add / edit listing</div></div>
+        <div style="padding:1.25rem;display:grid;grid-template-columns:1fr 1fr;gap:10px" id="housing-form">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Title *</label>
+            <input id="h-title" class="setting-input" style="margin:0" placeholder="e.g. Sunny 1-bed in Estrela" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">City *</label>
+            <select id="h-city" class="setting-input" style="margin:0" onchange="document.getElementById('h-city-other').style.display=this.value==='other'?'block':'none'">
+              <option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Mafra</option><option>Braga</option><option>Alentejo</option><option>Madeira</option><option value="other">Other city...</option>
+            </select>
+            <input id="h-city-other" class="setting-input" style="margin:4px 0 0;display:none" placeholder="Type the city or town name" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Neighbourhood</label>
+            <input id="h-hood" class="setting-input" style="margin:0" placeholder="e.g. Estrela, Alfama" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Apartment type</label>
+            <select id="h-type" class="setting-input" style="margin:0">
+              <option value="studio">Studio</option><option value="1bed">1-bedroom</option><option value="2bed">2-bedroom</option><option value="3bed">3+ bedrooms</option><option value="room">Private room</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Monthly rent (&euro;)</label>
+            <input id="h-rent" class="setting-input" style="margin:0" type="number" placeholder="1200" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Tier</label>
+            <select id="h-tier" class="setting-input" style="margin:0">
+              <option value="basic">Basic (&euro;9)</option><option value="featured">Featured (&euro;29)</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Available from</label>
+            <input id="h-from" class="setting-input" style="margin:0" type="date" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Available until</label>
+            <input id="h-until" class="setting-input" style="margin:0" type="date" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Contact email *</label>
+            <input id="h-contact" class="setting-input" style="margin:0" type="email" placeholder="owner@email.com" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Photo URL (featured only)</label>
+            <input id="h-img" class="setting-input" style="margin:0" placeholder="https://..." />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px;grid-column:1/-1">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Description</label>
+            <input id="h-desc" class="setting-input" style="margin:0" placeholder="Furnished, wifi, balcony, close to metro..." />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em">Listing kind</label>
+            <select id="h-kind" class="setting-input" style="margin:0">
+              <option value="available">Available (renting out)</option><option value="looking">Looking (searching)</option>
+            </select>
+          </div>
+          <div style="grid-column:1/-1;display:flex;gap:8px;align-items:center;margin-top:4px">
+            <button class="btn btn-green" id="h-save-btn" onclick="saveHousing()">+ Add listing</button>
+            <button class="btn" onclick="clearHousingForm()">Clear</button>
+            <span id="h-msg" style="font-size:12px;color:var(--green);display:none">Saved!</span>
+          </div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="sc-header">
+          <div class="sc-title">All housing listings</div>
+          <div class="sc-actions" style="display:flex;gap:6px">
+            <select id="h-filter-tier" class="btn" style="border:0.5px solid var(--border2);font-size:11px;padding:4px 10px" onchange="loadHousing()">
+              <option value="">All tiers</option>
+              <option value="featured">Featured</option>
+              <option value="basic">Basic</option>
+              <option value="free">Free (looking)</option>
+            </select>
+            <select id="h-filter-sort" class="btn" style="border:0.5px solid var(--border2);font-size:11px;padding:4px 10px" onchange="loadHousing()">
+              <option value="newest">Newest first</option>
+              <option value="oldest">Oldest first</option>
+            </select>
+          </div>
+        </div>
+        <div id="housing-table"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+      <div class="section-card" style="margin-top:1.25rem">
+        <div class="sc-header"><div class="sc-title">&#128172; Housing inquiries</div></div>
+        <div id="housing-inquiries"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- COMMUNITY INBOX PANEL -->
+    <div class="panel" id="panel-inbox">
+      <div class="section-card" style="margin-bottom:1.25rem">
+        <div class="sc-header"><div class="sc-title">&#128240; Pending articles</div></div>
+        <div id="inbox-articles"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+      <div class="section-card" style="margin-bottom:1.25rem">
+        <div class="sc-header"><div class="sc-title">&#128197; Pending events</div></div>
+        <div id="inbox-events"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+      <div class="section-card" style="margin-bottom:1.25rem">
+        <div class="sc-header"><div class="sc-title">&#128205; Pending places &amp; services</div></div>
+        <div id="inbox-places"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+      <div class="section-card" style="margin-bottom:1.25rem">
+        <div class="sc-header"><div class="sc-title">&#128161; Expat tips</div></div>
+        <div id="inbox-tips"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+      <div class="section-card" style="margin-bottom:1.25rem">
+        <div class="sc-header"><div class="sc-title">&#128221; Corrections</div></div>
+        <div id="inbox-corrections"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+      <div class="section-card">
+        <div class="sc-header"><div class="sc-title">&#128172; Housing inquiries</div></div>
+        <div id="inbox-inquiries"><div class="loading"><div class="spinner"></div><br>Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- AUTOMATION LOGS PANEL -->
+    <div class="panel" id="panel-logs">
+      <div class="section-card">
+        <div class="sc-header"><div class="sc-title">Automation run history</div></div>
+        <div id="logs-list"><div class="loading"><div class="spinner"></div><br>Loading logs...</div></div>
+      </div>
+    </div>
+
+    <!-- SETTINGS PANEL -->
+    <div class="panel" id="panel-settings">
+      <div class="settings-grid">
+        <div class="setting-card">
+          <div class="setting-title">Supabase connection</div>
+          <div class="setting-desc">Your database URL and public anon key. Find these in Supabase → Settings → API.</div>
+          <input class="setting-input" id="cfg-url" placeholder="https://xxx.supabase.co" />
+          <input class="setting-input" id="cfg-key" placeholder="eyJhbGciOiJIUzI1NiIs..." />
+          <button class="btn btn-primary" onclick="saveSupabase()">Save & reconnect</button>
+        </div>
+        <div class="setting-card">
+          <div class="setting-title">Admin password</div>
+          <div class="setting-desc">Change the password used to access this dashboard. Store it safely.</div>
+          <input class="setting-input" type="password" id="cfg-pass-old" placeholder="Current password" />
+          <input class="setting-input" type="password" id="cfg-pass-new" placeholder="New password" />
+          <button class="btn btn-primary" onclick="changePass()">Update password</button>
+        </div>
+        <div class="setting-card">
+          <div class="setting-title">Auto-approval</div>
+          <div class="setting-desc">When on, articles are auto-approved and published without your review. Leave off until the site is well established.</div>
+          <div class="setting-toggle">
+            <div class="toggle" id="toggle-auto" onclick="this.classList.toggle('on')"></div>
+            <span style="font-size:13px">Auto-approve articles</span>
+          </div>
+          <div class="setting-toggle">
+            <div class="toggle on" id="toggle-digest" onclick="this.classList.toggle('on')"></div>
+            <span style="font-size:13px">Generate weekly digest automatically</span>
+          </div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-title">Buttondown API key</div>
+          <div class="setting-desc">Your newsletter API key from buttondown.email/settings/api — used to preview drafts here.</div>
+          <input class="setting-input" id="cfg-bd-key" placeholder="Your Buttondown API key" />
+          <button class="btn btn-primary" onclick="saveBDKey()">Save key</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+// ── CONFIG (edit these after deploying) ─────────────────
+let SUPABASE_URL  = 'https://waywvckvyizqkuuaecrp.supabase.co';
+let SUPABASE_KEY  = 'sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b';
+let ADMIN_PASS    = localStorage.getItem('admin_pass') || 'expatadmin2025';
+let BD_KEY        = localStorage.getItem('bd_key')  || '';
+// ────────────────────────────────────────────────────────
+
+let currentPanel = 'articles';
+
+// ── AUTH ─────────────────────────────────────────────────
+/* TOTP verification */
+var TOTP_SECRET_HEX = 'b62ae964487665f847fde74242563879b9c470a2';
+function verifyTOTP(code) {
+  function hmacSha1(key, msg) {
+    /* Simple HMAC-SHA1 using SubtleCrypto is async, so use a sync JS implementation */
+    var ipad = new Uint8Array(64), opad = new Uint8Array(64);
+    for (var i = 0; i < key.length; i++) { ipad[i] = key[i] ^ 0x36; opad[i] = key[i] ^ 0x5c; }
+    for (var i = key.length; i < 64; i++) { ipad[i] = 0x36; opad[i] = 0x5c; }
+    /* We'll use a pre-computed approach instead — check +/- 1 time step */
+    return null;
+  }
+  /* Since client-side TOTP is complex, we verify by calling a serverless function */
+  return fetch('/api/verify-totp', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code: code })
+  }).then(function(r) { return r.json(); });
+}
+
+function doLogin() {
+  const pass = document.getElementById('login-pass').value;
+  const totp = document.getElementById('login-totp').value.trim();
+  if (pass !== ADMIN_PASS) {
+    document.getElementById('login-err').style.display = 'block';
+    return;
+  }
+  if (!totp || totp.length !== 6) {
+    document.getElementById('login-err').textContent = 'Enter 6-digit authenticator code';
+    document.getElementById('login-err').style.display = 'block';
+    return;
+  }
+  var btn = document.querySelector('.login-btn');
+  btn.textContent = 'Verifying...';
+  btn.disabled = true;
+  verifyTOTP(totp).then(function(result) {
+    if (result && result.valid) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app').style.display = 'flex';
+      loadMetrics();
+      loadArticles();
+    } else {
+      document.getElementById('login-err').textContent = 'Invalid authenticator code';
+      document.getElementById('login-err').style.display = 'block';
+      btn.textContent = 'Sign in';
+      btn.disabled = false;
+    }
+  }).catch(function() {
+    document.getElementById('login-err').textContent = 'Verification failed. Try again.';
+    document.getElementById('login-err').style.display = 'block';
+    btn.textContent = 'Sign in';
+    btn.disabled = false;
+  });
+}
+function logout() {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-pass').value = '';
+}
+
+// ── SUPABASE FETCH ────────────────────────────────────────
+async function sb(path, opts = {}) {
+  const res = await fetch(SUPABASE_URL + '/rest/v1/' + path, {
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': opts.prefer || 'return=representation',
+      ...opts.headers
+    },
+    method: opts.method || 'GET',
+    body: opts.body ? JSON.stringify(opts.body) : undefined
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(err);
+  }
+  const text = await res.text();
+  return text ? JSON.parse(text) : [];
+}
+
+// ── METRICS ──────────────────────────────────────────────
+async function loadMetrics() {
+  try {
+    const [pending, published, subs, events, listings, housing, pendingEvents, pendingInbox] = await Promise.all([
+      sb('articles?status=eq.pending&select=id'),
+      sb('articles?status=in.(approved,auto_approved)&select=id'),
+      sb('subscribers?select=id'),
+      sb('events?status=eq.approved&select=id'),
+      sb('local_businesses?status=eq.active&type=neq.housing&type=neq.community&select=id'),
+      sb('local_businesses?status=eq.active&type=eq.housing&select=id'),
+      sb('events?status=in.(pending,submitted)&select=id'),
+      sb('events?category=in.(tip,correction,inquiry)&status=eq.pending&select=id')
+    ]);
+    document.getElementById('m-pending').textContent = pending.length;
+    document.getElementById('m-published').textContent = published.length;
+    document.getElementById('m-events').textContent = events.length;
+    document.getElementById('m-listings').textContent = listings.length;
+    document.getElementById('m-housing').textContent = housing.length;
+    document.getElementById('m-subscribers').textContent = subs.length;
+    
+    /* Sidebar badges */
+    document.getElementById('pending-count').textContent = pending.length;
+    document.getElementById('pending-count').style.display = pending.length > 0 ? '' : 'none';
+    
+    var pe = document.getElementById('pending-events-count');
+    pe.textContent = pendingEvents.length;
+    pe.style.display = pendingEvents.length > 0 ? '' : 'none';
+    
+    var pi = document.getElementById('pending-inbox-count');
+    pi.textContent = pendingInbox.length;
+    pi.style.display = pendingInbox.length > 0 ? '' : 'none';
+  } catch(e) {
+    console.error('Metrics error:', e);
+  }
+}
+
+// ── NAVIGATION ────────────────────────────────────────────
+const PANELS = {
+  articles:    { title: 'News articles',            sub: 'Approve, reject, or depublish AI-generated articles' },
+  events:      { title: 'Events',                   sub: 'Approve submissions and manage the events calendar' },
+  digest:      { title: 'Sunday digest',             sub: 'Preview this week\'s newsletter before it sends' },
+  subscribers: { title: 'Subscribers',              sub: 'Newsletter subscribers by region and source' },
+  exchange:    { title: 'Language exchange',         sub: 'Expats matched with Portuguese locals' },
+  directory:   { title: 'Explore listings',          sub: 'Businesses, places, and things to discover' },
+  businesses:  { title: 'Explore listings',          sub: 'Cafés, restaurants, beaches, museums, parks — places to explore' },
+  services:    { title: 'Services',                  sub: 'Doctors, lawyers, accountants, trainers — professional services' },
+  communities: { title: 'Communities',               sub: 'Expat groups, meetups, and social communities' },
+  housing:     { title: 'Housing board',             sub: 'Rental listings, tiers, confirmations, and inquiries' },
+  inbox:       { title: 'Inbox',                     sub: 'Tips, corrections, suggestions, and messages from visitors' },
+  logs:        { title: 'Automation logs',        sub: 'Check what ran, when, and whether it succeeded' },
+  settings:    { title: 'Settings',               sub: 'Configure database connection, passwords, and automation options' }
+};
+
+function showPanel(name, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.s-nav-item').forEach(n => n.classList.remove('on'));
+  document.getElementById('panel-' + name).classList.add('on');
+  el.classList.add('on');
+  currentPanel = name;
+  document.getElementById('page-title').textContent = PANELS[name].title;
+  document.getElementById('page-sub').textContent = PANELS[name].sub;
+  loadCurrentPanel();
+}
+
+function loadCurrentPanel() {
+  const loaders = { articles: loadArticles, events: loadEvents, digest: loadDigest, subscribers: loadSubscribers, exchange: loadExchange, directory: loadDirectory, businesses: loadBusinesses, services: loadServices, communities: loadCommunities, housing: loadHousing, inbox: loadInbox, logs: loadLogs };
+  if (loaders[currentPanel]) loaders[currentPanel]();
+  loadMetrics();
+}
+
+// ── ARTICLES ──────────────────────────────────────────────
+async function loadArticles() {
+  try {
+    const pending = await sb('articles?status=eq.pending&order=created_at.desc&limit=20');
+    const recent  = await sb('articles?status=in.(approved,auto_approved)&order=published_at.desc&limit=20');
+    renderArticlesTable('articles-table', pending, true);
+    renderArticlesTable('published-table', recent, false);
+  } catch(e) {
+    document.getElementById('articles-table').innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div>Could not connect to Supabase. Check your settings.</div>';
+  }
+}
+
+function renderArticlesTable(elId, articles, showActions) {
+  const el = document.getElementById(elId);
+  if (!articles.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">' + (showActions ? '✅' : '📭') + '</div>' + (showActions ? 'No articles pending — you\'re all caught up!' : 'No published articles yet') + '</div>';
+    return;
+  }
+  var bulkBar = showActions ? `<div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;padding:8px 12px;background:var(--warm);border-radius:8px">
+    <label style="font-size:12px;cursor:pointer;display:flex;align-items:center;gap:4px"><input type="checkbox" onchange="toggleAllArticles(this,'${elId}')" /> Select all</label>
+    <button class="btn btn-sm btn-green" onclick="bulkAction('approve','${elId}')">✓ Approve selected</button>
+    <button class="btn btn-sm" style="background:var(--amber-l);color:var(--amber)" onclick="bulkAction('depublish','${elId}')">⊘ Depublish selected</button>
+    <button class="btn btn-sm btn-red" onclick="bulkAction('delete','${elId}')">🗑 Delete selected</button>
+    <span id="${elId}-sel-count" style="font-size:11px;color:var(--ink3)">0 selected</span>
+  </div>` : '';
+  el.innerHTML = bulkBar + `<table>
+    <thead><tr>
+      ${showActions ? '<th style="width:30px"></th>' : ''}
+      <th style="width:38%">Article</th>
+      <th>Category</th>
+      <th>Region</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr></thead>
+    <tbody>
+      ${articles.map(a => `<tr>
+        ${showActions ? `<td><input type="checkbox" class="art-chk" data-id="${a.id}" data-table="${elId}" onchange="updateSelCount('${elId}')" /></td>` : ''}
+        <td>
+          <div class="article-title">${a.image_emoji || '📰'} <a href="${a.source_url}" target="_blank" style="color:var(--ink);text-decoration:none">${a.title}</a></div>
+          ${a.source_name ? `<div style="font-size:10px;color:var(--ink3);margin-top:3px">via ${a.source_name}</div>` : ''}
+        </td>
+        <td><span class="cat-badge">${a.category}</span></td>
+        <td><span class="region-badge">${a.region || 'all'}</span></td>
+        <td><span class="status-badge status-${a.status}">${a.status === 'auto_approved' ? '⚡ auto' : a.status}</span></td>
+        <td><div class="action-btns">
+          ${showActions ? `<button class="btn btn-sm btn-green" onclick="approveArticle(${a.id})">✓ Approve</button>` : ''}
+          ${a.status !== 'rejected' ? `<button class="btn btn-sm" style="background:var(--amber-l);color:var(--amber)" onclick="depublishArticle(${a.id})">⊘ Depublish</button>` : ''}
+          <button class="btn btn-sm btn-red" onclick="deleteArticle(${a.id})">🗑 Delete</button>
+        </div></td>
+      </tr>`).join('')}
+    </tbody>
+  </table>`;
+}
+
+function toggleAllArticles(masterCb, tableId) {
+  var el = document.getElementById(tableId);
+  el.querySelectorAll('.art-chk').forEach(function(cb) { cb.checked = masterCb.checked; });
+  updateSelCount(tableId);
+}
+
+function updateSelCount(tableId) {
+  var el = document.getElementById(tableId);
+  var count = el.querySelectorAll('.art-chk:checked').length;
+  var span = document.getElementById(tableId + '-sel-count');
+  if (span) span.textContent = count + ' selected';
+}
+
+function getSelectedIds(tableId) {
+  var el = document.getElementById(tableId);
+  return Array.from(el.querySelectorAll('.art-chk:checked')).map(function(cb) { return parseInt(cb.getAttribute('data-id')); });
+}
+
+async function bulkAction(action, tableId) {
+  var ids = getSelectedIds(tableId);
+  if (!ids.length) { alert('Select at least one article.'); return; }
+  if (action === 'delete' && !confirm('Permanently delete ' + ids.length + ' article(s)?')) return;
+  if (action === 'depublish' && !confirm('Depublish ' + ids.length + ' article(s)?')) return;
+  for (var i = 0; i < ids.length; i++) {
+    if (action === 'approve') {
+      await sb('articles?id=eq.' + ids[i], { method: 'PATCH', body: { status: 'approved', published_at: new Date().toISOString() } });
+    } else if (action === 'depublish') {
+      await sb('articles?id=eq.' + ids[i], { method: 'PATCH', body: { status: 'rejected' } });
+    } else if (action === 'delete') {
+      await sb('articles?id=eq.' + ids[i], { method: 'DELETE' });
+    }
+  }
+  loadArticles();
+  loadMetrics();
+}
+
+async function approveArticle(id) {
+  await sb('articles?id=eq.' + id, {
+    method: 'PATCH',
+    body: { status: 'approved', published_at: new Date().toISOString() },
+    prefer: 'return=minimal'
+  });
+  loadArticles();
+  loadMetrics();
+}
+
+async function rejectArticle(id) {
+  await sb('articles?id=eq.' + id, {
+    method: 'PATCH',
+    body: { status: 'rejected' },
+    prefer: 'return=minimal'
+  });
+  loadArticles();
+  loadMetrics();
+}
+
+async function approveAll() {
+  const pending = await sb('articles?status=eq.pending&select=id');
+  await Promise.all(pending.map(a => approveArticle(a.id)));
+}
+
+async function depublishArticle(id) {
+  if (!confirm('Depublish this article? It will no longer show on the site but stays in the database.')) return;
+  try {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/articles?id=eq.' + id, {
+      method: 'PATCH',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ status: 'rejected' })
+    });
+    if (!res.ok) { const e = await res.text(); alert('Error: ' + e); return; }
+    loadArticles();
+    loadMetrics();
+  } catch(e) { alert('Error: ' + e.message); }
+}
+
+async function deleteArticle(id) {
+  if (!confirm('Permanently delete this article? This cannot be undone.')) return;
+  try {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/articles?id=eq.' + id, {
+      method: 'DELETE',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Prefer': 'return=minimal'
+      }
+    });
+    if (!res.ok) { const e = await res.text(); alert('Error: ' + e); return; }
+    loadArticles();
+    loadMetrics();
+  } catch(e) { alert('Error: ' + e.message); }
+}
+
+// ── EVENTS ────────────────────────────────────────────────
+async function loadEvents() {
+  try {
+    const events = await sb('events?order=event_date.asc&limit=50');
+    const el = document.getElementById('events-table');
+    if (!events.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">📅</div>No events yet</div>'; return; }
+    
+    const pending = events.filter(e => e.status === 'pending' || e.status === 'submitted');
+    const approved = events.filter(e => e.status === 'approved');
+    
+    let html = '';
+    if (pending.length) {
+      html += `<div style="margin-bottom:1.5rem"><div style="font-size:14px;font-weight:500;margin-bottom:8px;color:var(--amber)">⏳ ${pending.length} pending review</div>
+      <table><thead><tr><th>Event</th><th>City</th><th>Date</th><th>Link</th><th>Actions</th></tr></thead><tbody>
+        ${pending.map(e => `<tr>
+          <td><div style="font-weight:500">${e.title}</div><div style="font-size:11px;color:var(--ink3)">${e.description || ''}</div></td>
+          <td>${e.city}</td>
+          <td style="font-size:12px">${e.event_date}</td>
+          <td>${e.url ? `<a href="${e.url}" target="_blank" rel="noopener" style="color:var(--blue);font-size:12px">View link ↗</a>` : '<span style="font-size:11px;color:var(--ink3)">No link</span>'}</td>
+          <td style="white-space:nowrap">
+            <button onclick="approveEvent(${e.id})" style="padding:4px 12px;background:var(--green);color:white;border:none;border-radius:4px;font-size:11px;cursor:pointer;margin-right:4px">Approve</button>
+            <button onclick="rejectEvent(${e.id})" style="padding:4px 12px;background:var(--red);color:white;border:none;border-radius:4px;font-size:11px;cursor:pointer">Reject</button>
+          </td>
+        </tr>`).join('')}
+      </tbody></table></div>`;
+    }
+    
+    html += `<div style="font-size:14px;font-weight:500;margin-bottom:8px">📅 Upcoming events (${approved.length})</div>
+    <table><thead><tr><th>Event</th><th>Category</th><th>City</th><th>Date</th><th>Source</th><th>Actions</th></tr></thead><tbody>
+      ${approved.map(e => `<tr>
+        <td><div style="font-weight:500">${e.title}</div><div style="font-size:11px;color:var(--ink3)">${e.venue || ''}</div></td>
+        <td><span class="cat-badge">${e.category}</span></td>
+        <td>${e.city}</td>
+        <td style="font-size:12px">${e.event_date}</td>
+        <td style="font-size:11px;color:var(--ink3)">${e.source || ''}</td>
+        <td><button onclick="deleteEvent(${e.id})" style="padding:4px 10px;background:none;border:0.5px solid var(--border);border-radius:4px;font-size:11px;cursor:pointer;color:var(--ink3)">Delete</button></td>
+      </tr>`).join('')}
+    </tbody></table>`;
+    
+    el.innerHTML = html;
+  } catch(e) { document.getElementById('events-table').innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div>Connection error</div>'; }
+}
+
+function showAddEvent() {
+  const title = prompt('Event title:');
+  if (!title) return;
+  const city = prompt('City:');
+  const date = prompt('Date (YYYY-MM-DD):');
+  const cat  = prompt('Category (music/food/social/sport/culture/market):');
+  if (title && city && date) {
+    sb('events', { method: 'POST', body: { title, city, event_date: date, category: cat || 'social', status: 'approved' } })
+      .then(() => loadEvents());
+  }
+}
+
+async function approveEvent(id) {
+  await sb('events?id=eq.' + id, { method: 'PATCH', body: { status: 'approved' } });
+  loadEvents();
+}
+
+async function rejectEvent(id) {
+  if (!confirm('Reject and delete this event submission?')) return;
+  await sb('events?id=eq.' + id, { method: 'DELETE' });
+  loadEvents();
+}
+
+async function deleteEvent(id) {
+  if (!confirm('Delete this event?')) return;
+  await sb('events?id=eq.' + id, { method: 'DELETE' });
+  loadEvents();
+}
+
+async function loadInbox() {
+  /* Pending articles */
+  try {
+    var pendingArticles = await sb('articles?status=eq.pending&order=created_at.desc&limit=20');
+    var aEl = document.getElementById('inbox-articles');
+    if (!pendingArticles.length) {
+      aEl.innerHTML = '<div class="empty"><div class="empty-icon">&#9989;</div>No pending articles.</div>';
+    } else {
+      aEl.innerHTML = '<div style="font-size:12px;color:var(--amber);margin-bottom:6px">' + pendingArticles.length + ' waiting for review</div>' +
+        '<table><thead><tr><th>Article</th><th>Category</th><th>Actions</th></tr></thead><tbody>' +
+        pendingArticles.map(function(a) {
+          return '<tr style="background:var(--amber-l)">' +
+            '<td><div style="font-weight:500">' + (a.image_emoji||'📰') + ' ' + a.title + '</div><div style="font-size:10px;color:var(--ink3)">' + (a.source_name||'') + '</div></td>' +
+            '<td><span class="cat-badge">' + (a.category||'') + '</span></td>' +
+            '<td style="white-space:nowrap">' +
+            '<button onclick="approveArticle(' + a.id + ');setTimeout(loadInbox,500)" style="padding:4px 10px;background:var(--green-l);border:0.5px solid var(--green);border-radius:4px;font-size:11px;cursor:pointer;color:var(--green);margin-right:4px">Approve</button>' +
+            '<button onclick="deleteArticle(' + a.id + ');setTimeout(loadInbox,500)" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
+            '</td></tr>';
+        }).join('') + '</tbody></table>';
+    }
+  } catch(e) { document.getElementById('inbox-articles').innerHTML = '<div class="empty">Could not load.</div>'; }
+
+  /* Pending events */
+  try {
+    var pendingEvents = await sb('events?status=in.(pending,submitted)&category=not.in.(tip,correction,inquiry,review,claim)&order=created_at.desc&limit=20');
+    var eEl = document.getElementById('inbox-events');
+    if (!pendingEvents.length) {
+      eEl.innerHTML = '<div class="empty"><div class="empty-icon">&#9989;</div>No pending events.</div>';
+    } else {
+      eEl.innerHTML = '<div style="font-size:12px;color:var(--amber);margin-bottom:6px">' + pendingEvents.length + ' waiting for review</div>' +
+        '<table><thead><tr><th>Event</th><th>City</th><th>Date</th><th>Actions</th></tr></thead><tbody>' +
+        pendingEvents.map(function(e) {
+          return '<tr style="background:var(--amber-l)">' +
+            '<td><div style="font-weight:500">' + e.title + '</div><div style="font-size:11px;color:var(--ink3)">' + (e.description||'').substring(0,60) + '</div></td>' +
+            '<td>' + (e.city||'') + '</td>' +
+            '<td style="font-size:12px">' + (e.event_date||'') + '</td>' +
+            '<td style="white-space:nowrap">' +
+            '<button onclick="approveEvent(' + e.id + ');setTimeout(loadInbox,500)" style="padding:4px 10px;background:var(--green-l);border:0.5px solid var(--green);border-radius:4px;font-size:11px;cursor:pointer;color:var(--green);margin-right:4px">Approve</button>' +
+            '<button onclick="rejectEvent(' + e.id + ');setTimeout(loadInbox,500)" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Reject</button>' +
+            '</td></tr>';
+        }).join('') + '</tbody></table>';
+    }
+  } catch(e) { document.getElementById('inbox-events').innerHTML = '<div class="empty">Could not load.</div>'; }
+
+  /* Tips, corrections, inquiries */
+  try {
+    var items = await sb('events?category=in.(tip,correction,inquiry)&status=eq.pending&order=created_at.desc&limit=50');
+    var tips = items.filter(function(s) { return s.category === 'tip'; });
+    var corrections = items.filter(function(s) { return s.category === 'correction'; });
+    var inquiries = items.filter(function(s) { return s.category === 'inquiry'; });
+
+    renderInboxSection('inbox-tips', tips, '&#128161;', 'No tips yet.');
+    renderInboxSection('inbox-corrections', corrections, '&#128221;', 'No corrections yet.');
+    renderInboxSection('inbox-inquiries', inquiries, '&#128172;', 'No housing inquiries yet.');
+  } catch(e) {}
+
+  /* Pending place/service/community suggestions */
+  try {
+    var pending = await sb('local_businesses?status=eq.pending&order=created_at.desc&limit=30');
+    var el = document.getElementById('inbox-places');
+    if (!pending.length) {
+      el.innerHTML = '<div class="empty"><div class="empty-icon">&#9989;</div>No pending suggestions.</div>';
+      return;
+    }
+    el.innerHTML = '<div style="font-size:12px;color:var(--amber);margin-bottom:6px">' + pending.length + ' waiting for review</div>' +
+      '<table><thead><tr><th>Name</th><th>Type</th><th>City</th><th>Submitted</th><th>Actions</th></tr></thead><tbody>' +
+      pending.map(function(p) {
+        var date = p.created_at ? new Date(p.created_at).toLocaleDateString('en-GB', {day:'numeric',month:'short'}) : '?';
+        return '<tr style="background:var(--amber-l)">' +
+          '<td><div id="place-name-'+p.id+'" style="font-weight:500">' + p.name + '</div><div id="place-desc-'+p.id+'" style="font-size:11px;color:var(--ink3)">' + (p.reason || '').substring(0, 80) + '</div>' +
+          (p.url ? '<div style="font-size:10px;color:var(--blue)"><a href="' + p.url + '" target="_blank">' + p.url.substring(0, 40) + '</a></div>' : '') + '</td>' +
+          '<td><span class="cat-badge">' + (p.type || '?') + '</span></td>' +
+          '<td>' + (p.city || '?') + '</td>' +
+          '<td style="font-size:11px">' + date + '</td>' +
+          '<td style="white-space:nowrap">' +
+          '<button onclick="editPlace(' + p.id + ')" style="padding:4px 10px;background:var(--blue-l);border:0.5px solid var(--blue);border-radius:4px;font-size:11px;cursor:pointer;color:var(--blue);margin-right:4px">Edit</button>' +
+          '<button onclick="approvePlace(' + p.id + ')" style="padding:4px 10px;background:var(--green-l);border:0.5px solid var(--green);border-radius:4px;font-size:11px;cursor:pointer;color:var(--green);margin-right:4px">Approve</button>' +
+          '<button onclick="deleteSubmission(' + p.id + ',\'place\')" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
+          '</td></tr>';
+      }).join('') + '</tbody></table>';
+  } catch(e) { document.getElementById('inbox-places').innerHTML = '<div class="empty">Could not load.</div>'; }
+}
+
+function renderInboxSection(elId, items, icon, emptyMsg) {
+  var el = document.getElementById(elId);
+  if (!items.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">' + icon + '</div>' + emptyMsg + '</div>';
+    return;
+  }
+  el.innerHTML = '<table><thead><tr><th>Content</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody>' +
+    items.map(function(s) {
+      return '<tr style="' + (s.status==='pending'?'background:var(--amber-l)':'') + '">' +
+        '<td><div id="inbox-title-'+s.id+'" style="font-weight:500;font-size:13px">' + (s.title || '') + '</div><div id="inbox-desc-'+s.id+'" style="font-size:12px;color:var(--ink2);white-space:pre-line;max-width:400px">' + (s.description || '').substring(0, 250) + '</div></td>' +
+        '<td style="font-size:11px;color:var(--ink3);white-space:nowrap">' + (s.event_date || '') + '</td>' +
+        '<td><span class="cat-badge" style="' + (s.status==='pending'?'background:var(--amber-l);color:var(--amber)':'background:var(--green-l);color:var(--green)') + '">' + (s.status || 'pending') + '</span></td>' +
+        '<td style="white-space:nowrap">' +
+        '<button onclick="editInboxItem('+s.id+')" style="padding:4px 10px;background:var(--blue-l);border:0.5px solid var(--blue);border-radius:4px;font-size:11px;cursor:pointer;color:var(--blue);margin-right:4px">Edit</button>' +
+        (s.status==='pending'?'<button onclick="handleSubmission('+s.id+')" style="padding:4px 10px;background:var(--green-l);border:0.5px solid var(--green);border-radius:4px;font-size:11px;cursor:pointer;color:var(--green);margin-right:4px">Mark done</button>':'') +
+        '<button onclick="deleteSubmission('+s.id+',\'event\')" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
+        '</td></tr>';
+    }).join('') + '</tbody></table>';
+}
+
+async function editInboxItem(id) {
+  var titleEl = document.getElementById('inbox-title-'+id);
+  var descEl = document.getElementById('inbox-desc-'+id);
+  if (!titleEl) return;
+  var currentTitle = titleEl.textContent;
+  var currentDesc = descEl.textContent;
+  titleEl.innerHTML = '<input id="edit-title-'+id+'" value="'+currentTitle.replace(/"/g,'&quot;')+'" style="width:100%;padding:6px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:13px;font-family:Outfit,sans-serif;font-weight:500" />';
+  descEl.innerHTML = '<textarea id="edit-desc-'+id+'" style="width:100%;padding:6px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:12px;font-family:Outfit,sans-serif;height:60px;resize:vertical">'+currentDesc+'</textarea>' +
+    '<div style="margin-top:4px"><button onclick="saveInboxItem('+id+')" style="padding:4px 12px;background:var(--green);color:white;border:none;border-radius:4px;font-size:11px;cursor:pointer;margin-right:4px">Save</button><button onclick="loadInbox()" style="padding:4px 12px;background:var(--warm);border:0.5px solid var(--border);border-radius:4px;font-size:11px;cursor:pointer">Cancel</button></div>';
+  document.getElementById('edit-title-'+id).focus();
+}
+
+async function saveInboxItem(id) {
+  var title = document.getElementById('edit-title-'+id).value.trim();
+  var desc = document.getElementById('edit-desc-'+id).value.trim();
+  await sb('events?id=eq.'+id, { method: 'PATCH', body: { title: title, description: desc } });
+  loadInbox();
+}
+
+async function approvePlace(id) {
+  await sb('local_businesses?id=eq.' + id, { method: 'PATCH', body: { status: 'active' } });
+  loadInbox();
+}
+
+async function quickApprove(id) {
+  await sb('local_businesses?id=eq.' + id, { method: 'PATCH', body: { status: 'active' } });
+  loadCurrentPanel();
+}
+
+async function editPlace(id) {
+  var item = null;
+  try { var res = await sb('local_businesses?id=eq.'+id); item = res[0]; } catch(e) { return; }
+  if (!item) return;
+  var nameEl = document.getElementById('place-name-'+id);
+  var descEl = document.getElementById('place-desc-'+id);
+  if (!nameEl) return;
+  var pr = {};
+  (item.price_range || '').split('|').forEach(function(p) { var kv = p.split(':'); if(kv.length>=2) pr[kv[0]] = kv.slice(1).join(':'); });
+  
+  nameEl.innerHTML = '<input id="ep-name-'+id+'" value="'+(item.name||'').replace(/"/g,'&quot;')+'" style="width:100%;padding:6px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:13px;font-family:Outfit,sans-serif;font-weight:500;margin-bottom:4px" />';
+  descEl.innerHTML = 
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:4px">' +
+    '<select id="ep-type-'+id+'" style="padding:5px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:11px;font-family:Outfit,sans-serif"><option value="">Type</option><option value="cafe">Café</option><option value="restaurant">Restaurant</option><option value="bar">Bar</option><option value="shop">Shop</option><option value="cowork">Co-work</option><option value="gym">Gym</option><option value="beach">Beach</option><option value="park">Park</option><option value="museum">Museum</option><option value="viewpoint">Viewpoint</option><option value="historic">Historic</option><option value="entertainment">Entertainment</option><option value="kids">Kids</option><option value="service">Service</option><option value="community">Community</option></select>' +
+    '<select id="ep-city-'+id+'" style="padding:5px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:11px;font-family:Outfit,sans-serif"><option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Braga</option><option>Alentejo</option><option>Madeira</option></select>' +
+    '</div>' +
+    '<input id="ep-area-'+id+'" value="'+(item.area||'').replace(/"/g,'&quot;')+'" placeholder="Neighbourhood" style="width:100%;padding:5px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:11px;font-family:Outfit,sans-serif;margin-bottom:4px" />' +
+    '<input id="ep-address-'+id+'" value="'+(item.address||'').replace(/"/g,'&quot;')+'" placeholder="Full address (e.g. Rua Augusta 123, Lisbon)" style="width:100%;padding:5px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:11px;font-family:Outfit,sans-serif;margin-bottom:4px" />' +
+    '<textarea id="ep-desc-'+id+'" style="width:100%;padding:5px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:11px;font-family:Outfit,sans-serif;height:40px;resize:vertical">'+(item.reason||'')+'</textarea>' +
+    '<input id="ep-url-'+id+'" value="'+(item.url||'').replace(/"/g,'&quot;')+'" placeholder="Website URL" style="width:100%;padding:5px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:11px;font-family:Outfit,sans-serif;margin-top:4px" />' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px">' +
+    '<input id="ep-rating-'+id+'" value="'+(pr.rating||'')+'" placeholder="Rating (e.g. 4.5)" style="padding:5px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:11px;font-family:Outfit,sans-serif" />' +
+    '<input id="ep-reviews-'+id+'" value="'+(pr.reviews||'')+'" placeholder="Reviews count" style="padding:5px 8px;border:0.5px solid var(--border2);border-radius:4px;font-size:11px;font-family:Outfit,sans-serif" />' +
+    '</div>' +
+    '<div style="margin-top:6px"><button onclick="savePlace('+id+')" style="padding:4px 12px;background:var(--green);color:white;border:none;border-radius:4px;font-size:11px;cursor:pointer;margin-right:4px">Save</button><button onclick="savePlace('+id+',true)" style="padding:4px 12px;background:var(--blue);color:white;border:none;border-radius:4px;font-size:11px;cursor:pointer;margin-right:4px">Save & Approve</button><button onclick="loadInbox()" style="padding:4px 12px;background:var(--warm);border:0.5px solid var(--border);border-radius:4px;font-size:11px;cursor:pointer">Cancel</button></div>';
+  
+  /* Set current values */
+  var typeEl = document.getElementById('ep-type-'+id);
+  if (typeEl) typeEl.value = item.type || '';
+  var cityEl = document.getElementById('ep-city-'+id);
+  if (cityEl) cityEl.value = item.city || 'Lisbon';
+  document.getElementById('ep-name-'+id).focus();
+}
+
+async function savePlace(id, andApprove) {
+  var name = document.getElementById('ep-name-'+id).value.trim();
+  var type = document.getElementById('ep-type-'+id).value;
+  var city = document.getElementById('ep-city-'+id).value;
+  var area = document.getElementById('ep-area-'+id).value.trim();
+  var address = document.getElementById('ep-address-'+id).value.trim();
+  var reason = document.getElementById('ep-desc-'+id).value.trim();
+  var url = document.getElementById('ep-url-'+id).value.trim();
+  var rating = document.getElementById('ep-rating-'+id).value;
+  var reviews = document.getElementById('ep-reviews-'+id).value;
+  var prStr = 'rating:' + (rating||'0') + '|reviews:' + (reviews||'0') + '|source:google';
+  var body = { name: name, type: type, city: city, area: area, address: address, reason: reason, url: url, price_range: prStr };
+  if (andApprove) body.status = 'active';
+  await sb('local_businesses?id=eq.'+id, { method: 'PATCH', body: body });
+  loadInbox();
+}
+
+async function handleSubmission(id) {
+  await sb('events?id=eq.' + id, { method: 'PATCH', body: { status: 'handled' } });
+  loadInbox();
+}
+
+async function deleteSubmission(id, table) {
+  if (!confirm('Delete this submission?')) return;
+  if (table === 'place') {
+    await sb('local_businesses?id=eq.' + id, { method: 'DELETE' });
+  } else {
+    await sb('events?id=eq.' + id, { method: 'DELETE' });
+  }
+  loadInbox();
+}
+
+// ── DIGEST ────────────────────────────────────────────────
+async function loadDigest() {
+  try {
+    const drafts = await sb('newsletter_sends?status=eq.draft&order=created_at.desc&limit=1');
+    if (!drafts.length) {
+      document.getElementById('digest-body').innerHTML = '<div class="empty"><div class="empty-icon">📧</div>No digest draft yet. The automation runs every Sunday at 8pm.</div>';
+      return;
+    }
+    const d = drafts[0];
+    document.getElementById('digest-subject').textContent = 'Subject: ' + d.subject;
+    document.getElementById('digest-body').innerHTML = d.body_html;
+  } catch(e) { document.getElementById('digest-body').innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div>Could not load digest draft.</div>'; }
+}
+
+function openButtondown() {
+  window.open('https://buttondown.email/emails', '_blank');
+}
+
+// ── SUBSCRIBERS ───────────────────────────────────────────
+async function loadSubscribers() {
+  try {
+    const subs = await sb('subscribers?status=eq.active&order=subscribed_at.desc&limit=50');
+    const byRegion = (r) => subs.filter(s => s.region === r).length;
+    document.getElementById('sub-total').textContent = subs.length;
+    document.getElementById('sub-lisbon').textContent = byRegion('lisbon');
+    document.getElementById('sub-porto').textContent = byRegion('porto');
+    document.getElementById('sub-algarve').textContent = byRegion('algarve');
+    const el = document.getElementById('subscribers-table');
+    if (!subs.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">📭</div>No subscribers yet</div>'; return; }
+    el.innerHTML = `<table><thead><tr><th>Email</th><th>Region</th><th>Source</th><th>Subscribed</th></tr></thead><tbody>
+      ${subs.map(s => `<tr>
+        <td>${s.email}</td>
+        <td><span class="region-badge">${s.region || 'all'}</span></td>
+        <td style="font-size:11px;color:var(--ink3)">${s.source || 'website'}</td>
+        <td style="font-size:11px;color:var(--ink3)">${new Date(s.subscribed_at).toLocaleDateString('en-GB')}</td>
+      </tr>`).join('')}
+    </tbody></table>`;
+  } catch(e) { document.getElementById('subscribers-table').innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div>Connection error</div>'; }
+}
+
+// ── LANGUAGE EXCHANGE ─────────────────────────────────────
+async function loadExchange() {
+  try {
+    const signups = await sb('language_exchange?order=created_at.desc&limit=50');
+    const el = document.getElementById('exchange-table');
+    if (!signups.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">🤝</div>No signups yet</div>'; return; }
+    el.innerHTML = `<table><thead><tr><th>Name</th><th>Type</th><th>City</th><th>Level</th><th>Matched</th><th>Date</th></tr></thead><tbody>
+      ${signups.map(s => `<tr>
+        <td><div style="font-weight:500">${s.name}</div><div style="font-size:11px;color:var(--ink3)">${s.email}</div></td>
+        <td><span class="cat-badge" style="${s.type==='local'?'background:var(--green-l);color:var(--green)':''}">${s.type}</span></td>
+        <td>${s.city}</td>
+        <td style="font-size:12px;color:var(--ink3)">${s.level || '—'}</td>
+        <td>${s.matched ? '<span class="status-badge status-approved">✓ matched</span>' : '<span class="status-badge status-pending">unmatched</span>'}</td>
+        <td style="font-size:11px;color:var(--ink3)">${new Date(s.created_at).toLocaleDateString('en-GB')}</td>
+      </tr>`).join('')}
+    </tbody></table>`;
+  } catch(e) { document.getElementById('exchange-table').innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div>Connection error</div>'; }
+}
+
+function matchAll() {
+  alert('Auto-matching:\n\n1. Opens your email client with a pre-written intro email for each unmatched pair\n2. In the live version this sends an automated intro email via your mail provider\n\nFor now: export unmatched pairs from Supabase and email them manually — takes 15 mins/month.');
+}
+
+// ── DIRECTORY ─────────────────────────────────────────────
+async function loadDirectory() {
+  try {
+    const listings = await sb('directory?order=created_at.desc&limit=50');
+    const el = document.getElementById('directory-table');
+    if (!listings.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">📋</div>No listings yet</div>'; return; }
+    el.innerHTML = `<table><thead><tr><th>Name</th><th>Category</th><th>City</th><th>Tier</th><th>Status</th><th>Paid until</th></tr></thead><tbody>
+      ${listings.map(d => `<tr>
+        <td><div style="font-weight:500">${d.name}</div><div style="font-size:11px;color:var(--ink3)">${d.role}</div></td>
+        <td><span class="cat-badge">${d.category}</span></td>
+        <td>${d.city}</td>
+        <td style="font-size:12px">${d.listing_tier}</td>
+        <td><span class="status-badge status-${d.status}">${d.status}</span></td>
+        <td style="font-size:11px;color:var(--ink3)">${d.paid_until || '—'}</td>
+      </tr>`).join('')}
+    </tbody></table>`;
+  } catch(e) { document.getElementById('directory-table').innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div>Connection error</div>'; }
+}
+
+function showAddListing() {
+  alert('To add a listing:\n1. Go to your Supabase dashboard\n2. Open the directory table\n3. Click Insert Row\n4. Fill in: name, role, type (professional/lifestyle), category, city, description, listing_tier, paid_until');
+}
+
+// ── LOGS ──────────────────────────────────────────────────
+async function loadLogs() {
+  try {
+    const logs = await sb('automation_logs?order=ran_at.desc&limit=30');
+    const el = document.getElementById('logs-list');
+    if (!logs.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">⚙️</div>No automation runs logged yet</div>'; return; }
+    const wfLabels = { daily_news: 'Daily news pipeline', weekly_digest: 'Weekly digest email', rental_update: 'Monthly rental update', event_scrape: 'Event scraper' };
+    el.innerHTML = logs.map(l => `
+      <div class="log-row">
+        <div class="log-dot log-${l.status === 'success' ? 'ok' : l.status === 'error' ? 'err' : 'warn'}"></div>
+        <div class="log-time">${new Date(l.ran_at).toLocaleString('en-GB')}</div>
+        <div class="log-wf">${wfLabels[l.workflow] || l.workflow}</div>
+        <div style="flex:1;color:var(--ink2)">${l.status === 'success' ? `Created ${l.items_created} items` : l.error_msg || 'Failed'}</div>
+        <span class="status-badge status-${l.status === 'success' ? 'approved' : 'rejected'}">${l.status}</span>
+      </div>`).join('');
+  } catch(e) { document.getElementById('logs-list').innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div>Connection error</div>'; }
+}
+
+// ── SETTINGS ──────────────────────────────────────────────
+function saveSupabase() {
+  const url = document.getElementById('cfg-url').value.trim();
+  const key = document.getElementById('cfg-key').value.trim();
+  if (!url || !key) return alert('Both fields required');
+  SUPABASE_URL = url; SUPABASE_KEY = key;
+  localStorage.setItem('sb_url', url); localStorage.setItem('sb_key', key);
+  alert('Saved! Refreshing data...');
+  loadMetrics(); loadCurrentPanel();
+}
+
+function changePass() {
+  const old = document.getElementById('cfg-pass-old').value;
+  const nw  = document.getElementById('cfg-pass-new').value;
+  if (old !== ADMIN_PASS) { alert('Current password incorrect'); return; }
+  if (nw.length < 8) { alert('New password must be at least 8 characters'); return; }
+  ADMIN_PASS = nw;
+  localStorage.setItem('admin_pass', nw);
+  alert('Password updated!');
+}
+
+function saveBDKey() {
+  BD_KEY = document.getElementById('cfg-bd-key').value.trim();
+  localStorage.setItem('bd_key', BD_KEY);
+  alert('Buttondown key saved!');
+}
+
+
+
+var EMOJI_OPTIONS = [
+  { cat: 'Food & drink',       items: [
+    { e: '&#127869;', l: 'Restaurant / dining' },
+    { e: '&#127828;', l: 'Burger / fast food' },
+    { e: '&#9749;',   l: 'Coffee / cafe' },
+    { e: '&#127863;', l: 'Wine bar' },
+    { e: '&#127866;', l: 'Beer / bar' },
+    { e: '&#127830;', l: 'Bread / bakery' },
+    { e: '&#127831;', l: 'Croissant / pastry' },
+    { e: '&#127843;', l: 'Fish / seafood' },
+    { e: '&#127829;', l: 'Pizza' },
+    { e: '&#127860;', l: 'Takeaway box' },
+    { e: '&#127858;', l: 'Cooked meal' },
+    { e: '&#129367;', l: 'Bubble tea / drinks' }
+  ]},
+  { cat: 'Beach & outdoor', items: [
+    { e: '&#127958;', l: 'Beach bar' },
+    { e: '&#127940;', l: 'Surfing' },
+    { e: '&#127796;', l: 'Palm tree' },
+    { e: '&#9728;',   l: 'Sunny / outdoor' },
+    { e: '&#127938;', l: 'Snowboard / sport' },
+    { e: '&#129336;', l: 'Cartwheels / outdoor fun' },
+    { e: '&#127905;', l: 'Ferris wheel / amusement' }
+  ]},
+  { cat: 'Nightlife & dancing', items: [
+    { e: '&#128131;', l: 'Dancing woman' },
+    { e: '&#128378;', l: 'Dancing man' },
+    { e: '&#127915;', l: 'Disco ball' },
+    { e: '&#127911;', l: 'Headphones / DJ' },
+    { e: '&#127880;', l: 'Party / celebration' },
+    { e: '&#127926;', l: 'Microphone / live music' },
+    { e: '&#129346;', l: 'Cocktail' }
+  ]},
+  { cat: 'Kids & family', items: [
+    { e: '&#128118;', l: 'Baby / kids' },
+    { e: '&#127922;', l: 'Board game / dice' },
+    { e: '&#127944;', l: 'Sports / ball' },
+    { e: '&#127950;', l: 'Playground / tent' },
+    { e: '&#129513;', l: 'Puzzle / games' },
+    { e: '&#127888;', l: 'Jack-o-lantern / fun' },
+    { e: '&#128756;', l: 'Ferris wheel / fun park' }
+  ]},
+  { cat: 'Fitness & gym', items: [
+    { e: '&#127947;', l: 'Gym / weightlifting' },
+    { e: '&#129340;', l: 'Yoga / meditation' },
+    { e: '&#127949;', l: 'Swimming pool' },
+    { e: '&#129307;', l: 'Martial arts / fitness' },
+    { e: '&#9917;',   l: 'Football / sport' },
+    { e: '&#127955;', l: 'Running / sports' },
+    { e: '&#127936;', l: 'Cycling' }
+  ]},
+  { cat: 'Wellness & spa', items: [
+    { e: '&#129488;', l: 'Relaxation / wellness' },
+    { e: '&#128134;', l: 'Massage / spa' },
+    { e: '&#129485;', l: 'Person in lotus / sauna' },
+    { e: '&#127774;', l: 'Sauna / hot' },
+    { e: '&#128167;', l: 'Droplets / hydrotherapy' },
+    { e: '&#127981;', l: 'Spa / candle' },
+    { e: '&#129386;', l: 'Soap / hygiene' }
+  ]},
+  { cat: 'Beauty & grooming', items: [
+    { e: '&#128136;', l: 'Haircut / hairdresser' },
+    { e: '&#9986;',   l: 'Scissors / salon' },
+    { e: '&#128138;', l: 'Nail polish / nails' },
+    { e: '&#128132;', l: 'Lipstick / makeup' },
+    { e: '&#129703;', l: 'Razor / grooming' },
+    { e: '&#128141;', l: 'Handbag / fashion' },
+    { e: '&#129522;', l: 'Mirror / beauty' }
+  ]},
+  { cat: 'Work & coworking', items: [
+    { e: '&#128187;', l: 'Laptop / coworking' },
+    { e: '&#128205;', l: 'Pin / location' },
+    { e: '&#128196;', l: 'Documents / office' },
+    { e: '&#128222;', l: 'Phone / business' },
+    { e: '&#128241;', l: 'Mobile / tech' },
+    { e: '&#128270;', l: 'Magnifier / research' },
+    { e: '&#128161;', l: 'Lightbulb / ideas' }
+  ]},
+  { cat: 'Shopping & market', items: [
+    { e: '&#127978;', l: 'Shop / business' },
+    { e: '&#128722;', l: 'Shopping cart' },
+    { e: '&#127749;', l: 'Market / stall' },
+    { e: '&#127801;', l: 'Gift shop' },
+    { e: '&#129749;', l: 'Sewing / crafts' },
+    { e: '&#127808;', l: 'Herbs / natural shop' },
+    { e: '&#127807;', l: 'Vegetable / organic' }
+  ]},
+  { cat: 'Accommodation & hotel', items: [
+    { e: '&#127970;', l: 'Hotel / building' },
+    { e: '&#127968;', l: 'House / guesthouse' },
+    { e: '&#127957;', l: 'Camping / hostel' },
+    { e: '&#127967;', l: 'European building' },
+    { e: '&#128716;', l: 'Flashlight / B&B' },
+    { e: '&#129521;', l: 'Luggage / travel' },
+    { e: '&#128508;', l: 'Key / check-in' }
+  ]},
+  { cat: 'Culture & arts', items: [
+    { e: '&#127981;', l: 'Performing arts' },
+    { e: '&#127988;', l: 'Art / gallery' },
+    { e: '&#127917;', l: 'Theatre / arts' },
+    { e: '&#128247;', l: 'Photography' },
+    { e: '&#127994;', l: 'Ribbon / culture' },
+    { e: '&#128218;', l: 'Books / library' },
+    { e: '&#127911;', l: 'Music / concert' }
+  ]},
+  { cat: 'Nature & Portugal', items: [
+    { e: '&#127758;', l: 'Globe / international' },
+    { e: '&#127984;', l: 'Flag / Portugal' },
+    { e: '&#127956;', l: 'Mountain / Sintra' },
+    { e: '&#127797;', l: 'Cactus / plants' },
+    { e: '&#128030;', l: 'Bug / nature' },
+    { e: '&#127823;', l: 'Grapes / Douro wine' },
+    { e: '&#127822;', l: 'Apple / farm produce' }
+  ]}
+];
+
+var allEmojis = [];
+EMOJI_OPTIONS.forEach(function(cat) {
+  cat.items.forEach(function(item) {
+    allEmojis.push({ cat: cat.cat, e: item.e, l: item.l });
+  });
+});
+
+function buildEmojiList(filter) {
+  var list = document.getElementById('emoji-list');
+  var html = '';
+  var selectedVal = document.getElementById('biz-emoji').value;
+  if (filter) {
+    var q = filter.toLowerCase();
+    var matches = allEmojis.filter(function(i) {
+      return i.l.toLowerCase().includes(q) || i.cat.toLowerCase().includes(q);
+    });
+    if (!matches.length) {
+      html = '<div style="padding:16px;text-align:center;font-size:12px;color:var(--ink3)">No results</div>';
+    } else {
+      matches.forEach(function(item) {
+        var sel = item.e === selectedVal ? ' selected' : '';
+        html += '<div class="emoji-opt' + sel + '" onclick="selectEmoji(this)" data-emoji="' + item.e + '" data-label="' + item.l.replace(/"/g,'&quot;') + '">' +
+          '<span style="font-size:20px;width:28px">' + item.e + '</span>' +
+          '<span>' + item.l + '</span>' +
+          '</div>';
+      });
+    }
+  } else {
+    EMOJI_OPTIONS.forEach(function(cat) {
+      html += '<div class="emoji-cat-header">' + cat.cat + '</div>';
+      cat.items.forEach(function(item) {
+        var sel = item.e === selectedVal ? ' selected' : '';
+        html += '<div class="emoji-opt' + sel + '" onclick="selectEmoji(this)" data-emoji="' + item.e + '" data-label="' + item.l.replace(/"/g,'&quot;') + '">' +
+          '<span style="font-size:20px;width:28px">' + item.e + '</span>' +
+          '<span>' + item.l + '</span>' +
+          '</div>';
+      });
+    });
+  }
+  list.innerHTML = html;
+}
+
+function toggleEmojiDrop() {
+  var drop = document.getElementById('emoji-drop');
+  var isOpen = drop.style.display !== 'none';
+  if (isOpen) {
+    drop.style.display = 'none';
+  } else {
+    drop.style.display = 'block';
+    document.getElementById('emoji-search').value = '';
+    buildEmojiList('');
+    document.getElementById('emoji-search').focus();
+  }
+}
+
+function filterEmojis() {
+  var q = document.getElementById('emoji-search').value.trim();
+  buildEmojiList(q);
+}
+
+function selectEmoji(el) {
+  var emoji = el.getAttribute('data-emoji');
+  var label = el.getAttribute('data-label');
+  document.getElementById('biz-emoji').value = emoji;
+  document.getElementById('emoji-preview').innerHTML = emoji;
+  document.getElementById('emoji-label').textContent = label;
+  document.getElementById('emoji-drop').style.display = 'none';
+}
+
+document.addEventListener('click', function(e) {
+  var trigger = document.getElementById('emoji-trigger');
+  var drop = document.getElementById('emoji-drop');
+  if (drop && trigger && !trigger.contains(e.target) && !drop.contains(e.target)) {
+    drop.style.display = 'none';
+  }
+});
+
+// ── LOCAL BUSINESSES ──────────────────────────────────────
+async function loadBusinesses() {
+  try {
+    var cityF = document.getElementById('biz-filter-city').value;
+    var typeF = document.getElementById('biz-filter-type').value;
+    var query = 'local_businesses?type=neq.housing&type=neq.community&type=neq.service&order=created_at.desc&limit=100';
+    if (cityF) query += '&city=eq.' + encodeURIComponent(cityF);
+    if (typeF) query += '&type=eq.' + encodeURIComponent(typeF);
+    var items = await sb(query);
+    var el = document.getElementById('businesses-table');
+    
+    var pending = items.filter(function(b) { return b.status === 'pending'; });
+    var active = items.filter(function(b) { return b.status === 'active'; });
+    
+    var html = '';
+    if (pending.length) {
+      html += '<div style="margin-bottom:1.5rem"><div style="font-size:14px;font-weight:500;margin-bottom:8px;color:var(--amber)">&#9201; ' + pending.length + ' pending approval</div>' +
+        '<table><thead><tr><th>Name</th><th>Type</th><th>City</th><th>Actions</th></tr></thead><tbody>' +
+        pending.map(function(p) {
+          return '<tr style="background:var(--amber-l)">' +
+            '<td><div style="font-weight:500">' + p.name + '</div><div style="font-size:11px;color:var(--ink3)">' + (p.reason || '').substring(0, 60) + '</div></td>' +
+            '<td><span class="cat-badge">' + (p.type || '?') + '</span></td>' +
+            '<td>' + (p.city || '') + '</td>' +
+            '<td style="white-space:nowrap">' +
+            '<button onclick="quickApprove(' + p.id + ')" style="padding:4px 10px;background:var(--green-l);border:0.5px solid var(--green);border-radius:4px;font-size:11px;cursor:pointer;color:var(--green);margin-right:4px">Approve</button>' +
+            '<button onclick="editBusiness(' + p.id + ')" style="padding:4px 10px;background:var(--blue-l);border:0.5px solid var(--blue);border-radius:4px;font-size:11px;cursor:pointer;color:var(--blue);margin-right:4px">Edit</button>' +
+            '<button onclick="deleteBusiness(' + p.id + ')" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
+            '</td></tr>';
+        }).join('') + '</tbody></table></div>';
+    }
+    
+    if (!active.length && !pending.length) {
+      el.innerHTML = '<div class="empty"><div class="empty-icon">&#127978;</div>No businesses added yet.</div>';
+      return;
+    }
+    
+    // Also load pending reviews
+    var pendingReviews = await sb('events?category=eq.review&status=eq.pending&order=created_at.desc&limit=50');
+    var reviewHTML = '';
+    if (pendingReviews.length) {
+      reviewHTML = '<div style="margin-bottom:1.5rem"><div style="font-size:14px;font-weight:500;margin-bottom:8px;color:var(--amber)">&#9201; ' + pendingReviews.length + ' pending reviews</div>' +
+        '<table><thead><tr><th>Review</th><th>Business ID</th><th>By</th><th>Date</th><th>Actions</th></tr></thead><tbody>' +
+        pendingReviews.map(function(r) {
+          var stars = r.title ? r.title.match(/(\d+) stars/) : null;
+          var starCount = stars ? parseInt(stars[1]) : 0;
+          var starStr = '&#9733;'.repeat(starCount) + '&#9734;'.repeat(5 - starCount);
+          return '<tr>' +
+            '<td><div style="color:#f59e0b;font-size:14px">' + starStr + '</div><div style="font-size:12px;color:var(--ink2)">' + (r.description || '') + '</div></td>' +
+            '<td style="font-size:12px">#' + (r.url || '?') + '</td>' +
+            '<td style="font-size:12px">' + (r.city || '') + '</td>' +
+            '<td style="font-size:12px">' + r.event_date + '</td>' +
+            '<td style="white-space:nowrap">' +
+            '<button onclick="approveReview(' + r.id + ')" style="padding:4px 10px;background:var(--green);color:white;border:none;border-radius:4px;font-size:11px;cursor:pointer;margin-right:4px">Approve</button>' +
+            '<button onclick="rejectReview(' + r.id + ')" style="padding:4px 10px;background:var(--red);color:white;border:none;border-radius:4px;font-size:11px;cursor:pointer">Reject</button>' +
+            '</td></tr>';
+        }).join('') + '</tbody></table></div>';
+    }
+    
+    allBizAdmin = items;
+    
+    el.innerHTML = reviewHTML +
+      '<div style="font-size:14px;font-weight:500;margin-bottom:8px">&#127978; All listings (' + items.length + ')</div>' +
+      '<table><thead><tr><th>Business</th><th>Type</th><th>City / Area</th><th>Rating</th><th>Actions</th></tr></thead><tbody>' +
+      items.map(function(b) {
+        var pr = (b.price_range || '').split('|');
+        var rating = '0', reviews = '0';
+        pr.forEach(function(p) { var kv = p.split(':'); if (kv[0]==='rating') rating = kv[1]; if (kv[0]==='reviews') reviews = kv[1]; });
+        return '<tr>' +
+          '<td><div style="font-weight:500">' + (b.emoji || '') + ' ' + b.name + '</div>' +
+          '<div style="font-size:12px;color:var(--ink2);line-height:1.5;margin-top:3px">' + (b.reason || '') + '</div>' +
+          (b.url ? '<a href="' + b.url + '" target="_blank" style="font-size:11px;color:var(--red)">Website &#8599;</a>' : '') +
+          '</td>' +
+          '<td><span class="cat-badge">' + (b.type || '') + '</span></td>' +
+          '<td><div style="font-weight:500">' + (b.city || '') + '</div><div style="font-size:11px;color:var(--ink3)">' + (b.area || '') + '</div></td>' +
+          '<td><div style="color:#f59e0b;font-size:12px">&#9733; ' + rating + '</div><div style="font-size:11px;color:var(--ink3)">' + reviews + ' reviews</div></td>' +
+          '<td style="white-space:nowrap">' +
+          '<button onclick="editBusiness(' + b.id + ')" style="padding:4px 10px;background:var(--blue-l);border:0.5px solid var(--blue);border-radius:4px;font-size:11px;cursor:pointer;color:var(--blue);margin-right:4px">Edit</button>' +
+          '<button class="btn btn-sm btn-red" onclick="deleteBusiness(' + b.id + ')">Delete</button>' +
+          '</td></tr>';
+      }).join('') +
+      '</tbody></table>';
+  } catch(e) {
+    document.getElementById('businesses-table').innerHTML = '<div class="empty"><div class="empty-icon">&#9888;&#65039;</div>Could not load — make sure the local_businesses table exists in Supabase.</div>';
+  }
+}
+
+async function approveReview(id) {
+  await sb('events?id=eq.' + id, { method: 'PATCH', body: { status: 'approved' } });
+  loadBusinesses();
+}
+
+async function rejectReview(id) {
+  if (!confirm('Reject this review?')) return;
+  await sb('events?id=eq.' + id, { method: 'DELETE' });
+  loadBusinesses();
+}
+
+async function updateRating(id) {
+  var rating = prompt('New rating (e.g. 4.7):');
+  if (!rating) return;
+  var reviews = prompt('Number of reviews:');
+  if (!reviews) return;
+  await sb('local_businesses?id=eq.' + id, { method: 'PATCH', body: { price_range: 'rating:' + rating + '|reviews:' + reviews } });
+  loadBusinesses();
+}
+
+async function saveBusiness(editId) {
+  var name   = document.getElementById('biz-name').value.trim();
+  var reason = document.getElementById('biz-reason').value.trim();
+  var city   = document.getElementById('biz-city').value;
+  if (!name || !reason) { alert('Business name and description are required.'); return; }
+  var rating = document.getElementById('biz-rating').value || '0';
+  var reviews = document.getElementById('biz-reviews').value || '0';
+  var data = {
+    name:        name,
+    type:        document.getElementById('biz-type').value,
+    city:        city,
+    area:        document.getElementById('biz-area').value.trim(),
+    reason:      reason,
+    address:     document.getElementById('biz-address').value.trim(),
+    url:         document.getElementById('biz-url').value.trim(),
+    price_range: 'rating:' + rating + '|reviews:' + reviews + '|source:google',
+    emoji:       document.getElementById('biz-emoji').value.trim() || '&#127978;',
+    status:      'active'
+  };
+  try {
+    if (editId) {
+      await sb('local_businesses?id=eq.' + editId, { method: 'PATCH', body: data });
+    } else {
+      await sb('local_businesses', { method: 'POST', body: data });
+    }
+    var msg = document.getElementById('biz-msg');
+    msg.textContent = editId ? 'Updated!' : 'Saved!';
+    msg.style.display = 'inline';
+    setTimeout(function() { msg.style.display = 'none'; }, 2500);
+    clearBizForm();
+    loadBusinesses();
+  } catch(e) {
+    alert('Error saving: ' + e.message);
+  }
+}
+
+function editBusiness(id) {
+  var biz = allBizAdmin.find(function(b) { return b.id === id; });
+  if (!biz) return;
+  document.getElementById('biz-name').value = biz.name || '';
+  document.getElementById('biz-type').value = biz.type || 'cafe';
+  document.getElementById('biz-city').value = biz.city || 'Lisbon';
+  document.getElementById('biz-area').value = biz.area || '';
+  document.getElementById('biz-reason').value = biz.reason || '';
+  document.getElementById('biz-address').value = biz.address || '';
+  document.getElementById('biz-url').value = biz.url || '';
+  document.getElementById('biz-emoji').value = biz.emoji || '&#127978;';
+  document.getElementById('emoji-preview').innerHTML = biz.emoji || '&#127978;';
+  
+  var pr = (biz.price_range || '').split('|');
+  var rating = '0', reviews = '0';
+  pr.forEach(function(p) { var kv = p.split(':'); if (kv[0]==='rating') rating = kv[1]; if (kv[0]==='reviews') reviews = kv[1]; });
+  document.getElementById('biz-rating').value = rating;
+  document.getElementById('biz-reviews').value = reviews;
+  
+  // Change save button to update mode
+  var saveBtn = document.querySelector('#biz-form .btn-green');
+  saveBtn.textContent = 'Save changes';
+  saveBtn.onclick = function() { saveBusiness(id); };
+  
+  // Scroll to form
+  document.getElementById('biz-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+var allBizAdmin = [];
+
+async function deleteBusiness(id) {
+  if (!confirm('Delete this business listing?')) return;
+  await sb('local_businesses?id=eq.' + id, { method: 'DELETE', prefer: 'return=minimal' });
+  loadBusinesses();
+}
+
+function clearBizForm() {
+  ['biz-name','biz-area','biz-reason','biz-address','biz-url','biz-rating','biz-reviews'].forEach(function(id) {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('biz-emoji').value = '&#127978;';
+  document.getElementById('emoji-preview').innerHTML = '&#127978;';
+  document.getElementById('emoji-label').textContent = 'Shop / business (default)';
+  var saveBtn = document.querySelector('#biz-form .btn-green');
+  saveBtn.textContent = '+ Add business';
+  saveBtn.onclick = function() { saveBusiness(); };
+}
+
+// ── COMMUNITIES ──────────────────────────────────────────
+var allCommAdmin = [];
+var editCommId = null;
+
+async function loadCommunities() {
+  try {
+    var items = await sb('local_businesses?type=eq.community&order=name.asc&limit=100');
+    allCommAdmin = items;
+    var el = document.getElementById('communities-table');
+    if (!items.length) {
+      el.innerHTML = '<div class="empty"><div class="empty-icon">&#128101;</div>No communities yet. Add one above.</div>';
+      return;
+    }
+    el.innerHTML = '<table><thead><tr><th>Community</th><th>Type</th><th>City</th><th>Platform</th><th>Members</th><th>Actions</th></tr></thead><tbody>' +
+      items.map(function(c) {
+        var pr = {};
+        (c.price_range || '').split('|').forEach(function(p) { var kv = p.split(':'); pr[kv[0]] = kv[1]; });
+        return '<tr>' +
+          '<td><div style="font-weight:500">' + c.name + '</div>' +
+          '<div style="font-size:11px;color:var(--ink2);margin-top:2px;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (c.reason || '') + '</div>' +
+          (c.url ? '<a href="' + c.url + '" target="_blank" style="font-size:11px;color:var(--red)">Join link &#8599;</a>' : '') +
+          '</td>' +
+          '<td><span class="cat-badge">' + (c.area || '') + '</span></td>' +
+          '<td>' + (c.city || '') + '</td>' +
+          '<td style="font-size:12px">' + (pr.platform || '') + '</td>' +
+          '<td style="font-size:12px">' + (pr.members ? parseInt(pr.members).toLocaleString() : '?') + '</td>' +
+          '<td style="white-space:nowrap">' +
+          '<button onclick="editCommunity(' + c.id + ')" style="padding:4px 10px;background:var(--blue-l);border:0.5px solid var(--blue);border-radius:4px;font-size:11px;cursor:pointer;color:var(--blue);margin-right:4px">Edit</button>' +
+          '<button onclick="deleteCommunity(' + c.id + ')" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
+          '</td></tr>';
+      }).join('') + '</tbody></table>';
+  } catch(e) {
+    document.getElementById('communities-table').innerHTML = '<div class="empty"><div class="empty-icon">&#9888;</div>Could not load communities.</div>';
+  }
+}
+
+async function saveCommunity(overrideId) {
+  var id = overrideId || editCommId;
+  var name = document.getElementById('comm-name').value.trim();
+  var desc = document.getElementById('comm-desc').value.trim();
+  var url = document.getElementById('comm-url').value.trim();
+  if (!name || !desc || !url) { alert('Name, description, and join link are required.'); return; }
+  var members = document.getElementById('comm-members').value || '0';
+  var platform = document.getElementById('comm-platform').value;
+  var region = document.getElementById('comm-city').value.toLowerCase();
+  var data = {
+    name: name,
+    type: 'community',
+    city: document.getElementById('comm-city').value,
+    area: document.getElementById('comm-type').value,
+    reason: desc,
+    url: url,
+    price_range: 'members:' + members + '|platform:' + platform + '|region:' + region,
+    emoji: '👥',
+    status: 'active'
+  };
+  try {
+    if (id) {
+      await sb('local_businesses?id=eq.' + id, { method: 'PATCH', body: data });
+    } else {
+      await sb('local_businesses', { method: 'POST', body: data });
+    }
+    var msg = document.getElementById('comm-msg');
+    msg.textContent = id ? 'Updated!' : 'Saved!';
+    msg.style.display = 'inline';
+    setTimeout(function() { msg.style.display = 'none'; }, 2500);
+    clearCommForm();
+    loadCommunities();
+  } catch(e) { alert('Error: ' + e.message); }
+}
+
+function editCommunity(id) {
+  var c = allCommAdmin.find(function(x) { return x.id === id; });
+  if (!c) return;
+  editCommId = id;
+  document.getElementById('comm-name').value = c.name || '';
+  document.getElementById('comm-type').value = c.area || 'social';
+  document.getElementById('comm-city').value = c.city || 'Lisbon';
+  document.getElementById('comm-desc').value = c.reason || '';
+  document.getElementById('comm-url').value = c.url || '';
+  var pr = {};
+  (c.price_range || '').split('|').forEach(function(p) { var kv = p.split(':'); pr[kv[0]] = kv[1]; });
+  document.getElementById('comm-members').value = pr.members || '';
+  document.getElementById('comm-platform').value = pr.platform || 'Meetup';
+  document.getElementById('comm-save-btn').textContent = 'Save changes';
+  document.getElementById('comm-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function deleteCommunity(id) {
+  if (!confirm('Delete this community?')) return;
+  await sb('local_businesses?id=eq.' + id, { method: 'DELETE' });
+  loadCommunities();
+}
+
+function clearCommForm() {
+  editCommId = null;
+  ['comm-name','comm-desc','comm-url','comm-members'].forEach(function(id) {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('comm-save-btn').textContent = '+ Add community';
+}
+
+// ── SERVICES ──────────────────────────────────────────
+var allSvcAdmin = [];
+var editSvcId = null;
+
+async function loadServices() {
+  try {
+    var items = await sb('local_businesses?type=eq.service&order=name.asc&limit=100');
+    allSvcAdmin = items;
+    var el = document.getElementById('services-table');
+    
+    var pending = items.filter(function(s) { return s.status === 'pending'; });
+    var active = items.filter(function(s) { return s.status !== 'pending'; });
+    
+    var html = '';
+    if (pending.length) {
+      html += '<div style="margin-bottom:1.5rem"><div style="font-size:14px;font-weight:500;margin-bottom:8px;color:var(--amber)">&#9201; ' + pending.length + ' pending approval</div>' +
+        '<table><thead><tr><th>Provider</th><th>Category</th><th>City</th><th>Actions</th></tr></thead><tbody>' +
+        pending.map(function(s) {
+          return '<tr style="background:var(--amber-l)">' +
+            '<td><div style="font-weight:500">' + (s.emoji||'') + ' ' + s.name + '</div><div style="font-size:11px;color:var(--ink3)">' + (s.reason || '').substring(0, 60) + '</div></td>' +
+            '<td><span class="cat-badge">' + (s.area || '?') + '</span></td>' +
+            '<td>' + (s.city || '') + '</td>' +
+            '<td style="white-space:nowrap">' +
+            '<button onclick="quickApprove(' + s.id + ')" style="padding:4px 10px;background:var(--green-l);border:0.5px solid var(--green);border-radius:4px;font-size:11px;cursor:pointer;color:var(--green);margin-right:4px">Approve</button>' +
+            '<button onclick="editService(' + s.id + ')" style="padding:4px 10px;background:var(--blue-l);border:0.5px solid var(--blue);border-radius:4px;font-size:11px;cursor:pointer;color:var(--blue);margin-right:4px">Edit</button>' +
+            '<button onclick="deleteService(' + s.id + ')" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
+            '</td></tr>';
+        }).join('') + '</tbody></table></div>';
+    }
+    
+    if (!active.length && !pending.length) {
+      el.innerHTML = '<div class="empty"><div class="empty-icon">&#129657;</div>No services yet.</div>';
+      return;
+    }
+    
+    html += '<table><thead><tr><th>Provider</th><th>Category</th><th>City</th><th>Rating</th><th>Status</th><th>Actions</th></tr></thead><tbody>' +
+      active.map(function(s) {
+        var pr = {};
+        (s.price_range || '').split('|').forEach(function(p) { var kv = p.split(':'); if(kv.length>=2) pr[kv[0]] = kv.slice(1).join(':'); });
+        return '<tr>' +
+          '<td><div style="font-weight:500">' + s.emoji + ' ' + s.name + '</div><div style="font-size:11px;color:var(--ink3)">' + (s.reason || '').substring(0, 60) + '</div>' +
+          (s.url ? '<div style="font-size:10px;color:var(--blue)"><a href="' + s.url + '" target="_blank">' + s.url.substring(0, 35) + '</a></div>' : '') + '</td>' +
+          '<td><span class="cat-badge">' + (s.area || '?') + '</span></td>' +
+          '<td>' + (s.city || '') + '</td>' +
+          '<td style="font-size:12px">' + (pr.rating || '—') + ' &#9733; (' + (pr.reviews || '0') + ')</td>' +
+          '<td><span class="cat-badge" style="' + (s.status==='active'?'background:var(--green-l);color:var(--green)':'') + '">' + (s.status || 'pending') + '</span></td>' +
+          '<td style="white-space:nowrap">' +
+          '<button onclick="editService(' + s.id + ')" style="padding:4px 10px;background:var(--blue-l);border:0.5px solid var(--blue);border-radius:4px;font-size:11px;cursor:pointer;color:var(--blue);margin-right:4px">Edit</button>' +
+          '<button onclick="deleteService(' + s.id + ')" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
+          '</td></tr>';
+      }).join('') + '</tbody></table>';
+    el.innerHTML = html;
+  } catch(e) { document.getElementById('services-table').innerHTML = '<div class="empty">Could not load.</div>'; }
+}
+
+async function saveService(existingId) {
+  var id = existingId || editSvcId;
+  var name = document.getElementById('svc-name').value.trim();
+  var cat = document.getElementById('svc-cat').value;
+  if (!name) { alert('Provider name is required.'); return; }
+  var rating = document.getElementById('svc-rating').value || '0';
+  var reviews = document.getElementById('svc-reviews').value || '0';
+  var role = document.getElementById('svc-role').value.trim();
+  var pr = 'rating:' + rating + '|reviews:' + reviews + '|source:google|role:' + role;
+  var data = {
+    name: name, type: 'service', city: document.getElementById('svc-city').value,
+    area: cat, reason: document.getElementById('svc-desc').value.trim(),
+    url: document.getElementById('svc-url').value.trim(),
+    emoji: document.getElementById('svc-emoji').value.trim() || '🩺',
+    price_range: pr, status: 'active'
+  };
+  try {
+    if (id) { await sb('local_businesses?id=eq.' + id, { method: 'PATCH', body: data }); }
+    else { await sb('local_businesses', { method: 'POST', body: data }); }
+    var msg = document.getElementById('svc-msg');
+    msg.textContent = id ? 'Updated!' : 'Saved!';
+    msg.style.display = 'inline';
+    setTimeout(function() { msg.style.display = 'none'; }, 2500);
+    clearSvcForm();
+    loadServices();
+  } catch(e) { alert('Error: ' + e.message); }
+}
+
+function editService(id) {
+  var s = allSvcAdmin.find(function(x) { return x.id === id; });
+  if (!s) return;
+  editSvcId = id;
+  document.getElementById('svc-name').value = s.name || '';
+  document.getElementById('svc-cat').value = s.area || 'health';
+  document.getElementById('svc-city').value = s.city || 'Lisbon';
+  document.getElementById('svc-url').value = s.url || '';
+  document.getElementById('svc-desc').value = s.reason || '';
+  document.getElementById('svc-emoji').value = s.emoji || '🩺';
+  var pr = {};
+  (s.price_range || '').split('|').forEach(function(p) { var kv = p.split(':'); if(kv.length>=2) pr[kv[0]] = kv.slice(1).join(':'); });
+  document.getElementById('svc-rating').value = pr.rating || '';
+  document.getElementById('svc-reviews').value = pr.reviews || '';
+  document.getElementById('svc-role').value = pr.role || '';
+  document.getElementById('svc-save-btn').textContent = 'Save changes';
+  document.getElementById('svc-form').scrollIntoView({ behavior: 'smooth' });
+}
+
+async function deleteService(id) {
+  if (!confirm('Delete this service?')) return;
+  await sb('local_businesses?id=eq.' + id, { method: 'DELETE' });
+  loadServices();
+}
+
+function clearSvcForm() {
+  editSvcId = null;
+  ['svc-name','svc-url','svc-desc','svc-role','svc-rating','svc-reviews'].forEach(function(id) { document.getElementById(id).value = ''; });
+  document.getElementById('svc-emoji').value = '🩺';
+  document.getElementById('svc-save-btn').textContent = '+ Add service';
+}
+
+// ── HOUSING ──────────────────────────────────────────
+var allHousingAdmin = [];
+var editHousingId = null;
+
+async function loadHousing() {
+  try {
+    var items = await sb('local_businesses?type=eq.housing&order=created_at.desc&limit=100');
+    allHousingAdmin = items;
+    
+    /* Apply tier filter */
+    var tierFilter = document.getElementById('h-filter-tier').value;
+    var filtered = items;
+    if (tierFilter) {
+      filtered = items.filter(function(h) {
+        var pr = {};
+        (h.price_range || '').split('|').forEach(function(p) { var kv = p.split(':'); if(kv.length>=2) pr[kv[0]] = kv.slice(1).join(':'); });
+        var tier = pr.tier || 'free';
+        if (tierFilter === 'free') return tier !== 'basic' && tier !== 'featured';
+        return tier === tierFilter;
+      });
+    }
+    
+    /* Apply sort */
+    var sortOrder = document.getElementById('h-filter-sort').value;
+    filtered.sort(function(a, b) {
+      var da = new Date(a.created_at || 0).getTime();
+      var db = new Date(b.created_at || 0).getTime();
+      return sortOrder === 'oldest' ? da - db : db - da;
+    });
+    
+    var el = document.getElementById('housing-table');
+    if (!filtered.length) {
+      el.innerHTML = '<div class="empty"><div class="empty-icon">&#127968;</div>No housing listings' + (tierFilter ? ' for this filter' : ' yet') + '.</div>';
+      return;
+    }
+    el.innerHTML = '<table><thead><tr><th>Listing</th><th>City</th><th>Rent</th><th>Tier</th><th>Status</th><th>Listed</th><th>Last confirmed</th><th>Actions</th></tr></thead><tbody>' +
+      filtered.map(function(h) {
+        var pr = {};
+        (h.price_range || '').split('|').forEach(function(p) { var kv = p.split(':'); if(kv.length>=2) pr[kv[0]] = kv.slice(1).join(':'); });
+        var confirmed = pr.confirmed || 'never';
+        var daysSince = confirmed !== 'never' ? Math.floor((Date.now() - new Date(confirmed).getTime()) / 86400000) : 999;
+        var tier = pr.tier || 'free';
+        var isFree = tier !== 'basic' && tier !== 'featured';
+        var needsAttention = (isFree && daysSince > 7) || (!isFree && daysSince > 30);
+        var confirmBadge = confirmed === 'never' ? '<span style="color:var(--ink3);font-size:11px">Never</span>' :
+          '<span style="font-size:11px;color:' + (needsAttention ? 'var(--red)' : 'var(--green)') + '">' + confirmed + (needsAttention ? ' &#9888;' : ' &#9989;') + '</span>';
+        var listedDate = h.created_at ? new Date(h.created_at).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}) : '?';
+        var daysAgo = h.created_at ? Math.floor((Date.now() - new Date(h.created_at).getTime()) / 86400000) : 0;
+        var listedLabel = daysAgo === 0 ? 'Today' : daysAgo === 1 ? 'Yesterday' : daysAgo + 'd ago';
+        return '<tr style="' + (h.status==='paused'?'opacity:0.5;':'') + (needsAttention&&h.status==='active'?'background:var(--red-l)':'') + '">' +
+          '<td><div style="font-weight:500">' + h.name + '</div><div style="font-size:11px;color:var(--ink3)">' + (h.reason||'').substring(0,50) + '</div>' +
+          (h.url ? '<div style="font-size:10px;color:var(--ink3)">' + h.url + '</div>' : '') + '</td>' +
+          '<td>' + (h.city||'') + '</td>' +
+          '<td style="font-weight:500">&euro;' + (pr.rent||'?') + '</td>' +
+          '<td><span class="cat-badge" style="' + (tier==='featured'?'background:var(--amber-l);color:var(--amber)':'') + '">' + tier + '</span></td>' +
+          '<td><span class="cat-badge" style="' + (h.status==='active'?'background:var(--green-l);color:var(--green)':h.status==='paused'?'background:var(--amber-l);color:var(--amber)':'') + '">' + (h.status||'pending') + '</span></td>' +
+          '<td style="font-size:11px"><div>' + listedDate + '</div><div style="color:var(--ink3)">' + listedLabel + '</div></td>' +
+          '<td>' + confirmBadge + '</td>' +
+          '<td style="white-space:nowrap">' +
+          (h.status!=='active'?'<button onclick="pushLive(' + h.id + ')" style="padding:4px 10px;background:var(--green-l);border:0.5px solid var(--green);border-radius:4px;font-size:11px;cursor:pointer;color:var(--green);margin-right:4px">Push live</button>':'') +
+          '<button onclick="editHousing(' + h.id + ')" style="padding:4px 10px;background:var(--blue-l);border:0.5px solid var(--blue);border-radius:4px;font-size:11px;cursor:pointer;color:var(--blue);margin-right:4px">Edit</button>' +
+          '<button onclick="deleteHousing(' + h.id + ')" style="padding:4px 10px;background:var(--red-l);border:0.5px solid var(--red);border-radius:4px;font-size:11px;cursor:pointer;color:var(--red)">Delete</button>' +
+          '</td></tr>';
+      }).join('') + '</tbody></table>';
+  } catch(e) { document.getElementById('housing-table').innerHTML = '<div class="empty">Could not load.</div>'; }
+  
+  /* Load inquiries */
+  try {
+    var inquiries = await sb('events?category=eq.inquiry&order=created_at.desc&limit=50');
+    var iq = document.getElementById('housing-inquiries');
+    if (!inquiries.length) {
+      iq.innerHTML = '<div class="empty"><div class="empty-icon">&#128172;</div>No inquiries yet.</div>';
+    } else {
+      iq.innerHTML = inquiries.map(function(inq) {
+        var lines = (inq.description || '').split('\n');
+        return '<div style="padding:12px;border-bottom:0.5px solid var(--border);' + (inq.status==='pending'?'background:var(--amber-l)':'') + '">' +
+          '<div style="font-size:13px;font-weight:500">' + inq.title + '</div>' +
+          '<div style="font-size:12px;color:var(--ink2);white-space:pre-line;margin:6px 0;line-height:1.6">' + inq.description + '</div>' +
+          '<div style="display:flex;gap:6px;align-items:center">' +
+          '<span style="font-size:11px;color:var(--ink3)">' + (inq.event_date || '') + '</span>' +
+          (inq.status==='pending' ? '<button onclick="markInquiry('+inq.id+')" style="padding:3px 10px;background:var(--green-l);border:0.5px solid var(--green);border-radius:4px;font-size:10px;cursor:pointer;color:var(--green)">Mark handled</button>' : '<span style="font-size:10px;color:var(--green)">&#9989; Handled</span>') +
+          '</div></div>';
+      }).join('');
+    }
+  } catch(e) {}
+}
+
+async function saveHousing() {
+  var title = document.getElementById('h-title').value.trim();
+  var contact = document.getElementById('h-contact').value.trim();
+  var cityVal = document.getElementById('h-city').value;
+  var city = cityVal === 'other' ? document.getElementById('h-city-other').value.trim() : cityVal;
+  if (!title || !contact || !city) { alert('Title, city, and contact email are required.'); return; }
+  var rent = document.getElementById('h-rent').value || '0';
+  var pr = 'rent:' + rent + '|type:' + document.getElementById('h-type').value + '|available:' + document.getElementById('h-from').value + '|until:' + document.getElementById('h-until').value + '|tier:' + document.getElementById('h-tier').value + '|kind:' + document.getElementById('h-kind').value;
+  var data = {
+    name: title, type: 'housing', city: city,
+    area: document.getElementById('h-hood').value.trim(), reason: document.getElementById('h-desc').value.trim(),
+    url: contact, price_range: pr, address: document.getElementById('h-img').value.trim(),
+    emoji: '🏠', status: 'active'
+  };
+  try {
+    if (editHousingId) { await sb('local_businesses?id=eq.' + editHousingId, { method: 'PATCH', body: data }); }
+    else { await sb('local_businesses', { method: 'POST', body: data }); }
+    var msg = document.getElementById('h-msg');
+    msg.textContent = editHousingId ? 'Updated!' : 'Saved!';
+    msg.style.display = 'inline';
+    setTimeout(function() { msg.style.display = 'none'; }, 2500);
+    clearHousingForm();
+    loadHousing();
+  } catch(e) { alert('Error: ' + e.message); }
+}
+
+function editHousing(id) {
+  var h = allHousingAdmin.find(function(x) { return x.id === id; });
+  if (!h) return;
+  editHousingId = id;
+  document.getElementById('h-title').value = h.name || '';
+  var mainCities = ['Lisbon','Porto','Algarve','Cascais','Ericeira','Peniche','Mafra','Braga','Alentejo','Madeira'];
+  if (mainCities.indexOf(h.city) !== -1) {
+    document.getElementById('h-city').value = h.city || 'Lisbon';
+    document.getElementById('h-city-other').style.display = 'none';
+  } else {
+    document.getElementById('h-city').value = 'other';
+    document.getElementById('h-city-other').style.display = 'block';
+    document.getElementById('h-city-other').value = h.city || '';
+  }
+  document.getElementById('h-hood').value = h.area || '';
+  document.getElementById('h-desc').value = h.reason || '';
+  document.getElementById('h-contact').value = h.url || '';
+  document.getElementById('h-img').value = h.address || '';
+  var pr = {};
+  (h.price_range || '').split('|').forEach(function(p) { var kv = p.split(':'); if(kv.length>=2) pr[kv[0]] = kv.slice(1).join(':'); });
+  document.getElementById('h-rent').value = pr.rent || '';
+  document.getElementById('h-type').value = pr.type || '1bed';
+  document.getElementById('h-from').value = pr.available || '';
+  document.getElementById('h-until').value = pr.until || '';
+  document.getElementById('h-tier').value = pr.tier || 'basic';
+  document.getElementById('h-kind').value = pr.kind || 'available';
+  document.getElementById('h-save-btn').textContent = 'Save changes';
+  document.getElementById('housing-form').scrollIntoView({ behavior: 'smooth' });
+}
+
+async function deleteHousing(id) {
+  if (!confirm('Delete this listing?')) return;
+  await sb('local_businesses?id=eq.' + id, { method: 'DELETE' });
+  loadHousing();
+}
+
+async function pushLive(id) {
+  await sb('local_businesses?id=eq.' + id, { method: 'PATCH', body: { status: 'active' } });
+  loadHousing();
+}
+
+async function markInquiry(id) {
+  await sb('events?id=eq.' + id, { method: 'PATCH', body: { status: 'handled' } });
+  loadHousing();
+}
+
+function clearHousingForm() {
+  editHousingId = null;
+  ['h-title','h-hood','h-desc','h-contact','h-img','h-rent','h-from','h-until'].forEach(function(id) { document.getElementById(id).value = ''; });
+  document.getElementById('h-save-btn').textContent = '+ Add listing';
+}
+
+// ── INIT ──────────────────────────────────────────────────
+document.getElementById('cfg-url').value = SUPABASE_URL;
+document.getElementById('cfg-key').value = SUPABASE_KEY;
+document.getElementById('cfg-bd-key').value = BD_KEY;
+
+document.getElementById('last-run').textContent = 'Last refresh: ' + new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+</script>
+</body>
+</html>
