@@ -14,7 +14,7 @@
 <title>ExpatPortugal.guide — Your expat life in Portugal, sorted</title>
 <meta name="description" content="Events, local services, housing, communities, business directory, free tools, and daily news for expats in Portugal. Find English-speaking services, housing, and everything you need to feel at home. Updated daily." />
 <meta name="keywords" content="expat Portugal, expats Lisbon, Portugal expat services, English speaking dentist Portugal, events Portugal expats, digital nomad Portugal, moving to Portugal, NIF Portugal, D7 visa Portugal, expat community Portugal" />
-<link rel="canonical" href="https://expatportugal-guide.vercel.app/" />
+<link rel="canonical" href="https://expatportugal.guide/" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="ExpatPortugal.guide — Your expat life in Portugal, sorted" />
 <meta property="og:description" content="Events, local services, housing, communities, free tools, and daily news for expats in Portugal. Updated daily." />
@@ -27,10 +27,10 @@
 <meta name="twitter:description" content="Events, services, housing, communities, tools, and news for expats in Portugal." />
 <meta name="twitter:image" content="https://images.unsplash.com/photo-1513735492246-483525079686?w=1200&h=630&fit=crop" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","name":"ExpatPortugal.guide","url":"https://expatportugal-guide.vercel.app/","description":"Events, local services, business directory, free tools, and daily news for expats in Portugal.","potentialAction":{"@type":"SearchAction","target":"https://expatportugal-guide.vercel.app/directory.html?q={search_term_string}","query-input":"required name=search_term_string"}}
+{"@context":"https://schema.org","@type":"WebSite","name":"ExpatPortugal.guide","url":"https://expatportugal.guide/","description":"Events, local services, business directory, free tools, and daily news for expats in Portugal.","potentialAction":{"@type":"SearchAction","target":"https://expatportugal.guide/directory.html?q={search_term_string}","query-input":"required name=search_term_string"}}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Organization","name":"ExpatPortugal.guide","url":"https://expatportugal-guide.vercel.app/","description":"The daily resource for English-speaking expats in Portugal","contactPoint":{"@type":"ContactPoint","email":"hello@expatportugal.guide","contactType":"customer service"}}
+{"@context":"https://schema.org","@type":"Organization","name":"ExpatPortugal.guide","url":"https://expatportugal.guide/","description":"The daily resource for English-speaking expats in Portugal","contactPoint":{"@type":"ContactPoint","email":"hello@expatportugal.guide","contactType":"customer service"}}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -215,9 +215,9 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 2rem 2rem;
 <body>
 
 <nav>
-  <a class="logo" href="index.html">&#127477;&#127481; ExpatPortugal<span style="font-weight:300;opacity:.5">.guide</span></a>
+  <a class="logo" href="site.html">&#127477;&#127481; ExpatPortugal<span style="font-weight:300;opacity:.5">.guide</span></a>
   <div class="nav-links">
-    <a class="nl on" href="index.html">Home</a>
+    <a class="nl on" href="site.html">Home</a>
     <a class="nl" href="calendar.html">Events</a>
     <a class="nl" href="directory.html">Explore</a>
     <a class="nl" href="lifestyle_services.html">Services</a>
@@ -781,7 +781,7 @@ async function sendChat() {
       '4. EVENTS: Tell them about upcoming events this week. Direct to the events section on the homepage or full calendar.\n\n' +
       '5. LOCAL RECOMMENDATIONS: Cafes, restaurants, markets, cultural spots. Be specific with real place names.\n\n' +
       '6. INTEGRATION: Direct to live_local.html for language exchange, volunteering, Portuguese phrases.\n\n' +
-      'RULES:\n- Be warm, conversational, and concise (max 150 words per response)\n- Use real place names in Portugal — never make up businesses\n- Include clickable links where relevant using HTML: <a href="page.html">link text</a>\n- Available pages: index.html (home), tools.html (tools), lifestyle_services.html (services), live_local.html (integration), news.html (news), advertise.html (for businesses)\n- If asked about something outside Portugal expat life, gently redirect\n- Always be helpful and positive about life in Portugal\n- For day planning, ask their location and who they are if not provided\n- Today is ' + new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      'RULES:\n- Be warm, conversational, and concise (max 150 words per response)\n- Use real place names in Portugal — never make up businesses\n- Include clickable links where relevant using HTML: <a href="site.html">link text</a>\n- Available pages: index.html (home), tools.html (tools), lifestyle_services.html (services), live_local.html (integration), news.html (news), advertise.html (for businesses)\n- If asked about something outside Portugal expat life, gently redirect\n- Always be helpful and positive about life in Portugal\n- For day planning, ask their location and who they are if not provided\n- Today is ' + new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
     var messages = [{ role: 'user', content: systemPrompt + '\n\nConversation so far:\n' + chatHistory.map(function(m) { return m.role + ': ' + m.content; }).join('\n') }];
 
