@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin.html
 Disallow: /advertise.html
-Sitemap: https://expatportugal-guide.vercel.app/sitemap.xml
+Sitemap: https://expatportugal.guide/sitemap.xml
