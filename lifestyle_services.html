@@ -310,7 +310,7 @@ function renderServices(){
     var photos=isClaimed&&s.address?s.address.split(',').filter(Boolean):[];
     var photoHTML=photos.length?'<div style="display:flex;gap:3px;margin:8px 0;overflow:hidden;border-radius:8px;height:60px">'+photos.slice(0,isFeatured?5:3).map(function(p){return '<img src="'+p.trim()+'" style="height:60px;object-fit:cover;flex:1;min-width:0" onerror="this.remove()" />';}).join('')+'</div>':'';
     var borderStyle=isFeatured?'border:1.5px solid #b45309;':'';
-    var contactLabel=isClaimed?'Visit website &rarr;':(s.url?'More info &rarr;':'Contact &rarr;');
+    var contactLabel=isClaimed?'Visit website &rarr;':(s.url?'&#128205; Find on Google Maps':'Contact &rarr;');
     return '<div class="sc" style="'+borderStyle+'"><div class="sc-top"><div class="sc-icon" style="background:'+cs.bg+'">'+s.emoji+'</div><div><div class="sc-name">'+s.name+badge+'</div><div class="sc-role">'+s.role+'</div></div></div>'+
     ratingHTML+photoHTML+
     '<div class="sc-tags">'+s.tags.map(function(t){return '<span class="sc-tag" style="background:'+cs.bg+';color:'+cs.color+'">'+t+'</span>';}).join('')+'</div>'+
