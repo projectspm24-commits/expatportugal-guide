@@ -836,40 +836,69 @@ let currentPanel = 'articles';
 // ── AUTH ─────────────────────────────────────────────────
 /* TOTP verification */
 var TOTP_SECRET_HEX = 'b62ae964487665f847fde74242563879b9c470a2';
-function verifyTOTP(code) {
-  function hmacSha1(key, msg) {
-    /* Simple HMAC-SHA1 using SubtleCrypto is async, so use a sync JS implementation */
-    var ipad = new Uint8Array(64), opad = new Uint8Array(64);
-    for (var i = 0; i < key.length; i++) { ipad[i] = key[i] ^ 0x36; opad[i] = key[i] ^ 0x5c; }
-    for (var i = key.length; i < 64; i++) { ipad[i] = 0x36; opad[i] = 0x5c; }
-    /* We'll use a pre-computed approach instead — check +/- 1 time step */
-    return null;
-  }
-  /* Since client-side TOTP is complex, we verify by calling a serverless function */
+function verifyTOTP(code, trustToken) {
   return fetch('/api/verify-totp', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ code: code })
+    body: JSON.stringify({ code: code, trustToken: trustToken || null })
   }).then(function(r) { return r.json(); });
 }
 
 function doLogin() {
   const pass = document.getElementById('login-pass').value;
-  const totp = document.getElementById('login-totp').value.trim();
   if (pass !== ADMIN_PASS) {
     document.getElementById('login-err').style.display = 'block';
     return;
   }
-  if (!totp || totp.length !== 6) {
-    document.getElementById('login-err').textContent = 'Enter 6-digit authenticator code';
-    document.getElementById('login-err').style.display = 'block';
+  
+  var btn = document.querySelector('.login-btn');
+  btn.textContent = 'Verifying...';
+  btn.disabled = true;
+  
+  // Check if this device is trusted (skip TOTP)
+  var savedTrust = localStorage.getItem('admin_trust_token');
+  if (savedTrust) {
+    verifyTOTP('000000', savedTrust).then(function(result) {
+      if (result && result.valid && result.trusted) {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('app').style.display = 'flex';
+        loadMetrics();
+        loadArticles();
+        return;
+      }
+      // Trust expired — need TOTP
+      localStorage.removeItem('admin_trust_token');
+      showTOTPStep();
+    }).catch(function() {
+      localStorage.removeItem('admin_trust_token');
+      showTOTPStep();
+    });
     return;
   }
+  
+  showTOTPStep();
+}
+
+function showTOTPStep() {
   var btn = document.querySelector('.login-btn');
+  var totp = document.getElementById('login-totp').value.trim();
+  if (!totp || totp.length !== 6) {
+    document.getElementById('login-totp').style.display = 'block';
+    document.getElementById('login-totp').focus();
+    document.getElementById('login-err').textContent = 'Enter 6-digit authenticator code';
+    document.getElementById('login-err').style.display = 'block';
+    btn.textContent = 'Sign in';
+    btn.disabled = false;
+    return;
+  }
   btn.textContent = 'Verifying...';
   btn.disabled = true;
   verifyTOTP(totp).then(function(result) {
     if (result && result.valid) {
+      // Save trust token for this device (7 days)
+      if (result.trustToken) {
+        localStorage.setItem('admin_trust_token', result.trustToken);
+      }
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('app').style.display = 'flex';
       loadMetrics();
