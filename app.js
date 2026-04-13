@@ -720,7 +720,7 @@ async function loadHomeHousing() {
       });
     }
     if (!items.length) {
-      el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2rem;background:var(--card);border-radius:var(--rl)"><div style="font-size:24px;margin-bottom:6px">&#127968;</div><div style="font-size:14px;font-weight:500;margin-bottom:4px">Housing board launching soon</div><div style="font-size:12px;color:var(--ink3)">List your place or find your next home.</div></div>';
+      el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2.5rem 1.5rem;background:var(--card);border-radius:var(--rl);border:0.5px solid var(--border)"><div style="font-size:28px;margin-bottom:8px">&#127968;</div><div style="font-size:15px;font-weight:500;margin-bottom:4px">Find or list a home in Portugal</div><div style="font-size:12px;color:var(--ink3);margin-bottom:16px;line-height:1.5">Rooms, apartments, and houses shared by the expat community.</div><a href="housing.html" style="display:inline-block;padding:10px 24px;background:var(--red);color:white;border-radius:var(--r);font-size:13px;font-weight:500;text-decoration:none;transition:background .2s" onmouseover="this.style.background=\'var(--red-d)\'" onmouseout="this.style.background=\'var(--red)\'">&#10133; Add your place &rarr;</a></div>';
       return;
     }
     /* Split: available listings as cards, looking posts as compact list */
