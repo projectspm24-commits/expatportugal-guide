@@ -173,7 +173,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
       <div class="hero-t">Expat housing board</div>
       <div class="hero-sub">Medium-term furnished rentals (1&ndash;6 months) posted by expats, for expats. Perfect for when you've just arrived, you're between apartments, or you're traveling and want to rent yours out.</div>
     </div>
-    <button class="hero-btn" onclick="openPricing()">List your place &darr;</button>
+    <button class="hero-btn" onclick="document.getElementById('list-form-section').scrollIntoView({behavior:'smooth'})">List your place free &darr;</button>
   </div>
 
   <div class="filter-row">
@@ -226,7 +226,34 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
   <div id="listings"><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div></div>
 
   <!-- PRICING MODAL -->
-  <div class="modal-bg" id="pricing-modal" onclick="if(event.target===this)closePricing()">
+  <!-- FREE LISTING FORM -->
+  <div style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.5rem;margin-bottom:1.5rem" id="list-form-section">
+    <div style="font-size:15px;font-weight:500;margin-bottom:4px">&#127968; List your place (free)</div>
+    <div style="font-size:12px;color:var(--ink2);margin-bottom:14px;line-height:1.6">Reach expats looking for medium-term housing in Portugal. Free, goes live after review within 24 hours.</div>
+    <div id="list-form">
+      <input id="ls-title" type="text" placeholder="Listing title (e.g. Sunny 1-bed in Estrela) *" style="width:100%;padding:10px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:14px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream);margin-bottom:8px" />
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+        <select id="ls-city" style="padding:10px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:14px;font-family:'Outfit',sans-serif;background:var(--cream)">
+          <option value="">City *</option><option>Lisbon</option><option>Porto</option><option>Algarve</option><option>Cascais</option><option>Ericeira</option><option>Peniche</option><option>Braga</option><option>Alentejo</option><option>Madeira</option><option>Coimbra</option>
+        </select>
+        <input id="ls-hood" type="text" placeholder="Neighbourhood" style="padding:10px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:14px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">
+        <input id="ls-rent" type="number" placeholder="Rent €/month *" style="padding:10px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:14px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+        <input id="ls-from" type="date" title="Available from" style="padding:10px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:14px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+        <input id="ls-until" type="date" title="Available until" style="padding:10px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:14px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+      </div>
+      <select id="ls-type" style="width:100%;padding:10px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:14px;font-family:'Outfit',sans-serif;background:var(--cream);margin-bottom:8px">
+        <option value="">Apartment type *</option><option value="studio">Studio</option><option value="1bed">1 bedroom</option><option value="2bed">2 bedrooms</option><option value="3bed">3+ bedrooms</option><option value="room">Room in shared apartment</option>
+      </select>
+      <textarea id="ls-desc" placeholder="Describe your place — what makes it great? (furnished, balcony, metro nearby, etc.) *" style="width:100%;padding:10px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:14px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream);margin-bottom:8px;min-height:80px;resize:vertical"></textarea>
+      <input id="ls-email" type="email" placeholder="Your contact email *" style="width:100%;padding:10px 12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:14px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream);margin-bottom:10px" />
+      <button onclick="submitListing()" style="width:100%;padding:12px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:14px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif">List your place free &rarr;</button>
+    </div>
+  </div>
+
+  <!-- HIDDEN: old pricing modal kept for future use -->
+  <div class="modal-bg" id="pricing-modal" style="display:none!important" onclick="if(event.target===this)closePricing()">
     <div class="modal" id="pricing-panel">
       <button onclick="closePricing()" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--ink3)">&times;</button>
       <div style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:4px">List your place</div>
@@ -299,9 +326,9 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:1rem">
       <div>
         <div style="font-family:'Playfair Display',serif;font-size:18px;margin-bottom:2px">Have a place to list?</div>
-        <div style="font-size:13px;color:var(--ink2)">From &euro;9 for 60 days. Featured from &euro;29.</div>
+        <div style="font-size:13px;color:var(--ink2)">Free to list. Reach expats across Portugal.</div>
       </div>
-      <button class="hero-btn" onclick="openPricing()">See pricing &amp; list &rarr;</button>
+      <button class="hero-btn" onclick="document.getElementById('list-form-section').scrollIntoView({behavior:'smooth'})">List your place free &rarr;</button>
     </div>
   </div>
 
@@ -414,7 +441,7 @@ function renderListings(){
   var html='';
   
   if(!available.length && !looking.length){
-    el.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:3rem;background:var(--card);border-radius:var(--rl)"><div style="font-size:28px;margin-bottom:8px">&#127968;</div><div style="font-size:15px;font-weight:500;margin-bottom:4px">The housing board is launching soon</div><div style="font-size:13px;color:var(--ink3);margin-bottom:14px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.7">Be among the first to list your place or find your next home.</div><button class="hero-btn" onclick="openPricing()">List your place now &darr;</button></div>';
+    el.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:3rem;background:var(--card);border-radius:var(--rl)"><div style="font-size:28px;margin-bottom:8px">&#127968;</div><div style="font-size:15px;font-weight:500;margin-bottom:4px">The housing board is launching soon</div><div style="font-size:13px;color:var(--ink3);margin-bottom:14px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.7">Be among the first to list your place or find your next home.</div><button class="hero-btn" onclick="document.getElementById('list-form-section').scrollIntoView({behavior:'smooth'})">List your place free &darr;</button></div>';
     return;
   }
 
@@ -554,6 +581,28 @@ async function sendInquiry(id,title,listerEmail){
 }
 
 function setAvail(v,el){availFilter=v;document.querySelectorAll('.filter-bar .fb').forEach(function(b){b.classList.remove('on');});el.classList.add('on');renderListings();}
+
+async function submitListing(){
+  var title=document.getElementById('ls-title').value.trim();
+  var city=document.getElementById('ls-city').value;
+  var hood=document.getElementById('ls-hood').value.trim();
+  var rent=document.getElementById('ls-rent').value;
+  var from=document.getElementById('ls-from').value;
+  var until=document.getElementById('ls-until').value;
+  var type=document.getElementById('ls-type').value;
+  var desc=document.getElementById('ls-desc').value.trim();
+  var email=document.getElementById('ls-email').value.trim();
+  if(!title||!city||!rent||!type||!desc||!email){alert('Please fill in all required fields.');return;}
+  try{
+    var pr='rent:'+rent+'|type:'+type+'|available:'+(from||'')+'|until:'+(until||'')+'|tier:basic|kind:available|confirmed:'+new Date().toISOString().slice(0,10);
+    await fetch(SB_URL+'/rest/v1/local_businesses',{
+      method:'POST',
+      headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},
+      body:JSON.stringify({name:title,type:'housing',city:city,area:hood,reason:desc,url:email,price_range:pr,emoji:'🏠',status:'pending'})
+    });
+    document.getElementById('list-form').innerHTML='<div style="text-align:center;padding:1.5rem"><div style="font-size:28px;margin-bottom:8px">🏠</div><div style="font-size:15px;font-weight:500;margin-bottom:4px">Your listing has been submitted!</div><div style="font-size:13px;color:var(--ink2);line-height:1.6">We\'ll review it and publish within 24 hours. You\'ll be contacted via '+email+'.</div></div>';
+  }catch(e){alert('Something went wrong. Please try again or email housing@expatportugal.guide');}
+}
 
 async function postLooking(){
   var title=document.getElementById('lk-title').value.trim();
