@@ -286,10 +286,17 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
       <option value="other">Other...</option>
     </select>
     <input id="se-cat-other" type="text" placeholder="Enter event type..." style="display:none;width:100%;padding:9px 11px;border:0.5px solid var(--border);border-radius:var(--r);font-size:14px;margin-bottom:8px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+    <div style="font-size:11px;color:var(--ink3);margin-bottom:4px;margin-top:2px">Start date &amp; time *</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
       <input id="se-date" type="date" style="width:100%;padding:9px 11px;border:0.5px solid var(--border);border-radius:var(--r);font-size:14px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
       <input id="se-time" type="time" style="width:100%;padding:9px 11px;border:0.5px solid var(--border);border-radius:var(--r);font-size:14px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
     </div>
+    <div style="font-size:11px;color:var(--ink3);margin-bottom:4px">End date &amp; time <span style="opacity:0.6">(for multi-day events)</span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+      <input id="se-end-date" type="date" style="width:100%;padding:9px 11px;border:0.5px solid var(--border);border-radius:var(--r);font-size:14px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+      <input id="se-end-time" type="time" style="width:100%;padding:9px 11px;border:0.5px solid var(--border);border-radius:var(--r);font-size:14px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
+    </div>
+    <textarea id="se-notes" placeholder="Tell people more about the event — what to expect, who it's for, anything useful..." rows="3" style="width:100%;padding:9px 11px;border:0.5px solid var(--border);border-radius:var(--r);font-size:14px;margin-bottom:8px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream);resize:vertical"></textarea>
     <input id="se-url" type="url" placeholder="Event link (website, Meetup, Facebook...) *" style="width:100%;padding:9px 11px;border:0.5px solid var(--border);border-radius:var(--r);font-size:14px;margin-bottom:8px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
     <input id="se-email" type="email" placeholder="Your email (optional, for updates)" style="width:100%;padding:9px 11px;border:0.5px solid var(--border);border-radius:var(--r);font-size:14px;margin-bottom:14px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream)" />
     <button onclick="submitEvent()" style="width:100%;padding:12px;background:var(--red);color:white;border:none;border-radius:var(--r);font-size:14px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .2s" onmouseover="this.style.background='var(--red-d)'" onmouseout="this.style.background='var(--red)'">Submit for review</button>
@@ -362,6 +369,9 @@ async function submitEvent() {
   var city = citySelect === 'other' ? document.getElementById('se-city-other').value.trim() : citySelect;
   var date = document.getElementById('se-date').value;
   var time = document.getElementById('se-time').value;
+  var endDate = document.getElementById('se-end-date').value;
+  var endTime = document.getElementById('se-end-time').value;
+  var notes = document.getElementById('se-notes').value.trim();
   var url = document.getElementById('se-url').value.trim();
   var price = document.getElementById('se-price').value.trim();
   var email = document.getElementById('se-email').value.trim();
@@ -371,11 +381,15 @@ async function submitEvent() {
     alert('Please fill in all required fields (event name, city, fee, event type, date, time, and event link).');
     return;
   }
+  var payload = { title: title, city: city, event_date: date, event_time: time, url: url, price: price, description: email ? 'Submitted by: ' + email : 'User submitted', category: category, source: 'User submission', status: 'pending' };
+  if (endDate) payload.end_date = endDate;
+  if (endTime) payload.end_time = endTime;
+  if (notes) payload.notes = notes;
   try {
     await fetch(SB_URL + '/rest/v1/events', {
       method: 'POST',
       headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
-      body: JSON.stringify({ title: title, city: city, event_date: date, event_time: time, url: url, price: price, description: email ? 'Submitted by: ' + email : 'User submitted', category: category, source: 'User submission', status: 'pending' })
+      body: JSON.stringify(payload)
     });
     document.getElementById('submit-event-form').innerHTML =
       '<div style="text-align:center;padding:1.5rem">' +
@@ -400,7 +414,7 @@ async function loadAllEvents() {
   var endYear = currentMonth === 11 ? currentYear + 1 : currentYear;
   var end = endYear + '-' + String(endMonth + 1).padStart(2, '0') + '-01';
   try {
-    var res = await fetch(SB_URL + '/rest/v1/events?status=eq.approved&category=not.in.(review,inquiry,contact)&event_date=gte.' + start + '&event_date=lt.' + end + '&order=event_date.asc,event_time.asc&limit=200', {
+    var res = await fetch(SB_URL + '/rest/v1/events?select=id,title,description,category,city,venue,event_date,event_time,price,url,source,status,end_date,end_time,notes&status=eq.approved&category=not.in.(review,inquiry,contact)&event_date=gte.' + start + '&event_date=lt.' + end + '&order=event_date.asc,event_time.asc&limit=200', {
       headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
     });
     if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -532,17 +546,36 @@ function showEventDetail(id) {
   var d = new Date(e.event_date + 'T12:00:00');
   var dateStr = d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   var img = catImages[e.category] || catImages.culture;
+  // End date/time handling
+  var endInfo = '';
+  if (e.end_date && e.end_date !== e.event_date) {
+    var ed = new Date(e.end_date + 'T12:00:00');
+    var endDateStr = ed.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' });
+    endInfo = '<br>&#8594; Ends: ' + endDateStr + (e.end_time ? ' at ' + e.end_time : '');
+  } else if (e.end_time && e.event_time) {
+    endInfo = ' – ' + e.end_time;
+  }
+  // Description and notes
+  var descHtml = '';
+  if (e.notes) {
+    descHtml += '<div style="font-size:13px;color:var(--ink2);line-height:1.7;margin-bottom:14px;white-space:pre-line">' + e.notes + '</div>';
+  }
+  if (e.description && e.description !== 'User submitted' && !e.description.startsWith('Submitted by:') && e.description !== 'Event at Calouste Gulbenkian Foundation' && e.description !== 'Event at Gulbenkian Foundation') {
+    descHtml += '<div style="font-size:13px;color:var(--ink2);line-height:1.7;margin-bottom:14px;white-space:pre-line">' + e.description + '</div>';
+  }
   document.getElementById('ev-detail-content').innerHTML =
     '<div style="width:100%;height:160px;border-radius:var(--r);overflow:hidden;margin-bottom:14px"><img src="' + img + '" style="width:100%;height:100%;object-fit:cover" alt="" /></div>' +
     '<span class="cal-ev cat-' + (e.category || 'social') + '" style="display:inline-block;margin-bottom:8px;font-size:11px">' + (e.category || 'social') + '</span>' +
     '<div style="font-family:Playfair Display,serif;font-size:20px;margin-bottom:6px">' + e.title + '</div>' +
     '<div style="font-size:13px;color:var(--ink3);margin-bottom:12px">' +
-    '&#128197; ' + dateStr + (e.event_time ? ' &middot; ' + e.event_time : '') + '<br>' +
-    '&#128205; ' + [e.venue, e.city].filter(Boolean).join(', ') +
-    (e.price && e.price !== 'Free' ? '<br>&#128176; ' + e.price : '<br>&#127381; Free entry') +
+    '&#128197; ' + dateStr + (e.event_time ? ' &middot; ' + e.event_time + endInfo : '') +
+    (!e.event_time && endInfo ? endInfo : '') +
+    '<br>&#128205; ' + [e.venue, e.city].filter(Boolean).join(', ') +
+    (e.price && e.price !== 'Free' && e.price !== 'Check website' ? '<br>&#128176; ' + e.price : (e.price === 'Check website' ? '<br>&#128176; Check website for pricing' : '<br>&#127381; Free entry')) +
+    (e.source ? '<br><span style="font-size:11px;opacity:0.6">Source: ' + e.source + '</span>' : '') +
     '</div>' +
-    (e.description ? '<div style="font-size:13px;color:var(--ink2);line-height:1.7;margin-bottom:14px">' + e.description + '</div>' : '') +
-    (e.url ? '<a href="' + e.url + '" target="_blank" rel="noopener" style="display:block;width:100%;padding:12px;background:var(--red);color:white;border-radius:var(--r);font-size:14px;font-weight:500;text-align:center;text-decoration:none">' + (e.price && e.price !== 'Free' ? '&#127915; Get tickets / Sign up &rarr;' : '&#128279; Event page &rarr;') + '</a>' : '') +
+    descHtml +
+    (e.url ? '<a href="' + e.url + '" target="_blank" rel="noopener" style="display:block;width:100%;padding:12px;background:var(--red);color:white;border-radius:var(--r);font-size:14px;font-weight:500;text-align:center;text-decoration:none">' + (e.price && e.price !== 'Free' && e.price !== 'Check website' ? '&#127915; Get tickets / Sign up &rarr;' : '&#128279; Event page &rarr;') + '</a>' : '') +
     (!e.url ? '<div style="font-size:12px;color:var(--ink3);text-align:center;padding:8px">No event link available. Check the venue directly.</div>' : '');
   document.getElementById('ev-modal').classList.add('open');
 }
