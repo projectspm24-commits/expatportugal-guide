@@ -1,0 +1,153 @@
+{
+  "name": "Event Scraper — Weekly",
+  "nodes": [
+    {
+      "parameters": { "rule": { "interval": [{ "field": "weeks", "weeksInterval": 1, "triggerAtDay": [1], "triggerAtHour": 7 }] } },
+      "id": "trigger",
+      "name": "Weekly Monday 7am",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://calendar.google.com/calendar/ical/pasdedeux.pt%40gmail.com/public/basic.ics",
+        "options": { "response": { "response": { "responseFormat": "text" } } }
+      },
+      "id": "pas_de_deux_fetch",
+      "name": "Fetch Pas de Deux Calendar",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [250, 100]
+    },
+    {
+      "parameters": {
+        "url": "https://www.eventbrite.com/api/v3/destination/search/?event_search.dates=current_future&event_search.online_events_only=false&place.place_id=ChIJO_PkYRozGQ0R0DaQ5L3rAAQ&page_size=40",
+        "options": {
+          "response": { "response": { "responseFormat": "json" } }
+        }
+      },
+      "id": "eventbrite_fetch",
+      "name": "Fetch Eventbrite Lisbon",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://www.visitlisboa.com/en/events.json",
+        "options": {
+          "response": { "response": { "responseFormat": "text" } },
+          "redirect": { "redirect": { "followRedirects": true } }
+        }
+      },
+      "id": "visitlisboa_fetch",
+      "name": "Fetch VisitLisboa Events",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [250, 500],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "url": "https://gulbenkian.pt/en/agenda/",
+        "options": {
+          "response": { "response": { "responseFormat": "text" } }
+        }
+      },
+      "id": "gulbenkian_fetch",
+      "name": "Fetch Gulbenkian Agenda",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [250, 700],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse Pas de Deux iCal feed\nconst ical = $input.first().json.data || '';\nconst events = [];\nconst blocks = ical.split('BEGIN:VEVENT');\n\nfor (let i = 1; i < blocks.length; i++) {\n  const block = blocks[i];\n  const get = (key) => {\n    const m = block.match(new RegExp(key + '[:;]([^\\\\n]+)'));\n    return m ? m[1].replace(/^.*:/, '').trim() : '';\n  };\n  \n  let dtstart = get('DTSTART');\n  // Parse date: 20260415T193000Z or 20260415\n  let date = '';\n  let time = '';\n  if (dtstart.length >= 8) {\n    date = dtstart.substring(0,4) + '-' + dtstart.substring(4,6) + '-' + dtstart.substring(6,8);\n    if (dtstart.length >= 13) {\n      time = dtstart.substring(9,11) + ':' + dtstart.substring(11,13);\n    }\n  }\n  \n  const title = get('SUMMARY').replace(/\\\\,/g, ',').replace(/\\\\n/g, ' ');\n  const desc = get('DESCRIPTION').replace(/\\\\,/g, ',').replace(/\\\\n/g, ' ').substring(0, 300);\n  const location = get('LOCATION').replace(/\\\\,/g, ',');\n  \n  if (title && date && date >= new Date().toISOString().slice(0,10)) {\n    events.push({\n      title: title,\n      event_date: date,\n      event_time: time,\n      city: 'Lisbon',\n      description: desc || 'Dancing event at Pas de Deux',\n      category: 'social',\n      source: 'Pas de Deux',\n      url: 'https://pasdedeux.pt/',\n      status: 'approved'\n    });\n  }\n}\n\nreturn events.slice(0, 30).map(e => ({ json: e }));"
+      },
+      "id": "parse_pasdedeux",
+      "name": "Parse Pas de Deux iCal",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [500, 100]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse Eventbrite API response\nconst data = $input.first().json;\nconst events = [];\n\ntry {\n  const results = data.events?.results || data.events || [];\n  for (const e of results) {\n    const title = e.name || e.title || '';\n    const startDate = e.start_date || e.primary_venue?.address?.localized_date_display || '';\n    const url = e.url || (e.id ? 'https://www.eventbrite.com/e/' + e.id : '');\n    const desc = (e.summary || e.description?.text || '').substring(0, 300);\n    \n    // Try to parse date\n    let date = '';\n    if (e.start_date) {\n      date = e.start_date;\n    } else if (e.start?.utc) {\n      date = e.start.utc.substring(0, 10);\n    }\n    \n    let time = '';\n    if (e.start?.local) {\n      time = e.start.local.substring(11, 16);\n    }\n    \n    // Determine category\n    let cat = 'social';\n    const lower = title.toLowerCase();\n    if (lower.includes('music') || lower.includes('fado') || lower.includes('concert') || lower.includes('dj')) cat = 'music';\n    else if (lower.includes('food') || lower.includes('cook') || lower.includes('wine') || lower.includes('dinner') || lower.includes('brunch')) cat = 'food';\n    else if (lower.includes('art') || lower.includes('exhibition') || lower.includes('gallery') || lower.includes('ceramic')) cat = 'art';\n    else if (lower.includes('market') || lower.includes('feira') || lower.includes('mercado')) cat = 'market';\n    else if (lower.includes('family') || lower.includes('kids') || lower.includes('children')) cat = 'family';\n    else if (lower.includes('yoga') || lower.includes('fitness') || lower.includes('run') || lower.includes('sport') || lower.includes('surf')) cat = 'sport';\n    else if (lower.includes('culture') || lower.includes('tour') || lower.includes('walk') || lower.includes('history')) cat = 'culture';\n    \n    if (title && date) {\n      events.push({\n        title: title.substring(0, 200),\n        event_date: date,\n        event_time: time,\n        city: 'Lisbon',\n        description: desc,\n        category: cat,\n        source: 'Eventbrite',\n        url: url,\n        status: 'approved'\n      });\n    }\n  }\n} catch(err) {\n  // If API structure changed, return empty\n}\n\nreturn events.slice(0, 40).map(e => ({ json: e }));"
+      },
+      "id": "parse_eventbrite",
+      "name": "Parse Eventbrite Events",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse Gulbenkian agenda page (HTML scraping)\nconst html = $input.first().json.data || '';\nconst events = [];\n\n// Look for event patterns in HTML\nconst titleMatches = html.match(/<h[23][^>]*class=\"[^\"]*title[^\"]*\"[^>]*>([^<]+)/gi) || [];\nconst linkMatches = html.match(/href=\"(\\/en\\/agenda\\/[^\"]+)\"/gi) || [];\n\nfor (let i = 0; i < Math.min(titleMatches.length, 20); i++) {\n  const titleMatch = titleMatches[i].match(/>([^<]+)/);\n  const linkMatch = linkMatches[i] ? linkMatches[i].match(/href=\"([^\"]+)\"/) : null;\n  \n  if (titleMatch) {\n    events.push({\n      title: titleMatch[1].trim().substring(0, 200),\n      event_date: new Date().toISOString().slice(0, 10),\n      city: 'Lisbon',\n      description: 'Event at Gulbenkian Foundation',\n      category: 'culture',\n      source: 'Gulbenkian',\n      url: linkMatch ? 'https://gulbenkian.pt' + linkMatch[1] : 'https://gulbenkian.pt/en/agenda/',\n      status: 'pending'\n    });\n  }\n}\n\nreturn events.map(e => ({ json: e }));"
+      },
+      "id": "parse_gulbenkian",
+      "name": "Parse Gulbenkian",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [500, 700],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "mode": "append"
+      },
+      "id": "merge_all",
+      "name": "Merge All Events",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [750, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Deduplicate by title + date\n// Also fetch existing events from Supabase to avoid re-adding\nconst items = $input.all().map(i => i.json);\n\nconst SB_URL = 'https://waywvckvyizqkuuaecrp.supabase.co';\nconst SB_KEY = 'sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b';\n\n// Fetch existing event titles\nlet existing = [];\ntry {\n  const res = await this.helpers.httpRequest({\n    method: 'GET',\n    url: SB_URL + '/rest/v1/events?select=title,event_date&status=in.(approved,pending)',\n    headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }\n  });\n  existing = res.map(e => e.title.toLowerCase().trim() + '|' + (e.event_date || ''));\n} catch(e) {}\n\nconst seen = new Set(existing);\nconst unique = [];\nconst today = new Date().toISOString().slice(0, 10);\n\nfor (const ev of items) {\n  if (!ev.title || !ev.event_date) continue;\n  if (ev.event_date < today) continue;\n  \n  const key = ev.title.toLowerCase().trim() + '|' + ev.event_date;\n  if (seen.has(key)) continue;\n  seen.add(key);\n  unique.push(ev);\n}\n\nreturn unique.map(e => ({ json: e }));"
+      },
+      "id": "deduplicate",
+      "name": "Deduplicate & Filter",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1000, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://waywvckvyizqkuuaecrp.supabase.co/rest/v1/events",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b" },
+            { "name": "Authorization", "value": "Bearer sb_publishable_vYRR5942-HlgkWNhuODLdg_eGfOFy4b" },
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Prefer", "value": "return=minimal" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ title: $json.title, event_date: $json.event_date, event_time: $json.event_time || null, city: $json.city || 'Lisbon', description: $json.description || '', category: $json.category || 'social', source: $json.source || 'Scraped', url: $json.url || '', status: $json.status || 'pending', price: $json.price || 'Free' }) }}"
+      },
+      "id": "save_to_supabase",
+      "name": "Save to Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1250, 300],
+      "continueOnFail": true
+    }
+  ],
+  "connections": {
+    "Weekly Monday 7am": { "main": [[{ "node": "Fetch Pas de Deux Calendar", "type": "main", "index": 0 }, { "node": "Fetch Eventbrite Lisbon", "type": "main", "index": 0 }, { "node": "Fetch Gulbenkian Agenda", "type": "main", "index": 0 }]] },
+    "Fetch Pas de Deux Calendar": { "main": [[{ "node": "Parse Pas de Deux iCal", "type": "main", "index": 0 }]] },
+    "Fetch Eventbrite Lisbon": { "main": [[{ "node": "Parse Eventbrite Events", "type": "main", "index": 0 }]] },
+    "Fetch Gulbenkian Agenda": { "main": [[{ "node": "Parse Gulbenkian", "type": "main", "index": 0 }]] },
+    "Parse Pas de Deux iCal": { "main": [[{ "node": "Merge All Events", "type": "main", "index": 0 }]] },
+    "Parse Eventbrite Events": { "main": [[{ "node": "Merge All Events", "type": "main", "index": 0 }]] },
+    "Parse Gulbenkian": { "main": [[{ "node": "Merge All Events", "type": "main", "index": 0 }]] },
+    "Merge All Events": { "main": [[{ "node": "Deduplicate & Filter", "type": "main", "index": 0 }]] },
+    "Deduplicate & Filter": { "main": [[{ "node": "Save to Supabase", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" }
+}
