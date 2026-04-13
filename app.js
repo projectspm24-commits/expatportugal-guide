@@ -466,7 +466,7 @@ async function loadEvents() {
       var loc = [e.venue, e.city].filter(Boolean).join(', ');
       var time = e.event_time ? ' · ' + dow + ' ' + e.event_time : ' · ' + dow;
       var price = e.price && e.price !== 'Free' && e.price !== 'Free entry' ? ' · ' + e.price : '';
-      var link = e.url ? ' href="' + e.url + '" target="_blank" rel="noopener"' : '';
+      var link = ' href="calendar.html?event=' + e.id + '"';
       var img = getEventImage(e.category);
       var catEmojis = {music:'🎵',social:'👥',sport:'🏃',market:'🛍',culture:'🏛',food:'🍽',art:'🎨',family:'👨‍👩‍👧'};
       var emoji = catEmojis[e.category] || '📅';

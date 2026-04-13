@@ -413,7 +413,25 @@ function init() {
   var now = new Date();
   currentYear = now.getFullYear();
   currentMonth = now.getMonth();
-  loadAllEvents();
+  // Check for ?event=ID deep link
+  var params = new URLSearchParams(window.location.search);
+  var deepLinkEventId = params.get('event');
+  if (deepLinkEventId) {
+    window._deepLinkEventId = parseInt(deepLinkEventId);
+    // Fetch the event to know its month so we load the right calendar page
+    fetch(SB_URL + '/rest/v1/events?id=eq.' + deepLinkEventId + '&select=event_date', {
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
+    }).then(function(r) { return r.json(); }).then(function(data) {
+      if (data && data.length && data[0].event_date) {
+        var parts = data[0].event_date.split('-');
+        currentYear = parseInt(parts[0]);
+        currentMonth = parseInt(parts[1]) - 1;
+      }
+      loadAllEvents();
+    }).catch(function() { loadAllEvents(); });
+  } else {
+    loadAllEvents();
+  }
 }
 
 async function loadAllEvents() {
@@ -430,6 +448,28 @@ async function loadAllEvents() {
     var pb = document.getElementById('proof-bar');
     if (pb) pb.innerHTML = '<span class="proof-item"><span class="proof-dot"></span> Updated weekly</span>' + (allEvents.length ? '<span class="proof-item">' + allEvents.length + ' events this month</span>' : '');
     render();
+    // Auto-open deep-linked event
+    if (window._deepLinkEventId) {
+      var evId = window._deepLinkEventId;
+      window._deepLinkEventId = null;
+      // Event might not be in current month's data — try showing it
+      var found = allEvents.find(function(e) { return e.id === evId; });
+      if (found) {
+        setTimeout(function() { showEventDetail(evId); }, 300);
+      } else {
+        // Fetch the single event directly and show it
+        try {
+          var singleRes = await fetch(SB_URL + '/rest/v1/events?id=eq.' + evId + '&select=id,title,description,category,city,venue,event_date,event_time,price,url,source,status,end_date,end_time,notes', {
+            headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
+          });
+          var singleData = await singleRes.json();
+          if (singleData && singleData.length) {
+            allEvents.push(singleData[0]);
+            setTimeout(function() { showEventDetail(evId); }, 300);
+          }
+        } catch(e) {}
+      }
+    }
   } catch(e) {
     console.error(e);
     document.getElementById('cal-grid').innerHTML = '<div class="error-state"><div class="err-icon">&#128268;</div><div class="err-msg">Couldn\'t load events right now. This is usually temporary.</div><button class="err-retry" onclick="loadAllEvents()">Try again</button></div>';
