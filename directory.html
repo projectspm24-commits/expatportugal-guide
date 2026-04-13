@@ -379,10 +379,9 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
 
 <!-- COMMUNITY SUBMISSIONS -->
 <div class="full" style="margin-top:2.5rem;margin-bottom:2rem">
-  <div class="submit-grid-2col" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-    <!-- Submit a place -->
-    <div style="background:var(--card);border:0.5px solid var(--border);border-radius:16px;padding:1.5rem" id="submit-place-section">
-      <div style="font-size:15px;font-weight:500;margin-bottom:4px">&#128205; Know a great place? Add it!</div>
+    <!-- Suggest a place -->
+    <div style="background:var(--card);border:0.5px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:12px" id="submit-place-section">
+      <div style="font-size:15px;font-weight:500;margin-bottom:4px">&#128205; Know a great place? Suggest it!</div>
       <div style="font-size:12px;color:var(--ink2);margin-bottom:14px;line-height:1.6">Help fellow expats discover the best of Portugal. Your favourite café, beach, park, restaurant — anything worth knowing about.</div>
       <div id="submit-place-form">
         <input id="sp-name" placeholder="Place name *" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:6px" />
@@ -402,23 +401,18 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
         <input id="sp-address" placeholder="Street address (for map pin accuracy)" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:6px" />
         <input id="sp-why" placeholder="Why do you recommend it? *" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:6px" />
         <input id="sp-url" placeholder="Website or Google Maps link" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:8px" />
-        <button onclick="submitPlace()" style="padding:10px 20px;background:#c0381a;color:white;border:none;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:Outfit,sans-serif">Submit place &rarr;</button>
+        <button onclick="submitPlace()" style="width:100%;padding:10px 20px;background:#c0381a;color:white;border:none;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:Outfit,sans-serif">Suggest place &rarr;</button>
+      </div>
+      <div style="margin-top:12px;text-align:center">
+        <a onclick="var f=document.getElementById('correction-form');f.style.display=f.style.display==='none'?'block':'none'" style="font-size:11px;color:var(--ink3);cursor:pointer;text-decoration:underline">See something wrong? Suggest a correction</a>
+        <div id="correction-form" style="display:none;margin-top:10px;padding-top:10px;border-top:0.5px solid var(--border)">
+          <input id="cor-place" placeholder="Which listing? *" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:6px" />
+          <input id="cor-issue" placeholder="What needs fixing? *" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:6px" />
+          <input id="cor-email" placeholder="Your email (optional)" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:8px" />
+          <button onclick="submitCorrection()" style="padding:8px 16px;background:#1c1917;color:white;border:none;border-radius:10px;font-size:12px;font-weight:500;cursor:pointer;font-family:Outfit,sans-serif">Send correction &rarr;</button>
+        </div>
       </div>
     </div>
-    <!-- Suggest a correction - collapsed by default -->
-    <div style="background:var(--card);border:0.5px solid var(--border);border-radius:16px;padding:1.25rem">
-      <div onclick="var f=document.getElementById('correction-form');f.style.display=f.style.display==='none'?'block':'none'" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between">
-        <div style="font-size:14px;font-weight:500">&#128221; Suggest a correction</div>
-        <span style="font-size:11px;color:var(--ink3)">&#9660;</span>
-      </div>
-      <div id="correction-form" style="display:none;margin-top:12px">
-        <input id="cor-place" placeholder="Which listing? *" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:6px" />
-        <input id="cor-issue" placeholder="What needs fixing? *" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:6px" />
-        <input id="cor-email" placeholder="Your email (optional)" style="width:100%;padding:9px 12px;border:0.5px solid rgba(28,25,23,0.16);border-radius:10px;font-size:13px;font-family:Outfit,sans-serif;outline:none;margin-bottom:8px" />
-        <button onclick="submitCorrection()" style="padding:10px 20px;background:#1c1917;color:white;border:none;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:Outfit,sans-serif">Send correction &rarr;</button>
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- CLAIM BUSINESS MODAL -->
