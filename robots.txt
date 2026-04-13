@@ -2,4 +2,9 @@ User-agent: *
 Allow: /
 Disallow: /mastermanage.html
 Disallow: /advertise.html
-Sitemap: https://expatportugal.guide/sitemap.xml
+Disallow: /housing-manage.html
+Disallow: /claim-success.html
+Disallow: /housing-success.html
+Disallow: /api/
+
+Sitemap: https://expatportugal.guide/api/sitemap
