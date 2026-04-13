@@ -75,6 +75,9 @@ body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--ink);fo
 .btn-red{background:var(--red);color:white;border-color:var(--red)}
 .btn-red:hover{background:#9a2d15}
 .btn-sm{padding:4px 10px;font-size:11px}
+.ee-input{width:100%;padding:8px 10px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;font-family:'Outfit',sans-serif;outline:none;background:var(--cream);margin-bottom:8px}
+.ee-input:focus{border-color:var(--ink)}
+.ev-row-cb{width:16px;height:16px;cursor:pointer;accent-color:var(--red)}
 table{width:100%;border-collapse:collapse}
 th{text-align:left;padding:8px 14px;font-size:11px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em;background:var(--warm);border-bottom:0.5px solid var(--border)}
 td{padding:10px 14px;border-bottom:0.5px solid var(--border);font-size:13px;vertical-align:top}
@@ -268,12 +271,68 @@ tr:hover td{background:var(--warm)}
 
     <!-- EVENTS PANEL -->
     <div class="panel" id="panel-events">
+      <div style="display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap;align-items:center">
+        <button class="btn btn-sm" id="ev-f-all" style="background:var(--ink);color:white" onclick="setEvFilter('all',this)">All</button>
+        <button class="btn btn-sm" id="ev-f-pending" onclick="setEvFilter('pending',this)">Pending</button>
+        <button class="btn btn-sm" id="ev-f-approved" onclick="setEvFilter('approved',this)">Approved</button>
+        <button class="btn btn-sm" id="ev-f-past" onclick="setEvFilter('past',this)">Past</button>
+        <div style="margin-left:auto;display:flex;gap:6px" id="ev-bulk-actions" style="display:none">
+          <span id="ev-selected-count" style="font-size:12px;color:var(--ink3);align-self:center"></span>
+          <button class="btn btn-sm btn-green" onclick="bulkApproveEvents()" style="display:none" id="ev-bulk-approve">✓ Approve selected</button>
+          <button class="btn btn-sm btn-red" onclick="bulkDeleteEvents()" style="display:none" id="ev-bulk-delete">✕ Delete selected</button>
+        </div>
+      </div>
       <div class="section-card">
         <div class="sc-header">
-          <div class="sc-title">Upcoming events</div>
-          <button class="btn btn-primary" onclick="showAddEvent()">+ Add event</button>
+          <div class="sc-title" id="ev-table-title">Events</div>
+          <div class="sc-actions">
+            <button class="btn" onclick="showAddEventModal()">+ Add event</button>
+          </div>
         </div>
         <div id="events-table"><div class="loading"><div class="spinner"></div><br>Loading events...</div></div>
+      </div>
+
+      <!-- EDIT EVENT MODAL -->
+      <div id="ev-edit-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:400;align-items:center;justify-content:center;overflow-y:auto;padding:1rem" onclick="if(event.target===this)closeEvEdit()">
+        <div style="background:var(--card);border-radius:var(--rl);padding:1.75rem;width:100%;max-width:520px;margin:auto;position:relative;max-height:90vh;overflow-y:auto">
+          <button onclick="closeEvEdit()" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:18px;cursor:pointer;color:var(--ink3)">&times;</button>
+          <div style="font-size:16px;font-weight:500;margin-bottom:14px" id="ev-edit-title-label">Edit event</div>
+          <input id="ee-id" type="hidden" />
+          <label style="font-size:11px;color:var(--ink3)">Title *</label>
+          <input id="ee-title" type="text" class="ee-input" />
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div><label style="font-size:11px;color:var(--ink3)">City *</label><input id="ee-city" type="text" class="ee-input" /></div>
+            <div><label style="font-size:11px;color:var(--ink3)">Venue</label><input id="ee-venue" type="text" class="ee-input" /></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div><label style="font-size:11px;color:var(--ink3)">Category</label>
+              <select id="ee-category" class="ee-input"><option value="social">Social</option><option value="music">Music</option><option value="dancing">Dancing</option><option value="culture">Culture</option><option value="art">Art</option><option value="food">Food</option><option value="sport">Sport</option><option value="market">Market</option><option value="family">Family</option><option value="tech">Tech</option><option value="workshops">Workshops</option><option value="exhibitions">Exhibitions</option><option value="festivals">Festivals</option><option value="performing-arts">Performing arts</option><option value="outdoors">Outdoors</option></select>
+            </div>
+            <div><label style="font-size:11px;color:var(--ink3)">Source</label><input id="ee-source" type="text" class="ee-input" /></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div><label style="font-size:11px;color:var(--ink3)">Start date *</label><input id="ee-date" type="date" class="ee-input" /></div>
+            <div><label style="font-size:11px;color:var(--ink3)">Start time</label><input id="ee-time" type="time" class="ee-input" /></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div><label style="font-size:11px;color:var(--ink3)">End date</label><input id="ee-end-date" type="date" class="ee-input" /></div>
+            <div><label style="font-size:11px;color:var(--ink3)">End time</label><input id="ee-end-time" type="time" class="ee-input" /></div>
+          </div>
+          <label style="font-size:11px;color:var(--ink3)">Price</label>
+          <input id="ee-price" type="text" class="ee-input" placeholder="Free, €10, Check website..." />
+          <label style="font-size:11px;color:var(--ink3)">Event URL</label>
+          <input id="ee-url" type="url" class="ee-input" />
+          <label style="font-size:11px;color:var(--ink3)">Description</label>
+          <textarea id="ee-description" class="ee-input" rows="3" style="resize:vertical"></textarea>
+          <label style="font-size:11px;color:var(--ink3)">Notes</label>
+          <textarea id="ee-notes" class="ee-input" rows="2" style="resize:vertical"></textarea>
+          <label style="font-size:11px;color:var(--ink3)">Status</label>
+          <select id="ee-status" class="ee-input"><option value="approved">Approved</option><option value="pending">Pending</option></select>
+          <div style="display:flex;gap:8px;margin-top:14px">
+            <button class="btn btn-primary" onclick="saveEventEdit()" style="flex:1">Save changes</button>
+            <button class="btn" onclick="closeEvEdit()">Cancel</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1078,68 +1137,202 @@ async function deleteArticle(id) {
 }
 
 // ── EVENTS ────────────────────────────────────────────────
+var evFilter = 'all';
+var evSelectedIds = new Set();
+var allEventsCache = [];
+
+function setEvFilter(f, btn) {
+  evFilter = f;
+  document.querySelectorAll('#panel-events .btn-sm[id^="ev-f-"]').forEach(b => { b.style.background = ''; b.style.color = ''; });
+  btn.style.background = 'var(--ink)'; btn.style.color = 'white';
+  renderEventsTable();
+}
+
 async function loadEvents() {
   try {
-    const events = await sb('events?order=event_date.asc&limit=50');
-    const el = document.getElementById('events-table');
-    if (!events.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">📅</div>No events yet</div>'; return; }
-    
-    const pending = events.filter(e => e.status === 'pending' || e.status === 'submitted');
-    const approved = events.filter(e => e.status === 'approved');
-    
-    let html = '';
-    if (pending.length) {
-      html += `<div style="margin-bottom:1.5rem"><div style="font-size:14px;font-weight:500;margin-bottom:8px;color:var(--amber)">⏳ ${pending.length} pending review</div>
-      <table><thead><tr><th>Event</th><th>City</th><th>Date</th><th>Link</th><th>Actions</th></tr></thead><tbody>
-        ${pending.map(e => `<tr>
-          <td><div style="font-weight:500">${e.title}</div><div style="font-size:11px;color:var(--ink3)">${e.description || ''}</div></td>
-          <td>${e.city}</td>
-          <td style="font-size:12px">${e.event_date}</td>
-          <td>${e.url ? `<a href="${e.url}" target="_blank" rel="noopener" style="color:var(--blue);font-size:12px">View link ↗</a>` : '<span style="font-size:11px;color:var(--ink3)">No link</span>'}</td>
-          <td style="white-space:nowrap">
-            <button onclick="approveEvent(${e.id})" style="padding:4px 12px;background:var(--green);color:white;border:none;border-radius:4px;font-size:11px;cursor:pointer;margin-right:4px">Approve</button>
-            <button onclick="rejectEvent(${e.id})" style="padding:4px 12px;background:var(--red);color:white;border:none;border-radius:4px;font-size:11px;cursor:pointer">Reject</button>
-          </td>
-        </tr>`).join('')}
-      </tbody></table></div>`;
-    }
-    
-    html += `<div style="font-size:14px;font-weight:500;margin-bottom:8px">📅 Upcoming events (${approved.length})</div>
-    <table><thead><tr><th>Event</th><th>Category</th><th>City</th><th>Date</th><th>Source</th><th>Actions</th></tr></thead><tbody>
-      ${approved.map(e => `<tr>
-        <td><div style="font-weight:500">${e.title}</div><div style="font-size:11px;color:var(--ink3)">${e.venue || ''}</div></td>
-        <td><span class="cat-badge">${e.category}</span></td>
-        <td>${e.city}</td>
-        <td style="font-size:12px">${e.event_date}</td>
-        <td style="font-size:11px;color:var(--ink3)">${e.source || ''}</td>
-        <td><button onclick="deleteEvent(${e.id})" style="padding:4px 10px;background:none;border:0.5px solid var(--border);border-radius:4px;font-size:11px;cursor:pointer;color:var(--ink3)">Delete</button></td>
-      </tr>`).join('')}
-    </tbody></table>`;
-    
-    el.innerHTML = html;
+    allEventsCache = await sb('events?category=not.eq.config&order=event_date.desc&limit=300&select=id,title,description,category,city,venue,event_date,event_time,price,url,source,status,end_date,end_time,notes');
+    evSelectedIds.clear();
+    renderEventsTable();
+    var pc = allEventsCache.filter(e => e.status === 'pending').length;
+    var badge = document.getElementById('pending-events-count');
+    if (badge) { badge.textContent = pc; badge.style.display = pc > 0 ? '' : 'none'; }
   } catch(e) { document.getElementById('events-table').innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div>Connection error</div>'; }
 }
 
-function showAddEvent() {
-  const title = prompt('Event title:');
-  if (!title) return;
-  const city = prompt('City:');
-  const date = prompt('Date (YYYY-MM-DD):');
-  const cat  = prompt('Category (music/food/social/sport/culture/market):');
-  if (title && city && date) {
-    sb('events', { method: 'POST', body: { title, city, event_date: date, category: cat || 'social', status: 'approved' } })
-      .then(() => loadEvents());
+function renderEventsTable() {
+  var el = document.getElementById('events-table');
+  var today = new Date().toISOString().slice(0, 10);
+  var filtered = allEventsCache;
+  if (evFilter === 'pending') filtered = filtered.filter(e => e.status === 'pending');
+  else if (evFilter === 'approved') filtered = filtered.filter(e => e.status === 'approved' && e.event_date >= today);
+  else if (evFilter === 'past') filtered = filtered.filter(e => e.event_date < today);
+
+  document.getElementById('ev-table-title').textContent = 'Events (' + filtered.length + ')';
+
+  if (!filtered.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">📅</div>No events match this filter</div>'; updateEvBulkUI(); return; }
+
+  var html = '<table><thead><tr>' +
+    '<th style="width:30px"><input type="checkbox" class="ev-row-cb" onchange="toggleAllEv(this)" /></th>' +
+    '<th>Event</th><th>Category</th><th>City</th><th>Date</th><th>Price</th><th>Source</th><th>Status</th><th style="width:100px">Actions</th>' +
+    '</tr></thead><tbody>';
+
+  filtered.forEach(function(e) {
+    var checked = evSelectedIds.has(e.id) ? ' checked' : '';
+    var statusBadge = e.status === 'approved' ? '<span style="color:var(--green)">✓ live</span>' :
+                      e.status === 'pending' ? '<span style="color:var(--amber)">⏳ pending</span>' :
+                      '<span style="color:var(--ink3)">' + e.status + '</span>';
+    var isPast = e.event_date < today;
+    html += '<tr style="' + (isPast ? 'opacity:0.5' : '') + (e.status === 'pending' ? ';background:var(--amber-l)' : '') + '">' +
+      '<td><input type="checkbox" class="ev-row-cb" value="' + e.id + '" onchange="toggleEvSelect(' + e.id + ',this)"' + checked + ' /></td>' +
+      '<td><div style="font-weight:500;font-size:12px;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + e.title + '</div>' +
+        (e.venue ? '<div style="font-size:10px;color:var(--ink3)">' + e.venue + '</div>' : '') + '</td>' +
+      '<td><span class="cat-badge">' + (e.category || '') + '</span></td>' +
+      '<td style="font-size:12px">' + (e.city || '') + '</td>' +
+      '<td style="font-size:12px;white-space:nowrap">' + e.event_date + (e.event_time ? '<br><span style="color:var(--ink3)">' + e.event_time + '</span>' : '') +
+        (e.end_date && e.end_date !== e.event_date ? '<br><span style="font-size:10px;color:var(--ink3)">→ ' + e.end_date + '</span>' : '') + '</td>' +
+      '<td style="font-size:12px">' + (e.price || 'Free') + '</td>' +
+      '<td style="font-size:11px;color:var(--ink3)">' + (e.source || '') + '</td>' +
+      '<td>' + statusBadge + '</td>' +
+      '<td style="white-space:nowrap">' +
+        '<button class="btn btn-sm" onclick="openEvEdit(' + e.id + ')" style="margin-right:3px" title="Edit">✎</button>' +
+        (e.status === 'pending' ? '<button class="btn btn-sm" onclick="approveEvent(' + e.id + ')" style="background:var(--green);color:white;border-color:var(--green);margin-right:3px" title="Approve">✓</button>' : '') +
+        '<button class="btn btn-sm" onclick="deleteEvent(' + e.id + ')" style="color:var(--red)" title="Delete">✕</button>' +
+      '</td></tr>';
+  });
+
+  html += '</tbody></table>';
+  el.innerHTML = html;
+  updateEvBulkUI();
+}
+
+function toggleEvSelect(id, cb) {
+  if (cb.checked) evSelectedIds.add(id); else evSelectedIds.delete(id);
+  updateEvBulkUI();
+}
+
+function toggleAllEv(masterCb) {
+  var today = new Date().toISOString().slice(0, 10);
+  var filtered = allEventsCache;
+  if (evFilter === 'pending') filtered = filtered.filter(e => e.status === 'pending');
+  else if (evFilter === 'approved') filtered = filtered.filter(e => e.status === 'approved' && e.event_date >= today);
+  else if (evFilter === 'past') filtered = filtered.filter(e => e.event_date < today);
+
+  evSelectedIds.clear();
+  if (masterCb.checked) filtered.forEach(e => evSelectedIds.add(e.id));
+  document.querySelectorAll('#events-table .ev-row-cb[value]').forEach(cb => cb.checked = masterCb.checked);
+  updateEvBulkUI();
+}
+
+function updateEvBulkUI() {
+  var n = evSelectedIds.size;
+  document.getElementById('ev-selected-count').textContent = n > 0 ? n + ' selected' : '';
+  document.getElementById('ev-bulk-approve').style.display = n > 0 ? '' : 'none';
+  document.getElementById('ev-bulk-delete').style.display = n > 0 ? '' : 'none';
+}
+
+async function bulkApproveEvents() {
+  if (!evSelectedIds.size) return;
+  if (!confirm('Approve ' + evSelectedIds.size + ' events?')) return;
+  var ids = Array.from(evSelectedIds);
+  await sb('events?id=in.(' + ids.join(',') + ')', { method: 'PATCH', body: { status: 'approved' } });
+  loadEvents();
+}
+
+async function bulkDeleteEvents() {
+  if (!evSelectedIds.size) return;
+  if (!confirm('Permanently delete ' + evSelectedIds.size + ' events? This cannot be undone.')) return;
+  var ids = Array.from(evSelectedIds);
+  await sb('events?id=in.(' + ids.join(',') + ')', { method: 'DELETE' });
+  loadEvents();
+}
+
+function openEvEdit(id) {
+  var e = allEventsCache.find(ev => ev.id === id);
+  if (!e) return;
+  document.getElementById('ee-id').value = e.id;
+  document.getElementById('ee-title').value = e.title || '';
+  document.getElementById('ee-city').value = e.city || '';
+  document.getElementById('ee-venue').value = e.venue || '';
+  document.getElementById('ee-category').value = e.category || 'social';
+  document.getElementById('ee-source').value = e.source || '';
+  document.getElementById('ee-date').value = e.event_date || '';
+  document.getElementById('ee-time').value = e.event_time || '';
+  document.getElementById('ee-end-date').value = e.end_date || '';
+  document.getElementById('ee-end-time').value = e.end_time || '';
+  document.getElementById('ee-price').value = e.price || '';
+  document.getElementById('ee-url').value = e.url || '';
+  document.getElementById('ee-description').value = e.description || '';
+  document.getElementById('ee-notes').value = e.notes || '';
+  document.getElementById('ee-status').value = e.status || 'pending';
+  document.getElementById('ev-edit-title-label').textContent = 'Edit: ' + (e.title || '').substring(0, 40);
+  document.getElementById('ev-edit-overlay').style.display = 'flex';
+}
+
+function closeEvEdit() { document.getElementById('ev-edit-overlay').style.display = 'none'; }
+
+async function saveEventEdit() {
+  var id = document.getElementById('ee-id').value;
+  var body = {
+    title: document.getElementById('ee-title').value.trim(),
+    city: document.getElementById('ee-city').value.trim(),
+    venue: document.getElementById('ee-venue').value.trim() || null,
+    category: document.getElementById('ee-category').value,
+    source: document.getElementById('ee-source').value.trim() || null,
+    event_date: document.getElementById('ee-date').value,
+    event_time: document.getElementById('ee-time').value || null,
+    end_date: document.getElementById('ee-end-date').value || null,
+    end_time: document.getElementById('ee-end-time').value || null,
+    price: document.getElementById('ee-price').value.trim() || 'Free',
+    url: document.getElementById('ee-url').value.trim() || null,
+    description: document.getElementById('ee-description').value.trim() || null,
+    notes: document.getElementById('ee-notes').value.trim() || null,
+    status: document.getElementById('ee-status').value
+  };
+  if (!body.title || !body.city || !body.event_date) { alert('Title, city, and date are required.'); return; }
+  await sb('events?id=eq.' + id, { method: 'PATCH', body: body });
+  closeEvEdit();
+  loadEvents();
+}
+
+function showAddEventModal() {
+  document.getElementById('ee-id').value = 'new';
+  ['ee-title','ee-city','ee-venue','ee-source','ee-date','ee-time','ee-end-date','ee-end-time','ee-price','ee-url','ee-description','ee-notes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('ee-category').value = 'social';
+  document.getElementById('ee-status').value = 'approved';
+  document.getElementById('ev-edit-title-label').textContent = 'Add new event';
+  document.getElementById('ev-edit-overlay').style.display = 'flex';
+}
+
+async function saveEventEdit() {
+  var idVal = document.getElementById('ee-id').value;
+  var body = {
+    title: document.getElementById('ee-title').value.trim(),
+    city: document.getElementById('ee-city').value.trim(),
+    venue: document.getElementById('ee-venue').value.trim() || null,
+    category: document.getElementById('ee-category').value,
+    source: document.getElementById('ee-source').value.trim() || null,
+    event_date: document.getElementById('ee-date').value,
+    event_time: document.getElementById('ee-time').value || null,
+    end_date: document.getElementById('ee-end-date').value || null,
+    end_time: document.getElementById('ee-end-time').value || null,
+    price: document.getElementById('ee-price').value.trim() || 'Free',
+    url: document.getElementById('ee-url').value.trim() || null,
+    description: document.getElementById('ee-description').value.trim() || null,
+    notes: document.getElementById('ee-notes').value.trim() || null,
+    status: document.getElementById('ee-status').value
+  };
+  if (!body.title || !body.city || !body.event_date) { alert('Title, city, and date are required.'); return; }
+  if (idVal === 'new') {
+    await sb('events', { method: 'POST', body: body });
+  } else {
+    await sb('events?id=eq.' + idVal, { method: 'PATCH', body: body });
   }
+  closeEvEdit();
+  loadEvents();
 }
 
 async function approveEvent(id) {
   await sb('events?id=eq.' + id, { method: 'PATCH', body: { status: 'approved' } });
-  loadEvents();
-}
-
-async function rejectEvent(id) {
-  if (!confirm('Reject and delete this event submission?')) return;
-  await sb('events?id=eq.' + id, { method: 'DELETE' });
   loadEvents();
 }
 
