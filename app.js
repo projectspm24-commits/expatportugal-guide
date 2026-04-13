@@ -399,7 +399,7 @@ async function loadEvents() {
     }
 
     // Pick one highlight event per day (prefer non-culture, non-public-holiday categories)
-    var catPriority = { music: 5, art: 4, food: 4, market: 3, social: 3, sport: 3, family: 2, culture: 1 };
+    var catPriority = { music: 5, art: 4, food: 4, dancing: 4, market: 3, social: 3, sport: 3, family: 2, culture: 1 };
     var byDay = {};
     events.forEach(function(e) {
       var dateKey = e.event_date;
