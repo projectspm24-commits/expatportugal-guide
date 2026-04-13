@@ -117,11 +117,33 @@ async function loadLiveNews() {
 
 async function loadHero() {
   try {
-    var res = await fetch(SB_URL + '/rest/v1/articles?status=in.(approved,auto_approved)&order=published_at.desc&limit=5', {
+    // Fetch articles and homepage config in parallel
+    var artRes = fetch(SB_URL + '/rest/v1/articles?status=in.(approved,auto_approved)&order=published_at.desc&limit=20', {
       headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
     });
-    var arts = await res.json();
+    var cfgRes = fetch(SB_URL + '/rest/v1/events?id=eq.300&select=description', {
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
+    });
+    var arts = await (await artRes).json();
+    var pinnedArticleIds = new Set();
+    try {
+      var cfgData = await (await cfgRes).json();
+      if (cfgData && cfgData.length && cfgData[0].description) {
+        var hpCfg = JSON.parse(cfgData[0].description);
+        (hpCfg.pinned_articles || []).forEach(function(id) { pinnedArticleIds.add(id); });
+      }
+    } catch(e) {}
+
     if (!arts || !arts.length) return;
+    // Sort: pinned articles first, then by original order (published_at desc)
+    if (pinnedArticleIds.size > 0) {
+      arts.sort(function(a, b) {
+        var aPin = pinnedArticleIds.has(a.id) ? 0 : 1;
+        var bPin = pinnedArticleIds.has(b.id) ? 0 : 1;
+        if (aPin !== bPin) return aPin - bPin;
+        return 0; // keep original published_at order for non-pinned
+      });
+    }
     var main = arts[0];
     window._heroUrl = main.source_url || '#';
     document.getElementById('hero-cat').textContent = (main.category || 'news').toUpperCase() + ' – just now';
@@ -378,15 +400,27 @@ async function loadEvents() {
   try {
     var today = new Date().toISOString().slice(0, 10);
     var endDate = new Date(Date.now() + 8 * 86400000).toISOString().slice(0, 10);
-    var q = SB_URL + '/rest/v1/events?status=eq.approved&event_date=gte.' + today + '&event_date=lte.' + endDate + '&order=event_date.asc&limit=50';
+    var q = SB_URL + '/rest/v1/events?status=eq.approved&category=not.eq.config&event_date=gte.' + today + '&event_date=lte.' + endDate + '&order=event_date.asc&limit=50';
     if (activeRegion !== 'all') {
       var cities = regionCities[activeRegion] || [activeRegion];
       var orParts = cities.map(function(c) { return 'city.ilike.*' + c + '*'; });
       orParts.push('city.eq.All Portugal');
       q += '&or=(' + orParts.join(',') + ')';
     }
-    var res = await fetch(q, { headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } });
-    var events = await res.json();
+
+    // Fetch events and homepage config in parallel
+    var evRes = fetch(q, { headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } });
+    var cfgRes = fetch(SB_URL + '/rest/v1/events?id=eq.300&select=description', { headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } });
+    var events = await (await evRes).json();
+    var pinnedEventIds = new Set();
+    try {
+      var cfgData = await (await cfgRes).json();
+      if (cfgData && cfgData.length && cfgData[0].description) {
+        var hpCfg = JSON.parse(cfgData[0].description);
+        (hpCfg.pinned_events || []).forEach(function(id) { pinnedEventIds.add(id); });
+      }
+    } catch(e) {}
+
     var list = document.getElementById('events-list');
     if (!events || !events.length) {
       var region = activeRegion === 'all' ? 'Portugal' : activeRegion;
@@ -398,7 +432,7 @@ async function loadEvents() {
       return;
     }
 
-    // Pick one highlight event per day (prefer non-culture, non-public-holiday categories)
+    // Pick one highlight event per day — pinned events always win their day
     var catPriority = { music: 5, art: 4, food: 4, dancing: 4, market: 3, social: 3, sport: 3, family: 2, culture: 1 };
     var byDay = {};
     events.forEach(function(e) {
@@ -410,9 +444,11 @@ async function loadEvents() {
     var highlights = [];
     Object.keys(byDay).sort().forEach(function(dateKey) {
       var dayEvents = byDay[dateKey];
-      // Sort by priority: prefer interesting categories over public holidays
+      // Pinned events first, then by category priority
       dayEvents.sort(function(a, b) {
-        return (catPriority[b.category] || 1) - (catPriority[a.category] || 1);
+        var aPin = pinnedEventIds.has(a.id) ? 100 : 0;
+        var bPin = pinnedEventIds.has(b.id) ? 100 : 0;
+        return (bPin + (catPriority[b.category] || 1)) - (aPin + (catPriority[a.category] || 1));
       });
       highlights.push(dayEvents[0]);
     });
@@ -660,10 +696,29 @@ async function loadHomeHousing() {
   var el = document.getElementById('home-housing');
   if (!el) return;
   try {
-    var res = await fetch(SB_URL + '/rest/v1/local_businesses?type=eq.housing&status=eq.active&order=created_at.desc&limit=6', {
+    var hRes = fetch(SB_URL + '/rest/v1/local_businesses?type=eq.housing&status=eq.active&order=created_at.desc&limit=6', {
       headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
     });
-    var items = await res.json();
+    var cfgRes = fetch(SB_URL + '/rest/v1/events?id=eq.300&select=description', {
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
+    });
+    var items = await (await hRes).json();
+    var pinnedHousingIds = new Set();
+    try {
+      var cfgData = await (await cfgRes).json();
+      if (cfgData && cfgData.length && cfgData[0].description) {
+        var hpCfg = JSON.parse(cfgData[0].description);
+        (hpCfg.pinned_housing || []).forEach(function(id) { pinnedHousingIds.add(id); });
+      }
+    } catch(e) {}
+
+    if (pinnedHousingIds.size > 0) {
+      items.sort(function(a, b) {
+        var aPin = pinnedHousingIds.has(a.id) ? 0 : 1;
+        var bPin = pinnedHousingIds.has(b.id) ? 0 : 1;
+        return aPin - bPin;
+      });
+    }
     if (!items.length) {
       el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2rem;background:var(--card);border-radius:var(--rl)"><div style="font-size:24px;margin-bottom:6px">&#127968;</div><div style="font-size:14px;font-weight:500;margin-bottom:4px">Housing board launching soon</div><div style="font-size:12px;color:var(--ink3)">List your place or find your next home.</div></div>';
       return;

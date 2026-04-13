@@ -142,6 +142,9 @@ tr:hover td{background:var(--warm)}
   <div class="sidebar">
     <div class="s-logo">ExpatPortugal<span>Admin</span></div>
 
+    <div class="s-section">&#127968; Homepage</div>
+    <div class="s-nav-item" onclick="showPanel('homepage',this)">&#11088; Homepage curator</div>
+
     <div class="s-section">&#128308; Action needed</div>
     <div class="s-nav-item on" onclick="showPanel('articles',this)">
       📰 News articles
@@ -191,6 +194,56 @@ tr:hover td{background:var(--warm)}
       <div class="metric"><div class="m-val" id="m-listings">—</div><div class="m-lbl">Explore listings</div></div>
       <div class="metric"><div class="m-val" id="m-housing">—</div><div class="m-lbl">Housing listings</div></div>
       <div class="metric"><div class="m-val" id="m-subscribers">—</div><div class="m-lbl">Subscribers</div></div>
+    </div>
+
+    <!-- HOMEPAGE CURATOR PANEL -->
+    <div class="panel" id="panel-homepage">
+      <div style="margin-bottom:1.25rem">
+        <div style="font-size:13px;color:var(--ink2);line-height:1.6;background:var(--card);border:0.5px solid var(--border);border-radius:var(--rl);padding:1rem 1.25rem">
+          &#11088; <strong>Pin items to the homepage.</strong> Pinned items show first in their section. Un-pinned items are chosen automatically (latest news, upcoming events, newest housing).
+        </div>
+      </div>
+
+      <!-- PINNED EVENTS -->
+      <div class="section-card" style="margin-bottom:1.25rem">
+        <div class="sc-header">
+          <div class="sc-title">&#128197; Homepage events <span id="hp-events-count" style="font-size:11px;color:var(--ink3);font-weight:400;margin-left:6px"></span></div>
+          <div class="sc-actions"><button class="btn btn-sm" onclick="loadHpSection('events')">↻</button></div>
+        </div>
+        <div id="hp-events-list"><div class="loading"><div class="spinner"></div></div></div>
+      </div>
+
+      <!-- PINNED ARTICLES -->
+      <div class="section-card" style="margin-bottom:1.25rem">
+        <div class="sc-header">
+          <div class="sc-title">&#128240; Homepage news articles <span id="hp-articles-count" style="font-size:11px;color:var(--ink3);font-weight:400;margin-left:6px"></span></div>
+          <div class="sc-actions"><button class="btn btn-sm" onclick="loadHpSection('articles')">↻</button></div>
+        </div>
+        <div id="hp-articles-list"><div class="loading"><div class="spinner"></div></div></div>
+      </div>
+
+      <!-- PINNED HOUSING -->
+      <div class="section-card" style="margin-bottom:1.25rem">
+        <div class="sc-header">
+          <div class="sc-title">&#127968; Homepage housing <span id="hp-housing-count" style="font-size:11px;color:var(--ink3);font-weight:400;margin-left:6px"></span></div>
+          <div class="sc-actions"><button class="btn btn-sm" onclick="loadHpSection('housing')">↻</button></div>
+        </div>
+        <div id="hp-housing-list"><div class="loading"><div class="spinner"></div></div></div>
+      </div>
+
+      <!-- PINNED BUSINESSES -->
+      <div class="section-card" style="margin-bottom:1.25rem">
+        <div class="sc-header">
+          <div class="sc-title">&#128205; Homepage explore/businesses <span id="hp-businesses-count" style="font-size:11px;color:var(--ink3);font-weight:400;margin-left:6px"></span></div>
+          <div class="sc-actions"><button class="btn btn-sm" onclick="loadHpSection('businesses')">↻</button></div>
+        </div>
+        <div id="hp-businesses-list"><div class="loading"><div class="spinner"></div></div></div>
+      </div>
+
+      <div style="text-align:center;padding:1rem">
+        <button class="btn btn-primary" onclick="saveHomepageConfig()" style="padding:10px 30px;font-size:14px">&#128190; Save homepage config</button>
+        <div style="font-size:11px;color:var(--ink3);margin-top:6px" id="hp-save-status"></div>
+      </div>
     </div>
 
     <!-- ARTICLES PANEL -->
@@ -840,6 +893,7 @@ async function loadMetrics() {
 
 // ── NAVIGATION ────────────────────────────────────────────
 const PANELS = {
+  homepage:    { title: 'Homepage curator',          sub: 'Choose which events, articles, housing and businesses appear on the homepage' },
   articles:    { title: 'News articles',            sub: 'Approve, reject, or depublish AI-generated articles' },
   events:      { title: 'Events',                   sub: 'Approve submissions and manage the events calendar' },
   digest:      { title: 'Sunday digest',             sub: 'Preview this week\'s newsletter before it sends' },
@@ -867,7 +921,7 @@ function showPanel(name, el) {
 }
 
 function loadCurrentPanel() {
-  const loaders = { articles: loadArticles, events: loadEvents, digest: loadDigest, subscribers: loadSubscribers, exchange: loadExchange, directory: loadDirectory, businesses: loadBusinesses, services: loadServices, communities: loadCommunities, housing: loadHousing, inbox: loadInbox, logs: loadLogs };
+  const loaders = { homepage: loadHomepageCurator, articles: loadArticles, events: loadEvents, digest: loadDigest, subscribers: loadSubscribers, exchange: loadExchange, directory: loadDirectory, businesses: loadBusinesses, services: loadServices, communities: loadCommunities, housing: loadHousing, inbox: loadInbox, logs: loadLogs };
   if (loaders[currentPanel]) loaders[currentPanel]();
   loadMetrics();
 }
@@ -2189,6 +2243,146 @@ function clearHousingForm() {
   editHousingId = null;
   ['h-title','h-hood','h-desc','h-contact','h-img','h-rent','h-from','h-until'].forEach(function(id) { document.getElementById(id).value = ''; });
   document.getElementById('h-save-btn').textContent = '+ Add listing';
+}
+
+// ── HOMEPAGE CURATOR ──────────────────────────────────────
+var hpConfig = { pinned_events: [], pinned_articles: [], pinned_housing: [], pinned_businesses: [] };
+var HP_CONFIG_ID = 300;
+
+async function loadHomepageCurator() {
+  // Load config from Supabase
+  try {
+    var cfg = await sb('events?id=eq.' + HP_CONFIG_ID + '&select=description');
+    if (cfg && cfg.length && cfg[0].description) {
+      try { hpConfig = JSON.parse(cfg[0].description); } catch(e) {}
+    }
+  } catch(e) { console.error('Config load error:', e); }
+  loadHpSection('events');
+  loadHpSection('articles');
+  loadHpSection('housing');
+  loadHpSection('businesses');
+}
+
+async function loadHpSection(section) {
+  var el = document.getElementById('hp-' + section + '-list');
+  var countEl = document.getElementById('hp-' + section + '-count');
+  el.innerHTML = '<div style="padding:1rem;text-align:center;color:var(--ink3);font-size:12px">Loading...</div>';
+
+  try {
+    var items = [];
+    var pinnedIds = hpConfig['pinned_' + section] || [];
+
+    if (section === 'events') {
+      var today = new Date().toISOString().slice(0, 10);
+      var end = new Date(Date.now() + 14 * 86400000).toISOString().slice(0, 10);
+      items = await sb('events?status=eq.approved&category=not.eq.config&event_date=gte.' + today + '&event_date=lte.' + end + '&order=event_date.asc&limit=30&select=id,title,event_date,event_time,category,city,source,price');
+    } else if (section === 'articles') {
+      items = await sb('articles?status=in.(approved,auto_approved)&order=published_at.desc&limit=20&select=id,title,category,source_name,published_at');
+    } else if (section === 'housing') {
+      items = await sb('local_businesses?type=eq.housing&status=eq.active&order=created_at.desc&limit=20&select=id,name,city,price_range');
+    } else if (section === 'businesses') {
+      items = await sb('local_businesses?type=not.in.(housing,service,community)&status=eq.active&order=created_at.desc&limit=20&select=id,name,city,type,emoji');
+    }
+
+    if (!items || !items.length) {
+      el.innerHTML = '<div style="padding:1.5rem;text-align:center;color:var(--ink3);font-size:12px">No items found</div>';
+      if (countEl) countEl.textContent = '(0 items)';
+      return;
+    }
+
+    var pinSet = new Set(pinnedIds.map(Number));
+    var pinCount = 0;
+
+    // Sort: pinned first, then by original order
+    items.sort(function(a, b) {
+      var aPin = pinSet.has(a.id) ? 0 : 1;
+      var bPin = pinSet.has(b.id) ? 0 : 1;
+      return aPin - bPin;
+    });
+
+    var html = '<table><thead><tr><th style="width:40px">Pin</th><th>Item</th><th>Details</th><th style="width:70px">Source</th></tr></thead><tbody>';
+
+    items.forEach(function(item) {
+      var isPinned = pinSet.has(item.id);
+      if (isPinned) pinCount++;
+      var pinBtn = '<button class="btn btn-sm" style="' + (isPinned ? 'background:var(--amber);color:white;border-color:var(--amber)' : '') + '" onclick="toggleHpPin(\'' + section + '\',' + item.id + ',this)">📌</button>';
+
+      var title = '', details = '', source = '';
+      if (section === 'events') {
+        title = item.title;
+        details = item.event_date + (item.event_time ? ' ' + item.event_time : '') + ' · ' + item.city;
+        source = item.source || '';
+      } else if (section === 'articles') {
+        title = item.title;
+        details = (item.category || 'news') + ' · ' + (item.published_at || '').slice(0, 10);
+        source = item.source_name || '';
+      } else if (section === 'housing') {
+        title = item.name;
+        var pr = {};
+        (item.price_range || '').split('|').forEach(function(p) { var i = p.indexOf(':'); if (i > 0) pr[p.slice(0,i)] = p.slice(i+1); });
+        details = item.city + (pr.rent ? ' · €' + pr.rent + '/mo' : '') + (pr.type ? ' · ' + pr.type : '');
+        source = pr.kind === 'looking' ? 'Looking' : 'Available';
+      } else if (section === 'businesses') {
+        title = (item.emoji || '') + ' ' + item.name;
+        details = item.city + (item.type ? ' · ' + item.type : '');
+        source = '';
+      }
+
+      html += '<tr style="' + (isPinned ? 'background:var(--amber-l)' : '') + '">' +
+        '<td style="text-align:center">' + pinBtn + '</td>' +
+        '<td style="font-weight:500;font-size:12px">' + title.substring(0, 60) + '</td>' +
+        '<td style="font-size:11px;color:var(--ink3)">' + details + '</td>' +
+        '<td style="font-size:10px;color:var(--ink3)">' + source.substring(0, 15) + '</td>' +
+        '</tr>';
+    });
+
+    html += '</tbody></table>';
+    el.innerHTML = html;
+    if (countEl) countEl.textContent = '(' + pinCount + ' pinned of ' + items.length + ')';
+  } catch(e) {
+    el.innerHTML = '<div style="padding:1rem;text-align:center;color:var(--red);font-size:12px">Error loading: ' + e.message + '</div>';
+  }
+}
+
+function toggleHpPin(section, id, btn) {
+  var key = 'pinned_' + section;
+  var arr = hpConfig[key] || [];
+  var idx = arr.indexOf(id);
+  if (idx >= 0) {
+    arr.splice(idx, 1);
+    btn.style.background = '';
+    btn.style.color = '';
+    btn.style.borderColor = '';
+    btn.closest('tr').style.background = '';
+  } else {
+    arr.push(id);
+    btn.style.background = 'var(--amber)';
+    btn.style.color = 'white';
+    btn.style.borderColor = 'var(--amber)';
+    btn.closest('tr').style.background = 'var(--amber-l)';
+  }
+  hpConfig[key] = arr;
+  // Update count
+  var countEl = document.getElementById('hp-' + section + '-count');
+  if (countEl) {
+    var total = document.querySelectorAll('#hp-' + section + '-list tr').length - 1;
+    countEl.textContent = '(' + arr.length + ' pinned of ' + total + ')';
+  }
+}
+
+async function saveHomepageConfig() {
+  var statusEl = document.getElementById('hp-save-status');
+  statusEl.textContent = 'Saving...';
+  try {
+    await sb('events?id=eq.' + HP_CONFIG_ID, {
+      method: 'PATCH',
+      body: { description: JSON.stringify(hpConfig) }
+    });
+    statusEl.textContent = '✅ Saved! Homepage will update on next page load.';
+    setTimeout(function() { statusEl.textContent = ''; }, 4000);
+  } catch(e) {
+    statusEl.textContent = '❌ Error saving: ' + e.message;
+  }
 }
 
 // ── INIT ──────────────────────────────────────────────────
