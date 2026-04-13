@@ -400,7 +400,7 @@ async function loadEvents() {
   try {
     var today = new Date().toISOString().slice(0, 10);
     var endDate = new Date(Date.now() + 8 * 86400000).toISOString().slice(0, 10);
-    var q = SB_URL + '/rest/v1/events?status=eq.approved&category=not.eq.config&event_date=gte.' + today + '&event_date=lte.' + endDate + '&order=event_date.asc&limit=50';
+    var q = SB_URL + '/rest/v1/events?status=eq.approved&category=not.eq.config&event_date=gte.' + today + '&event_date=lte.' + endDate + '&order=event_date.asc&limit=200';
     if (activeRegion !== 'all') {
       var cities = regionCities[activeRegion] || [activeRegion];
       var orParts = cities.map(function(c) { return 'city.ilike.*' + c + '*'; });
