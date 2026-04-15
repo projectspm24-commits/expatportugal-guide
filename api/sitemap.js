@@ -15,6 +15,15 @@ module.exports = async (req, res) => {
     { loc: '/guides/moving-to-portugal.html', priority: '0.9', freq: 'monthly' },
     { loc: '/contact.html', priority: '0.4', freq: 'monthly' },
     { loc: '/privacy.html', priority: '0.2', freq: 'yearly' },
+    { loc: '/pt/', priority: '0.9', freq: 'daily' },
+    { loc: '/pt/calendario.html', priority: '0.8', freq: 'daily' },
+    { loc: '/pt/noticias.html', priority: '0.7', freq: 'daily' },
+    { loc: '/pt/explorar.html', priority: '0.7', freq: 'weekly' },
+    { loc: '/pt/servicos.html', priority: '0.7', freq: 'weekly' },
+    { loc: '/pt/alojamento.html', priority: '0.7', freq: 'daily' },
+    { loc: '/pt/comunidades.html', priority: '0.6', freq: 'weekly' },
+    { loc: '/pt/ferramentas.html', priority: '0.6', freq: 'monthly' },
+    { loc: '/pt/viver-local.html', priority: '0.5', freq: 'monthly' },
   ];
 
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';

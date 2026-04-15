@@ -70,9 +70,15 @@ select,.sel{width:100%;padding:9px 12px;border:0.5px solid var(--border2);border
 footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top:3rem}
 .fi{max-width:900px;margin:0 auto;font-size:12px;text-align:center}
 @media(max-width:600px){.full{padding:0 1rem}nav{padding:0 1rem}.compare{grid-template-columns:1fr}.email-save{flex-direction:column}.email-save input{width:100%}}
+
+.lang-sw{display:flex;align-items:center;gap:2px;margin-left:12px;font-size:12px;border:0.5px solid var(--border2);border-radius:20px;overflow:hidden}
+.lang-sw a{padding:4px 10px;text-decoration:none;color:var(--ink3);font-weight:500;font-family:"Outfit",sans-serif}
+.lang-sw a.lang-on{background:var(--ink);color:white}
+.lang-sw a:hover:not(.lang-on){background:var(--warm)}
 </style>
 <link rel="alternate" hreflang="en" href="https://expatportugal.guide/tools.html" />
 <link rel="alternate" hreflang="x-default" href="https://expatportugal.guide/tools.html" />
+<link rel="alternate" hreflang="pt" href="https://expatportugal.guide/pt/ferramentas.html" />
 </head>
 <body>
 <nav>
@@ -88,6 +94,8 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:2rem;margin-top
     <a class="nl" href="housing.html">Housing</a>
     <a class="nl" href="news.html">News</a>
   </div>
+
+  <div class="lang-sw"><a href="tools.html" class="lang-on">EN</a><a href="pt/ferramentas.html">PT</a></div>
 </nav>
 <div class="full">
   <div class="hero">
